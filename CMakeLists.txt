@@ -53,7 +53,9 @@ endif(WITH_TESTS)
 # Searching for packets
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Network REQUIRED)
+find_package(Qt5Sql REQUIRED)
 include_directories( ${Qt5Core_INCLUDE_DIRS} )
 include_directories( ${Qt5Network_INCLUDE_DIRS} )
+include_directories( ${Qt5Sql_INCLUDE_DIRS} )
 
 add_subdirectory(src)

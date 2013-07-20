@@ -3,6 +3,9 @@
 
 #include <QTcpServer>
 
+namespace novastory
+{
+
 class WebServer : public QTcpServer
 {
     Q_OBJECT
@@ -16,5 +19,7 @@ private slots:
 	void showHtmlPage();
 
 };
+
+}
 
 #endif

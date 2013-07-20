@@ -3,6 +3,9 @@
 #include <QTextStream>
 #include "utils.h"
 
+namespace novastory
+{
+
 WebServer::WebServer(QObject *parent)
     : QTcpServer(parent)
 {
@@ -37,4 +40,6 @@ void WebServer::showHtmlPage()
 		"<h1>Novastory project</h1>\n";
 
 	clientSocket->close();
+}
+
 }

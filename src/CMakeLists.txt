@@ -9,15 +9,20 @@ INCLUDE_DIRECTORIES(
 
 
 set(HEADERS_LOCAL_TOMOC
+	sql/sqlquery.h	
+
 	webserver.h
 )
 
 set(HEADERS_LOCAL
-
+	webrouter.h
 )
 
 set(SOURCES_LOCAL
+	sql/sqlquery.cpp
+
 	webserver.cpp
+	webrouter.cpp
 	main.cpp
 )
 
@@ -38,4 +43,5 @@ target_link_libraries (novaserver
 	#${Qt5Core_QTMAIN_LIBRARIES}
 	${Qt5Core_LIBRARIES}
 	${Qt5Network_LIBRARIES}
+	${Qt5Sql_LIBRARIES}
 )
