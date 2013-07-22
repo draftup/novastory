@@ -2,6 +2,7 @@
 #include <QTcpSocket>
 #include <QTextStream>
 #include "utils.h"
+#include "webrouter.h"
 
 namespace novastory
 {
@@ -30,7 +31,8 @@ void WebServer::showHtmlPage()
 {
 	QTcpSocket* clientSocket = (QTcpSocket*)sender();
 
-	qDebug() << "ReadClient:" + clientSocket->readAll();
+	WebRouter urlRouter(clientSocket);
+	urlRouter.parse();
 
 	QTextStream os(clientSocket);
 	os.setAutoDetectUnicode(true);
