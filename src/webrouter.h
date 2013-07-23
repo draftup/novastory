@@ -1,20 +1,18 @@
 #ifndef WEBROUTER_H
 #define WEBROUTER_H
 
+#include "webrequest.h"
 class QTcpSocket;
+#include <QString>
 
 namespace novastory
 {
 
-class WebRouter
+class WebRouter : public WebRequest
 {
-
 public:
-    WebRouter(QTcpSocket* bindedSocket);
-	void parse();
-private:
-    QTcpSocket* bindedSocket;
-
+	WebRouter(QTcpSocket *bindedSocket);
+	QString path() const;
 };
 
 }

@@ -16,6 +16,7 @@ set(HEADERS_LOCAL_TOMOC
 
 set(HEADERS_LOCAL
 	webrouter.h
+	webrequest.h
 )
 
 set(SOURCES_LOCAL
@@ -23,6 +24,7 @@ set(SOURCES_LOCAL
 
 	webserver.cpp
 	webrouter.cpp
+	webrequest.cpp
 	main.cpp
 )
 

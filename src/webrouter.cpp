@@ -1,21 +1,15 @@
 #include "webrouter.h"
-#include <QTcpSocket>
-#include "utils.h"
 
 namespace novastory
 {
+	WebRouter::WebRouter( QTcpSocket *bindedSocket ) : WebRequest(bindedSocket)
+	{
 
-WebRouter::WebRouter(QTcpSocket *bindedSocket)
-    : bindedSocket(bindedSocket)
-{
+	}
 
-}
-
-void WebRouter::parse()
-{
-	VERIFY(bindedSocket != nullptr);
-
-	qDebug() << bindedSocket->readAll();
-}
+	QString WebRouter::path() const
+	{
+		return parsedValues["path"];
+	}
 
 }

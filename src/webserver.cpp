@@ -33,6 +33,7 @@ void WebServer::showHtmlPage()
 
 	WebRouter urlRouter(clientSocket);
 	urlRouter.parse();
+	qDebug() << "path = " << urlRouter.path();
 
 	QTextStream os(clientSocket);
 	os.setAutoDetectUnicode(true);
