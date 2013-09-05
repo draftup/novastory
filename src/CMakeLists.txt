@@ -15,6 +15,7 @@ set(HEADERS_LOCAL_TOMOC
 )
 
 set(HEADERS_LOCAL
+	htmlhandler.h
 	webrouter.h
 	webrequest.h
 )

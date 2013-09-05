@@ -1,6 +1,5 @@
 #include "webserver.h"
 #include <QTcpSocket>
-#include <QTextStream>
 #include "utils.h"
 #include "webrouter.h"
 
@@ -34,13 +33,7 @@ void WebServer::showHtmlPage()
 	WebRouter urlRouter(clientSocket);
 	urlRouter.parse();
 	qDebug() << "path = " << urlRouter.path();
-
-	QTextStream os(clientSocket);
-	os.setAutoDetectUnicode(true);
-	os << "HTTP/1.0 200 Ok\r\n"
-		"Content-Type: text/html; charset=\"utf-8\"\r\n"
-		"\r\n"
-		"<h1>Novastory project</h1>\n";
+	urlRouter.sendHtml();
 
 	clientSocket->close();
 }
