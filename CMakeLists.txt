@@ -11,6 +11,7 @@ set (CMAKE_MODULE_PATH
 	${CMAKE_MODULE_PATH} 
 	"${CMAKE_CURRENT_SOURCE_DIR}/cmake"
 )
+include(cmake/testing.cmake)
 
 
 #execute_process(COMMAND ${PROJECT_SOURCE_DIR}/getrevision.sh
@@ -29,7 +30,6 @@ set (CMAKE_MODULE_PATH
 if (WIN32)
 	add_definitions(-DWIN32 -D_WIN32)
 endif (WIN32)
-
 if (NOT MSVC)
 	if(APPLE)
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++ -g -Wall")
@@ -43,14 +43,11 @@ endif (NOT MSVC)
 
 # Options
 option (WITH_TESTS "Enable testing" OFF)
+option (WITH_TESTS_CDASH "Enable cdash testing" OFF)
 
-
-if (WITH_TESTS)
-   enable_testing()
-   add_definitions(-DWITH_TESTS)
-endif(WITH_TESTS)
 
 # Searching for packets
+set(DEVELOPER_QT5 1)
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5Sql REQUIRED)
@@ -58,4 +55,6 @@ include_directories( ${Qt5Core_INCLUDE_DIRS} )
 include_directories( ${Qt5Network_INCLUDE_DIRS} )
 include_directories( ${Qt5Sql_INCLUDE_DIRS} )
 
+SETUP_TESTING()
 add_subdirectory(src)
+add_subdirectory(tests)

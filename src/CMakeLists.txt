@@ -16,13 +16,14 @@ set(HEADERS_LOCAL_TOMOC
 
 set(HEADERS_LOCAL
 	htmlhandler.h
+	rawfilehandler.h
 	webrouter.h
 	webrequest.h
 )
 
 set(SOURCES_LOCAL
 	sql/sqlquery.cpp
-
+	rawfilehandler.cpp
 	webserver.cpp
 	webrouter.cpp
 	webrequest.cpp
