@@ -12,7 +12,8 @@ set (CMAKE_MODULE_PATH
 	"${CMAKE_CURRENT_SOURCE_DIR}/cmake"
 )
 include(cmake/testing.cmake)
-
+include(cmake/qtx.cmake)
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 #execute_process(COMMAND ${PROJECT_SOURCE_DIR}/getrevision.sh
 #		OUTPUT_VARIABLE GIT_REVISION 

@@ -5,6 +5,12 @@ macro(SETUP_TESTING)
 		if(WITH_TESTS_CDASH)
 			include(CTest)
 		endif(WITH_TESTS_CDASH)
+		find_package(Qt5Test REQUIRED)
+		if(DEVELOPER_QT5)
+			include_directories(${Qt5Test_INCLUDE_DIRS})
+		else(DEVELOPER_QT5)
+			include_directories(${QT_QTTEST_INCLUDE_DIR})
+		endif(DEVELOPER_QT5)
 	endif(WITH_TESTS)
 endmacro(SETUP_TESTING)
 
@@ -22,7 +28,6 @@ macro(do_test testname)
 	set(MOC_HDRS)
 
 	foreach(arg ${ARGN})
-        #message("arg='${arg}'")
 		string(REGEX MATCH "qrc_.+\\.cxx" RESORCE ${arg})
 		if(NOT "${RESORCE}" STREQUAL "")
 			SET(RESOURCES_TEST ${RESOURCES_TEST} ${RESORCE})
@@ -34,8 +39,6 @@ macro(do_test testname)
 		endif()
     endforeach()
 	
-	message("SOURCES_TEST= ${SOURCES_TEST}")
-	
 	# looking for files to moc
 	foreach(SRC ${SOURCES_TEST})
 		string(REGEX MATCH ".+\\.cpp" SRCMATCH ${SRC})
@@ -46,7 +49,6 @@ macro(do_test testname)
 			foreach(SRC2 ${SOURCES_TEST})
 				string(REGEX MATCH "${SRCMATCH}\\.h" HEADERMATCH ${SRC2})
 				if(NOT "${HEADERMATCH}" STREQUAL "")
-					#message("FOUNDPAIR: ${HEADERMATCH} ${SRC2}")
 					set(HAS_PAIR 1)
 				endif()
 			endforeach()
@@ -63,24 +65,21 @@ macro(do_test testname)
 	
 	foreach(TOMOC ${SRCS_TO_MOC})
 		string(REGEX MATCH "[A-Za-z_\\-]+\\.cpp" TOMOC2 ${TOMOC})
-		string(REGEX REPLACE "\\.cpp" ".${testname}.moc" TEST_MOC_FILE ${TOMOC2})
+		string(REGEX REPLACE "\\.cpp" ".moc" TEST_MOC_FILE ${TOMOC2})
 		set(MOC_${testname}_TEST "${CMAKE_CURRENT_BINARY_DIR}/${TEST_MOC_FILE}")
-		#message("TOMOC2:${TOMOC2} ----- ${TEST_MOC_FILE} ")
-		#message("TOMOC:${TOMOC} ----- ${MOC_${testname}_TEST}")
 		QTX_GENERATE_MOC(${TOMOC} ${MOC_${testname}_TEST})
 		SET_SOURCE_FILES_PROPERTIES(${TOMOC} PROPERTIES OBJECT_DEPENDS ${MOC_${testname}_TEST})
 		set(MOC_SRCS ${MOC_SRCS} ${MOC_${testname}_TEST})
 	endforeach()
 	
-
 	if(DEFINED HDRS_TO_MOC)
 		QTX_WRAP_CPP(MOC_HDRS
 			${HDRS_TO_MOC}
 		)
 	endif()
-
-	include_directories(${QT_QTTEST_INCLUDE_DIR})
-	
+		
+	include_directories(${CMAKE_CURRENT_BINARY_DIR})
+		
 	add_executable(test_${testname}
 		${MOC_HDRS}
 		${MOC_SRCS}
@@ -96,9 +95,7 @@ macro(do_test testname)
 
 	target_link_libraries(test_${testname}
 		${FUNCTIONAL_MODULE}
-		${QT_LIBRARIES}
 		${QTX_TEST_LIBRARY}
-		${OPENSSL_LIBRARIES}
 	)
 
 	set_property(TARGET test_${testname} PROPERTY FOLDER "Tests")

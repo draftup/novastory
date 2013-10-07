@@ -7,7 +7,6 @@ set(SERVER_MODULE
 	novastory_server CACHE STRING "Module with functional of the program"
 )
 
-
 INCLUDE_DIRECTORIES(
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${CMAKE_CURRENT_BINARY_DIR}

@@ -9,7 +9,7 @@ namespace novastory
 WebServer::WebServer(QObject *parent)
     : QTcpServer(parent)
 {
-    listen(QHostAddress::Any, 8008);
+    VERIFY(listen(QHostAddress::Any, 8008));
 	VERIFY(connect(this, SIGNAL(newConnection()), this, SLOT(someNewConnection())));
 }
 
