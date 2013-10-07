@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(Video)
+set(FUNCTIONAL_MODULE
+	novastory CACHE STRING "Module with functional of the program"
+)
+set(SERVER_MODULE
+	novastory_server CACHE STRING "Module with functional of the program"
+)
+
 
 INCLUDE_DIRECTORIES(
 	${CMAKE_CURRENT_SOURCE_DIR}
@@ -8,44 +14,66 @@ INCLUDE_DIRECTORIES(
 )
 
 
-set(HEADERS_LOCAL_TOMOC
-	sql/sqlquery.h	
-
+set(HEADERS_TOMOC
+	sql/sqlquery.h
 	webserver.h
 )
 
-set(HEADERS_LOCAL
+set(HEADERS
 	htmlhandler.h
 	rawfilehandler.h
 	webrouter.h
 	webrequest.h
 )
 
-set(SOURCES_LOCAL
+set(SOURCES
 	sql/sqlquery.cpp
 	rawfilehandler.cpp
 	webserver.cpp
 	webrouter.cpp
 	webrequest.cpp
-	main.cpp
 )
 
-QT5_WRAP_CPP(MOC_LOCAL ${HEADERS_LOCAL_TOMOC})
+QT5_WRAP_CPP(MOC_FILES ${HEADERS_TOMOC})
 
 source_group("core\\Sources" FILES 
-				${HEADERS_LOCAL} 
-				${HEADERS_LOCAL_TOMOC}
-				${SOURCES_LOCAL})
+				${HEADERS} 
+				${HEADERS_TOMOC}
+				${SOURCES})
 
-ADD_EXECUTABLE(novaserver
-	${SOURCES_LOCAL}
-	${MOC_LOCAL}
-	${HEADERS_LOCAL}
-	${HEADERS_LOCAL_TOMOC}
+add_library(${FUNCTIONAL_MODULE} STATIC
+	# Sources
+	${HEADERS_TOMOC}
+	${HEADERS}
+	${SOURCES}
+
+	# Genered resources
+	${UI_FILES} 
+	${MOC_FILES} 
+	${QRC_RESOURCES}
+	${QM_FILES}
+
+	# Some source resources
+	${TS_FILES}
+	${CSS_FILES}
 )
-target_link_libraries (novaserver
-	#${Qt5Core_QTMAIN_LIBRARIES}
+
+target_link_libraries(${FUNCTIONAL_MODULE}
 	${Qt5Core_LIBRARIES}
 	${Qt5Network_LIBRARIES}
 	${Qt5Sql_LIBRARIES}
+)
+				
+				
+ADD_EXECUTABLE(${SERVER_MODULE}
+	${DESKTOP_TARGET}
+	main.cpp
+	
+	# Genered resources
+	${QRC_RESOURCES}
+	${RESOURCE_OS}
+	${RESOURCE_OS_ALL}
+)
+target_link_libraries (${SERVER_MODULE}
+	${FUNCTIONAL_MODULE}
 )
