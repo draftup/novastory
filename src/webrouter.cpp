@@ -1,4 +1,5 @@
 #include "webrouter.h"
+#include "rawfilehandler.h"
 #include <QTextStream>
 #include <QTcpSocket>
 
@@ -6,7 +7,7 @@ namespace novastory
 {
 	WebRouter::WebRouter( QTcpSocket *bindedSocket ) : WebRequest(bindedSocket)
 	{
-
+		appendHandler(new RawFileHandler(bindedSocket));
 	}
 
 	QString WebRouter::path() const
@@ -14,12 +15,12 @@ namespace novastory
 		return parsedValues["path"];
 	}
 
-	void WebRouter::removeHandler( HtmlHandler* handler )
+	void WebRouter::removeHandler( DataHandler* handler )
 	{
 		handlers.removeAll(handler);
 	}
 
-	void WebRouter::appendHandler( HtmlHandler* handler )
+	void WebRouter::appendHandler( DataHandler* handler )
 	{
 		handlers.append(handler);
 	}
@@ -30,9 +31,9 @@ namespace novastory
 		os.setAutoDetectUnicode(true);
 		os << "HTTP/1.0 200 Ok\r\n"
 		   << "Content-Type: text/html; charset=\"utf-8\"\r\n";
-		for(HtmlHandler* handler : handlers)
+		for(DataHandler* handler : handlers)
 		{
-			os << handler->html(path());
+			os << handler->data(path());
 		}
 	}
 

@@ -19,7 +19,7 @@ set(HEADERS_TOMOC
 )
 
 set(HEADERS
-	htmlhandler.h
+	datahandler.h
 	rawfilehandler.h
 	webrouter.h
 	webrequest.h

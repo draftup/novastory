@@ -1,17 +1,18 @@
 #ifndef RAWFILEHANDLER_H
 #define RAWFILEHANDLER_H
 
-#include "htmlhandler.h"
+#include "datahandler.h"
 class QTcpSocket;
 
 namespace novastory
 {
 
-class RawFileHandler : public HtmlHandler
+class RawFileHandler : public DataHandler
 {
 public:
 	RawFileHandler(QTcpSocket *bindedSocket);
 	~RawFileHandler();
+	QByteArray data(const QString& path = "") override;
 };
 
 }
