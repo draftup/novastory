@@ -13,6 +13,7 @@ public:
 	RawFileHandler(QTcpSocket *bindedSocket);
 	~RawFileHandler();
 	QByteArray data(const QString& path = "") override;
+	QMimeType mimeType() const override;
 };
 
 }
