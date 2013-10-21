@@ -12,8 +12,9 @@ class RawFileHandler : public DataHandler
 public:
 	RawFileHandler(QTcpSocket *bindedSocket);
 	~RawFileHandler();
-	QByteArray data(const QString& path = "") override;
-	QMimeType mimeType() const override;
+	void handle(const QString& path) override;
+private:
+	QTcpSocket *socket;
 };
 
 }

@@ -27,13 +27,13 @@ namespace novastory
 
 	void WebRouter::sendHtml()
 	{
-		QTextStream os(bindedSocket);
-		os.setAutoDetectUnicode(true);
-		os << "HTTP/1.0 200 Ok\r\n"
-		   << "Content-Type: text/html; charset=\"utf-8\"\r\n";
+		//QTextStream os(bindedSocket);
+		//os.setAutoDetectUnicode(true);
+		//os << "HTTP/1.0 200 Ok\r\n"
+		//   << "Content-Type: image/jpeg\n\n";;
 		for(DataHandler* handler : handlers)
 		{
-			os << handler->data(path());
+			handler->handle(path());
 		}
 	}
 

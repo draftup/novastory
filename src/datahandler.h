@@ -2,7 +2,6 @@
 #define DATAHANDLER_H
 
 #include <QString>
-#include <QMimeType>
 
 namespace novastory
 {
@@ -10,8 +9,7 @@ namespace novastory
 class DataHandler
 {
 public:
-	virtual QByteArray data(const QString& path = "") = 0;
-	virtual QMimeType mimeType() const = 0;
+	virtual void handle(const QString& path) = 0;
 };
 
 }
