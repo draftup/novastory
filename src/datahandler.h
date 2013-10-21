@@ -9,7 +9,7 @@ namespace novastory
 class DataHandler
 {
 public:
-	virtual void handle(const QString& path) = 0;
+	virtual bool handle(const QString& path) = 0;
 };
 
 }
