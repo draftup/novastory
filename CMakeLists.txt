@@ -44,7 +44,9 @@ endif (NOT MSVC)
 
 # Options
 option (WITH_TESTS "Enable testing" OFF)
-option (WITH_TESTS_CDASH "Enable cdash testing" OFF)
+if(WITH_TESTS)
+	option (WITH_TESTS_CDASH "Enable cdash testing" OFF)
+endif(WITH_TESTS)
 
 
 # Searching for packets
@@ -58,4 +60,6 @@ include_directories( ${Qt5Sql_INCLUDE_DIRS} )
 
 SETUP_TESTING()
 add_subdirectory(src)
-add_subdirectory(tests)
+if(WITH_TESTS)
+	add_subdirectory(tests)
+endif(WITH_TESTS)
