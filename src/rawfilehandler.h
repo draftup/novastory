@@ -11,7 +11,7 @@ class RawFileHandler : public DataHandler
 {
 public:
 	RawFileHandler(QTcpSocket *bindedSocket);
-	~RawFileHandler();
+	virtual ~RawFileHandler();
 	bool handle(const QString& path) override;
 	void setDirectory(const QString& path);
 	QString directory() const;

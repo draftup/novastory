@@ -14,11 +14,12 @@ INCLUDE_DIRECTORIES(
 
 
 set(HEADERS_TOMOC
-	sql/sqlquery.h
 	webserver.h
 )
 
 set(HEADERS
+	sql/sqlquery.h
+
 	datahandler.h
 	rawfilehandler.h
 	webrouter.h
