@@ -32,6 +32,7 @@ if [ ! -d "$UPLOAD_DIRECTORY/$SUBFOLDER" ]; then
 	mingw64-make -j2
 	mingw64-make install
 	zip -r novastory.zip $SOURCE_PATH/win32build/final
+	mkdir $UPLOAD_DIRECTORY/$SUBFOLDER
 	mv novastory.zip $UPLOAD_DIRECTORY/$SUBFOLDER/
 fi
 
