@@ -8,12 +8,12 @@ REVISION=`git log --pretty=format:'' | wc -l`
 DESCRIBE=`git describe`
 
 SUBFOLDER="r$REVISION"
-if[ $DESCRIBE ]; then
+if [ $DESCRIBE ]; then
 	SUBFOLDER="r$REVISION ($DESCRIBE)"
 fi
 
 
-if[ $REVISION -le 0 ]; then
+if [ $REVISION -le 0 ]; then
 	echo "Unknown revision"
 	exit
 fi
