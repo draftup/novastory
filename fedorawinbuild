@@ -31,7 +31,7 @@ if [ ! -d "$UPLOAD_DIRECTORY/$SUBFOLDER" ]; then
 	mingw64-cmake -DWITH_TESTS=ON -DFEDORA_CROSSCOMPILATION=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$SOURCE_PATH/win32build/final" ../
 	mingw64-make -j2
 	mingw64-make install
-	zip -r novastory.zip $SOURCE_PATH/win32build/final
+	zip -r novastory.zip final/
 	mkdir $UPLOAD_DIRECTORY/$SUBFOLDER
 	chcon --type=httpd_user_content_t novastory.zip
 	mv novastory.zip $UPLOAD_DIRECTORY/$SUBFOLDER/
