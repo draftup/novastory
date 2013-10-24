@@ -27,6 +27,20 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 #add_definitions(-DGIT_DESCRIBE="${GIT_DESCRIBE}")
 #add_definitions(-DGIT_VERSION="${VERSION}")
 
+#Directories
+if (APPLE)
+  set (DATA_DIRECTORY "${PROJECT_NAME}.app")
+elseif (WIN32)
+  set (DATA_DIRECTORY ".")
+else (APPLE)
+  set (DATA_DIRECTORY "${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}")
+endif (APPLE)
+if(WIN32)
+  set (BINARY_DIRECTORY .)
+else(WIN32)
+  set (BINARY_DIRECTORY bin)
+endif(WIN32)
+
 # Compilations settings
 if (WIN32)
 	add_definitions(-DWIN32 -D_WIN32)
