@@ -61,6 +61,7 @@ option (WITH_TESTS "Enable testing" OFF)
 if(WITH_TESTS)
 	option (WITH_TESTS_CDASH "Enable cdash testing" OFF)
 endif(WITH_TESTS)
+option (FEDORA_CROSSCOMPILATION "Enabling fedora crosscompilation features" OFF)
 
 
 # Searching for packets

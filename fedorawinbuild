@@ -1,0 +1,31 @@
+#!/bin/bash
+
+UPLOAD_DIRECTORY="/home/builder/public_html/novastory"
+
+SOURCE_PATH="`dirname \"$0\"`"
+cd $SOURCE_PATH
+REVISION=`git log --pretty=format:'' | wc -l`
+DESCRIBE=`git describe`
+
+SUBFOLDER="r$REVISION"
+if[ $DESCRIBE ]; then
+	SUBFOLDER="r$REVISION ($DESCRIBE)"
+fi
+
+
+if[ $REVISION -le 0 ]; then
+	echo "Unknown revision"
+	exit
+fi
+
+if [ ! -d "$UPLOAD_DIRECTORY/$SUBFOLDER" ]; then
+	echo "New revision founded"
+	rm -fr win32build
+	mkdir win32build
+	cd win32build
+	mingw64-cmake -DWITH_TESTS=ON -DFEDORA_CROSSCOMPILATION=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$SOURCE_PATH/win32build/final" ../
+	mingw64-make -j2
+	mingw64-make install
+fi
+
+echo "All done"

@@ -80,3 +80,14 @@ target_link_libraries (${SERVER_MODULE}
 
 install (TARGETS ${SERVER_MODULE} DESTINATION ${BINARY_DIRECTORY})
 install (DIRECTORY ${CMAKE_SOURCE_DIR}/public/ DESTINATION "${DATA_DIRECTORY}/public")
+
+if(FEDORA_CROSSCOMPILATION)
+	install(FILES
+				/usr/x86_64-w64-mingw32/sys-root/mingw/bin/libgcc_s_seh-1.dll
+				/usr/x86_64-w64-mingw32/sys-root/mingw/bin/libstdc++-6.dll
+				/usr/x86_64-w64-mingw32/sys-root/mingw/bin/libpcre16-0.dll
+				/usr/x86_64-w64-mingw32/sys-root/mingw/bin/Qt5Core.dll
+				/usr/x86_64-w64-mingw32/sys-root/mingw/bin/Qt5Network.dll
+			DESTINATION .
+		)
+endif(FEDORA_CROSSCOMPILATION)
