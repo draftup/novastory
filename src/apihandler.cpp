@@ -2,6 +2,9 @@
 #include <QDebug>
 #include <QTcpSocket>
 
+#include <QJsonDocument>
+#include <QJsonObject>
+
 namespace novastory
 {
 
@@ -22,6 +25,14 @@ bool ApiHandler::handle(const QString& path)
 	{
 		return false;
 	}
+
+	QJsonDocument version;
+	QJsonObject versionObject;
+	versionObject.insert("version", QJsonValue(23));
+
+	version.setObject(versionObject);
+
+	socket->write(version.toJson());
 
 	return true;
 }

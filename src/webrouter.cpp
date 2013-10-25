@@ -1,5 +1,6 @@
 #include "webrouter.h"
 #include "rawfilehandler.h"
+#include "apihandler.h"
 #include <QTextStream>
 #include <QTcpSocket>
 
@@ -8,6 +9,7 @@ namespace novastory
 WebRouter::WebRouter(QTcpSocket* bindedSocket) : WebRequest(bindedSocket)
 {
 	appendHandler(new RawFileHandler(bindedSocket));
+	appendHandler(new ApiHandler(bindedSocket));
 }
 
 QString WebRouter::path() const
