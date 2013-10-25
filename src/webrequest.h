@@ -11,11 +11,11 @@ class WebRequest
 {
 
 public:
-    WebRequest(QTcpSocket* bindedSocket);
+	WebRequest(QTcpSocket* bindedSocket);
 	virtual void parse();
 	virtual bool isParsed() const;
 protected:
-    QTcpSocket* bindedSocket;
+	QTcpSocket* bindedSocket;
 	QHash<QString, QString> parsedValues;
 };
 

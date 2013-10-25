@@ -1,0 +1,31 @@
+#!/bin/sh
+#
+# An example hook script to verify what is about to be committed.
+# Called by "git commit" with no arguments.  The hook should
+# exit with non-zero status after issuing an appropriate message if
+# it wants to stop the commit.
+#
+# To enable this hook, rename this file to "pre-commit".
+
+astyle \
+	--recursive \
+	--formatted \
+	--style=allman \
+	--indent=force-tab=4 \
+	--indent-preprocessor \
+	--indent-col1-comments \
+	--pad-oper \
+	--pad-header \
+	--unpad-paren \
+	--add-brackets \
+	--keep-one-line-blocks \
+	--keep-one-line-statements \
+	--align-pointer=type \
+	--align-reference=type \
+	--lineend=windows \
+	--suffix=none \
+	--preserve-date \
+	src/*.h \
+	src/*.cpp \
+	tests/*.h \
+	tests/*.cpp

@@ -10,13 +10,13 @@ namespace novastory
 class RawFileHandler : public DataHandler
 {
 public:
-	RawFileHandler(QTcpSocket *bindedSocket);
+	RawFileHandler(QTcpSocket* bindedSocket);
 	virtual ~RawFileHandler();
 	bool handle(const QString& path) override;
 	void setDirectory(const QString& path);
 	QString directory() const;
 private:
-	QTcpSocket *socket;
+	QTcpSocket* socket;
 	QString workingDirectory;
 };
 

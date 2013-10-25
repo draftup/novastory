@@ -6,10 +6,10 @@
 namespace novastory
 {
 
-WebServer::WebServer(QObject *parent)
-    : QTcpServer(parent)
+WebServer::WebServer(QObject* parent)
+	: QTcpServer(parent)
 {
-    VERIFY(listen(QHostAddress::Any, 8008));
+	VERIFY(listen(QHostAddress::Any, 8008));
 	VERIFY(connect(this, SIGNAL(newConnection()), this, SLOT(someNewConnection())));
 }
 
@@ -21,9 +21,9 @@ WebServer::~WebServer()
 
 void WebServer::someNewConnection()
 {
-    QTcpSocket* clientSocket = nextPendingConnection();
+	QTcpSocket* clientSocket = nextPendingConnection();
 	qDebug() << clientSocket;
-	VERIFY( connect(clientSocket, SIGNAL(readyRead()), this, SLOT(showHtmlPage())) );
+	VERIFY(connect(clientSocket, SIGNAL(readyRead()), this, SLOT(showHtmlPage())));
 }
 
 void WebServer::showHtmlPage()

@@ -5,36 +5,36 @@
 
 namespace novastory
 {
-	WebRouter::WebRouter( QTcpSocket *bindedSocket ) : WebRequest(bindedSocket)
-	{
-		appendHandler(new RawFileHandler(bindedSocket));
-	}
+WebRouter::WebRouter(QTcpSocket* bindedSocket) : WebRequest(bindedSocket)
+{
+	appendHandler(new RawFileHandler(bindedSocket));
+}
 
-	QString WebRouter::path() const
-	{
-		return parsedValues["path"];
-	}
+QString WebRouter::path() const
+{
+	return parsedValues["path"];
+}
 
-	void WebRouter::removeHandler( DataHandler* handler )
-	{
-		handlers.removeAll(handler);
-	}
+void WebRouter::removeHandler(DataHandler* handler)
+{
+	handlers.removeAll(handler);
+}
 
-	void WebRouter::appendHandler( DataHandler* handler )
-	{
-		handlers.append(handler);
-	}
+void WebRouter::appendHandler(DataHandler* handler)
+{
+	handlers.append(handler);
+}
 
-	void WebRouter::sendHtml()
+void WebRouter::sendHtml()
+{
+	//QTextStream os(bindedSocket);
+	//os.setAutoDetectUnicode(true);
+	//os << "HTTP/1.0 200 Ok\r\n"
+	//   << "Content-Type: image/jpeg\n\n";;
+	for (DataHandler * handler : handlers)
 	{
-		//QTextStream os(bindedSocket);
-		//os.setAutoDetectUnicode(true);
-		//os << "HTTP/1.0 200 Ok\r\n"
-		//   << "Content-Type: image/jpeg\n\n";;
-		for(DataHandler* handler : handlers)
-		{
-			handler->handle(path());
-		}
+		handler->handle(path());
 	}
+}
 
 }

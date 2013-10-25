@@ -6,7 +6,7 @@
 namespace novastory
 {
 
-RawFileHandler::RawFileHandler( QTcpSocket *bindedSocket ) : 
+RawFileHandler::RawFileHandler(QTcpSocket* bindedSocket) :
 	socket(bindedSocket),
 	workingDirectory(QDir::currentPath() + "/public")
 {
@@ -22,7 +22,7 @@ bool RawFileHandler::handle(const QString& path)
 {
 	const QString filePath = workingDirectory + path;
 	QFile existFile(filePath);
-	if(existFile.open(QIODevice::ReadOnly))
+	if (existFile.open(QIODevice::ReadOnly))
 	{
 		qDebug() << "Raw file handler: " << filePath;
 		socket->write(existFile.readAll());
@@ -33,10 +33,10 @@ bool RawFileHandler::handle(const QString& path)
 	return false;
 }
 
-void RawFileHandler::setDirectory( const QString& path )
+void RawFileHandler::setDirectory(const QString& path)
 {
 	QDir targetDirectory(path);
-	if(targetDirectory.exists())
+	if (targetDirectory.exists())
 	{
 		workingDirectory = targetDirectory.absolutePath();
 	}

@@ -8,10 +8,10 @@ namespace novastory
 
 class WebServer : public QTcpServer
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    WebServer(QObject *parent = 0);
+	WebServer(QObject* parent = 0);
 	virtual ~WebServer();
 
 private slots:

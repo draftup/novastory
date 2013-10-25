@@ -12,7 +12,7 @@ namespace novastory
 class WebRouter : public WebRequest
 {
 public:
-	WebRouter(QTcpSocket *bindedSocket);
+	WebRouter(QTcpSocket* bindedSocket);
 	QString path() const;
 	void appendHandler(DataHandler* handler);
 	void removeHandler(DataHandler* handler);

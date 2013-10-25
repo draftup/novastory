@@ -1,0 +1,22 @@
+astyle ^
+	--recursive ^
+	--formatted ^
+	--style=allman ^
+	--indent=force-tab=4 ^
+	--indent-preprocessor ^
+	--indent-col1-comments ^
+	--pad-oper ^
+	--pad-header ^
+	--unpad-paren ^
+	--add-brackets ^
+	--keep-one-line-blocks ^
+	--keep-one-line-statements ^
+	--align-pointer=type ^
+	--align-reference=type ^
+	--lineend=windows ^
+	--suffix=none ^
+	--preserve-date ^
+	src/*.h ^
+	src/*.cpp ^
+	tests/*.h ^
+	tests/*.cpp

@@ -22,6 +22,7 @@ set(HEADERS
 
 	datahandler.h
 	rawfilehandler.h
+	apihandler.h
 	webrouter.h
 	webrequest.h
 )
@@ -29,6 +30,7 @@ set(HEADERS
 set(SOURCES
 	sql/sqlquery.cpp
 	rawfilehandler.cpp
+	apihandler.cpp
 	webserver.cpp
 	webrouter.cpp
 	webrequest.cpp
