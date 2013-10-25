@@ -28,7 +28,7 @@ bool ApiHandler::handle(const QString& path)
 
 	QJsonDocument version;
 	QJsonObject versionObject;
-	versionObject.insert("version", QJsonValue(23));
+	versionObject.insert("version", QJsonValue(QString(GIT_REVISION).toInt()));
 
 	version.setObject(versionObject);
 

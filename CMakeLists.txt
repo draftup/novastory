@@ -15,17 +15,20 @@ include(cmake/testing.cmake)
 include(cmake/qtx.cmake)
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
-#execute_process(COMMAND ${PROJECT_SOURCE_DIR}/getrevision.sh
-#		OUTPUT_VARIABLE GIT_REVISION 
-#		OUTPUT_STRIP_TRAILING_WHITESPACE
-#		)
-#execute_process(COMMAND git describe
-#		OUTPUT_VARIABLE GIT_DESCRIBE 
-#		OUTPUT_STRIP_TRAILING_WHITESPACE
-#		)
-#add_definitions(-DGIT_REVISION="${GIT_REVISION}")
-#add_definitions(-DGIT_DESCRIBE="${GIT_DESCRIBE}")
-#add_definitions(-DGIT_VERSION="${VERSION}")
+
+execute_process(COMMAND ${CMAKE_SOURCE_DIR}/getrevision.sh
+		OUTPUT_VARIABLE GIT_REVISION 
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+		)
+execute_process(COMMAND git describe
+		OUTPUT_VARIABLE GIT_DESCRIBE 
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+		)
+add_definitions(-DGIT_REVISION="${GIT_REVISION}")
+add_definitions(-DGIT_DESCRIBE="${GIT_DESCRIBE}")
+add_definitions(-DGIT_VERSION="${PROJECT_VERSION}")
+message("Git revision detected: ${GIT_REVISION}")
+message("Git describe: ${GIT_DESCRIBE}")
 
 #Directories
 if (APPLE)
