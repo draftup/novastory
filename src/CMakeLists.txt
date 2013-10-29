@@ -19,7 +19,8 @@ set(HEADERS_TOMOC
 
 set(HEADERS
 	sql/sqlquery.h
-
+	sql/sqldatabase.h
+	
 	datahandler.h
 	rawfilehandler.h
 	apihandler.h
@@ -29,6 +30,8 @@ set(HEADERS
 
 set(SOURCES
 	sql/sqlquery.cpp
+	sql/sqldatabase.cpp
+	
 	rawfilehandler.cpp
 	apihandler.cpp
 	webserver.cpp
