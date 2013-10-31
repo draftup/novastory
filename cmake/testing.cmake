@@ -100,7 +100,11 @@ macro(do_test testname)
 
 	set_property(TARGET test_${testname} PROPERTY FOLDER "Tests")
 
-	ADD_TEST(test_${testname} test_${testname})
+	if(CMAKE_CROSSCOMPILING AND WIN32)
+		set(testpostfix ".exe")
+	endif(CMAKE_CROSSCOMPILING AND WIN32)
+	
+	ADD_TEST(test_${testname} test_${testname}${testpostfix})
 endmacro(do_test testname)
 
 macro(append_test_resource testname)

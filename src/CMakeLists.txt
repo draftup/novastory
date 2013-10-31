@@ -93,6 +93,7 @@ if(FEDORA_CROSSCOMPILATION)
 				/usr/x86_64-w64-mingw32/sys-root/mingw/bin/libpcre16-0.dll
 				/usr/x86_64-w64-mingw32/sys-root/mingw/bin/Qt5Core.dll
 				/usr/x86_64-w64-mingw32/sys-root/mingw/bin/Qt5Network.dll
+				/usr/x86_64-w64-mingw32/sys-root/mingw/bin/zlib1.dll
 			DESTINATION .
 		)
 endif(FEDORA_CROSSCOMPILATION)
