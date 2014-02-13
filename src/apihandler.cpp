@@ -26,6 +26,8 @@ bool ApiHandler::handle(const QString& path)
 		return false;
 	}
 
+	qDebug() << "API protocol handled";
+
 	QJsonDocument version;
 	QJsonObject versionObject;
 	versionObject.insert("version", QJsonValue(QString(GIT_REVISION).toInt()));

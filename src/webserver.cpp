@@ -11,6 +11,7 @@ WebServer::WebServer(QObject* parent)
 {
 	VERIFY(listen(QHostAddress::Any, 8008));
 	VERIFY(connect(this, SIGNAL(newConnection()), this, SLOT(someNewConnection())));
+	qDebug() << "Web server started at " << serverAddress() << ":" << serverPort();
 }
 
 
@@ -22,7 +23,7 @@ WebServer::~WebServer()
 void WebServer::someNewConnection()
 {
 	QTcpSocket* clientSocket = nextPendingConnection();
-	qDebug() << clientSocket;
+	qDebug() << "New connection established from " << clientSocket->localAddress();
 	VERIFY(connect(clientSocket, SIGNAL(readyRead()), this, SLOT(showHtmlPage())));
 }
 
