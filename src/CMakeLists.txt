@@ -23,6 +23,7 @@ set(HEADERS
 	
 	datahandler.h
 	rawfilehandler.h
+	logger.h
 	apihandler.h
 	webrouter.h
 	webrequest.h
@@ -34,6 +35,7 @@ set(SOURCES
 	
 	rawfilehandler.cpp
 	apihandler.cpp
+	logger.cpp
 	webserver.cpp
 	webrouter.cpp
 	webrequest.cpp
