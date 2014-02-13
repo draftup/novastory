@@ -15,6 +15,9 @@ INCLUDE_DIRECTORIES(
 
 set(HEADERS_TOMOC
 	webserver.h
+	sql/sqlizable.h
+
+	logic/users.h
 )
 
 set(HEADERS
@@ -32,6 +35,9 @@ set(HEADERS
 set(SOURCES
 	sql/sqlquery.cpp
 	sql/sqldatabase.cpp
+	sql/sqlizable.cpp
+	
+	logic/users.cpp
 	
 	rawfilehandler.cpp
 	apihandler.cpp
