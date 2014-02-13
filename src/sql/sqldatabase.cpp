@@ -1,15 +1,19 @@
 #include "sqldatabase.h"
 
-
-novastory::SqlDatabase::SqlDatabase() : QSqlDatabase(addDatabase("QMYSQL"))
+namespace novastory
 {
-	setHostName("acidalia");
-	setDatabaseName("customdb");
-	setUserName("mojito");
-	setPassword("J0a1m8");
+
+SqlDatabase::SqlDatabase() : QSqlDatabase(addDatabase("QMYSQL"))
+{
+	setHostName("localhost");
+	setDatabaseName("novastory");
+	setUserName("root");
+	setPassword("degitisi");
 }
 
-novastory::SqlDatabase::~SqlDatabase()
+SqlDatabase::~SqlDatabase()
 {
+
+}
 
 }
