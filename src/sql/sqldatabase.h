@@ -10,7 +10,12 @@ class SqlDatabase : public QSqlDatabase
 {
 public:
 	SqlDatabase();
-	virtual ~SqlDatabase(); 
+	virtual ~SqlDatabase();
+	static SqlDatabase& Instance()
+	{
+		static SqlDatabase theSingleInstance;
+		return theSingleInstance;
+	}
 };
 
 }
