@@ -43,7 +43,8 @@ namespace novastory
 #ifdef Q_OS_WIN
 		path = "novastory.log";
 #else
-		path = "/var/log/novastory.log";
+		//path = "/var/log/novastory.log";
+		path = "novastory.log";
 #endif
 		Q_ASSERT(!logFile);
 		logFile = new QFile(path);
