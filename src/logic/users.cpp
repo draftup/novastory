@@ -1,5 +1,8 @@
 #include "users.h"
 #include <QVariant>
+#include <QDebug>
+
+#include "utils/globals.h"
 
 int novastory::Users::userid() const
 {
@@ -55,4 +58,12 @@ novastory::Users::Users() : m_userid(0)
 {
 	setObjectName("users");
 	setProperty("auto_increment", QVariant("userid"));
+}
+
+void novastory::Users::setRawPassword( const QString& password )
+{
+	if(!m_salt.isEmpty())
+		m_password = md5( sha1(password) + sha1(m_salt) + "novastory" );
+	else
+		qWarning() << "no salt for password set";
 }

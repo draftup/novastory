@@ -25,6 +25,7 @@ public:
 
 	const QString& password() const;
 	void setPassword(const QString& password);
+	void setRawPassword(const QString& password);
 
 	const QString& salt() const;
 	void setSalt(const QString& salt);
