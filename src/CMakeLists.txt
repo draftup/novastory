@@ -24,6 +24,8 @@ set(HEADERS
 	sql/sqlquery.h
 	sql/sqldatabase.h
 	
+	utils/globals.h
+
 	datahandler.h
 	rawfilehandler.h
 	logger.h
@@ -39,6 +41,8 @@ set(SOURCES
 	
 	logic/users.cpp
 	
+	utils/globals.cpp
+
 	rawfilehandler.cpp
 	apihandler.cpp
 	logger.cpp
