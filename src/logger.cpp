@@ -8,57 +8,59 @@ namespace novastory
 {
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-	static QtMessageHandler previousMsgHandler = nullptr;
-	void messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message);
+static QtMessageHandler previousMsgHandler = nullptr;
+void messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message);
 #else
-	static QtMsgHandler previousMsgHandler = nullptr;
-	void messageOutput(QtMsgType type, const char* msg);
+static QtMsgHandler previousMsgHandler = nullptr;
+void messageOutput(QtMsgType type, const char* msg);
 #endif
 
-	Logger::Logger() :
-		logFile(nullptr),
-		logStream(nullptr),
-		isWriteToFile(false)
-	{
+Logger::Logger() :
+	logFile(nullptr),
+	logStream(nullptr),
+	isWriteToFile(false)
+{
 
-	}
+}
 
-	Logger::~Logger()
-	{
+Logger::~Logger()
+{
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-		qInstallMessageHandler(0);
+	qInstallMessageHandler(0);
 #else
-		qInstallMsgHandler(0);
+	qInstallMsgHandler(0);
 #endif
-		delete logStream;
-		delete logFile;
+	delete logStream;
+	delete logFile;
+}
+
+void Logger::initializeFileLog()
+{
+	if (logFile || logStream)
+	{
+		return;    // Already initialized file log
 	}
 
-	void Logger::initializeFileLog()
-	{
-		if(logFile || logStream)
-			return; // Already initialized file log
-
-		QString path;
+	QString path;
 #ifdef Q_OS_WIN
-		path = "novastory.log";
+	path = "novastory.log";
 #else
-		//path = "/var/log/novastory.log";
-		path = "novastory.log";
+	//path = "/var/log/novastory.log";
+	path = "novastory.log";
 #endif
-		Q_ASSERT(!logFile);
-		logFile = new QFile(path);
-		logFile->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
-		Q_ASSERT(!logStream);
-		logStream = new QTextStream(logFile);
+	Q_ASSERT(!logFile);
+	logFile = new QFile(path);
+	logFile->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
+	Q_ASSERT(!logStream);
+	logStream = new QTextStream(logFile);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-		previousMsgHandler = qInstallMessageHandler(&novastory::messageOutput);
+	previousMsgHandler = qInstallMessageHandler(&novastory::messageOutput);
 #else
-		previousMsgHandler = qInstallMsgHandler(&novastory::messageOutput);
+	previousMsgHandler = qInstallMsgHandler(&novastory::messageOutput);
 #endif
-		qDebug() << "--- Logging Started ---";
-	}
+	qDebug() << "--- Logging Started ---";
+}
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
 void Logger::messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& msg)
@@ -110,16 +112,16 @@ void Logger::messageOutput(QtMsgType type, const char* msg)
 	}
 }
 
-void Logger::log( const QString& text )
+void Logger::log(const QString& text)
 {
 	if (isWriteToFile)
 	{
 		QString record = QDateTime::currentDateTimeUtc().toString("dd.MM.yy hh:mm:ss:zzz") + ": "
-			+ QString::number((unsigned long long) QThread::currentThreadId()) + ' ' + text + '\n';
+						 + QString::number((unsigned long long) QThread::currentThreadId()) + ' ' + text + '\n';
 
 		QMutexLocker locker(&m_mutex);
 
-		if(logStream)
+		if (logStream)
 		{
 			*logStream << record;
 			logStream->flush();
@@ -127,11 +129,13 @@ void Logger::log( const QString& text )
 	}
 }
 
-void Logger::setWriteToLogFile( bool writToFile )
+void Logger::setWriteToLogFile(bool writToFile)
 {
 	isWriteToFile = writToFile;
-	if(isWriteToFile)
+	if (isWriteToFile)
+	{
 		initializeFileLog();
+	}
 }
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))

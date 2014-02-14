@@ -33,7 +33,7 @@ void WebRouter::sendHtml()
 	//os.setAutoDetectUnicode(true);
 	//os << "HTTP/1.0 200 Ok\r\n"
 	//   << "Content-Type: image/jpeg\n\n";;
-	for (DataHandler * handler : handlers)
+	for (DataHandler* handler : handlers)
 	{
 		handler->handle(path());
 	}
