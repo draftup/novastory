@@ -26,6 +26,7 @@ set(HEADERS
 	
 	utils/globals.h
 
+	config.h
 	datahandler.h
 	rawfilehandler.h
 	logger.h
