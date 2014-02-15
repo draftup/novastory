@@ -17,7 +17,7 @@ set(HEADERS_TOMOC
 	webserver.h
 	sql/sqlizable.h
 
-	logic/users.h
+	logic/user.h
 )
 
 set(HEADERS
@@ -39,7 +39,7 @@ set(SOURCES
 	sql/sqldatabase.cpp
 	sql/sqlizable.cpp
 	
-	logic/users.cpp
+	logic/user.cpp
 	
 	utils/globals.cpp
 

@@ -1,7 +1,7 @@
 #include <QtTest>
 #include "sql/sqldatabase.h"
 #include "sql/sqlquery.h"
-#include "logic/users.h"
+#include "logic/user.h"
 
 using namespace novastory;
 
@@ -15,6 +15,7 @@ private slots:
 	void cleanupTestCase();
 
 	void insetDataTest();
+	void userDuplicatinTest();
 	void userSyncTest();
 private:
 	int userid;
@@ -45,7 +46,7 @@ void Test_LogicUsers::cleanupTestCase()
 
 void Test_LogicUsers::insetDataTest()
 {
-	Users users;
+	User users;
 	users.setUsername("testuser");
 	users.setRawPassword("dasdasdasd");
 	QVERIFY(!users.addUser()); // no email, insert must be failed
@@ -57,17 +58,33 @@ void Test_LogicUsers::insetDataTest()
 	userid = users.userid();
 }
 
+void Test_LogicUsers::userDuplicatinTest()
+{
+	User user1;
+	user1.setUsername("testuser");
+	user1.setRawPassword("sadasdsda");
+	user1.setEmail("other@dasdasd.com");
+	User user2;
+	user2.setUsername("asdaasdasd");
+	user2.setRawPassword("saaaadasdsda");
+	user2.setEmail("dasdasd@dasdasd.com");
+	QVERIFY(!user1.addUser());
+	QVERIFY(!user2.addUser());
+}
+
 void Test_LogicUsers::userSyncTest()
 {
 	// trying primary_key methid
-	Users olduser1;
+	User olduser1;
 	olduser1.setUserID(userid);
 	QVERIFY(olduser1.syncSQL(QList<QString>() << "userid"));
 	QCOMPARE(olduser1.username(), QString("testuser"));
-	Users olduser2;
+	QCOMPARE(olduser1.email(), QString("dasdasd@dasdasd.com"));
+	User olduser2;
 	olduser2.setUsername("testuser");
 	QVERIFY(olduser2.syncSQL(QList<QString>() << "username"));
 	QCOMPARE(olduser2.userid(), userid);
+	QCOMPARE(olduser2.email(), QString("dasdasd@dasdasd.com"));
 	
 
 }

@@ -1,67 +1,67 @@
-#include "users.h"
+#include "user.h"
 #include <QVariant>
 #include <QDebug>
 #include "utils/globals.h"
 #include "sql/sqlquery.h"
 
-int novastory::Users::userid() const
+int novastory::User::userid() const
 {
 	return m_userid;
 }
 
-void novastory::Users::setUserID(int userid)
+void novastory::User::setUserID(int userid)
 {
 	m_userid = userid;
 }
 
-const QString& novastory::Users::password() const
+const QString& novastory::User::password() const
 {
 	return m_password;
 }
 
-void novastory::Users::setPassword(const QString& password)
+void novastory::User::setPassword(const QString& password)
 {
 	m_password = password;
 }
 
-const QString& novastory::Users::salt() const
+const QString& novastory::User::salt() const
 {
 	return m_salt;
 }
 
-void novastory::Users::setSalt(const QString& salt)
+void novastory::User::setSalt(const QString& salt)
 {
 	m_salt = salt;
 }
 
-const QString& novastory::Users::email() const
+const QString& novastory::User::email() const
 {
 	return m_email;
 }
 
-void novastory::Users::setEmail(const QString& email)
+void novastory::User::setEmail(const QString& email)
 {
 	m_email = email;
 }
 
-const QString& novastory::Users::username() const
+const QString& novastory::User::username() const
 {
 	return m_username;
 }
 
-void novastory::Users::setUsername(const QString& username)
+void novastory::User::setUsername(const QString& username)
 {
 	m_username = username;
 }
 
-novastory::Users::Users() : m_userid(0)
+novastory::User::User() : m_userid(0)
 {
 	setObjectName("users");
 	setProperty("auto_increment", QVariant("userid"));
 	setProperty("primary_key", QVariant("userid"));
 }
 
-void novastory::Users::setRawPassword(const QString& password)
+void novastory::User::setRawPassword(const QString& password)
 {
 	QString currentSalt = salt();
 
@@ -75,7 +75,7 @@ void novastory::Users::setRawPassword(const QString& password)
 	setPassword(md5(sha1(password) + sha1(currentSalt) + "novastory"));
 }
 
-bool novastory::Users::addUser()
+bool novastory::User::addUser()
 {
 	if (m_username.isEmpty() || m_password.isEmpty() || m_salt.isEmpty() || m_email.isEmpty())
 	{
@@ -98,7 +98,7 @@ bool novastory::Users::addUser()
 	return insertSQL();
 }
 
-QString novastory::Users::generateSalt() const
+QString novastory::User::generateSalt() const
 {
 	return md5(QString::number(unixtime()) + "salt" + (rand() % 256));
 }

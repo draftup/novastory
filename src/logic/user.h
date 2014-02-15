@@ -1,5 +1,5 @@
-#ifndef	USERS_H
-#define USERS_H
+#ifndef	USER_H
+#define USER_H
 
 #include "sql/sqlizable.h"
 
@@ -8,7 +8,7 @@ class Test_LogicUsers;
 namespace novastory
 {
 
-class Users : protected Sqlizable
+class User : protected Sqlizable
 {
 	friend class ::Test_LogicUsers;
 	Q_OBJECT
@@ -18,7 +18,7 @@ class Users : protected Sqlizable
 	Q_PROPERTY(QString salt READ salt WRITE setSalt)
 	Q_PROPERTY(QString email READ email WRITE setEmail)
 public:
-	Users();
+	User();
 
 	bool addUser();
 
