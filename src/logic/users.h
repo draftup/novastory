@@ -3,11 +3,14 @@
 
 #include "sql/sqlizable.h"
 
+class Test_LogicUsers;
+
 namespace novastory
 {
 
-class Users : public Sqlizable
+class Users : protected Sqlizable
 {
+	friend class ::Test_LogicUsers;
 	Q_OBJECT
 	Q_PROPERTY(int userid READ userid WRITE setUserID)
 	Q_PROPERTY(QString username READ username WRITE setUsername)
