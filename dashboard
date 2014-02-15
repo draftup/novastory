@@ -6,7 +6,7 @@ if [ $(pidof -x dashboard| wc -w) -gt 2 ]; then
 fi
 
 SOURCE_PATH="`dirname \"$0\"`"
-export CCACHE_DIR="~/.ccache"
+export CCACHE_DIR="/home/builder/.ccache"
 
 cd "$SOURCE_PATH/testing"
 xvfb-run -a -n 11 ctest -D Continuous
