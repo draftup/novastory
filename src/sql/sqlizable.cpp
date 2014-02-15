@@ -1,5 +1,7 @@
 #include "sqlizable.h"
 #include "sqlquery.h"
+#include "utils/globals.h"
+#include <QSqlRecord>
 #include <QMetaObject>
 #include <QMetaProperty>
 #include <QVariant>
@@ -26,6 +28,14 @@ bool isObjectType(int type)
 	return std::find(std::begin(objectTypeIds), std::end(objectTypeIds), type) != std::end(objectTypeIds);
 }
 
+/*
+bool skipCleanVariant(const QVariant& variant)
+{
+	QVariant::Type type = variant.type();
+
+}
+*/
+
 bool Sqlizable::insertSQL()
 {
 	const QMetaObject* mObject = metaObject();
@@ -37,7 +47,7 @@ bool Sqlizable::insertSQL()
 		QString objName = objectName();
 		if (objName.isEmpty())
 		{
-			return true; // No object name, we doesn't know name of table
+			return false; // No object name, we doesn't know name of table
 		}
 
 		QVariant auto_increment = property("auto_increment");
@@ -56,12 +66,6 @@ bool Sqlizable::insertSQL()
 
 			const QString& propName = prop.name();
 			QVariant propValue = prop.read(this);
-
-			// Skip objectName
-			if (propName == "objectName")
-			{
-				continue;
-			}
 
 			// Skip objectName
 			if (propName == "objectName")
@@ -111,6 +115,91 @@ bool Sqlizable::insertSQL()
 
 
 		return result;
+	}
+
+	return true;
+}
+
+bool Sqlizable::syncSQL(QList<QString> basis)
+{
+	QString objName = objectName();
+	if (objName.isEmpty())
+	{
+		return false; // No object name, we doesn't know name of table
+	}
+
+	SqlQuery query;
+
+	QString sql = QString("SELECT * FROM `") + objName + "` WHERE ";
+
+	// Founding keys
+	QList<QVariant> internalValues;
+	/*
+	if(property("primary_key").isValid() && property(property("primary_key").toString().toUtf8()).isValid())
+	{
+		sql += "`" + property("primary_key").toString() + "` = ?";
+		internalValues.append(property(property("primary_key").toString().toUtf8()).toString());
+	}
+	else
+	{
+		const QMetaObject* mObject = metaObject();
+		const int propCount = mObject->propertyCount();
+		for (int i = 0; i < propCount; ++i)
+		{
+			QMetaProperty prop = mObject->property(i);
+			const QString& propName = prop.name();
+			QVariant propValue = prop.read(this);
+
+			if(!propValue.isValid())
+			{
+				continue;
+			}
+
+			// Skip objectName
+			if (propName == "objectName")
+			{
+				continue;
+			}
+
+			sql += (internalValues.size() == 0) ? propName + " = ?" : " AND " + propName + " = ?";
+			internalValues.append(propValue);
+		}
+	}
+	*/
+	for(QString& questVar : basis)
+	{
+		QVariant propValue = property(questVar.toUtf8());
+		sql += (internalValues.size() == 0) ? questVar + " = ?" : " AND " + questVar + " = ?";
+		internalValues.append(propValue);
+	}
+
+	VERIFY(query.prepare(sql));
+
+		for(int i = 0; i < internalValues.size(); ++i)
+		{
+			query.bindValue(i, internalValues[i]);
+		}
+
+	if(!query.exec())
+	{
+		qWarning() << "No sync record from" << objName << "founded";
+		return false;
+	}
+
+	if(query.size() != 1)
+	{
+		qWarning() << "Not only one record in database. Can not sync.";
+		return false;
+	}
+
+	VERIFY(query.next());
+	QSqlRecord record = query.record();
+	for(int i = 0; i < record.count(); ++i)
+	{
+		QString propertyName = record.fieldName(i);
+		QVariant propertyValue = record.value(i);
+		setProperty(propertyName.toLatin1(), propertyValue);
+		qDebug() << "SYNCSQL" << objName << ": " << propertyName << "=" << propertyValue.toString(); 
 	}
 
 	return true;

@@ -6,7 +6,7 @@
 namespace novastory
 {
 
-class Users : protected Sqlizable
+class Users : public Sqlizable
 {
 	Q_OBJECT
 	Q_PROPERTY(int userid READ userid WRITE setUserID)

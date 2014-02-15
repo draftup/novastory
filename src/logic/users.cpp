@@ -59,6 +59,7 @@ novastory::Users::Users() : m_userid(0)
 {
 	setObjectName("users");
 	setProperty("auto_increment", QVariant("userid"));
+	setProperty("primary_key", QVariant("userid"));
 }
 
 void novastory::Users::setRawPassword(const QString& password)

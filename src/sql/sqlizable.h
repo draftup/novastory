@@ -16,6 +16,7 @@ public:
 	bool insertSQL();
 	bool updateSQL();
 	bool removeSQL();
+	bool syncSQL(QList<QString> basis);
 };
 
 }
