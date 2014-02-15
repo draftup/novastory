@@ -1,9 +1,8 @@
 #include "users.h"
 #include <QVariant>
 #include <QDebug>
-#include <utils/globals.h>
-
 #include "utils/globals.h"
+#include "sql/sqlquery.h"
 
 int novastory::Users::userid() const
 {
@@ -81,6 +80,19 @@ bool novastory::Users::addUser()
 	if (m_username.isEmpty() || m_password.isEmpty() || m_salt.isEmpty() || m_email.isEmpty())
 	{
 		return false;    // something is empty
+	}
+
+	// Checking if user already exist
+	SqlQuery query;
+	query.prepare("SELECT userid FROM users WHERE email = ? OR username = ?");
+	query.bindValue(0, m_email);
+	query.bindValue(1, m_username);
+	VERIFY(query.exec());
+	
+	if(query.size() != 0)
+	{
+		qDebug() << "User " <<  m_username << "(" << m_email << ") already in database";
+		return false;
 	}
 
 	return insertSQL();
