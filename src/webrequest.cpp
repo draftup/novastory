@@ -19,7 +19,7 @@ void WebRequest::parse()
 
 	qDebug() << "WEB REQUEST: " << data;
 
-	if(dataArray.size() == 0)
+	if (dataArray.size() == 0)
 	{
 		qDebug() << "Browser agent don't recive any info";
 		return;
@@ -48,7 +48,7 @@ void WebRequest::parse()
 	QRegExp paramRx("(.*): (.*)");
 	int coINT = 0;
 	QString postData;
-	for(int i = 1; i < dataArray.size(); ++i)
+	for (int i = 1; i < dataArray.size(); ++i)
 	{
 		int posParam = 0;
 		if ((posParam = paramRx.indexIn(dataArray[i])) != -1)
@@ -57,26 +57,26 @@ void WebRequest::parse()
 			QString value = paramRx.cap(2);
 			parsedValues[param] = value;
 		}
-		else if(dataArray[i] == "\r")
+		else if (dataArray[i] == "\r")
 		{
 			coINT = i;
 		}
 
-		if(parsedValues["type"] == "POST" && coINT > 0 && coINT != i)
+		if (parsedValues["type"] == "POST" && coINT > 0 && coINT != i)
 		{
-			postData += (i-1 == coINT) ? dataArray[i] : '\n' + dataArray[i];
+			postData += (i - 1 == coINT) ? dataArray[i] : '\n' + dataArray[i];
 		}
 	}
 
-	if(parsedValues["type"] == "POST")
+	if (parsedValues["type"] == "POST")
 	{
 		parsedValues["POST"] = postData;
 
 		qDebug() << "POST data: " << postData;
 	}
-	
 
-	if(postData.size() > 0 && !parsedValues["Content-Length"].isEmpty() && postData.size() != parsedValues["Content-Length"].toInt())
+
+	if (postData.size() > 0 && !parsedValues["Content-Length"].isEmpty() && postData.size() != parsedValues["Content-Length"].toInt())
 	{
 		qDebug() << "Wrong post size";
 	}

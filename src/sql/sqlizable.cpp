@@ -166,7 +166,7 @@ bool Sqlizable::syncSQL(QList<QString> basis)
 		}
 	}
 	*/
-	for(QString& questVar : basis)
+	for (QString& questVar : basis)
 	{
 		QVariant propValue = property(questVar.toUtf8());
 		sql += (internalValues.size() == 0) ? questVar + " = ?" : " AND " + questVar + " = ?";
@@ -175,18 +175,18 @@ bool Sqlizable::syncSQL(QList<QString> basis)
 
 	VERIFY(query.prepare(sql));
 
-		for(int i = 0; i < internalValues.size(); ++i)
-		{
-			query.bindValue(i, internalValues[i]);
-		}
+	for (int i = 0; i < internalValues.size(); ++i)
+	{
+		query.bindValue(i, internalValues[i]);
+	}
 
-	if(!query.exec())
+	if (!query.exec())
 	{
 		qWarning() << "No sync record from" << objName << "founded";
 		return false;
 	}
 
-	if(query.size() != 1)
+	if (query.size() != 1)
 	{
 		qWarning() << "Not only one record in database. Can not sync.";
 		return false;
@@ -194,12 +194,12 @@ bool Sqlizable::syncSQL(QList<QString> basis)
 
 	VERIFY(query.next());
 	QSqlRecord record = query.record();
-	for(int i = 0; i < record.count(); ++i)
+	for (int i = 0; i < record.count(); ++i)
 	{
 		QString propertyName = record.fieldName(i);
 		QVariant propertyValue = record.value(i);
 		setProperty(propertyName.toLatin1(), propertyValue);
-		qDebug() << "SYNCSQL" << objName << ": " << propertyName << "=" << propertyValue.toString(); 
+		qDebug() << "SYNCSQL" << objName << ": " << propertyName << "=" << propertyValue.toString();
 	}
 
 	return true;

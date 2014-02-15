@@ -72,14 +72,16 @@ void novastory::Users::setRawPassword(const QString& password)
 		currentSalt = generateSalt();
 		setSalt(currentSalt);
 	}
-		
+
 	setPassword(md5(sha1(password) + sha1(currentSalt) + "novastory"));
 }
 
 bool novastory::Users::addUser()
 {
-	if(m_username.isEmpty() || m_password.isEmpty() || m_salt.isEmpty() || m_email.isEmpty())
-		return false; // something is empty
+	if (m_username.isEmpty() || m_password.isEmpty() || m_salt.isEmpty() || m_email.isEmpty())
+	{
+		return false;    // something is empty
+	}
 
 	return insertSQL();
 }

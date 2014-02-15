@@ -47,15 +47,19 @@ const QString& WebRouter::postData() const
 void WebRouter::parsePost()
 {
 	QString data = postData();
-	if(data.isEmpty())
+	if (data.isEmpty())
+	{
 		return;
+	}
 
-	for(QString pair : data.split("&"))
+	for (QString pair : data.split("&"))
 	{
 		QStringList keyValuePair = pair.split("=");
 
-		if(keyValuePair.size() != 2)
+		if (keyValuePair.size() != 2)
+		{
 			continue;
+		}
 
 		postVariables.insert(keyValuePair[0], keyValuePair[1]);
 	}
