@@ -42,11 +42,10 @@ void Test_LogicUsers::insetDataTest()
 	QVERIFY(db.open());
 	Users users;
 	users.setUsername("testuser");
-	users.setPassword("dasdasdasd");
-	users.setSalt("salt1");
-	QVERIFY(!users.insertSQL()); // no email, insert must be failed
+	users.setRawPassword("dasdasdasd");
+	QVERIFY(!users.addUser()); // no email, insert must be failed
 	users.setEmail("dasdasd@dasdasd.com");
-	QVERIFY(users.insertSQL());
+	QVERIFY(users.addUser());
 
 	QVERIFY(users.userid() > 0); // from last insert
 }

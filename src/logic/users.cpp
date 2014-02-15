@@ -1,6 +1,7 @@
 #include "users.h"
 #include <QVariant>
 #include <QDebug>
+#include <utils/globals.h>
 
 #include "utils/globals.h"
 
@@ -62,12 +63,27 @@ novastory::Users::Users() : m_userid(0)
 
 void novastory::Users::setRawPassword(const QString& password)
 {
-	if (!m_salt.isEmpty())
+	QString currentSalt = salt();
+
+	if (currentSalt.isEmpty())
 	{
-		m_password = md5(sha1(password) + sha1(m_salt) + "novastory");
+		// if old salt is empty we must generate new salt
+		currentSalt = generateSalt();
+		setSalt(currentSalt);
 	}
-	else
-	{
-		qWarning() << "no salt for password set";
-	}
+		
+	setPassword(md5(sha1(password) + sha1(currentSalt) + "novastory"));
+}
+
+bool novastory::Users::addUser()
+{
+	if(m_username.isEmpty() || m_password.isEmpty() || m_salt.isEmpty() || m_email.isEmpty())
+		return false; // something is empty
+
+	return insertSQL();
+}
+
+QString novastory::Users::generateSalt() const
+{
+	return md5(QString::number(unixtime()) + "salt" + (rand() % 256));
 }

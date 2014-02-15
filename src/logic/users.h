@@ -6,7 +6,7 @@
 namespace novastory
 {
 
-class Users : public Sqlizable
+class Users : protected Sqlizable
 {
 	Q_OBJECT
 	Q_PROPERTY(int userid READ userid WRITE setUserID)
@@ -17,6 +17,8 @@ class Users : public Sqlizable
 public:
 	Users();
 
+	bool addUser();
+
 	int userid() const;
 	void setUserID(int userid);
 
@@ -24,7 +26,6 @@ public:
 	void setUsername(const QString& username);
 
 	const QString& password() const;
-	void setPassword(const QString& password);
 	void setRawPassword(const QString& password);
 
 	const QString& salt() const;
@@ -32,6 +33,10 @@ public:
 
 	const QString& email() const;
 	void setEmail(const QString& email);
+protected:
+	QString generateSalt() const;
+	void setPassword(const QString& password);
+
 private:
 	int m_userid;
 	QString m_username;

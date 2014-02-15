@@ -14,6 +14,7 @@ namespace novastory
 
 QString md5(const QString& str);
 QString sha1(const QString& str);
+qint64 unixtime();
 
 }
 

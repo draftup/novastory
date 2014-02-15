@@ -15,6 +15,7 @@ private slots:
 
 	void md5Test();
 	void sha1Test();
+	void unixtimeTest();
 };
 
 void Test_Globals::initTestCase()
@@ -49,6 +50,11 @@ void Test_Globals::sha1Test()
 	QCOMPARE(sha1("The quick brown fox jumps over the lazy dog"), QString("2fd4e1c67a2d28fced849ee1bb76e7391b93eb12"));
 	//QCOMPARE(sha1("В чащах юга жил бы цитрус? Да, но фальшивый экземпляр!"), QString("9e32295f8225803bb6d5fdfcc0674616a4413c1b"));
 	QCOMPARE(sha1("sha"), QString("d8f4590320e1343a915b6394170650a8f35d6926"));
+}
+
+void Test_Globals::unixtimeTest()
+{
+	QVERIFY(unixtime() > 0);
 }
 
 

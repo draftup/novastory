@@ -1,4 +1,5 @@
 #include "globals.h"
+#include <time.h>
 
 #include <QCryptographicHash>
 
@@ -10,4 +11,9 @@ QString novastory::md5(const QString& str)
 QString novastory::sha1(const QString& str)
 {
 	return QString(QCryptographicHash::hash(str.toUtf8(), QCryptographicHash::Sha1).toHex());
+}
+
+qint64 novastory::unixtime()
+{
+	return static_cast<qint64>(time(NULL));
 }
