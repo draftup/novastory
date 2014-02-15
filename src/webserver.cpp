@@ -1,7 +1,7 @@
 #include "webserver.h"
 #include <QTcpSocket>
-#include "utils.h"
 #include "webrouter.h"
+#include "utils/globals.h"
 
 namespace novastory
 {

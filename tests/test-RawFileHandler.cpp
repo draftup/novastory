@@ -51,8 +51,8 @@ void Test_RawFileHandler::setDirectoryTest()
 void Test_RawFileHandler::handleTest()
 {
 	handler->setDirectory(QCoreApplication::applicationDirPath());
-	QVERIFY(handler->handle("/test-RawFileHandler.testfile"));
-	QVERIFY(!handler->handle("/test-RawFileHandle.testfile"));
+	QVERIFY(handler->handle("GET", "/test-RawFileHandler.testfile"));
+	QVERIFY(!handler->handle("GET", "/test-RawFileHandle.testfile"));
 }
 
 /********************** DECLARE_TEST LIST ****************************/

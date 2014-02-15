@@ -14,8 +14,8 @@ bool SqlQuery::exec(const QString& query)
 	}
 	else
 	{
-		qWarning() << "SQL EXEC [FAIL]: " << query;
-		qWarning() << "SQL Error: " << lastError();
+		qCritical() << "SQL EXEC [FAIL]: " << query;
+		qCritical() << "SQL Error: " << lastError();
 	}
 
 	return result;
@@ -39,15 +39,15 @@ bool SqlQuery::exec()
 	}
 	else
 	{
-		qWarning() << "SQL EXEC [FAIL]: " << lastQuery();
-		qWarning() << "SQL Error: " << lastError();
+		qCritical() << "SQL EXEC [FAIL]: " << lastQuery();
+		qCritical() << "SQL Error: " << lastError();
 		QList<QVariant> list = boundValues().values();
 		if (list.size() > 0)
 		{
-			qWarning() << "SQL Binded values:";
+			qCritical() << "SQL Binded values:";
 			for (int i = 0; i < list.size(); ++i)
 			{
-				qWarning() << i << ": " << list.at(i);
+				qCritical() << i << ": " << list.at(i);
 			}
 		}
 
@@ -67,8 +67,8 @@ SqlQuery::SqlQuery(const QString& query /*= QString()*/, QSqlDatabase db /*= QSq
 		}
 		else
 		{
-			qWarning() << "SQL EXEC [FAIL]: " << lastQuery();
-			qWarning() << "SQL Error: " << lastError();
+			qCritical() << "SQL EXEC [FAIL]: " << lastQuery();
+			qCritical() << "SQL Error: " << lastError();
 		}
 	}
 }

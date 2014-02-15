@@ -12,7 +12,7 @@ class ApiHandler : public DataHandler
 public:
 	ApiHandler(QTcpSocket* bindedSocket);
 	virtual ~ApiHandler();
-	bool handle(const QString& path) override;
+	bool handle(const QString& type, const QString& path, const QHash<QString, QString>& post = QHash<QString, QString>(), const QString& get = "") override;
 private:
 	QTcpSocket* socket;
 };

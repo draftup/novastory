@@ -35,8 +35,36 @@ void WebRouter::sendHtml()
 	//   << "Content-Type: image/jpeg\n\n";;
 	for (DataHandler* handler : handlers)
 	{
-		handler->handle(path());
+		handler->handle(parsedValues["type"], path(), postVariables);
 	}
+}
+
+const QString& WebRouter::postData() const
+{
+	return parsedValues["POST"];
+}
+
+void WebRouter::parsePost()
+{
+	QString data = postData();
+	if(data.isEmpty())
+		return;
+
+	for(QString pair : data.split("&"))
+	{
+		QStringList keyValuePair = pair.split("=");
+
+		if(keyValuePair.size() != 2)
+			continue;
+
+		postVariables.insert(keyValuePair[0], keyValuePair[1]);
+	}
+}
+
+void WebRouter::parse()
+{
+	WebRequest::parse();
+	parsePost();
 }
 
 }

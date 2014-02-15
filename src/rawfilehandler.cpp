@@ -18,7 +18,7 @@ RawFileHandler::~RawFileHandler()
 
 }
 
-bool RawFileHandler::handle(const QString& path)
+bool RawFileHandler::handle(const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& get /* = "" */)
 {
 	const QString filePath = workingDirectory + path;
 	QFile existFile(filePath);

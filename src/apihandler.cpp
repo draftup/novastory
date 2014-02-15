@@ -19,7 +19,7 @@ ApiHandler::~ApiHandler()
 
 }
 
-bool ApiHandler::handle(const QString& path)
+bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& /* get = "" */)
 {
 	if (path != "/api")
 	{
