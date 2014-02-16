@@ -15,6 +15,7 @@ INCLUDE_DIRECTORIES(
 
 set(HEADERS_TOMOC
 	webserver.h
+	recaptcha.h
 	sql/sqlizable.h
 
 	logic/user.h
@@ -43,7 +44,8 @@ set(SOURCES
 	logic/user.cpp
 	
 	utils/globals.cpp
-
+	
+	recaptcha.cpp
 	rawfilehandler.cpp
 	apihandler.cpp
 	logger.cpp
