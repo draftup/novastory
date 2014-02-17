@@ -115,8 +115,8 @@ bool novastory::User::addUser()
 	query.bindValue(0, m_email);
 	query.bindValue(1, m_username);
 	VERIFY(query.exec());
-	
-	if(query.size() != 0)
+
+	if (query.size() != 0)
 	{
 		qDebug() << "User " <<  m_username << "(" << m_email << ") already in database";
 		return false;
@@ -134,7 +134,7 @@ novastory::User* novastory::User::verifyUser(const QString& token)
 {
 	Captcha capthaCheck;
 	capthaCheck.setToken(token);
-	if(!capthaCheck.syncByToken())
+	if (!capthaCheck.syncByToken())
 	{
 		qDebug() << "No userverification for token: " << token;
 		return nullptr;
@@ -143,10 +143,10 @@ novastory::User* novastory::User::verifyUser(const QString& token)
 	newUser->setUsername(capthaCheck.username());
 	newUser->setPassword(capthaCheck.password());
 	newUser->setEmail(capthaCheck.email());
-	
+
 	VERIFY(capthaCheck.deleteByToken());
-	
-	if(!newUser->addUser())
+
+	if (!newUser->addUser())
 	{
 		qCritical() << "User cannot added after captcha check. Something wrong";
 		return nullptr;

@@ -64,22 +64,22 @@ novastory::Captcha::Captcha()
 
 bool novastory::Captcha::addVerifyNotify()
 {
-	if(m_username.isEmpty() || m_password.isEmpty() || m_email.isEmpty() || m_challenge.isEmpty() || m_response.isEmpty() || m_remoteIP.toString().isEmpty())
+	if (m_username.isEmpty() || m_password.isEmpty() || m_email.isEmpty() || m_challenge.isEmpty() || m_response.isEmpty() || m_remoteIP.toString().isEmpty())
 	{
 		qDebug() << "Empty captcha info";
 		return false;
 	}
-	if(m_username.length() < 2 || m_username.length() > 100)
+	if (m_username.length() < 2 || m_username.length() > 100)
 	{
 		qDebug() << "Username size not correct";
 		return false;
 	}
-	if(m_email.indexOf("@") == -1)
+	if (m_email.indexOf("@") == -1)
 	{
 		qDebug() << "Email for user " << m_username << " not correct";
 		return false;
 	}
-	if(m_password.length() != 32)
+	if (m_password.length() != 32)
 	{
 		qDebug() << "Password for user " << m_username << "not correct";
 		return false;
@@ -90,7 +90,7 @@ bool novastory::Captcha::addVerifyNotify()
 	query.bindValue(":email", m_email);
 	query.bindValue(":username", m_username);
 	VERIFY(query.exec());
-	if(query.size() > 0)
+	if (query.size() > 0)
 	{
 		qDebug() << m_username << " already exist in database with such email or username";
 		return false;
@@ -99,7 +99,7 @@ bool novastory::Captcha::addVerifyNotify()
 	setToken(generateToken());
 
 	Recaptcha captchaChecker(m_challenge, m_response, m_remoteIP);
-	if(!captchaChecker.checkCaptchaSync())
+	if (!captchaChecker.checkCaptchaSync())
 	{
 		qDebug() << m_username << " doesn't pass captcha verification";
 		return false;
@@ -116,12 +116,12 @@ QString novastory::Captcha::generateToken() const
 bool novastory::Captcha::syncByToken(const QString& token)
 {
 	setToken(token);
-	if(!m_token.isEmpty())
+	if (!m_token.isEmpty())
 	{
 		return true;
 	}
 	bool status = syncSQL("token");
-	if(!status)
+	if (!status)
 	{
 		return false;
 	}
@@ -129,10 +129,10 @@ bool novastory::Captcha::syncByToken(const QString& token)
 	return !m_token.isEmpty();
 }
 
-bool novastory::Captcha::deleteByToken( const QString& token /*= QString()*/ )
+bool novastory::Captcha::deleteByToken(const QString& token /*= QString()*/)
 {
 	setToken(token);
-	if(!m_token.isEmpty())
+	if (!m_token.isEmpty())
 	{
 		return true;
 	}

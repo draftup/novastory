@@ -30,7 +30,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	qDebug() << "API protocol handled";
 
 	QString hook = path.split("/").at(2);
-	if(hook == "register")
+	if (hook == "register")
 	{
 
 	}
@@ -43,7 +43,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		version.setObject(versionObject);
 		socket->write(version.toJson());
 	}
-	
+
 
 
 	return true;

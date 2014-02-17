@@ -12,8 +12,8 @@
 namespace novastory
 {
 
-Recaptcha::Recaptcha( QString c_challenge /*= QString()*/, QString c_response /*= QString()*/, QHostAddress ip ) :
-	challenge(c_challenge), 
+Recaptcha::Recaptcha(QString c_challenge /*= QString()*/, QString c_response /*= QString()*/, QHostAddress ip) :
+	challenge(c_challenge),
 	response(c_response),
 	remoteIpAdress(ip),
 	result(0)
@@ -26,7 +26,7 @@ Recaptcha::~Recaptcha()
 
 }
 
-void Recaptcha::processReply( QNetworkReply* reply )
+void Recaptcha::processReply(QNetworkReply* reply)
 {
 	QStringList data = QString(reply->readAll()).split("\n");
 	bool isVerifyed = (data[0] == "true");
@@ -50,7 +50,7 @@ void Recaptcha::checkCaptchaASync()
 	VERIFY(connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError))));
 }
 
-void Recaptcha::onNetworkError( QNetworkReply::NetworkError error)
+void Recaptcha::onNetworkError(QNetworkReply::NetworkError error)
 {
 	qCritical() << "Captcha network error: " << error;
 }
@@ -58,13 +58,15 @@ void Recaptcha::onNetworkError( QNetworkReply::NetworkError error)
 bool Recaptcha::checkCaptchaSync()
 {
 	QEventLoop eLoop;
-	VERIFY(connect( this, SIGNAL(verifyed(bool)), &eLoop, SLOT(
-		quit() ) ));
+	VERIFY(connect(this, SIGNAL(verifyed(bool)), &eLoop, SLOT(
+					   quit())));
 	QTimer::singleShot(20000, &eLoop, SLOT(quit())); // exit from event loop by interval
 	checkCaptchaASync();
-	if(result == 0)
+	if (result == 0)
+	{
 		eLoop.exec();
-	if(result == 0)
+	}
+	if (result == 0)
 	{
 		qCritical() << "We don't recive any info about recaptcha";
 		return false;

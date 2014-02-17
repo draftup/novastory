@@ -205,12 +205,12 @@ bool Sqlizable::syncSQL(const QList<QString>& basis)
 	return true;
 }
 
-bool Sqlizable::syncSQL( const QString& basis )
+bool Sqlizable::syncSQL(const QString& basis)
 {
 	return syncSQL(QList<QString>() << basis);
 }
 
-bool Sqlizable::removeSQL(const QList<QString>& basis )
+bool Sqlizable::removeSQL(const QList<QString>& basis)
 {
 	QString objName = objectName();
 	if (objName.isEmpty())
@@ -239,7 +239,7 @@ bool Sqlizable::removeSQL(const QList<QString>& basis )
 		query.bindValue(i, internalValues[i]);
 	}
 
-	if(!query.exec())
+	if (!query.exec())
 	{
 		qWarning() << "Removing " << objName << " failed";
 		return false;
@@ -256,7 +256,7 @@ bool Sqlizable::removeSQL(const QList<QString>& basis )
 	return true;
 }
 
-bool Sqlizable::removeSQL( const QString& basis )
+bool Sqlizable::removeSQL(const QString& basis)
 {
 	return removeSQL(QList<QString>() << basis);
 }

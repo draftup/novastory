@@ -14,7 +14,7 @@ namespace novastory
 
 class Recaptcha : public QObject
 {
-Q_OBJECT
+	Q_OBJECT
 public:
 	Recaptcha(QString challenge = QString(), QString response = QString(), QHostAddress ip = QHostAddress());
 	~Recaptcha();
