@@ -190,7 +190,7 @@ bool Sqlizable::syncSQL(const QList<QString>& basis)
 }
 
 
-bool Sqlizable::syncProcess( SqlQuery& query )
+bool Sqlizable::syncProcess(SqlQuery& query)
 {
 	if (query.size() != 1)
 	{

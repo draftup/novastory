@@ -156,7 +156,7 @@ novastory::User* novastory::User::verifyUser(const QString& token)
 	return newUser;
 }
 
-void novastory::User::setSHA1Password( const QString& sha1password )
+void novastory::User::setSHA1Password(const QString& sha1password)
 {
 	QString currentSalt = salt();
 
@@ -172,8 +172,10 @@ void novastory::User::setSHA1Password( const QString& sha1password )
 
 bool novastory::User::login(const QString& semail, const QString& sha1password)
 {
-	if(semail.isEmpty() || sha1password.isEmpty())
+	if (semail.isEmpty() || sha1password.isEmpty())
+	{
 		return false;
+	}
 
 	setEmail(semail);
 
@@ -183,7 +185,7 @@ bool novastory::User::login(const QString& semail, const QString& sha1password)
 
 	VERIFY(query.exec());
 
-	if(query.size() != 1)
+	if (query.size() != 1)
 	{
 		qDebug() << "no user in database with email " << email();
 		return false;
@@ -198,7 +200,7 @@ bool novastory::User::login(const QString& semail, const QString& sha1password)
 	int useridNo = query.record().indexOf("userid");
 	int quserid = query.value(useridNo).toInt();
 
-	if(qpassword != generatePassword(sha1password, qsalt))
+	if (qpassword != generatePassword(sha1password, qsalt))
 	{
 		return false;
 	}
