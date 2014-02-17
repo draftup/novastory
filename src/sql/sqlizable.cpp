@@ -186,6 +186,12 @@ bool Sqlizable::syncSQL(const QList<QString>& basis)
 		return false;
 	}
 
+	return syncProcess(query);
+}
+
+
+bool Sqlizable::syncProcess( SqlQuery& query )
+{
 	if (query.size() != 1)
 	{
 		qWarning() << "Not only one record in database. Can not sync.";
@@ -199,11 +205,12 @@ bool Sqlizable::syncSQL(const QList<QString>& basis)
 		QString propertyName = record.fieldName(i);
 		QVariant propertyValue = record.value(i);
 		setProperty(propertyName.toLatin1(), propertyValue);
-		qDebug() << "SYNCSQL" << objName << ": " << propertyName << "=" << propertyValue.toString();
+		qDebug() << "SYNCSQL" << propertyName << "=" << propertyValue.toString();
 	}
 
 	return true;
 }
+
 
 bool Sqlizable::syncSQL(const QString& basis)
 {

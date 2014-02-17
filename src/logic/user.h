@@ -2,6 +2,7 @@
 #define USER_H
 
 #include "sql/sqlizable.h"
+#include "utils/globals.h"
 
 class Test_LogicUsers;
 
@@ -32,7 +33,10 @@ public:
 
 	const QString& password() const;
 	void setRawPassword(const QString& password);
+	void setSHA1Password(const QString& sha1password);
 	void resetPassword();
+
+	bool login(const QString& email, const QString& sha1password);
 
 	const QString& salt() const;
 	void setSalt(const QString& salt);
@@ -46,7 +50,10 @@ public:
 protected:
 	QString generateSalt() const;
 	void setPassword(const QString& password);
-
+	inline QString generatePassword(const QString& sha1password, const QString& password_salt)
+	{
+		return md5(sha1password + sha1(password_salt) + "novastory");
+	}
 private:
 	int m_userid;
 	QString m_username;

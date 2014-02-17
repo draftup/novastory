@@ -2,6 +2,7 @@
 #define SQLIZABLE_H
 
 #include <QObject>
+#include "sql/sqlquery.h"
 
 namespace novastory
 {
@@ -19,6 +20,8 @@ public:
 	bool removeSQL(const QString& basis);
 	bool syncSQL(const QList<QString>& basis);
 	bool syncSQL(const QString& basis);
+protected:
+	bool syncProcess(SqlQuery& query);
 };
 
 }

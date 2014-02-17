@@ -1,6 +1,7 @@
 #include "user.h"
 #include <QVariant>
 #include <QDebug>
+#include <QSqlRecord>
 #include "utils/globals.h"
 #include "sql/sqlquery.h"
 #include "logic/captcha.h"
@@ -99,7 +100,7 @@ void novastory::User::setRawPassword(const QString& password)
 		setSalt(currentSalt);
 	}
 
-	setPassword(md5(sha1(password) + sha1(currentSalt) + "novastory"));
+	setPassword(generatePassword(sha1(password), currentSalt));
 }
 
 bool novastory::User::addUser()
@@ -153,5 +154,54 @@ novastory::User* novastory::User::verifyUser(const QString& token)
 	}
 
 	return newUser;
+}
+
+void novastory::User::setSHA1Password( const QString& sha1password )
+{
+	QString currentSalt = salt();
+
+	if (currentSalt.isEmpty())
+	{
+		// if old salt is empty we must generate new salt
+		currentSalt = generateSalt();
+		setSalt(currentSalt);
+	}
+
+	setPassword(generatePassword(sha1password, currentSalt));
+}
+
+bool novastory::User::login(const QString& semail, const QString& sha1password)
+{
+	if(semail.isEmpty() || sha1password.isEmpty())
+		return false;
+
+	setEmail(semail);
+
+	SqlQuery query;
+	query.prepare("SELECT * FROM users WHERE email = :email");
+	query.bindValue(":email", email());
+
+	VERIFY(query.exec());
+
+	if(query.size() != 1)
+	{
+		qDebug() << "no user in database with email " << email();
+		return false;
+	}
+
+	VERIFY(query.next());
+
+	int saltNo = query.record().indexOf("salt");
+	QString qsalt = query.value(saltNo).toString();
+	int passwordNo = query.record().indexOf("password");
+	QString qpassword = query.value(passwordNo).toString();
+
+	if(qpassword != generatePassword(sha1password, qsalt))
+	{
+		return false;
+	}
+
+	query.seek(-1);
+	return syncProcess(query);
 }
 

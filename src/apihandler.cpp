@@ -32,7 +32,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	QString hook = path.split("/").at(2);
 	if (hook == "register")
 	{
-
+		
 	}
 	else
 	{

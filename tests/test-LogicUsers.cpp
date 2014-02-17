@@ -1,6 +1,7 @@
 #include <QtTest>
 #include "sql/sqldatabase.h"
 #include "sql/sqlquery.h"
+#include "utils/globals.h"
 #include "logic/user.h"
 
 using namespace novastory;
@@ -17,6 +18,7 @@ private slots:
 	void insetDataTest();
 	void userDuplicatinTest();
 	void userSyncTest();
+	void loginTest();
 	void deleteUserTest();
 private:
 	int userid;
@@ -90,6 +92,16 @@ void Test_LogicUsers::userSyncTest()
 
 }
 
+void Test_LogicUsers::loginTest()
+{
+	User user1;
+	QVERIFY(!user1.login("dasdasd@dasdasd.com", sha1("dasdasdasa")));
+	QVERIFY(user1.login("dasdasd@dasdasd.com", sha1("dasdasdasd")));
+	QCOMPARE(user1.username(), QString("testuser"));
+	QVERIFY(!user1.login("asdasd@dasdasd.com", sha1("dasdasdasd")));
+}
+
+
 void Test_LogicUsers::deleteUserTest()
 {
 	User olduser1;
@@ -99,7 +111,6 @@ void Test_LogicUsers::deleteUserTest()
 	QCOMPARE(olduser1.userid(), -1);
 	QCOMPARE(olduser1.username(), QString());
 }
-
 
 /********************** DECLARE_TEST LIST ****************************/
 QTEST_MAIN(Test_LogicUsers)
