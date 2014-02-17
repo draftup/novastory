@@ -5,6 +5,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+#include "logic/captcha.h"
+
 namespace novastory
 {
 
@@ -25,16 +27,24 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	{
 		return false;
 	}
-
 	qDebug() << "API protocol handled";
 
-	QJsonDocument version;
-	QJsonObject versionObject;
-	versionObject.insert("version", QJsonValue(QString(GIT_REVISION).toInt()));
+	QString hook = path.split("/").at(2);
+	if(hook == "register")
+	{
 
-	version.setObject(versionObject);
+	}
+	else
+	{
+		// Default
+		QJsonDocument version;
+		QJsonObject versionObject;
+		versionObject.insert("version", QJsonValue(QString(GIT_REVISION).toInt()));
+		version.setObject(versionObject);
+		socket->write(version.toJson());
+	}
+	
 
-	socket->write(version.toJson());
 
 	return true;
 }

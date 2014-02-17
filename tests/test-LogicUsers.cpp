@@ -17,6 +17,7 @@ private slots:
 	void insetDataTest();
 	void userDuplicatinTest();
 	void userSyncTest();
+	void deleteUserTest();
 private:
 	int userid;
 	SqlDatabase db;
@@ -77,16 +78,26 @@ void Test_LogicUsers::userSyncTest()
 	// trying primary_key methid
 	User olduser1;
 	olduser1.setUserID(userid);
-	QVERIFY(olduser1.syncSQL(QList<QString>() << "userid"));
+	QVERIFY(olduser1.syncSQL("userid"));
 	QCOMPARE(olduser1.username(), QString("testuser"));
 	QCOMPARE(olduser1.email(), QString("dasdasd@dasdasd.com"));
 	User olduser2;
 	olduser2.setUsername("testuser");
-	QVERIFY(olduser2.syncSQL(QList<QString>() << "username"));
+	QVERIFY(olduser2.syncSQL("username"));
 	QCOMPARE(olduser2.userid(), userid);
 	QCOMPARE(olduser2.email(), QString("dasdasd@dasdasd.com"));
 	
 
+}
+
+void Test_LogicUsers::deleteUserTest()
+{
+	User olduser1;
+	olduser1.setUserID(userid);
+	QVERIFY(olduser1.syncSQL("userid"));
+	QVERIFY(olduser1.removeSQL("userid"));
+	QCOMPARE(olduser1.userid(), -1);
+	QCOMPARE(olduser1.username(), QString());
 }
 
 

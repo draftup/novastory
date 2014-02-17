@@ -101,7 +101,7 @@ bool novastory::Captcha::addVerifyNotify()
 	Recaptcha captchaChecker(m_challenge, m_response, m_remoteIP);
 	if(!captchaChecker.checkCaptchaSync())
 	{
-		qDebug() << m_username << " don't pass captcha verification";
+		qDebug() << m_username << " doesn't pass captcha verification";
 		return false;
 	}
 
@@ -111,4 +111,30 @@ bool novastory::Captcha::addVerifyNotify()
 QString novastory::Captcha::generateToken() const
 {
 	return md5(md5(m_username) + md5(m_password) + md5(m_email) + unixtime());
+}
+
+bool novastory::Captcha::syncByToken(const QString& token)
+{
+	setToken(token);
+	if(!m_token.isEmpty())
+	{
+		return true;
+	}
+	bool status = syncSQL("token");
+	if(!status)
+	{
+		return false;
+	}
+
+	return !m_token.isEmpty();
+}
+
+bool novastory::Captcha::deleteByToken( const QString& token /*= QString()*/ )
+{
+	setToken(token);
+	if(!m_token.isEmpty())
+	{
+		return true;
+	}
+	return removeSQL("token");
 }

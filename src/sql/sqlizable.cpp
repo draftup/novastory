@@ -120,7 +120,7 @@ bool Sqlizable::insertSQL()
 	return true;
 }
 
-bool Sqlizable::syncSQL(QList<QString> basis)
+bool Sqlizable::syncSQL(const QList<QString>& basis)
 {
 	QString objName = objectName();
 	if (objName.isEmpty())
@@ -166,7 +166,7 @@ bool Sqlizable::syncSQL(QList<QString> basis)
 		}
 	}
 	*/
-	for (QString& questVar : basis)
+	for (QString questVar : basis)
 	{
 		QVariant propValue = property(questVar.toUtf8());
 		sql += (internalValues.size() == 0) ? questVar + " = ?" : " AND " + questVar + " = ?";
@@ -203,6 +203,62 @@ bool Sqlizable::syncSQL(QList<QString> basis)
 	}
 
 	return true;
+}
+
+bool Sqlizable::syncSQL( const QString& basis )
+{
+	return syncSQL(QList<QString>() << basis);
+}
+
+bool Sqlizable::removeSQL(const QList<QString>& basis )
+{
+	QString objName = objectName();
+	if (objName.isEmpty())
+	{
+		return false; // No object name, we doesn't know name of table
+	}
+
+	SqlQuery query;
+
+	QString sql = QString("DELETE FROM `") + objName + "` WHERE ";
+
+	// Founding keys
+	QList<QVariant> internalValues;
+
+	for (QString questVar : basis)
+	{
+		QVariant propValue = property(questVar.toUtf8());
+		sql += (internalValues.size() == 0) ? questVar + " = ?" : " AND " + questVar + " = ?";
+		internalValues.append(propValue);
+	}
+
+	VERIFY(query.prepare(sql));
+
+	for (int i = 0; i < internalValues.size(); ++i)
+	{
+		query.bindValue(i, internalValues[i]);
+	}
+
+	if(!query.exec())
+	{
+		qWarning() << "Removing " << objName << " failed";
+		return false;
+	}
+
+	const QMetaObject* mObject = metaObject();
+	const int propCount = mObject->propertyCount();
+	for (int i = 0; i < propCount; ++i)
+	{
+		QMetaProperty prop = mObject->property(i);
+		prop.reset(this);
+	}
+
+	return true;
+}
+
+bool Sqlizable::removeSQL( const QString& basis )
+{
+	return removeSQL(QList<QString>() << basis);
 }
 
 }

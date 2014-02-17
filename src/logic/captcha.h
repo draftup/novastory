@@ -1,5 +1,5 @@
-#ifndef	USER_H
-#define USER_H
+#ifndef	CAPTHA_H
+#define CAPTHA_H
 
 #include "sql/sqlizable.h"
 #include <QHostAddress>
@@ -25,6 +25,8 @@ public:
 
 	const QString& token() const;
 	void setToken(const QString& token);
+	bool syncByToken(const QString& token = QString());
+	bool deleteByToken(const QString& token = QString());
 
 	const QString& username() const;
 	void setUsername(const QString& username);
