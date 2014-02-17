@@ -95,10 +95,13 @@ void Test_LogicUsers::userSyncTest()
 void Test_LogicUsers::loginTest()
 {
 	User user1;
+	QVERIFY(!user1.isLogined());
 	QVERIFY(!user1.login("dasdasd@dasdasd.com", sha1("dasdasdasa")));
 	QVERIFY(user1.login("dasdasd@dasdasd.com", sha1("dasdasdasd")));
 	QCOMPARE(user1.username(), QString("testuser"));
 	QVERIFY(!user1.login("asdasd@dasdasd.com", sha1("dasdasdasd")));
+	QVERIFY(user1.isLogined());
+	QVERIFY(user1.token().length() > 0);
 }
 
 

@@ -195,13 +195,30 @@ bool novastory::User::login(const QString& semail, const QString& sha1password)
 	QString qsalt = query.value(saltNo).toString();
 	int passwordNo = query.record().indexOf("password");
 	QString qpassword = query.value(passwordNo).toString();
+	int useridNo = query.record().indexOf("userid");
+	int quserid = query.value(useridNo).toInt();
 
 	if(qpassword != generatePassword(sha1password, qsalt))
 	{
 		return false;
 	}
 
+	Q_ASSERT(quserid > 0);
+
+	qint64 current_time = unixtime();
+	m_token = current_time + QString("-") + generateToken(current_time, quserid, qsalt);
+
 	query.seek(-1);
 	return syncProcess(query);
+}
+
+bool novastory::User::isLogined() const
+{
+	return !m_token.isEmpty();
+}
+
+const QString& novastory::User::token()
+{
+	return m_token;
 }
 

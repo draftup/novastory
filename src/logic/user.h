@@ -37,6 +37,8 @@ public:
 	void resetPassword();
 
 	bool login(const QString& email, const QString& sha1password);
+	bool isLogined() const;
+	const QString& token();
 
 	const QString& salt() const;
 	void setSalt(const QString& salt);
@@ -54,12 +56,18 @@ protected:
 	{
 		return md5(sha1password + sha1(password_salt) + "novastory");
 	}
+	inline QString generateToken(qint64 time, int userid, const QString& usersalt)
+	{
+		return sha1(time + sha1(userid + sha1(usersalt) + sha1("degitx-jelu-leparusvega")));
+	}
 private:
 	int m_userid;
 	QString m_username;
 	QString m_password;
 	QString m_salt;
 	QString m_email;
+
+	QString m_token;
 };
 
 }
