@@ -1,5 +1,6 @@
 #include <QtTest>
 #include "recaptcha.h"
+#include "logic/captcha.h"
 
 using namespace novastory;
 
@@ -13,6 +14,7 @@ private slots:
 	void cleanupTestCase();
 
 	void stubTest();
+	void notifyTest();
 private:
 };
 
@@ -41,6 +43,12 @@ void Test_Recaptcha::stubTest()
 	Recaptcha* cha = new Recaptcha("dasdasdasd", "dasdasd", QHostAddress("10.10.10.5"));
 	QVERIFY(!cha->checkCaptchaSync());
 	cha->deleteLater();
+}
+
+void Test_Recaptcha::notifyTest()
+{
+	Captcha cha;
+	QVERIFY(!cha.addVerifyNotify());
 }
 
 /********************** DECLARE_TEST LIST ****************************/

@@ -19,6 +19,7 @@ set(HEADERS_TOMOC
 	sql/sqlizable.h
 
 	logic/user.h
+	logic/captcha.h
 )
 
 set(HEADERS
@@ -42,6 +43,7 @@ set(SOURCES
 	sql/sqlizable.cpp
 	
 	logic/user.cpp
+	logic/captcha.cpp
 	
 	utils/globals.cpp
 	
