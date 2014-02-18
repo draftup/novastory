@@ -67,21 +67,6 @@ void novastory::User::resetEmail()
 	m_email = QString();
 }
 
-const QString& novastory::User::username() const
-{
-	return m_username;
-}
-
-void novastory::User::setUsername(const QString& username)
-{
-	m_username = username;
-}
-
-void novastory::User::resetUsername()
-{
-	m_username = QString();
-}
-
 novastory::User::User() : m_userid(-1)
 {
 	setObjectName("users");
@@ -105,21 +90,20 @@ void novastory::User::setRawPassword(const QString& password)
 
 bool novastory::User::addUser()
 {
-	if (m_username.isEmpty() || m_password.isEmpty() || m_salt.isEmpty() || m_email.isEmpty())
+	if (m_password.isEmpty() || m_salt.isEmpty() || m_email.isEmpty())
 	{
 		return false;    // something is empty
 	}
 
 	// Checking if user already exist
 	SqlQuery query;
-	query.prepare("SELECT userid FROM users WHERE email = ? OR username = ?");
+	query.prepare("SELECT userid FROM users WHERE email = ?");
 	query.bindValue(0, m_email);
-	query.bindValue(1, m_username);
 	VERIFY(query.exec());
 
 	if (query.size() != 0)
 	{
-		qDebug() << "User " <<  m_username << "(" << m_email << ") already in database";
+		qDebug() << "User" << m_email << "already in database";
 		return false;
 	}
 
@@ -141,7 +125,6 @@ novastory::User* novastory::User::verifyUser(const QString& token)
 		return nullptr;
 	}
 	User* newUser = new User;
-	newUser->setUsername(capthaCheck.username());
 	newUser->setPassword(capthaCheck.password());
 	newUser->setEmail(capthaCheck.email());
 

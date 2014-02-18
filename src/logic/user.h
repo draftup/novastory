@@ -14,7 +14,6 @@ class User : protected Sqlizable
 	friend class ::Test_LogicUsers;
 	Q_OBJECT
 	Q_PROPERTY(int userid READ userid WRITE setUserID RESET resetUserid)
-	Q_PROPERTY(QString username READ username WRITE setUsername RESET resetUsername)
 	Q_PROPERTY(QString password READ password WRITE setPassword RESET resetPassword)
 	Q_PROPERTY(QString salt READ salt WRITE setSalt RESET resetSalt)
 	Q_PROPERTY(QString email READ email WRITE setEmail RESET resetEmail)
@@ -26,10 +25,6 @@ public:
 	int userid() const;
 	void setUserID(int userid);
 	void resetUserid();
-
-	const QString& username() const;
-	void setUsername(const QString& username);
-	void resetUsername();
 
 	const QString& password() const;
 	void setRawPassword(const QString& password);
@@ -62,7 +57,6 @@ protected:
 	}
 private:
 	int m_userid;
-	QString m_username;
 	QString m_password;
 	QString m_salt;
 	QString m_email;

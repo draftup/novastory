@@ -34,7 +34,6 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	{
 		Captcha captcha;
 		captcha.setEmail(post["email"]);
-		captcha.setUsername(post["username"]);
 		captcha.setPassword(post["password"]);
 		captcha.setRemoteIP(socket->peerAddress());
 		captcha.setChallenge(post["challenge"]);

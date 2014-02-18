@@ -15,7 +15,6 @@ class Captcha : protected Sqlizable, public JsonErrorThrower
 	friend class ::Test_Recaptcha;
 	Q_OBJECT
 	Q_PROPERTY(QString token READ token WRITE setToken)
-	Q_PROPERTY(QString username READ username WRITE setUsername)
 	Q_PROPERTY(QString password READ password WRITE setPassword)
 	Q_PROPERTY(QString salt READ salt WRITE setSalt)
 	Q_PROPERTY(QString email READ email WRITE setEmail)
@@ -28,9 +27,6 @@ public:
 	void setToken(const QString& token);
 	bool syncByToken(const QString& token = QString());
 	bool deleteByToken(const QString& token = QString());
-
-	const QString& username() const;
-	void setUsername(const QString& username);
 
 	const QString& password() const;
 	void setPassword(const QString& password);
@@ -55,7 +51,6 @@ protected:
 	void sendVerificaionMail();
 private:
 	QString m_token;
-	QString m_username;
 	QString m_password;
 	QString m_salt;
 	QString m_email;
