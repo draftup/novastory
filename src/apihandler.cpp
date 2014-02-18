@@ -32,7 +32,15 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	QString hook = path.split("/").at(2);
 	if (hook == "register")
 	{
-
+		Captcha captcha;
+		captcha.setEmail(post["email"]);
+		captcha.setUsername(post["username"]);
+		captcha.setPassword(post["password"]);
+		captcha.setRemoteIP(socket->peerAddress());
+		captcha.setChallenge(post["challenge"]);
+		captcha.setResponse(post["response"]);
+		captcha.addVerifyNotify();
+		socket->write(captcha.jsonErrorString().toUtf8());
 	}
 	else
 	{

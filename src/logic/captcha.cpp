@@ -66,22 +66,22 @@ bool novastory::Captcha::addVerifyNotify()
 {
 	if (m_username.isEmpty() || m_password.isEmpty() || m_email.isEmpty() || m_challenge.isEmpty() || m_response.isEmpty() || m_remoteIP.toString().isEmpty())
 	{
-		qDebug() << "Empty captcha info";
+		JSON_ERROR("Empty captcha info");
 		return false;
 	}
 	if (m_username.length() < 2 || m_username.length() > 100)
 	{
-		qDebug() << "Username size not correct";
+		JSON_ERROR("Username size not correct");
 		return false;
 	}
 	if (m_email.indexOf("@") == -1)
 	{
-		qDebug() << "Email for user " << m_username << " not correct";
+		JSON_ERROR("Email for user " + m_username + " not correct");
 		return false;
 	}
 	if (m_password.length() != 32)
 	{
-		qDebug() << "Password for user " << m_username << "not correct";
+		JSON_ERROR("Password for user " + m_username + "not correct");
 		return false;
 	}
 
@@ -92,7 +92,7 @@ bool novastory::Captcha::addVerifyNotify()
 	VERIFY(query.exec());
 	if (query.size() > 0)
 	{
-		qDebug() << m_username << " already exist in database with such email or username";
+		JSON_ERROR(m_username + " already exist in database with such email or username");
 		return false;
 	}
 
@@ -101,7 +101,7 @@ bool novastory::Captcha::addVerifyNotify()
 	Recaptcha captchaChecker(m_challenge, m_response, m_remoteIP);
 	if (!captchaChecker.checkCaptchaSync())
 	{
-		qDebug() << m_username << " doesn't pass captcha verification";
+		JSON_ERROR(m_username + " doesn't pass captcha verification");
 		return false;
 	}
 
