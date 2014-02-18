@@ -105,6 +105,8 @@ bool novastory::Captcha::addVerifyNotify()
 		return false;
 	}
 
+	sendVerificaionMail();
+
 	return insertSQL();
 }
 
@@ -137,4 +139,13 @@ bool novastory::Captcha::deleteByToken(const QString& token /*= QString()*/)
 		return true;
 	}
 	return removeSQL("token");
+}
+
+void novastory::Captcha::sendVerificaionMail()
+{
+	sendAsyncMail(
+		m_email, 
+		"Welcome to Novastory (novastory.org)", 
+		"To validate your new account follow the link below:\nhttp://novastory.org/validate/{$token}\n\nGood luck with novastory!"
+	);
 }

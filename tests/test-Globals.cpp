@@ -16,6 +16,7 @@ private slots:
 	void md5Test();
 	void sha1Test();
 	void unixtimeTest();
+	void mailSendTest();
 };
 
 void Test_Globals::initTestCase()
@@ -55,6 +56,11 @@ void Test_Globals::sha1Test()
 void Test_Globals::unixtimeTest()
 {
 	QVERIFY(unixtime() > 0);
+}
+
+void Test_Globals::mailSendTest()
+{
+	//sendMail("degitx@gmail.com", "sdsad", "dasdasd");
 }
 
 

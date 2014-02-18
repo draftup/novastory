@@ -58,6 +58,11 @@ set(SOURCES
 	webrequest.cpp
 )
 
+
+add_subdirectory(3dparty/smtp)
+include_directories(3dparty/smtp)
+
+
 QT5_WRAP_CPP(MOC_FILES ${HEADERS_TOMOC})
 
 source_group("core\\Sources" FILES 
@@ -86,6 +91,8 @@ target_link_libraries(${FUNCTIONAL_MODULE}
 	${Qt5Core_LIBRARIES}
 	${Qt5Network_LIBRARIES}
 	${Qt5Sql_LIBRARIES}
+	smtpemail
+	${OPENSSL_LIBRARIES}
 )
 				
 				

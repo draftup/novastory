@@ -52,6 +52,7 @@ public:
 protected:
 	QString generateToken() const;
 
+	void sendVerificaionMail();
 private:
 	QString m_token;
 	QString m_username;

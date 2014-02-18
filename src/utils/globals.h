@@ -15,6 +15,8 @@ namespace novastory
 QString md5(const QString& str);
 QString sha1(const QString& str);
 qint64 unixtime();
+void sendMail(const QString& to, const QString& subject, const QString& message);
+void sendAsyncMail(const QString& to, const QString& subject, const QString& message);
 
 }
 
