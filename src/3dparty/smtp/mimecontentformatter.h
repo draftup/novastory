@@ -24,17 +24,17 @@
 
 class MimeContentFormatter : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    MimeContentFormatter (int max_length = 76);
+	MimeContentFormatter(int max_length = 76);
 
-    void setMaxLength(int l);
-    int getMaxLength() const;
+	void setMaxLength(int l);
+	int getMaxLength() const;
 
-    QString format(const QString &content, bool quotedPrintable = false) const;
+	QString format(const QString& content, bool quotedPrintable = false) const;
 
 protected:
-    int max_length;
+	int max_length;
 
 };
 

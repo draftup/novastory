@@ -20,10 +20,10 @@
 
 /* [1] Constructors and Destructors */
 
-EmailAddress::EmailAddress(const QString & address, const QString & name)
+EmailAddress::EmailAddress(const QString& address, const QString& name)
 {
-    this->address = address;
-    this->name = name;
+	this->address = address;
+	this->name = name;
 }
 
 EmailAddress::~EmailAddress()
@@ -35,25 +35,25 @@ EmailAddress::~EmailAddress()
 
 /* [2] Getters and Setters */
 
-void EmailAddress::setName(const QString & name)
+void EmailAddress::setName(const QString& name)
 {
-    this->name = name;
+	this->name = name;
 
 }
 
-void EmailAddress::setAddress(const QString & address)
+void EmailAddress::setAddress(const QString& address)
 {
-    this->address = address;
+	this->address = address;
 }
 
-const QString & EmailAddress::getName() const
+const QString& EmailAddress::getName() const
 {
-    return name;
+	return name;
 }
 
-const QString & EmailAddress::getAddress() const
+const QString& EmailAddress::getAddress() const
 {
-    return address;
+	return address;
 }
 
 /* [2] --- */

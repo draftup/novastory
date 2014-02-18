@@ -24,35 +24,35 @@
 
 class MimeFile : public MimePart
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
 
-    /* [1] Constructors and Destructors */
+	/* [1] Constructors and Destructors */
 
-    MimeFile(QFile *f);
-    ~MimeFile();
+	MimeFile(QFile* f);
+	~MimeFile();
 
-    /* [1] --- */
+	/* [1] --- */
 
 
-    /* [2] Getters and Setters */
+	/* [2] Getters and Setters */
 
-    /* [2] --- */
+	/* [2] --- */
 
 protected:
 
-    /* [3] Protected members */
+	/* [3] Protected members */
 
-    QFile* file;
+	QFile* file;
 
-    /* [3] --- */
+	/* [3] --- */
 
 
-    /* [4] Protected methods */
+	/* [4] Protected methods */
 
-    virtual void prepare();
+	virtual void prepare();
 
-    /* [4] --- */
+	/* [4] --- */
 
 };
 

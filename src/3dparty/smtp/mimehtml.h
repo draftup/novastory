@@ -23,37 +23,37 @@
 
 class MimeHtml : public MimeText
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
 
-    /* [1] Constructors and Destructors */
+	/* [1] Constructors and Destructors */
 
-    MimeHtml(const QString &html = "");
-    ~MimeHtml();
+	MimeHtml(const QString& html = "");
+	~MimeHtml();
 
-    /* [1] --- */
+	/* [1] --- */
 
 
-    /* [2] Getters and Setters */
+	/* [2] Getters and Setters */
 
-    void setHtml(const QString & html);
+	void setHtml(const QString& html);
 
-    const QString& getHtml() const;
+	const QString& getHtml() const;
 
-    /* [2] --- */
+	/* [2] --- */
 
 protected:
 
-    /* [3] Protected members */
+	/* [3] Protected members */
 
-    /* [3] --- */
+	/* [3] --- */
 
 
-    /* [4] Protected methods */
+	/* [4] Protected methods */
 
-    virtual void prepare();
+	virtual void prepare();
 
-    /* [4] --- */
+	/* [4] --- */
 };
 
 #endif // MIMEHTML_H

@@ -24,14 +24,14 @@
 
 class QuotedPrintable : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
 
-    static QString& encode(const QByteArray &input);
-    static QByteArray& decode(const QString &input);
+	static QString& encode(const QByteArray& input);
+	static QByteArray& decode(const QString& input);
 
 private:
-    QuotedPrintable();
+	QuotedPrintable();
 };
 
 #endif // QUOTEDPRINTABLE_H

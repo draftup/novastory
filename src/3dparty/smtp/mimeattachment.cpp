@@ -21,8 +21,8 @@
 
 /* [1] Constructors and Destructors */
 
-MimeAttachment::MimeAttachment(QFile *file)
-    : MimeFile(file)
+MimeAttachment::MimeAttachment(QFile* file)
+	: MimeFile(file)
 {
 }
 
@@ -37,10 +37,10 @@ MimeAttachment::~MimeAttachment()
 
 void MimeAttachment::prepare()
 {
-    this->header += "Content-disposition: attachment\r\n";
+	this->header += "Content-disposition: attachment\r\n";
 
-    /* !!! IMPORTANT !!! */
-    MimeFile::prepare();
+	/* !!! IMPORTANT !!! */
+	MimeFile::prepare();
 }
 
 /* [2] --- */

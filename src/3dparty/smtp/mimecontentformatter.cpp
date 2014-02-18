@@ -19,48 +19,57 @@
 #include "mimecontentformatter.h"
 
 MimeContentFormatter::MimeContentFormatter(int max_length) :
-    max_length(max_length)
+	max_length(max_length)
 {}
 
-QString MimeContentFormatter::format(const QString &content, bool quotedPrintable) const {
+QString MimeContentFormatter::format(const QString& content, bool quotedPrintable) const
+{
 
-    QString out;
+	QString out;
 
-    int chars = 0;
-    for (int i = 0; i < content.length() ; ++i) {
-        chars++;
-        if (!quotedPrintable) {
-            if (chars > max_length) {
-                    out.append("\r\n");
-                    chars = 1;
-            }
-        }
-        else {
-            if (content[i] == '\n') {       // new line
-                out.append(content[i]);
-                chars = 0;
-                continue;
-            }
+	int chars = 0;
+	for (int i = 0; i < content.length() ; ++i)
+	{
+		chars++;
+		if (!quotedPrintable)
+		{
+			if (chars > max_length)
+			{
+				out.append("\r\n");
+				chars = 1;
+			}
+		}
+		else
+		{
+			if (content[i] == '\n')         // new line
+			{
+				out.append(content[i]);
+				chars = 0;
+				continue;
+			}
 
-            if ((chars > max_length - 1)
-                || ((content[i] == '=') && (chars > max_length - 3) )) {
-                out.append('=');
-                out.append("\r\n");
-                chars = 1;
-            }
+			if ((chars > max_length - 1)
+					|| ((content[i] == '=') && (chars > max_length - 3)))
+			{
+				out.append('=');
+				out.append("\r\n");
+				chars = 1;
+			}
 
-        }
-        out.append(content[i]);
-    }
+		}
+		out.append(content[i]);
+	}
 
-    return out;
+	return out;
 
 }
 
-void MimeContentFormatter::setMaxLength(int l) {
-    max_length = l;
+void MimeContentFormatter::setMaxLength(int l)
+{
+	max_length = l;
 }
 
-int MimeContentFormatter::getMaxLength() const {
-    return max_length;
+int MimeContentFormatter::getMaxLength() const
+{
+	return max_length;
 }

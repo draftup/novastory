@@ -20,59 +20,67 @@
 #include <QTime>
 #include <QCryptographicHash>
 
-const QString MULTI_PART_NAMES[] = {
-    "multipart/mixed",         //    Mixed
-    "multipart/digest",        //    Digest
-    "multipart/alternative",   //    Alternative
-    "multipart/related",       //    Related
-    "multipart/report",        //    Report
-    "multipart/signed",        //    Signed
-    "multipart/encrypted"      //    Encrypted
+const QString MULTI_PART_NAMES[] =
+{
+	"multipart/mixed",         //    Mixed
+	"multipart/digest",        //    Digest
+	"multipart/alternative",   //    Alternative
+	"multipart/related",       //    Related
+	"multipart/report",        //    Report
+	"multipart/signed",        //    Signed
+	"multipart/encrypted"      //    Encrypted
 };
 
 MimeMultiPart::MimeMultiPart(MultiPartType type)
 {
-    this->type = type;
-    this->cType = MULTI_PART_NAMES[this->type];
-    this->cEncoding = _8Bit;
+	this->type = type;
+	this->cType = MULTI_PART_NAMES[this->type];
+	this->cEncoding = _8Bit;
 
-    QCryptographicHash md5(QCryptographicHash::Md5);
-    md5.addData(QByteArray().append(qrand()));
-    cBoundary = md5.result().toHex();
+	QCryptographicHash md5(QCryptographicHash::Md5);
+	md5.addData(QByteArray().append(qrand()));
+	cBoundary = md5.result().toHex();
 }
 
-MimeMultiPart::~MimeMultiPart() {
+MimeMultiPart::~MimeMultiPart()
+{
 
 }
 
-void MimeMultiPart::addPart(MimePart *part) {
-    parts.append(part);
+void MimeMultiPart::addPart(MimePart* part)
+{
+	parts.append(part);
 }
 
-const QList<MimePart*> & MimeMultiPart::getParts() const {
-    return parts;
+const QList<MimePart*>& MimeMultiPart::getParts() const
+{
+	return parts;
 }
 
-void MimeMultiPart::prepare() {
-    QList<MimePart*>::iterator it;
+void MimeMultiPart::prepare()
+{
+	QList<MimePart*>::iterator it;
 
-    content = "";
-    for (it = parts.begin(); it != parts.end(); it++) {
-        content += "--" + cBoundary + "\r\n";
-        (*it)->prepare();
-        content += (*it)->toString();
-    };
+	content = "";
+	for (it = parts.begin(); it != parts.end(); it++)
+	{
+		content += "--" + cBoundary + "\r\n";
+		(*it)->prepare();
+		content += (*it)->toString();
+	};
 
-    content += "--" + cBoundary + "--\r\n";
+	content += "--" + cBoundary + "--\r\n";
 
-    MimePart::prepare();
+	MimePart::prepare();
 }
 
-void MimeMultiPart::setMimeType(const MultiPartType type) {
-    this->type = type;
-    this->cType = MULTI_PART_NAMES[type];
+void MimeMultiPart::setMimeType(const MultiPartType type)
+{
+	this->type = type;
+	this->cType = MULTI_PART_NAMES[type];
 }
 
-MimeMultiPart::MultiPartType MimeMultiPart::getMimeType() const {
-    return type;
+MimeMultiPart::MultiPartType MimeMultiPart::getMimeType() const
+{
+	return type;
 }

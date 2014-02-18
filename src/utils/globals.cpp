@@ -20,12 +20,12 @@ qint64 novastory::unixtime()
 	return static_cast<qint64>(time(NULL));
 }
 
-void novastory::sendMail( const QString& to, const QString& subject, const QString& textofmessage )
+void novastory::sendMail(const QString& to, const QString& subject, const QString& textofmessage)
 {
 	SmtpClient smtp(SMTP_SERVER, SMTP_PORT, SmtpClient::SslConnection);
 	smtp.setUser(SMTP_USER);
 	smtp.setPassword(SMTP_PASSWORD);
-	
+
 	MimeMessage message;
 	message.setSender(new EmailAddress("uruchie.org@gmail.com"));
 	message.addRecipient(new EmailAddress(to));
@@ -44,9 +44,10 @@ void novastory::sendMail( const QString& to, const QString& subject, const QStri
 
 }
 
-void novastory::sendAsyncMail( const QString& to, const QString& subject, const QString& message )
+void novastory::sendAsyncMail(const QString& to, const QString& subject, const QString& message)
 {
-	std::thread mailThread([&](){
+	std::thread mailThread([&]()
+	{
 		sendMail(to, subject, message);
 	});
 }

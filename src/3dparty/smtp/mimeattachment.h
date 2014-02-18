@@ -25,23 +25,23 @@
 
 class MimeAttachment : public MimeFile
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
 
-    /* [1] Constructors and Destructors */
+	/* [1] Constructors and Destructors */
 
-    MimeAttachment(QFile* file);
-    ~MimeAttachment();
+	MimeAttachment(QFile* file);
+	~MimeAttachment();
 
-    /* [1] --- */
+	/* [1] --- */
 
 protected:
 
-    /* [2] Protected methods */
+	/* [2] Protected methods */
 
-    virtual void prepare();
+	virtual void prepare();
 
-    /* [2] --- */
+	/* [2] --- */
 };
 
 #endif // MIMEATTACHMENT_H

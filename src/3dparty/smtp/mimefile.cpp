@@ -21,17 +21,17 @@
 
 /* [1] Constructors and Destructors */
 
-MimeFile::MimeFile(QFile *file)
+MimeFile::MimeFile(QFile* file)
 {
-    this->file = file;
-    this->cType = "application/octet-stream";
-    this->cName = QFileInfo(*file).fileName();
-    this->cEncoding = Base64;
+	this->file = file;
+	this->cType = "application/octet-stream";
+	this->cName = QFileInfo(*file).fileName();
+	this->cEncoding = Base64;
 }
 
 MimeFile::~MimeFile()
 {
-    delete file;
+	delete file;
 }
 
 /* [1] --- */
@@ -46,12 +46,12 @@ MimeFile::~MimeFile()
 
 void MimeFile::prepare()
 {
-    file->open(QIODevice::ReadOnly);
-    this->content = file->readAll();
-    file->close();
+	file->open(QIODevice::ReadOnly);
+	this->content = file->readAll();
+	file->close();
 
-    /* !!! IMPORTANT !!!! */
-    MimePart::prepare();
+	/* !!! IMPORTANT !!!! */
+	MimePart::prepare();
 }
 
 /* [3] --- */

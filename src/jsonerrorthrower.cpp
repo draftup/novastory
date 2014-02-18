@@ -27,10 +27,10 @@ QString novastory::JsonErrorThrower::jsonErrorString() const
 {
 	QJsonDocument json;
 	QJsonObject errorObject;
-	
+
 	errorObject.insert("error", QJsonValue(isError));
 	errorObject.insert("errorDescription", QJsonValue(errorDescription));
-	
+
 	json.setObject(errorObject);
 	return json.toJson();
 }

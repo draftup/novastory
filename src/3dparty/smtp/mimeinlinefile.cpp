@@ -20,8 +20,8 @@
 
 /* [1] Constructors and Destructors */
 
-MimeInlineFile::MimeInlineFile(QFile *f)
-    : MimeFile(f)
+MimeInlineFile::MimeInlineFile(QFile* f)
+	: MimeFile(f)
 {
 }
 
@@ -39,11 +39,11 @@ MimeInlineFile::~MimeInlineFile()
 /* [3] Protected methods */
 
 void MimeInlineFile::prepare()
-{       
-    this->header += "Content-Disposition: inline\r\n";
+{
+	this->header += "Content-Disposition: inline\r\n";
 
-    /* !!! IMPORTANT !!! */
-    MimeFile::prepare();
+	/* !!! IMPORTANT !!! */
+	MimeFile::prepare();
 }
 
 /* [3] --- */
