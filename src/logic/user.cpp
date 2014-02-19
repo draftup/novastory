@@ -157,6 +157,7 @@ bool novastory::User::login(const QString& semail, const QString& sha1password)
 {
 	if (semail.isEmpty() || sha1password.isEmpty())
 	{
+		JSON_ERROR("Email or password are not valid", 1);
 		return false;
 	}
 
@@ -170,7 +171,7 @@ bool novastory::User::login(const QString& semail, const QString& sha1password)
 
 	if (query.size() != 1)
 	{
-		qDebug() << "no user in database with email " << email();
+		JSON_ERROR("User with such email not founded: " + email(), 2);
 		return false;
 	}
 
@@ -185,6 +186,7 @@ bool novastory::User::login(const QString& semail, const QString& sha1password)
 
 	if (qpassword != generatePassword(sha1password, qsalt))
 	{
+		JSON_ERROR("Password for user " + semail + " was wrong", 3);
 		return false;
 	}
 

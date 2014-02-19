@@ -2,7 +2,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-novastory::JsonErrorThrower::JsonErrorThrower() : isError(false)
+novastory::JsonErrorThrower::JsonErrorThrower() : isError(false), errorType(0)
 {
 
 }
@@ -21,6 +21,7 @@ void novastory::JsonErrorThrower::jsonReset()
 {
 	isError = false;
 	errorDescription = QString();
+	errorType = 0;
 }
 
 QString novastory::JsonErrorThrower::jsonErrorString() const
@@ -33,4 +34,14 @@ QString novastory::JsonErrorThrower::jsonErrorString() const
 
 	json.setObject(errorObject);
 	return json.toJson();
+}
+
+void novastory::JsonErrorThrower::errorTypeReset()
+{
+	errorType = 0;
+}
+
+int novastory::JsonErrorThrower::jsonErrorType()
+{
+	return errorType;
 }

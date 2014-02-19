@@ -6,6 +6,7 @@
 #include <QJsonObject>
 
 #include "logic/captcha.h"
+#include "logic/user.h"
 
 namespace novastory
 {
@@ -40,6 +41,12 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		captcha.setResponse(post["response"]);
 		captcha.addVerifyNotify();
 		socket->write(captcha.jsonErrorString().toUtf8());
+	}
+	else if (hook == "login")
+	{
+		User user;
+		user.login(post["email"], post["password"]);
+		socket->write(user.jsonErrorString().toUtf8());
 	}
 	else
 	{
