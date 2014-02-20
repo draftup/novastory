@@ -157,3 +157,61 @@ hr.vertically {
 	-webkit-border-radius: 20px;
 	-moz-border-radius: 20px;
 }
+
+#logined-controls
+{
+	display: none;
+}
+
+#login-controls
+{
+	cursor: pointer;
+}
+
+#login-panel
+{
+	padding: 20px;
+	border: 2px solid #EFEFEF;
+	position: fixed;
+	margin: -100px 0 0 -200px;
+	top: 50%;
+	left: 50%;
+	width: 400px;  
+	height: 200px;
+	background: white;
+	display: block;
+}
+
+#login-panel input
+{
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  border: 2px solid #B7B7B7;
+  padding: 3px;
+  background: #F3F3F3;
+  font-size: 1.2em;
+  width: 350px;
+  display: block;
+  margin: 20px 20px 2px 20px;
+}
+
+#login-panel .registration
+{
+	color: #A64D79;
+	float: left;
+	display: block;
+	margin: 8px 2px 3px 20px;
+	cursor: pointer;
+	font-size: 0.9em;
+}
+
+#login-panel .password-forgotten
+{
+	color: #A64D79;
+	float: right;
+	display: block;
+	margin: 8px 20px 3px 2px;
+	cursor: pointer;
+	font-size: 0.9em;
+}
