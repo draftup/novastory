@@ -28,7 +28,7 @@ set(HEADERS
 	
 	utils/globals.h
 
-	jsonerrorthrower.h
+	jsonthrower.h
 	config.h
 	datahandler.h
 	rawfilehandler.h
@@ -51,7 +51,7 @@ set(SOURCES
 	recaptcha.cpp
 	rawfilehandler.cpp
 	apihandler.cpp
-	jsonerrorthrower.cpp
+	jsonthrower.cpp
 	logger.cpp
 	webserver.cpp
 	webrouter.cpp

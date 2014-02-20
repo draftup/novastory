@@ -3,14 +3,14 @@
 
 #include "sql/sqlizable.h"
 #include "utils/globals.h"
-#include "jsonerrorthrower.h"
+#include "jsonthrower.h"
 
 class Test_LogicUsers;
 
 namespace novastory
 {
 
-class User : protected Sqlizable, public JsonErrorThrower
+class User : protected Sqlizable, public JsonThrower
 {
 	friend class ::Test_LogicUsers;
 	Q_OBJECT

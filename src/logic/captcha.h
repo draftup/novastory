@@ -2,7 +2,7 @@
 #define CAPTHA_H
 
 #include "sql/sqlizable.h"
-#include "jsonerrorthrower.h"
+#include "jsonthrower.h"
 #include <QHostAddress>
 
 class Test_Recaptcha;
@@ -10,7 +10,7 @@ class Test_Recaptcha;
 namespace novastory
 {
 
-class Captcha : protected Sqlizable, public JsonErrorThrower
+class Captcha : protected Sqlizable, public JsonThrower
 {
 	friend class ::Test_Recaptcha;
 	Q_OBJECT

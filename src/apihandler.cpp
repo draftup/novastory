@@ -40,13 +40,13 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		captcha.setChallenge(post["challenge"]);
 		captcha.setResponse(post["response"]);
 		captcha.addVerifyNotify();
-		socket->write(captcha.jsonErrorString().toUtf8());
+		socket->write(captcha.jsonString().toUtf8());
 	}
 	else if (hook == "login")
 	{
 		User user;
 		user.login(post["email"], post["password"]);
-		socket->write(user.jsonErrorString().toUtf8());
+		socket->write(user.jsonString().toUtf8());
 	}
 	else
 	{
