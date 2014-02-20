@@ -195,6 +195,9 @@ bool novastory::User::login(const QString& semail, const QString& sha1password)
 	qint64 current_time = unixtime();
 	m_token = current_time + QString("-") + generateToken(current_time, quserid, qsalt);
 
+	JSON_INSERT("logined", true);
+	JSON_INSERT("token", m_token);
+
 	query.seek(-1);
 	return syncProcess(query);
 }

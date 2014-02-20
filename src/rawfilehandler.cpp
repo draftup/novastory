@@ -8,7 +8,7 @@ namespace novastory
 
 RawFileHandler::RawFileHandler(QTcpSocket* bindedSocket) :
 	socket(bindedSocket),
-	workingDirectory(QDir::currentPath() + "/public")
+	workingDirectory(QDir::currentPath() + "/../.." + "/public")
 {
 
 }

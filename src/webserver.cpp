@@ -2,6 +2,7 @@
 #include <QTcpSocket>
 #include "webrouter.h"
 #include "utils/globals.h"
+#include "sql/sqldatabase.h"
 
 namespace novastory
 {
@@ -12,6 +13,7 @@ WebServer::WebServer(QObject* parent)
 	VERIFY(listen(QHostAddress::Any, 8008));
 	VERIFY(connect(this, SIGNAL(newConnection()), this, SLOT(someNewConnection())));
 	qDebug() << "Web server started at " << serverAddress() << ":" << serverPort();
+	SqlDatabase::Instance(); // first call
 }
 
 

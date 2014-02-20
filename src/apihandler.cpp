@@ -24,13 +24,20 @@ ApiHandler::~ApiHandler()
 
 bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& /* get = "" */)
 {
-	if (path != "/api")
+	if (path.left(4) != "/api")
 	{
 		return false;
 	}
 	qDebug() << "API protocol handled";
 
-	QString hook = path.split("/").at(2);
+	QStringList hookList = path.split("/");
+	if(hookList.size() != 3)
+	{
+		return false;
+	}
+
+	QString hook = hookList[2];
+
 	if (hook == "register")
 	{
 		Captcha captcha;
