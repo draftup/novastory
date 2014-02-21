@@ -31,7 +31,11 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	qDebug() << "API protocol handled";
 
 	QStringList hookList = path.split("/");
-	if (hookList.size() != 3)
+	if (hookList.size() != 3 && hookList.size() != 4)
+	{
+		return false;
+	}
+	if(hookList.size() == 4 && hookList[2] != "validate")
 	{
 		return false;
 	}
@@ -54,6 +58,12 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		User user;
 		user.login(post["email"], post["password"]);
 		socket->write(user.jsonString().toUtf8());
+	}
+	else if(hook == "validate")
+	{
+		User* newUser = User::verifyUser(hookList[3]);
+		socket->write(newUser->jsonString().toUtf8());
+		delete newUser;
 	}
 	else
 	{

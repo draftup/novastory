@@ -92,6 +92,7 @@ bool novastory::User::addUser()
 {
 	if (m_password.isEmpty() || m_salt.isEmpty() || m_email.isEmpty())
 	{
+		JSON_ERROR("Email or password or salt are not valid", 1);
 		return false;    // something is empty
 	}
 
@@ -103,7 +104,7 @@ bool novastory::User::addUser()
 
 	if (query.size() != 0)
 	{
-		qDebug() << "User" << m_email << "already in database";
+		JSON_ERROR("User " + m_email + " already in database", 2);
 		return false;
 	}
 
@@ -136,6 +137,8 @@ novastory::User* novastory::User::verifyUser(const QString& token)
 		qCritical() << "User cannot added after captcha check. Something wrong";
 		return nullptr;
 	}
+
+	qDebug() << "Account" << newUser->email() << "is now activated.";
 
 	return newUser;
 }

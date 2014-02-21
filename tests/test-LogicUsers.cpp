@@ -20,6 +20,7 @@ private slots:
 	void userSyncTest();
 	void loginTest();
 	void deleteUserTest();
+	void validateUser();
 private:
 	int userid;
 	SqlDatabase db;
@@ -30,6 +31,7 @@ void Test_LogicUsers::initTestCase()
 	QVERIFY(db.open());
 	SqlQuery q;
 	QVERIFY(q.exec("DELETE FROM users WHERE email = 'dasdasd@dasdasd.com'"));
+	QVERIFY(q.exec("DELETE FROM users WHERE email = 'testmail@test.com'"));
 }
 
 void Test_LogicUsers::init()
@@ -103,6 +105,32 @@ void Test_LogicUsers::deleteUserTest()
 	QVERIFY(olduser1.removeSQL("userid"));
 	QCOMPARE(olduser1.userid(), -1);
 	QCOMPARE(olduser1.email(), QString());
+}
+
+void Test_LogicUsers::validateUser()
+{
+	SqlQuery q;
+	QVERIFY(q.prepare("INSERT INTO usersverify(email, salt, password, token) VALUES(?,?,?,?)"));
+	QVERIFY(User::verifyUser(md5("tokenfromgod")) == nullptr);
+	q.bindValue(0, "testmail@test.com");
+	q.bindValue(1, md5("saltfull"));
+	q.bindValue(2, md5("coolpassword"));
+	q.bindValue(3, md5("tokenfromgod"));
+	QVERIFY(q.exec());
+	QVERIFY(User::verifyUser("tokenfromgod") == nullptr);
+
+	q.exec("SELECT * FROM users WHERE email = 'testmail@test.com'");
+	QCOMPARE(q.size(), 0);
+	q.exec("SELECT * FROM usersverify WHERE email = 'testmail@test.com'");
+	QCOMPARE(q.size(), 1);
+
+	// good
+	QVERIFY(User::verifyUser(md5("tokenfromgod")) != nullptr);
+	q.exec("SELECT * FROM users WHERE email = 'testmail@test.com'");
+	QCOMPARE(q.size(), 1);
+	q.exec("SELECT * FROM usersverify WHERE email = 'testmail@test.com'");
+	QCOMPARE(q.size(), 0);
+	
 }
 
 /********************** DECLARE_TEST LIST ****************************/

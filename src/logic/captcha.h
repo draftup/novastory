@@ -25,8 +25,8 @@ public:
 
 	const QString& token() const;
 	void setToken(const QString& token);
-	bool syncByToken(const QString& token = QString());
-	bool deleteByToken(const QString& token = QString());
+	bool syncByToken();
+	bool deleteByToken();
 
 	const QString& password() const;
 	void setPassword(const QString& password);

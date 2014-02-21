@@ -105,29 +105,23 @@ QString novastory::Captcha::generateToken() const
 	return md5(md5(m_password) + md5(m_email) + unixtime());
 }
 
-bool novastory::Captcha::syncByToken(const QString& token)
+bool novastory::Captcha::syncByToken()
 {
-	setToken(token);
-	if (!m_token.isEmpty())
-	{
-		return true;
-	}
-	bool status = syncSQL("token");
-	if (!status)
+	if (m_token.isEmpty())
 	{
 		return false;
 	}
 
-	return !m_token.isEmpty();
+	return syncSQL("token");
 }
 
-bool novastory::Captcha::deleteByToken(const QString& token /*= QString()*/)
+bool novastory::Captcha::deleteByToken()
 {
-	setToken(token);
-	if (!m_token.isEmpty())
+	if (m_token.isEmpty())
 	{
-		return true;
+		return false;
 	}
+
 	return removeSQL("token");
 }
 
