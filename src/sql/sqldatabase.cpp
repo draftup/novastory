@@ -10,8 +10,10 @@ SqlDatabase::SqlDatabase(bool openOnStart) : QSqlDatabase(addDatabase("QMYSQL"))
 	setDatabaseName("novastory");
 	setUserName("root");
 	setPassword("degitisi");
-	if(openOnStart)
+	if (openOnStart)
+	{
 		VERIFY(open());
+	}
 }
 
 SqlDatabase::~SqlDatabase()

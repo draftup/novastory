@@ -31,7 +31,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	qDebug() << "API protocol handled";
 
 	QStringList hookList = path.split("/");
-	if(hookList.size() != 3)
+	if (hookList.size() != 3)
 	{
 		return false;
 	}

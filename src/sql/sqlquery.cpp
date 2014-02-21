@@ -28,8 +28,10 @@ bool SqlQuery::exec()
 	if (result)
 	{
 		qDebug() << "SQL EXEC [OK]: " << lastQuery();
-		if(list.size() > 0)
-		qDebug() << "SQL Binded values:";
+		if (list.size() > 0)
+		{
+			qDebug() << "SQL Binded values:";
+		}
 		for (int i = 0; i < list.size(); ++i)
 		{
 			qDebug() << i << ": " << list.at(i);
@@ -39,8 +41,10 @@ bool SqlQuery::exec()
 	{
 		qCritical() << "SQL EXEC [FAIL]: " << lastQuery();
 		qCritical() << "SQL Error: " << lastError();
-		if(list.size() > 0)
-		qCritical() << "SQL Binded values:";
+		if (list.size() > 0)
+		{
+			qCritical() << "SQL Binded values:";
+		}
 		for (int i = 0; i < list.size(); ++i)
 		{
 			qCritical() << i << ": " << list.at(i);

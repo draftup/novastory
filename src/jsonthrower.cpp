@@ -18,8 +18,10 @@ QString novastory::JsonThrower::jsonErrorDescription() const
 
 void novastory::JsonThrower::jsonReset()
 {
-	while(jsonMainObject.size())
+	while (jsonMainObject.size())
+	{
 		jsonMainObject.erase(jsonMainObject.begin());
+	}
 	jsonMainObject.insert("error", QJsonValue(false));
 	jsonMainObject.insert("errorDescription", QJsonValue());
 	jsonMainObject.insert("errorType", QJsonValue());
