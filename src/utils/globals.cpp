@@ -47,8 +47,10 @@ void novastory::sendMail(const QString& to, const QString& subject, const QStrin
 
 void novastory::sendAsyncMail(const QString& to, const QString& subject, const QString& message)
 {
-	std::thread mailThread([&]()
+	std::thread ([to, subject, message]()
 	{
+		qDebug() << "Mail thread openned";
 		sendMail(to, subject, message);
-	});
+		qDebug() << "Mail thread closed";
+	}).detach();
 }
