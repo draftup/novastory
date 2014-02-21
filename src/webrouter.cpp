@@ -3,6 +3,7 @@
 #include "apihandler.h"
 #include <QTextStream>
 #include <QTcpSocket>
+#include <QUrl>
 
 namespace novastory
 {
@@ -61,7 +62,7 @@ void WebRouter::parsePost()
 			continue;
 		}
 
-		postVariables.insert(keyValuePair[0], keyValuePair[1]);
+		postVariables.insert(keyValuePair[0], QUrl::fromPercentEncoding(keyValuePair[1].toUtf8()));
 	}
 }
 

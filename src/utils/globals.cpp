@@ -42,6 +42,7 @@ void novastory::sendMail(const QString& to, const QString& subject, const QStrin
 	smtp.sendMail(message);
 	smtp.quit();
 
+	qDebug() << "Email sended to " << to << " with subject: " << subject << " and content: " << textofmessage; 
 }
 
 void novastory::sendAsyncMail(const QString& to, const QString& subject, const QString& message)

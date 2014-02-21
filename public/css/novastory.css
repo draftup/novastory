@@ -168,7 +168,7 @@ hr.vertically {
 	cursor: pointer;
 }
 
-#login-panel
+#login-panel, #registration-panel
 {
 	padding: 20px;
 	border: 2px solid #EFEFEF;
@@ -182,7 +182,14 @@ hr.vertically {
 	display: block;
 }
 
-#login-panel input
+#registration-panel
+{
+	width: 400px;  
+	height: 400px;
+	margin: -200px 0 0 -200px;
+}
+
+#login-panel input, #registration-panel input[type=text], #registration-panel input[type=password]
 {
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
@@ -214,4 +221,13 @@ hr.vertically {
 	margin: 8px 20px 3px 2px;
 	cursor: pointer;
 	font-size: 0.9em;
+}
+
+#registration-panel
+{
+	color: #A64D79;
+}
+#registration-panel input[type=checkbox]
+{
+	margin-left: 20px
 }

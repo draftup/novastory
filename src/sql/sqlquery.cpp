@@ -24,13 +24,11 @@ bool SqlQuery::exec(const QString& query)
 bool SqlQuery::exec()
 {
 	bool result = QSqlQuery::exec();
+	QList<QVariant> list = boundValues().values();
 	if (result)
 	{
 		qDebug() << "SQL EXEC [OK]: " << lastQuery();
-	}
-	QList<QVariant> list = boundValues().values();
-	if (list.size() > 0)
-	{
+		if(list.size() > 0)
 		qDebug() << "SQL Binded values:";
 		for (int i = 0; i < list.size(); ++i)
 		{
@@ -41,16 +39,12 @@ bool SqlQuery::exec()
 	{
 		qCritical() << "SQL EXEC [FAIL]: " << lastQuery();
 		qCritical() << "SQL Error: " << lastError();
-		QList<QVariant> list = boundValues().values();
-		if (list.size() > 0)
+		if(list.size() > 0)
+		qCritical() << "SQL Binded values:";
+		for (int i = 0; i < list.size(); ++i)
 		{
-			qCritical() << "SQL Binded values:";
-			for (int i = 0; i < list.size(); ++i)
-			{
-				qCritical() << i << ": " << list.at(i);
-			}
+			qCritical() << i << ": " << list.at(i);
 		}
-
 	}
 
 	return result;

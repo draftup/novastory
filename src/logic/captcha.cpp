@@ -4,6 +4,7 @@
 #include "utils/globals.h"
 #include "sql/sqlquery.h"
 #include "recaptcha.h"
+#include "user.h"
 
 
 const QString& novastory::Captcha::token() const
@@ -56,19 +57,24 @@ bool novastory::Captcha::addVerifyNotify()
 {
 	if (m_password.isEmpty() || m_email.isEmpty() || m_challenge.isEmpty() || m_response.isEmpty() || m_remoteIP.toString().isEmpty())
 	{
-		JSON_ERROR("Empty captcha info");
+		JSON_ERROR("Empty captcha info", 1);
 		return false;
 	}
 	if (m_email.indexOf("@") == -1)
 	{
-		JSON_ERROR("Email for user " + m_email + " not correct");
+		JSON_ERROR("Email for user " + m_email + " not correct", 2);
 		return false;
 	}
-	if (m_password.length() != 32)
+	if (m_password.length() != 40)
 	{
-		JSON_ERROR("Password for user " + m_email + "not correct");
+		JSON_ERROR("Password for user " + m_email + "not correct", 3);
 		return false;
 	}
+
+	User saltGenerator;
+	saltGenerator.setSHA1Password(m_password);
+	setPassword(saltGenerator.password());
+	setSalt(saltGenerator.salt());
 
 	SqlQuery query;
 	query.prepare("SELECT userid FROM users WHERE email = :email");
@@ -76,7 +82,7 @@ bool novastory::Captcha::addVerifyNotify()
 	VERIFY(query.exec());
 	if (query.size() > 0)
 	{
-		JSON_ERROR(m_email + " already exist in database with such email");
+		JSON_ERROR(m_email + " already exist in database with such email", 4);
 		return false;
 	}
 
@@ -85,7 +91,7 @@ bool novastory::Captcha::addVerifyNotify()
 	Recaptcha captchaChecker(m_challenge, m_response, m_remoteIP);
 	if (!captchaChecker.checkCaptchaSync())
 	{
-		JSON_ERROR(m_email + " doesn't pass captcha verification");
+		JSON_ERROR(m_email + " doesn't pass captcha verification", 5);
 		return false;
 	}
 
@@ -127,9 +133,14 @@ bool novastory::Captcha::deleteByToken(const QString& token /*= QString()*/)
 
 void novastory::Captcha::sendVerificaionMail()
 {
+	if (m_token.isEmpty())
+	{
+		return;
+	}
+
 	sendAsyncMail(
 		m_email,
 		"Welcome to Novastory (novastory.org)",
-		"To validate your new account follow the link below:\nhttp://novastory.org/validate/{$token}\n\nGood luck with novastory!"
+		"To validate your new account follow the link below:\nhttp://novastory.org/validate/" + m_token + "\n\nGood luck with novastory!"
 	);
 }
