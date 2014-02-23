@@ -19,6 +19,7 @@ private slots:
 	void userDuplicatinTest();
 	void userSyncTest();
 	void loginTest();
+	void loginByTokenTest();
 	void deleteUserTest();
 	void validateUser();
 private:
@@ -96,6 +97,16 @@ void Test_LogicUsers::loginTest()
 	QVERIFY(user1.token().length() > 0);
 }
 
+
+void Test_LogicUsers::loginByTokenTest()
+{
+	User user;
+	QVERIFY(user.login("dasdasd@dasdasd.com", sha1("dasdasdasd")));
+	QVERIFY(user.token().length() > 0);
+	User same_user;
+	QVERIFY(!same_user.loginByToken("dasdasd@dasdasd.com", "232323-dasdasdasdas"));
+	QVERIFY(same_user.loginByToken("dasdasd@dasdasd.com", user.token()));
+}
 
 void Test_LogicUsers::deleteUserTest()
 {

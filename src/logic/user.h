@@ -33,6 +33,7 @@ public:
 	void resetPassword();
 
 	bool login(const QString& email, const QString& sha1password);
+	bool loginByToken(const QString& email, const QString& token);
 	bool isLogined() const;
 	const QString& token();
 
