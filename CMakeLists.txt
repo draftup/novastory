@@ -75,6 +75,7 @@ find_package(Qt5Sql REQUIRED)
 include_directories( ${Qt5Core_INCLUDE_DIRS} )
 include_directories( ${Qt5Network_INCLUDE_DIRS} )
 include_directories( ${Qt5Sql_INCLUDE_DIRS} )
+set(CMAKE_CXX_FLAGS "${Qt5Core_EXECUTABLE_COMPILE_FLAGS}")
 find_package(OpenSSL REQUIRED)
 include_directories( ${OPENSSL_INCLUDE_DIR} )
 
