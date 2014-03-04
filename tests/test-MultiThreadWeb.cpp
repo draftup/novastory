@@ -1,6 +1,6 @@
 #include <QtTest>
 #include <QTcpSocket>
-#include "webserver.h"
+#include "webserver/webserver.h"
 
 class Test_MultiThreadWeb: public QObject
 {

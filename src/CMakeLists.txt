@@ -14,7 +14,8 @@ INCLUDE_DIRECTORIES(
 
 
 set(HEADERS_TOMOC
-	webserver.h
+	webserver/webserver.h
+	webserver/webprocess.h
 	recaptcha.h
 	sql/sqlizable.h
 
@@ -34,8 +35,8 @@ set(HEADERS
 	rawfilehandler.h
 	logger.h
 	apihandler.h
-	webrouter.h
-	webrequest.h
+	webserver/webrouter.h
+	webserver/webrequest.h
 )
 
 set(SOURCES
@@ -53,9 +54,10 @@ set(SOURCES
 	apihandler.cpp
 	jsonthrower.cpp
 	logger.cpp
-	webserver.cpp
-	webrouter.cpp
-	webrequest.cpp
+	webserver/webserver.cpp
+	webserver/webprocess.cpp
+	webserver/webrouter.cpp
+	webserver/webrequest.cpp
 )
 
 

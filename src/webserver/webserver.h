@@ -2,6 +2,7 @@
 #define WEBSERVER_H
 
 #include <QTcpServer>
+#include "webprocess.h"
 
 namespace novastory
 {
@@ -14,9 +15,8 @@ public:
 	WebServer(QObject* parent = 0);
 	virtual ~WebServer();
 
-private slots:
-	void someNewConnection();
-	void showHtmlPage();
+protected:
+	void incomingConnection(qintptr socketDescriptor) override;
 
 };
 

@@ -1,5 +1,5 @@
 #include <QCoreApplication>
-#include "webserver.h"
+#include "webserver/webserver.h"
 #include "logger.h"
 
 using namespace novastory;
