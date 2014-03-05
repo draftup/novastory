@@ -12,9 +12,9 @@ namespace novastory
 
 class WebProcess : public QObject, public QRunnable
 {
-Q_OBJECT
+	Q_OBJECT
 public:
-	WebProcess (int socket_descriptor);
+	WebProcess(int socket_descriptor);
 	~WebProcess();
 	void run() override;
 private slots:

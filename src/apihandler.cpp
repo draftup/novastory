@@ -35,7 +35,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	{
 		return false;
 	}
-	if(hookList.size() == 4 && hookList[2] != "validate")
+	if (hookList.size() == 4 && hookList[2] != "validate")
 	{
 		return false;
 	}
@@ -59,7 +59,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		user.login(post["email"], post["password"]);
 		socket->write(user.jsonString().toUtf8());
 	}
-	else if(hook == "validate")
+	else if (hook == "validate")
 	{
 		User* newUser = User::verifyUser(hookList[3]);
 		socket->write(newUser->jsonString().toUtf8());

@@ -206,7 +206,7 @@ bool novastory::User::login(const QString& semail, const QString& sha1password)
 	return syncProcess(query);
 }
 
-bool novastory::User::loginByToken(const QString& semail, const QString& token )
+bool novastory::User::loginByToken(const QString& semail, const QString& token)
 {
 	if (semail.isEmpty() || token.isEmpty())
 	{
@@ -215,7 +215,7 @@ bool novastory::User::loginByToken(const QString& semail, const QString& token )
 	}
 
 	QStringList tokenList = token.split("-");
-	if(tokenList.size() != 2)
+	if (tokenList.size() != 2)
 	{
 		JSON_ERROR("Not valid token", 3);
 		return false;
