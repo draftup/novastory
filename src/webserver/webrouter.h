@@ -15,7 +15,7 @@ class WebRouter : public WebRequest
 public:
 	WebRouter(QTcpSocket* bindedSocket);
 	QString path() const;
-	const QString& postData() const;
+	QString postData() const;
 	void appendHandler(DataHandler* handler);
 	void removeHandler(DataHandler* handler);
 	void sendHtml();

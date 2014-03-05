@@ -99,7 +99,6 @@ bool Sqlizable::insertSQL()
 		SqlQuery query;
 		query.prepare(sql);
 
-		int paramNumber = 0;
 		for (int i = 0; i < valuesCout; ++i)
 		{
 			query.bindValue(i, values.at(i));
