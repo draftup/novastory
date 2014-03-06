@@ -1,36 +1,47 @@
 #include <QtTest>
 #include <QTcpSocket>
 #include "webserver/webserver.h"
+#include "rawfilehandler.h"
 
 class Test_MultiThreadWeb: public QObject
 {
 	Q_OBJECT
 private slots:
 	void basewebTest();
-	void multithreadTest();
+	void multifileTest();
 private:
 	void mChecker();
 signals:
 	void webQuit();
 };
 
-void Test_MultiThreadWeb::multithreadTest()
+void Test_MultiThreadWeb::multifileTest()
 {
-	/*
 	novastory::WebServer w;
 
-	const int readersCount = 8;
+	QStringList testFiles;
+	testFiles 
+		<< "/images/fbook-inactive.png" 
+		<< "/images/fbook.png"
+		<< "/images/gplus-inactive.png"
+		<< "/images/gplus.png"
+		<< "/images/settings.png"
+		<< "/images/write.png"
+		<< "/images/logout.png";
+
+	const int readersCount = 7;
 	QTcpSocket htmlReader[readersCount]; // number of readers
 	int threadCount = 0;
 	int maxThread = 0;
 	int threadLeft = readersCount;
+	novastory::RawFileHandler fh(nullptr);
 	for(int i = 0; i < readersCount; ++i)
 	{
-		connect(&htmlReader[i], &QTcpSocket::connected, [&htmlReader, i, &threadCount, &maxThread](){
+		connect(&htmlReader[i], &QTcpSocket::connected, [&htmlReader, i, &threadCount, &maxThread, &testFiles](){
 			qDebug() << "connect";
 			threadCount++;
 			maxThread = std::max(maxThread, threadCount);
-			htmlReader[i].write("GET /index.html HTTP/1.1\nHost: www.example.com");
+			htmlReader[i].write(("GET " + testFiles[i] + " HTTP/1.1\nHost: www.example.com").toLatin1());
 		});
 		connect(&htmlReader[i], &QTcpSocket::disconnected, [this, &threadLeft, &maxThread](){
 			qDebug() << "disconnect";
@@ -42,9 +53,12 @@ void Test_MultiThreadWeb::multithreadTest()
 				emit webQuit();
 			}
 		});
-		connect(&htmlReader[i], &QTcpSocket::readyRead, [&htmlReader, i, &threadCount](){
+		connect(&htmlReader[i], &QTcpSocket::readyRead, [&htmlReader, i, &threadCount, &testFiles, &fh](){
 			QByteArray html = htmlReader[i].readAll();
-			QVERIFY(html.indexOf("<head>", Qt::CaseInsensitive) >= 0);
+			QFile file(fh.directory() + testFiles[i]);
+			QVERIFY(file.open(QIODevice::ReadOnly));
+			QByteArray fileData = file.readAll();
+			QVERIFY(fileData == html);
 			threadCount--;
 			htmlReader[i].close();
 		});
@@ -55,7 +69,6 @@ void Test_MultiThreadWeb::multithreadTest()
 	QEventLoop loop;
 	connect(this, SIGNAL(webQuit()), &loop, SLOT(quit()));
 	loop.exec();
-	*/
 }
 
 void Test_MultiThreadWeb::basewebTest()
