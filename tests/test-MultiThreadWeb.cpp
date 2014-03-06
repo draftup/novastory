@@ -19,30 +19,42 @@ void Test_MultiThreadWeb::multithreadTest()
 	/*
 	novastory::WebServer w;
 
-	const int SERVERS = 8;
-	QTcpSocket htmlReader[SERVERS];
-	for(int i = 0; i < SERVERS; ++i)
+	const int readersCount = 8;
+	QTcpSocket htmlReader[readersCount]; // number of readers
+	int threadCount = 0;
+	int maxThread = 0;
+	int threadLeft = readersCount;
+	for(int i = 0; i < readersCount; ++i)
 	{
-		connect(&htmlReader[i], &QTcpSocket::connected, [&htmlReader, i](){
-			qDebug() << "connect " << i;
+		connect(&htmlReader[i], &QTcpSocket::connected, [&htmlReader, i, &threadCount, &maxThread](){
+			qDebug() << "connect";
+			threadCount++;
+			maxThread = std::max(maxThread, threadCount);
 			htmlReader[i].write("GET /index.html HTTP/1.1\nHost: www.example.com");
 		});
-		connect(&htmlReader[i], &QTcpSocket::disconnected, [this, i](){
-			qDebug() << "disconnect " << i;
-			emit webQuit();
+		connect(&htmlReader[i], &QTcpSocket::disconnected, [this, &threadLeft, &maxThread](){
+			qDebug() << "disconnect";
+			threadLeft--;
+			if(!threadLeft) // quit
+			{
+				qDebug() << "max thread: " << maxThread;
+				QVERIFY(maxThread > 1);
+				emit webQuit();
+			}
 		});
-		connect(&htmlReader[i], &QTcpSocket::readyRead, [&htmlReader, i](){
+		connect(&htmlReader[i], &QTcpSocket::readyRead, [&htmlReader, i, &threadCount](){
 			QByteArray html = htmlReader[i].readAll();
-			QVERIFY(html.indexOf("HTTP/1.0 200", Qt::CaseInsensitive) >= 0);
-			qDebug() << "readed " << i;
+			QVERIFY(html.indexOf("<head>", Qt::CaseInsensitive) >= 0);
+			threadCount--;
 			htmlReader[i].close();
 		});
+	}
+	for(int i = 0; i < readersCount; ++i)
 		htmlReader[i].connectToHost("127.0.0.1", 8008);
 
-		QEventLoop loop;
-		connect(this, SIGNAL(webQuit()), &loop, SLOT(quit()));
-		loop.exec();
-	}
+	QEventLoop loop;
+	connect(this, SIGNAL(webQuit()), &loop, SLOT(quit()));
+	loop.exec();
 	*/
 }
 
@@ -61,7 +73,7 @@ void Test_MultiThreadWeb::basewebTest()
 	});
 	connect(&htmlReader, &QTcpSocket::readyRead, [&htmlReader](){
 		QByteArray html = htmlReader.readAll();
-		QVERIFY(html.indexOf("HTTP/1.0 200", Qt::CaseInsensitive) >= 0);
+		QVERIFY(html.indexOf("<head>", Qt::CaseInsensitive) >= 0);
 		htmlReader.close();
 	});
 	htmlReader.connectToHost("127.0.0.1", 8008);
