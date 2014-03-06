@@ -26,7 +26,6 @@ void WebProcess::run()
 	VERIFY(socket->setSocketDescriptor(socketDescriptor));
 	VERIFY(connect(socket.data(), SIGNAL(readyRead()), this, SLOT(showHtmlPage()), Qt::DirectConnection));
 	eventLoop.reset(new QEventLoop);
-	VERIFY(connect(this, SIGNAL(exit()), eventLoop.data(), SLOT(quit()), Qt::QueuedConnection));
 	eventLoop->exec();
 }
 
@@ -39,7 +38,9 @@ void WebProcess::showHtmlPage()
 	qDebug() << "path = " << urlRouter.path();
 	urlRouter.sendHtml();
 
+	socket->waitForBytesWritten();
 	socket->close();
-	emit exit();
+	
+	eventLoop->exit();
 }
 }

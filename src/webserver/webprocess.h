@@ -19,8 +19,6 @@ public:
 	void run() override;
 private slots:
 	void showHtmlPage();
-signals:
-	void exit();
 private:
 	QScopedPointer<QTcpSocket> socket;
 	QScopedPointer<QEventLoop> eventLoop;
