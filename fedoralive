@@ -29,6 +29,7 @@ if [ ! -d "$LIVE_DIRECTORY/$SUBFOLDER" ]; then
 	rm -fr build
 	mkdir build
 	cd build
+	mkdir "$LIVE_DIRECTORY/$SUBFOLDER"
 	cmake -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$LIVE_DIRECTORY/$SUBFOLDER" ../
 	make -j4
 	make test
