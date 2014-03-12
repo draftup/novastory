@@ -1,6 +1,9 @@
 #include <QCoreApplication>
 #include "webserver/webserver.h"
 #include "logger.h"
+#ifdef Q_OS_LINUX
+#include <unistd.h>
+#endif
 
 using namespace novastory;
 
