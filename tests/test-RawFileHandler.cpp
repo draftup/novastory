@@ -14,6 +14,7 @@ private slots:
 
 	void setDirectoryTest();
 	void handleTest();
+	void defaultHandleTest();
 private:
 	novastory::RawFileHandler* handler;
 	QTcpSocket socket;
@@ -53,6 +54,11 @@ void Test_RawFileHandler::handleTest()
 	handler->setDirectory(QCoreApplication::applicationDirPath());
 	QVERIFY(handler->handle("GET", "/test-RawFileHandler.testfile"));
 	QVERIFY(!handler->handle("GET", "/test-RawFileHandle.testfile"));
+}
+
+void Test_RawFileHandler::defaultHandleTest()
+{
+	QVERIFY(handler->handle("GET", "/images/main.png"));
 }
 
 /********************** DECLARE_TEST LIST ****************************/

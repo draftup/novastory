@@ -9,4 +9,9 @@
 #define SMTP_USER "uruchie.org@gmail.com"
 #define SMTP_PASSWORD "uruchiesrv0"
 
+#define MYSQL_HOST "localhost"
+#define MYSQL_DATABASE "novastory"
+#define MYSQL_USER "novastory"
+#define MYSQL_PASSWORD "novapassworddb"
+
 #endif // RAWFILEHANDLER_H
