@@ -40,7 +40,9 @@ void WebProcess::showHtmlPage()
 	qDebug() << "path = " << urlRouter.path();
 	urlRouter.sendHtml();
 
-	socket->waitForBytesWritten();
+	while(socket->bytesToWrite() > 0)
+		socket->waitForBytesWritten();
+	
 	socket->close();
 }
 

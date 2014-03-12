@@ -25,9 +25,7 @@ bool RawFileHandler::handle(const QString& type, const QString& path, const QHas
 	if (existFile.open(QIODevice::ReadOnly))
 	{
 		qDebug() << "Raw file handler: " << filePath;
-		QByteArray data = existFile.readAll();
-		qDebug() << "Data buffer size:" << data.size();
-		qDebug() << "Data written:" << socket->write(data);
+		socket->write(existFile.readAll());
 
 		return true;
 	}
