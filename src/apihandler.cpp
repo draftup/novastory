@@ -65,17 +65,18 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		socket->write(newUser->jsonString().toUtf8());
 		delete newUser;
 	}
-	else
+	else if(hook == "version")
 	{
 		// Default
 		QJsonDocument version;
 		QJsonObject versionObject;
-		versionObject.insert("version", QJsonValue(QString(GIT_REVISION).toInt()));
+		versionObject.insert("engine", QJsonValue(QString("novastory")));
+		versionObject.insert("version", QJsonValue(QString(GIT_VERSION)));
+		versionObject.insert("describe", QJsonValue(QString(GIT_DESCRIBE)));
+		versionObject.insert("revision", QJsonValue(QString(GIT_REVISION).toInt()));
 		version.setObject(versionObject);
 		socket->write(version.toJson());
 	}
-
-
 
 	return true;
 }
