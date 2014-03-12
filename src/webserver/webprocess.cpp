@@ -26,6 +26,8 @@ void WebProcess::run()
 	VERIFY(socket->setSocketDescriptor(socketDescriptor));
 	VERIFY(connect(socket.data(), SIGNAL(readyRead()), this, SLOT(showHtmlPage()), Qt::DirectConnection));
 	eventLoop.reset(new QEventLoop);
+	VERIFY(connect(socket.data(), SIGNAL(aboutToClose()), this, SLOT(onSocketClosed()), Qt::DirectConnection));
+	VERIFY(connect(socket.data(), SIGNAL(bytesWritten(qint64)), this, SLOT(onBytesWriten(qint64)), Qt::DirectConnection));
 	eventLoop->exec();
 }
 
@@ -40,7 +42,16 @@ void WebProcess::showHtmlPage()
 
 	socket->waitForBytesWritten();
 	socket->close();
+}
 
+void WebProcess::onSocketClosed()
+{
 	eventLoop->exit();
 }
+
+void WebProcess::onBytesWriten(qint64 bytes)
+{
+	qDebug() << "Socket bytes written: " << bytes;
+}
+
 }
