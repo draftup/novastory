@@ -40,7 +40,7 @@ void WebProcess::showHtmlPage()
 
 	socket->waitForBytesWritten();
 	socket->close();
-	
+
 	eventLoop->exit();
 }
 }

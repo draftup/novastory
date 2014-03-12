@@ -50,12 +50,18 @@ QString RawFileHandler::directory() const
 void RawFileHandler::resetDirectory()
 {
 	QDir dataDirectory = QDir(DATA_DIRECTORY + QString("/public"));
-	if(dataDirectory.exists())
+	if (dataDirectory.exists())
+	{
 		workingDirectory = dataDirectory.absolutePath();
-	else if(QDir(QDir::currentPath() + "/../.." + "/public").exists())
+	}
+	else if (QDir(QDir::currentPath() + "/../.." + "/public").exists())
+	{
 		workingDirectory = QDir::currentPath() + "/../.." + "/public";
-	else if(QDir(QDir::currentPath() + "/public").exists())
+	}
+	else if (QDir(QDir::currentPath() + "/public").exists())
+	{
 		workingDirectory = QDir::currentPath() + "/public";
+	}
 	else
 	{
 		Q_ASSERT(false && "No public directory founded");
