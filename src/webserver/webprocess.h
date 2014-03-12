@@ -21,6 +21,7 @@ private slots:
 	void showHtmlPage();
 	void onSocketClosed();
 	void onBytesWriten(qint64 bytes);
+	void closedByInterval();
 private:
 	QScopedPointer<QTcpSocket> socket;
 	QScopedPointer<QEventLoop> eventLoop;

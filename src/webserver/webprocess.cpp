@@ -3,6 +3,7 @@
 #include <QTcpSocket>
 #include "utils/globals.h"
 #include <QThreadPool>
+#include <QTimer>
 
 namespace novastory
 {
@@ -28,6 +29,7 @@ void WebProcess::run()
 	eventLoop.reset(new QEventLoop);
 	VERIFY(connect(socket.data(), SIGNAL(aboutToClose()), this, SLOT(onSocketClosed()), Qt::DirectConnection));
 	VERIFY(connect(socket.data(), SIGNAL(bytesWritten(qint64)), this, SLOT(onBytesWriten(qint64)), Qt::DirectConnection));
+	QTimer::singleShot(30000, this, SLOT(closedByInterval()));
 	eventLoop->exec();
 }
 
@@ -54,6 +56,12 @@ void WebProcess::onSocketClosed()
 void WebProcess::onBytesWriten(qint64 bytes)
 {
 	qDebug() << "Socket bytes written: " << bytes;
+}
+
+void WebProcess::closedByInterval()
+{
+	qDebug() << "Closed socket by interval";
+	socket->close();
 }
 
 }
