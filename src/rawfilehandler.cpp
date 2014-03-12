@@ -7,10 +7,10 @@ namespace novastory
 {
 
 RawFileHandler::RawFileHandler(QTcpSocket* bindedSocket) :
-	socket(bindedSocket),
-	workingDirectory(QDir::currentPath() + "/../.." + "/public")
+	socket(bindedSocket)
 {
-
+	// set default directory
+	resetDirectory();
 }
 
 RawFileHandler::~RawFileHandler()
@@ -45,6 +45,21 @@ void RawFileHandler::setDirectory(const QString& path)
 QString RawFileHandler::directory() const
 {
 	return workingDirectory;
+}
+
+void RawFileHandler::resetDirectory()
+{
+	QDir dataDirectory = QDir(DATA_DIRECTORY + QString("/public"));
+	if(dataDirectory.exists())
+		workingDirectory = dataDirectory.absolutePath();
+	else if(QDir(QDir::currentPath() + "/../.." + "/public").exists())
+		workingDirectory = QDir::currentPath() + "/../.." + "/public";
+	else if(QDir(QDir::currentPath() + "/public").exists())
+		workingDirectory = QDir::currentPath() + "/public";
+	else
+	{
+		Q_ASSERT(false && "No public directory founded");
+	}
 }
 
 }

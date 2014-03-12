@@ -15,6 +15,7 @@ public:
 	bool handle(const QString& type, const QString& path, const QHash<QString, QString>& post = QHash<QString, QString>(), const QString& get = "") override;
 	void setDirectory(const QString& path);
 	QString directory() const;
+	void resetDirectory();
 private:
 	QTcpSocket* socket;
 	QString workingDirectory;
