@@ -37,6 +37,8 @@ if [ ! -d "$LIVE_DIRECTORY/$SUBFOLDER" ]; then
 		make install
 		rm -f $LIVE_DIRECTORY/current
 		ln -s "$LIVE_DIRECTORY/$SUBFOLDER" "$LIVE_DIRECTORY/current"
+		killall novastory_server
+		"$LIVE_DIRECTORY/current/bin/novastory_server" -d
 	else
 		echo "tests not passed"
 	fi
