@@ -16,14 +16,18 @@ include(cmake/qtx.cmake)
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 
-execute_process(COMMAND ${CMAKE_SOURCE_DIR}/getrevision.sh
-		OUTPUT_VARIABLE GIT_REVISION 
+execute_process(COMMAND git log --pretty=format:cmake
+		OUTPUT_VARIABLE GIT_REVISION
 		OUTPUT_STRIP_TRAILING_WHITESPACE
 		)
+string(REPLACE "\n" ";" GIT_REVISION_LIST ${GIT_REVISION})
+list(LENGTH GIT_REVISION_LIST GIT_REVISION)
+MATH(EXPR GIT_REVISION "${GIT_REVISION} - 1" )
 execute_process(COMMAND git describe
 		OUTPUT_VARIABLE GIT_DESCRIBE 
 		OUTPUT_STRIP_TRAILING_WHITESPACE
 		)
+
 add_definitions(-DGIT_REVISION="${GIT_REVISION}")
 add_definitions(-DGIT_DESCRIBE="${GIT_DESCRIBE}")
 add_definitions(-DGIT_VERSION="${PROJECT_VERSION}")
