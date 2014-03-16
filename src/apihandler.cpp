@@ -69,7 +69,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	else if (hook == "editorupdate")
 	{
 		User user;
-		if(user.loginByToken(post["email"], post["token"]))
+		if (user.loginByToken(post["email"], post["token"]))
 		{
 			TextEditor editor;
 			editor.setUserID(user.userid());
@@ -81,7 +81,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 			socket->write(user.jsonString().toUtf8());
 		}
 	}
-	else if(hook == "version")
+	else if (hook == "version")
 	{
 		// Default
 		QJsonDocument version;

@@ -272,14 +272,16 @@ const QString& novastory::User::token()
 
 bool novastory::User::removeUser()
 {
-	if(m_userid > 0)
+	if (m_userid > 0)
 	{
 		SqlQuery queryRemoveTest;
 		queryRemoveTest.prepare("SELECT * FROM users WHERE userid = ?");
 		queryRemoveTest.bindValue(0, m_userid);
 		VERIFY(queryRemoveTest.exec());
-		if(queryRemoveTest.size() != 1)
-			return false; // noting to delete
+		if (queryRemoveTest.size() != 1)
+		{
+			return false;    // noting to delete
+		}
 
 		return removeSQL("userid");
 	}
@@ -290,8 +292,10 @@ bool novastory::User::removeUser()
 		queryRemoveTest.prepare("SELECT * FROM users WHERE email = ?");
 		queryRemoveTest.bindValue(0, m_email);
 		VERIFY(queryRemoveTest.exec());
-		if(queryRemoveTest.size() != 1)
-			return false; // noting to delete
+		if (queryRemoveTest.size() != 1)
+		{
+			return false;    // noting to delete
+		}
 
 		return removeSQL("email");
 	}

@@ -43,7 +43,7 @@ void TextEditor::resetText()
 
 bool TextEditor::update()
 {
-	if(m_userid < 1)
+	if (m_userid < 1)
 	{
 		JSON_ERROR("Email not valid", 1);
 		return false;
@@ -53,13 +53,13 @@ bool TextEditor::update()
 	userExistCheck.prepare("SELECT userid FROM users WHERE userid = ?");
 	userExistCheck.bindValue(0, m_userid);
 	VERIFY(userExistCheck.exec());
-	if(userExistCheck.size() < 1)
+	if (userExistCheck.size() < 1)
 	{
 		JSON_ERROR("No such user", 2);
 		return false;
 	}
 
-	if(m_text.isNull())
+	if (m_text.isNull())
 	{
 		SqlQuery removeQuery;
 		removeQuery.prepare("DELETE FROM " + objectName() + " WHERE userid = ?");

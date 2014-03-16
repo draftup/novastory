@@ -12,12 +12,14 @@ int main(int argc, char* argv[])
 	QCoreApplication a(argc, argv);
 
 #ifdef Q_OS_LINUX
-	for(QString arg : a.arguments())
+	for (QString arg : a.arguments())
 	{
-		if(arg == "-d")
+		if (arg == "-d")
 		{
 			if (daemon(true, false))
+			{
 				qFatal("Cannot run in daemon mode");
+			}
 		}
 	}
 #endif
