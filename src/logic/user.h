@@ -45,6 +45,8 @@ public:
 	void setEmail(const QString& email);
 	void resetEmail();
 
+	bool removeUser();
+
 	static User* verifyUser(const QString& token);
 protected:
 	QString generateSalt() const;

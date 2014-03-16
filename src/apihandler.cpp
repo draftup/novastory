@@ -7,6 +7,7 @@
 
 #include "logic/captcha.h"
 #include "logic/user.h"
+#include "logic/texteditor.h"
 
 namespace novastory
 {
@@ -64,6 +65,21 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		User* newUser = User::verifyUser(hookList[3]);
 		socket->write(newUser->jsonString().toUtf8());
 		delete newUser;
+	}
+	else if (hook == "editorupdate")
+	{
+		User user;
+		if(user.loginByToken(post["email"], post["token"]))
+		{
+			TextEditor editor;
+			editor.setUserID(user.userid());
+			editor.setText(post["text"]);
+			socket->write(editor.jsonString().toUtf8());
+		}
+		else
+		{
+			socket->write(user.jsonString().toUtf8());
+		}
 	}
 	else if(hook == "version")
 	{

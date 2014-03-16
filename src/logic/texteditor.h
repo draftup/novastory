@@ -25,6 +25,8 @@ public:
 	const QString& text() const;
 	void setText(const QString& text);
 	void resetText();
+
+	bool update();
 private:
 	int m_userid;
 	QString m_text;

@@ -110,12 +110,42 @@ void Test_LogicUsers::loginByTokenTest()
 
 void Test_LogicUsers::deleteUserTest()
 {
+	SqlQuery q;
+	// Removing by hands test
 	User olduser1;
 	olduser1.setUserID(userid);
 	QVERIFY(olduser1.syncSQL("userid"));
+	q.exec("SELECT * FROM users WHERE email = 'dasdasd@dasdasd.com'");
+	QCOMPARE(q.size(), 1);
 	QVERIFY(olduser1.removeSQL("userid"));
+	q.exec("SELECT * FROM users WHERE email = 'dasdasd@dasdasd.com'");
+	QCOMPARE(q.size(), 0);
 	QCOMPARE(olduser1.userid(), -1);
 	QCOMPARE(olduser1.email(), QString());
+
+	// Try again but wih removeUser() default
+	User othernewuser;
+	othernewuser.setRawPassword("dasdasdasd");
+	othernewuser.setEmail("dohastdasdasd@dasdasd.com");
+	QVERIFY(othernewuser.addUser());
+	QVERIFY(othernewuser.removeUser());
+	q.exec("SELECT * FROM users WHERE email = 'dohastdasdasd@dasdasd.com'");
+	QCOMPARE(q.size(), 0);
+	QCOMPARE(othernewuser.userid(), -1);
+	QCOMPARE(othernewuser.email(), QString());
+
+	// And again test data from another user
+	othernewuser.setRawPassword("dasdasdasd");
+	othernewuser.setEmail("dohastdasdasd@dasdasd.com");
+	QVERIFY(!othernewuser.removeUser());
+	QVERIFY(othernewuser.addUser());
+	q.exec("SELECT * FROM users WHERE email = 'dohastdasdasd@dasdasd.com'");
+	QCOMPARE(q.size(), 1);
+	User othernewuser2;
+	othernewuser2.setEmail("dohastdasdasd@dasdasd.com");
+	QVERIFY(othernewuser2.removeUser());
+	q.exec("SELECT * FROM users WHERE email = 'dohastdasdasd@dasdasd.com'");
+	QCOMPARE(q.size(), 0);
 }
 
 void Test_LogicUsers::validateUser()
