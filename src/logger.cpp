@@ -59,7 +59,6 @@ void Logger::initializeFileLog()
 #else
 	previousMsgHandler = qInstallMsgHandler(&novastory::messageOutput);
 #endif
-	qDebug() << "--- Logging Started ---";
 }
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))

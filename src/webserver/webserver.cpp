@@ -12,6 +12,11 @@ WebServer::WebServer(QObject* parent)
 	: QTcpServer(parent)
 {
 	setObjectName("WebServer");
+
+	qDebug() << "----------------------------------------\n";
+	qDebug() << "	Novastory Server r" GIT_REVISION "\n";
+	qDebug() << "-----------------------------------------\n";
+
 	VERIFY(listen(QHostAddress::Any, 8008));
 	qDebug() << "Web server started at " << serverAddress() << ":" << serverPort();
 	SqlDatabase::Instance(); // first call
