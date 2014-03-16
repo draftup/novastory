@@ -70,6 +70,10 @@ void Test_TextEditor::testMain()
 	QVERIFY(editor.update());
 	q.exec(QString("SELECT * FROM texteditor WHERE userid = ") + QString::number(newuser.userid()));
 	QCOMPARE(q.size(), 1);
+	editor.setText("testtext2");
+	QVERIFY(editor.update());
+	q.exec(QString("SELECT * FROM texteditor WHERE userid = ") + QString::number(newuser.userid()));
+	QCOMPARE(q.size(), 1);
 	editor.setText(QString());
 	QVERIFY(editor.update());
 	q.exec(QString("SELECT * FROM texteditor WHERE userid = ") + QString::number(newuser.userid()));
