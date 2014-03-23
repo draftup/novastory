@@ -18,9 +18,9 @@ body {
 
 .login-body {
 	height:150px;
-	width:320px;
+	width:300px;
 	position:absolute;
-	left:90px;
+	left:75px;
 	top:40px;
 	font-size:10pt;
 }
@@ -32,20 +32,11 @@ body {
 	height:20px;
 	background: radial-gradient(circle, #A5A5A5 4px, #EDEDED 5px);
 	position:absolute;
-}
-
-#current-switch {
-	background: radial-gradient(circle, #99146F 4px, #EDEDED 5px);
+	cursor:pointer;
 }
 
 .switch:hover {
 	background: radial-gradient(circle, #99146F 4px, #EDEDED 5px);
-}
-
-.switch a {
-	display:block;
-	height: 100%;
-	text-decoration:none;
 }
 
 /*Правый блок: страница логина*/
@@ -57,50 +48,36 @@ body {
 	border: 1px solid #DBDBDB;
 }
 
-.textarea1 {
-	width:310px;
+input[type="email"], [type="password"] {
+	border:none;
+	outline:none;
+	-webkit-appearance:none;
 	height:28px;
-	margin-left: 5px;	
-}
-
-input[type="email"] {
-	border:none;
-	outline:none;
-	-webkit-appearance:none;
-	height:inherit;
-	width:inherit;
+	width:290px;
 	font-size:10pt;
-}
-
-input[type="password"] {
-	border:none;
-	outline:none;
-	-webkit-appearance:none;
-	height:inherit;
-	width:inherit;
-	font-size:10pt;
+	margin-left:5px;
 }
 
 .reference {
-	text-decoration:none;
 	position: absolute;
+	cursor:pointer;
 	color: #99146F;
 }
 
 .goobook {
-	width:150px;
+	width:140px;
 	height:30px;
 	position:absolute;
-	font-size:13pt;
+	font-size:12pt;
 	margin-top:50px;
+	cursor:pointer;
+	text-align:center;
 }
 
 .goobook a {
 	display:block;
 	color:white;
-	text-decoration:none;
-	text-align:center;
-	margin-top:5px;
+	margin-top:6px;
 }
 
 /*Правый блок: страница регистрации*/
@@ -117,20 +94,11 @@ input[type="password"] {
 	height:inherit;
 	position:absolute;
 	right:0px;
+	cursor:pointer;
 }
 
 .submit:hover {
 	background:#DBDBDB;
-	position:absolute;
-	right:0px;
-}
-
-.submit a {
-	display:block;
-	text-align: center;
-	height: 100%;
-	text-decoration:none;
-	margin-top: 35px;
 }
 
 /*Правый блок: страница восставновления пароля*/
