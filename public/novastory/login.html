@@ -13,27 +13,27 @@
 
 	<div class="login-window">
 		
-			<div class="switch" id="current-switch" style="left:20px; top:30%">
-				<a href="login.html">&nbsp;</a>
+			<div class="switch" id="loginwindow" style="left:20px; top:30%; background: radial-gradient(circle, #99146F 4px, #EDEDED 5px);">
 			</div>
-			<div class="switch" style="left:20px; top:45%">
-				<a href="register.html">&nbsp;</a>
+			<div class="switch" id="registerwindow1" style="left:20px; top:45%">
 			</div>
-			<div class="switch" style="left:20px; top:60%">
-				<a href="restore.html">&nbsp;</a>
+			<div class="switch" id="restorewindow1" style="left:20px; top:60%">
 			</div>
 		
 		<div class="login-body">
 			<div class="textarea">
-				<div class="textarea1"><input type="email" placeholder="Почтовый ящик"></div>
+				<input type="email" id="loginmail" placeholder="Почтовый ящик">
 			</div>
 			<div class="textarea" style="margin-top:20px">
-				<div class="textarea1"><input type="password" placeholder="Пароль"></div>
+				<input type="password"  id="loginpass" placeholder="Пароль">
 			</div>
-			<a class="reference" href="register.html" style="margin-top:15px">регистрация</a>
-			<a class="reference" href="restore.html" style="margin-top:15px; right:0px">я забыл пароль</a>
-			<div class="goobook" style="background:#D70005"><a href=" ">войти через g+</a></div>
-			<div class="goobook" style="background:#3969C8; right:0px"><a href="">войти через <b>f</b></a></div>
+			<a class="reference" id="registerwindow2" style="margin-top:15px">регистрация</a>
+			<a class="reference" id="restorewindow2" style="margin-top:15px; right:0px">я забыл пароль</a>
+			<div class="goobook" id="googlelogin" style="background:#D70005"><a>войти через g+</a></div>
+			<div class="goobook" id="facelogin" style="background:#3969C8; right:0px"><a>войти через <b>f</b></a></div>
+		</div>
+
+		<div class="submit" id="submitlogin">
 		</div>
 	</div>
 

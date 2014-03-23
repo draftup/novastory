@@ -13,30 +13,30 @@
 
 	<div class="login-window">
 		
-			<div class="switch" style="left:20px; top:30%">
-				<a href="login.html">&nbsp;</a>
+			<div class="switch"  id="loginwindow" style="left:20px; top:30%">
+				<a>&nbsp;</a>
 			</div>
-			<div class="switch" id="current-switch" style="left:20px; top:45%">
-				<a href="register.html">&nbsp;</a>
+			<div class="switch" id="registerwindow" style="left:20px; top:45%; background: radial-gradient(circle, #99146F 4px, #EDEDED 5px);">
+				<a>&nbsp;</a>
 			</div>
-			<div class="switch" style="left:20px; top:60%">
-				<a href="restore.html">&nbsp;</a>
+			<div class="switch" id="restorewindow" style="left:20px; top:60%">
+				<a>&nbsp;</a>
 			</div>
 		
-		<div class="login-body" style="width:280px; margin-top:-5px;">
+		<div class="login-body" style="margin-top:-5px;">
 			<div class="textarea">
-				<div class="textarea2"><input type="email" placeholder="Введите почтовый ящик"></div>
+				<div class="textarea2"><input type="email" id="regmail" placeholder="Введите почтовый ящик"></div>
 			</div>
 			<div class="textarea" style="margin-top:20px">
-				<div class="textarea2"><input type="password" placeholder="Введите пароль"></div>
+				<div class="textarea2"><input type="password" id="regpass" placeholder="Введите пароль"></div>
 			</div>
 			<div class="textarea" style="margin-top:20px">
-				<div class="textarea2"><input type="password" placeholder="Повторите пароль"></div>
+				<div class="textarea2"><input type="password" id="regpass2" placeholder="Повторите пароль"></div>
 			</div>
-			<input type="checkbox" style="margin-top:20px"> я принимаю условия регистрации
+			<input type="checkbox" id="idontreadthisshit" style="margin-top:20px"> я принимаю условия регистрации
 		</div>
-		<div class="submit">
-			<a href=""></a>
+		<div class="submit" id="submitreg">
+			<a></a>
 		</div>
 	</div>
 
