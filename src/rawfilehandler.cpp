@@ -20,7 +20,13 @@ RawFileHandler::~RawFileHandler()
 
 bool RawFileHandler::handle(const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& get /* = "" */)
 {
-	const QString filePath = workingDirectory + path;
+	QString filePath = workingDirectory + path;
+	
+	if(path == "/")
+	{
+		filePath = workingDirectory + "/index.html";
+	}
+	
 	QFile existFile(filePath);
 	if (existFile.open(QIODevice::ReadOnly))
 	{
