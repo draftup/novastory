@@ -32,6 +32,10 @@ body {
 	color: #919191;
 }
 
+.current-button {
+	border-bottom: 2px solid #FFA13D;
+}
+
 /*Верхняя панель: графа поиска*/
 
 .searchout {
@@ -47,7 +51,7 @@ input[type="search"] {
 	border:none; /* Убираем рамку */
 	outline:none; /* Убираем свечение в Chrome и Safari */
 	-webkit-appearance:none; /* Убираем рамку в Chrome и Safari */
-	width:280px; /* Ширина поля */
+	width:240px; /* Ширина поля */
 	height:23px;
 	margin-left:5px;
 }
