@@ -15,7 +15,6 @@ body {
 	width:100%;
 	min-width:1000px;
 	line-height:45px;
-	white-space:nowrap;
 }
 
 /*Верхняя панель: кнопки навигации*/
@@ -51,9 +50,35 @@ input[type="search"] {
 	border:none; /* Убираем рамку */
 	outline:none; /* Убираем свечение в Chrome и Safari */
 	-webkit-appearance:none; /* Убираем рамку в Chrome и Safari */
-	width:240px; /* Ширина поля */
+	width:220px; /* Ширина поля */
 	height:23px;
 	margin-left:5px;
+}
+
+/*Верхняя панель: графа поиска: кнопки фильтрации*/
+
+.searchfilter {
+	height:15px;
+	width:15px;
+	margin-top:5px;
+	margin-right:5px;
+	cursor:pointer;
+	float:right;
+}
+
+#postfilter {
+	background:url(../images/post.svg);
+	background-size:contain;
+}
+
+#userfilter {
+	background:url(../images/user.svg);
+	background-size:contain;
+}
+
+#biblfilter {
+	background:url(../images/library.svg);
+	background-size:contain;
 }
 
 /*Верхняя панель: кнопка логина*/
@@ -67,4 +92,81 @@ input[type="search"] {
 	right:0px;
 	cursor:pointer;
 	color: #FFFFFF;
+}
+
+.logico {
+	height:35px;
+	width:35px;
+	margin-right:20px;
+	margin-top:5px;
+	float:right;
+}
+
+#inico {
+	background:url(../images/login.svg);
+	background-size:contain;
+}
+
+#outico {
+	background:url(../images/logout.svg);
+	background-size:contain;
+}
+
+/*Верхняя панель: инструменты*/
+
+.tools {
+	background: #99146F;
+	position:absolute;
+	display:inline-block;
+	right:140px;
+	float:right;
+}
+
+.separator {
+	background:#C272A9;
+	height:20px;
+	width:1px;
+	float:left;
+	margin-top:13px;
+	margin-left:20px;
+}
+
+.avatar {
+	height: 45px;
+	width:45px;
+	border-radius:50%;
+	-webkit-border-radius:50%;
+	-moz-border-radius:50%;
+	margin-left:-23px;
+	float:left;
+}
+
+.avatar img {
+	height:inherit;
+	width:inherit;
+	border-radius:50%;
+}
+
+.toolico {
+	height:20px;
+	width:20px;
+	cursor:pointer;
+	float:left;
+	margin-top:14px;
+	margin-left:13px;
+}
+
+#mylibico {
+	background:url(../images/mylibrary.svg);
+	background-size:contain;
+}
+
+#editico {
+	background:url(../images/editor.svg);
+	background-size:contain;
+}
+
+#messico {
+	background:url(../images/message.svg);
+	background-size:contain;
 }
