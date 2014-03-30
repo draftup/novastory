@@ -1,51 +1,48 @@
 body {
 	font-family: Arial, Verdana, sans-serif;
-	font-size: 11pt;
-	background-color: #FFFFFF;
+	font-size: 10pt;
+	background:#FFFFFF;
 	margin: 0;
-	color: #99146F;
+	color:#474747;
 }
 
-.login-window {
-	height:250px;
-	width:450px;
+.modal-window {
+	height:200px;
+	width:400px;
 	background:#EDEDED;
 	position:relative;
 	font-size:10pt;
 }
 
-/*Правый блок*/
+/*Кнопки навигации*/
 
-.login-body {
-	height:150px;
-	width:300px;
-	position:absolute;
-	left:75px;
-	top:40px;
-	font-size:10pt;
+.navi {
+	height:65px;
+	width:20px;
 }
 
-/*Кнопки навигации слева*/
-
-.switch {
-	width:20px;
+.naviico {
 	height:20px;
-	background: radial-gradient(circle, #A5A5A5 4px, #EDEDED 5px);
-	position:absolute;
+	width:20px;
+	margin-top:22px;
+	margin-left:8px;
 	cursor:pointer;
 }
 
-.switch:hover {
-	background: radial-gradient(circle, #99146F 4px, #EDEDED 5px);
+.current {
+	border-left:2px solid #99146F;
 }
 
-/*Правый блок: страница логина*/
+/*Cтраница логина: поля ввода*/
 
 .textarea {
-	width:inherit;
+	position:absolute;
+	width:300px;
 	height:30px;
 	background: white;
 	border: 1px solid #DBDBDB;
+	left:70px;
+	top:25px;
 }
 
 input[type="email"], [type="password"] {
@@ -58,26 +55,66 @@ input[type="email"], [type="password"] {
 	margin-left:5px;
 }
 
-.reference {
-	position: absolute;
-	cursor:pointer;
-	color: #99146F;
+#loginpass {
+	width:260px;
 }
 
-.goobook {
-	width:140px;
+#restorepass {
+	height:15px;
+	width:15px;
+	margin:8px;
+	cursor:pointer;
+	float:right;
+	background:url(../images/question.svg);
+	background-size:contain;
+}
+
+/*Cтраница логина: кнопки входа*/
+
+.loginbutt {
+	width:100px;
 	height:30px;
 	position:absolute;
 	font-size:12pt;
-	margin-top:50px;
+	color:white;
+	top:140px;
+	left:70px;
 	cursor:pointer;
 	text-align:center;
+	background:#393;
 }
 
-.goobook a {
+.loginbutt a {
 	display:block;
-	color:white;
-	margin-top:6px;
+	margin-top:4px;
+}
+
+.oreuse {
+	width:100px;
+	height:30px;
+	position:absolute;
+	top:146px;
+	left:180px;
+}
+
+.goobook {
+	width:40px;
+	height:40px;
+	position:absolute;
+	top:135px;
+	left:290px;
+	cursor:pointer;
+}
+
+#fbooklogin {
+	background:url(../images/fbook.svg);
+	background-size:contain;
+	left:335px;
+}
+
+#gpluslogin {
+	background:url(../images/gplus.svg);
+	background-size:contain;
 }
 
 /*Правый блок: страница регистрации*/
@@ -87,18 +124,6 @@ input[type="email"], [type="password"] {
 	height:28px;
 	background: white;
 	margin-left: 5px;	
-}
-
-.submit {
-	width:50px;
-	height:inherit;
-	position:absolute;
-	right:0px;
-	cursor:pointer;
-}
-
-.submit:hover {
-	background:#DBDBDB;
 }
 
 /*Правый блок: страница восставновления пароля*/
