@@ -13,22 +13,26 @@
 
 	<div class="page-header">
 		
-		<div class="left-button" id="mainpage" style="border-bottom: 2px solid #FFA13D;">
+		<div class="left-button current-button" id="mainpage">
 		<a>Главная</a>
 		</div>
 		
-		<div class="left-button" id="librarypage" style="margin-left:-4px">
+		<div class="left-button" id="librarypage">
 		<a>Библиотека</a>
 		</div>
 		
 		<div class="searchout">
 		<input type="search" id="novasearch" placeholder="Поиск">
+		<div class="searchfilter" id="postfilter"></div>
+		<div class="searchfilter" id="userfilter"></div>
+		<div class="searchfilter" id="biblfilter"></div>
 		</div>
 		
-		<div class="login" id="loginpage">
-		<a style="display:block;">Войти</a>
+		<div class="login" id="loginpage">Войти
+		<div class="logico" id="inico"></div>
 		</div>
 	</div>
+
 </body>
 
 </html>
