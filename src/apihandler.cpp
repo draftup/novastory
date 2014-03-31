@@ -43,6 +43,8 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 
 	QString hook = hookList[2];
 
+	QByteArray json;
+
 	if (hook == "register")
 	{
 		Captcha captcha;
@@ -52,18 +54,18 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		captcha.setChallenge(post["challenge"]);
 		captcha.setResponse(post["response"]);
 		captcha.addVerifyNotify();
-		socket->write(captcha.jsonString().toUtf8());
+		json = captcha.jsonString().toUtf8();
 	}
 	else if (hook == "login")
 	{
 		User user;
 		user.login(post["email"], post["password"]);
-		socket->write(user.jsonString().toUtf8());
+		json = user.jsonString().toUtf8();
 	}
 	else if (hook == "validate")
 	{
 		User* newUser = User::verifyUser(hookList[3]);
-		socket->write(newUser->jsonString().toUtf8());
+		json = newUser->jsonString().toUtf8();
 		delete newUser;
 	}
 	else if (hook == "editorupdate")
@@ -74,11 +76,11 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 			TextEditor editor;
 			editor.setUserID(user.userid());
 			editor.setText(post["text"]);
-			socket->write(editor.jsonString().toUtf8());
+			json = editor.jsonString().toUtf8();
 		}
 		else
 		{
-			socket->write(user.jsonString().toUtf8());
+			json = user.jsonString().toUtf8();
 		}
 	}
 	else if (hook == "version")
@@ -91,8 +93,16 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		versionObject.insert("describe", QJsonValue(QString(GIT_DESCRIBE)));
 		versionObject.insert("revision", QJsonValue(QString(GIT_REVISION).toInt()));
 		version.setObject(versionObject);
-		socket->write(version.toJson());
+		json = version.toJson();
 	}
+
+	socket->write(
+		("HTTP/1.1 200 OK\n"
+		"Server: novastory\n"
+		"Content-Type: application/json\n"
+		"Content-Length: " + QString::number(json.size()) + "\n\n").toLatin1()
+	);
+	socket->write(json);
 
 	return true;
 }
