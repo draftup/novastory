@@ -58,7 +58,16 @@ void Test_MultiThreadWeb::multifileTest()
 			QFile file(fh.directory() + testFiles[i]);
 			QVERIFY(file.open(QIODevice::ReadOnly));
 			QByteArray fileData = file.readAll();
-			QVERIFY(fileData == html);
+			QByteArray dataWithHeader;
+
+			//adding header
+			dataWithHeader = ("HTTP/1.1 200 OK\n"
+				"Server: novastory\n"
+				"Content-Type: image/png\n"
+				"Content-Length: " + QString::number(fileData.size()) + "\n\n").toLatin1()
+				+ fileData;
+			
+			QVERIFY(dataWithHeader == html);
 			threadCount--;
 			htmlReader[i].close();
 		});
