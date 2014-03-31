@@ -37,6 +37,7 @@ void WebRouter::sendHtml()
 	}
 	if(!isHandeled)
 	{
+		qDebug() << "404 Error, page not founded";
 		socket->write(
 			"HTTP/1.1 404 Not Found\n"
 			"Server: Novastory\n"
