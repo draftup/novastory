@@ -3,12 +3,12 @@ body {
 	font-size: 10pt;
 	background:#FFFFFF;
 	margin: 0;
-	color:#474747;
+	color:#A7A7A7;
 }
 
 .modal-window {
-	height:200px;
-	width:400px;
+	height:260px;
+	width:420px;
 	background:#EDEDED;
 	position:relative;
 	font-size:10pt;
@@ -17,20 +17,29 @@ body {
 /*Кнопки навигации*/
 
 .navi {
-	height:65px;
-	width:20px;
+	height:40px;
+	width:50%;
+	float:left;
+}
+
+.navi a {
+	float:left;
+	margin-top:16px;
+	margin-left:5px;
 }
 
 .naviico {
-	height:20px;
-	width:20px;
-	margin-top:22px;
-	margin-left:8px;
+	height:25px;
+	width:25px;
+	margin-left:55px;
+	margin-top:12px;
 	cursor:pointer;
+	float:left;
 }
 
 .current {
-	border-left:2px solid #99146F;
+	color:#99146F;
+	border-top: 2px solid #99146F;
 }
 
 /*Cтраница логина: поля ввода*/
@@ -41,8 +50,8 @@ body {
 	height:30px;
 	background: white;
 	border: 1px solid #DBDBDB;
-	left:70px;
-	top:25px;
+	left:58px;
+	vertical-align:20px;
 }
 
 input[type="email"], [type="password"] {
@@ -50,7 +59,7 @@ input[type="email"], [type="password"] {
 	outline:none;
 	-webkit-appearance:none;
 	height:28px;
-	width:290px;
+	width:285px;
 	font-size:10pt;
 	margin-left:5px;
 }
@@ -71,17 +80,30 @@ input[type="email"], [type="password"] {
 
 /*Cтраница логина: кнопки входа*/
 
+.buttonblock {
+	position:absolute;
+	left:60px;
+	top:175px;
+}
+
+.buttonblock span {
+	width:110px;
+	height:30px;
+	float:left;
+	text-align:center;
+	margin-top:6px;
+	color:#474747;
+}
+
 .loginbutt {
 	width:100px;
 	height:30px;
-	position:absolute;
 	font-size:12pt;
 	color:white;
-	top:140px;
-	left:70px;
 	cursor:pointer;
 	text-align:center;
 	background:#393;
+	float:left;
 }
 
 .loginbutt a {
@@ -89,27 +111,18 @@ input[type="email"], [type="password"] {
 	margin-top:4px;
 }
 
-.oreuse {
-	width:100px;
-	height:30px;
-	position:absolute;
-	top:146px;
-	left:180px;
-}
-
 .goobook {
 	width:40px;
 	height:40px;
-	position:absolute;
-	top:135px;
-	left:290px;
+	float:left;
 	cursor:pointer;
+	margin-top:-5px;
 }
 
 #fbooklogin {
 	background:url(../images/fbook.svg);
 	background-size:contain;
-	left:335px;
+	margin-left:10px;
 }
 
 #gpluslogin {
@@ -117,13 +130,57 @@ input[type="email"], [type="password"] {
 	background-size:contain;
 }
 
-/*Правый блок: страница регистрации*/
+/*Cтраница регистрации: соглашение*/
 
-.textarea2 {
-	width:270px;
-	height:28px;
-	background: white;
-	margin-left: 5px;	
+.iagree {
+	position:absolute;
+	width:300px;
+	left:60px;
+	top:200px;
+	color:#474747;
 }
 
+input[type="checkbox"] {
+	float:left;
+}
+
+.iagree span {
+	float:left;
+	margin-top:1px;
+	margin-left:2px;
+}
+
+#tocapcha {
+	height:25px;
+	width:25px;
+	cursor:pointer;
+	float:right;
+}
 /*Правый блок: страница восставновления пароля*/
+
+#backtologin {
+	width:30px;
+	height:30px;
+	transform:rotate(-90deg);
+	position:absolute;
+	top:10px;
+	left:195px;
+	cursor:pointer;
+	background:url(../images/modal-login/forward.svg) no-repeat;
+	background-size:contain;
+}
+
+#backtologin:hover {
+	background:url(../images/modal-login/forwardact.svg) no-repeat;
+	background-size:contain;
+}
+
+.instruct {
+	position:absolute;
+	width:300px;
+	left:60px;
+	top:130px;
+	color:#99146F;
+}
+	
+

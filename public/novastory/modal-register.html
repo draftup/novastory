@@ -6,37 +6,32 @@
 <link rel="stylesheet" href="css/login.css">
 
 <head>
-	<title>Данте не знал про php</title>
+	<title>Registration</title>
 </head>
 
 <body>
 
 	<div class="modal-window">
-		
-			<div class="switch"  id="loginwindow" style="left:20px; top:30%">
-				<a>&nbsp;</a>
-			</div>
-			<div class="switch" id="registerwindow" style="left:20px; top:45%; background: radial-gradient(circle, #99146F 4px, #EDEDED 5px);">
-				<a>&nbsp;</a>
-			</div>
-			<div class="switch" id="restorewindow" style="left:20px; top:60%">
-				<a>&nbsp;</a>
-			</div>
-		
-		<div class="modal-area" style="margin-top:-5px;">
-			<div class="textarea">
-				<div class="textarea2"><input type="email" id="regmail" placeholder="Введите почтовый ящик"></div>
-			</div>
-			<div class="textarea" style="margin-top:20px">
-				<div class="textarea2"><input type="password" id="regpass" placeholder="Введите пароль"></div>
-			</div>
-			<div class="textarea" style="margin-top:20px">
-				<div class="textarea2"><input type="password" id="regpass2" placeholder="Повторите пароль"></div>
-			</div>
-			<input type="checkbox" id="idontreadthisshit" style="margin-top:20px"> я принимаю условия регистрации
+		<div class="navi">
+			<img src="images/modal-login/login.svg" class="naviico" id="myacc"><a>войти</a>
 		</div>
-		<div class="submit" id="submitreg">
-			<a></a>
+		<div class="navi current">
+			<img src="images/modal-login/regicurr.svg" class="naviico" id="newacc"><a>регистрация</a>
+		</div>
+			<div class="textarea" style="top:60px;">
+				<input type="email" id="regmail" placeholder="E-mail">
+			</div>
+			<div class="textarea" style="top:105px;">
+				<input type="password" id="regpass" placeholder="Password">
+			</div>
+			<div class="textarea" style="top:150px;">
+				<input type="password" id="confregpass" placeholder="Confirm password">
+			</div>
+			
+			<div class="iagree">
+				<input type="checkbox" id="checkterms"><span>I agree with <a href="dfdf">Terms of Srvice</a></span>
+				<img src="images/modal-login/forward.svg" id="tocapcha">
+			</div>
 		</div>
 	</div>
 

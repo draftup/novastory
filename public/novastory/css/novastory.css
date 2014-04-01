@@ -98,10 +98,10 @@ input[type="search"] {
 }
 
 .logico {
-	height:32px;
-	width:32px;
-	margin-right:20px;
-	margin-top:5px;
+	height:33px;
+	width:33px;
+	margin-right:25px;
+	margin-top:2px;
 	float:right;
 	cursor:pointer;
 }
