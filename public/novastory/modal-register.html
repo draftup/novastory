@@ -13,28 +13,31 @@
 
 	<div class="modal-window">
 		<div class="navi">
-			<img src="images/modal-login/login.svg" class="naviico" id="myacc"><a>войти</a>
+			<div class="naviico" id="myacc"><a>Login</a></div>
 		</div>
 		<div class="navi current">
-			<img src="images/modal-login/regicurr.svg" class="naviico" id="newacc"><a>регистрация</a>
+			<div class="naviico" id="newacc"><a>Registration</a></div>
 		</div>
-			<div class="textarea" style="top:60px;">
-				<input type="email" id="regmail" placeholder="E-mail">
+		<div class="modal-body">
+			<div class="textarea" style="top:20px;">
+				<input type="email" id="regmail" placeholder="E-mail" required>
 			</div>
-			<div class="textarea" style="top:105px;">
-				<input type="password" id="regpass" placeholder="Password">
+			<div class="textarea" style="top:65px;">
+				<input type="password" id="regpass" placeholder="Password" required>
 			</div>
-			<div class="textarea" style="top:150px;">
-				<input type="password" id="confregpass" placeholder="Confirm password">
+			<div class="textarea" style="top:110px;">
+				<input type="password" id="confregpass" placeholder="Confirm password" required>
 			</div>
 			
 			<div class="iagree">
-				<input type="checkbox" id="checkterms"><span>I agree with <a href="dfdf">Terms of Srvice</a></span>
+				<input type="checkbox" id="checkterms"><span>I agree with <a href="dfdf">Terms of Service</a></span>
 				<img src="images/modal-login/forward.svg" id="tocapcha">
 			</div>
+		</div>
 		</div>
 	</div>
 
 </body>
 
 </html>
+

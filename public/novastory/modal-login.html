@@ -13,24 +13,26 @@
 
 	<div class="modal-window">
 		<div class="navi current">
-			<img src="images/modal-login/logincurr.svg" class="naviico" id="myacc"><a>войти</a>
+			<div class="naviico" id="myacc"><a>Login</a></div>
 		</div>
 		<div class="navi">
-			<img src="images/modal-login/regi.svg" class="naviico" id="newacc"><a>регистрация</a>
+			<div class="naviico" id="newacc"><a>Registration</a></div>
 		</div>
-			<div class="textarea" style="top:70px;">
-				<input type="email" id="loginmail" placeholder="E-mail">
+		<div class="modal-body">
+			<div class="textarea" style="top:30px;">
+				<input type="email" id="loginmail" placeholder="E-mail" required>
 			</div>
-			<div class="textarea" style="top:115px;">
-				<input type="password" id="loginpass" placeholder="Password"><div id="restorepass"></div>
+			<div class="textarea" style="top:75px;">
+				<input type="password" id="loginpass" placeholder="Password" required><div id="restorepass"></div>
 			</div>
 
 			<div class="buttonblock">
-				<div class="loginbutt"><a>login</a></div>
+				<div id="loginbutt"><a>Login</a></div>
 				<span>or just use</span> 	
 				<div class="goobook" id="gpluslogin"></div>
 				<div class="goobook" id="fbooklogin"></div>
 			</div>
+		</div>
 		</div>
 	</div>
 

@@ -22,19 +22,25 @@ body {
 	float:left;
 }
 
-.navi a {
-	float:left;
-	margin-top:16px;
-	margin-left:5px;
-}
-
 .naviico {
 	height:25px;
-	width:25px;
-	margin-left:55px;
+	margin-left:50px;
 	margin-top:12px;
-	cursor:pointer;
+	background:url(../images/modal-login/login.svg) no-repeat;
+	background-size:contain;
 	float:left;
+	cursor:pointer;
+}
+
+.naviico a {
+	margin-top:5px;
+	margin-left:30px;
+	display:block;
+}
+
+#newacc {
+	background:url(../images/modal-login/regi.svg) no-repeat;
+	background-size:contain;
 }
 
 .current {
@@ -42,7 +48,26 @@ body {
 	border-top: 2px solid #99146F;
 }
 
-/*Cтраница логина: поля ввода*/
+.current #myacc {
+	background:url(../images/modal-login/logincurr.svg) no-repeat;
+	background-size:contain;
+}
+
+.current #newacc {
+	background:url(../images/modal-login/regicurr.svg) no-repeat;
+	background-size:contain;
+}
+
+/*Страница логина и регистрации*/
+
+.modal-body {
+	height:220px;
+	position:absolute;
+	width:100%;
+	top:40px;
+}
+
+/*Cтраница логина: поля ввода, ссылка на восстановление пароля*/
 
 .textarea {
 	position:absolute;
@@ -51,7 +76,6 @@ body {
 	background: white;
 	border: 1px solid #DBDBDB;
 	left:58px;
-	vertical-align:20px;
 }
 
 input[type="email"], [type="password"] {
@@ -59,13 +83,13 @@ input[type="email"], [type="password"] {
 	outline:none;
 	-webkit-appearance:none;
 	height:28px;
-	width:285px;
+	width:290px;
 	font-size:10pt;
 	margin-left:5px;
 }
 
 #loginpass {
-	width:260px;
+	width:264px;
 }
 
 #restorepass {
@@ -78,12 +102,12 @@ input[type="email"], [type="password"] {
 	background-size:contain;
 }
 
-/*Cтраница логина: кнопки входа*/
+/*Cтраница логина: кнопки*/
 
 .buttonblock {
 	position:absolute;
 	left:60px;
-	top:175px;
+	top:135px;
 }
 
 .buttonblock span {
@@ -95,21 +119,25 @@ input[type="email"], [type="password"] {
 	color:#474747;
 }
 
-.loginbutt {
+/*Cтраница логина: кнопка входа*/
+
+#loginbutt {
 	width:100px;
 	height:30px;
 	font-size:12pt;
 	color:white;
 	cursor:pointer;
 	text-align:center;
-	background:#393;
+	background:#99146F;
 	float:left;
 }
 
-.loginbutt a {
+#loginbutt a {
 	display:block;
 	margin-top:4px;
 }
+
+/*Cтраница логина: вход через g+ и facebook*/
 
 .goobook {
 	width:40px;
@@ -117,6 +145,9 @@ input[type="email"], [type="password"] {
 	float:left;
 	cursor:pointer;
 	margin-top:-5px;
+	border-radius:50%;
+	-webkit-border-radius:50%;
+	-moz-border-radius:50%;
 }
 
 #fbooklogin {
@@ -130,33 +161,34 @@ input[type="email"], [type="password"] {
 	background-size:contain;
 }
 
-/*Cтраница регистрации: соглашение*/
-
-.iagree {
-	position:absolute;
-	width:300px;
-	left:60px;
-	top:200px;
-	color:#474747;
-}
+/*Cтраница регистрации: галочка, текст соглашения, кнопка перехода к капче*/
 
 input[type="checkbox"] {
 	float:left;
 }
 
+.iagree {
+	position:absolute;
+	width:295px;
+	left:60px;
+	top:160px;
+	color:#474747;
+}
+
 .iagree span {
 	float:left;
-	margin-top:1px;
+	margin-top:2px;
 	margin-left:2px;
 }
 
 #tocapcha {
-	height:25px;
-	width:25px;
+	height:23px;
+	width:23px;
 	cursor:pointer;
 	float:right;
 }
-/*Правый блок: страница восставновления пароля*/
+
+/*Страница восставновления пароля: кнопка возврата на страницу логина*/
 
 #backtologin {
 	width:30px;
@@ -175,6 +207,28 @@ input[type="checkbox"] {
 	background-size:contain;
 }
 
+/*Страница восставновления пароля: форма ввода пароля, кнопка поддтверждения и текст*/
+
+#restoremail {
+	width:215px;
+}
+
+.sendpass {
+	width:70px;
+	height:30px;
+	background:#99146F;
+	cursor:pointer;
+	float:right;
+	color:white;
+	text-align:center;
+	font-size:11pt;
+}
+
+.sendpass a {
+	display:block;
+	margin-top:6px;
+}
+
 .instruct {
 	position:absolute;
 	width:300px;
@@ -182,5 +236,3 @@ input[type="checkbox"] {
 	top:130px;
 	color:#99146F;
 }
-	
-

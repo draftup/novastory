@@ -47,10 +47,10 @@ body {
 }
 
 input[type="search"] {
-	border:none; /* Убираем рамку */
-	outline:none; /* Убираем свечение в Chrome и Safari */
-	-webkit-appearance:none; /* Убираем рамку в Chrome и Safari */
-	width:220px; /* Ширина поля */
+	border:none;
+	outline:none;
+	-webkit-appearance:none;
+	width:220px;
 	height:23px;
 	margin-left:5px;
 }
@@ -58,8 +58,8 @@ input[type="search"] {
 /*Верхняя панель: графа поиска: кнопки фильтрации*/
 
 .searchfilter {
-	height:15px;
-	width:15px;
+	height:16px;
+	width:16px;
 	margin-top:5px;
 	margin-right:5px;
 	cursor:pointer;
@@ -67,17 +67,17 @@ input[type="search"] {
 }
 
 #postfilter {
-	background:url(../images/post.svg);
+	background:url(../images/search-filters/post.svg);
 	background-size:contain;
 }
 
 #userfilter {
-	background:url(../images/user.svg);
+	background:url(../images/search-filters/user.svg);
 	background-size:contain;
 }
 
 #biblfilter {
-	background:url(../images/library.svg);
+	background:url(../images/search-filters/library.svg);
 	background-size:contain;
 }
 
@@ -98,10 +98,10 @@ input[type="search"] {
 }
 
 .logico {
-	height:33px;
-	width:33px;
+	height:30px;
+	width:30px;
 	margin-right:25px;
-	margin-top:2px;
+	margin-top:3px;
 	float:right;
 	cursor:pointer;
 }
