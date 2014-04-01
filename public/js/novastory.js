@@ -16,14 +16,7 @@ $(document).ready(function ()
 	{
 		var login = $('#login-email-field').val();
 		var pass = $('#login-password-field').val();
-		$.post(
-			'/api/login',
-		{
-			email : login,
-			password : $.sha1(pass)
-		},
-			function (data)
-		{
+		NovastoryApi.login(login, pass, function (data) {
 			if (data.logined != null && data.logined)
 			{
 				alert("login successful");
@@ -33,8 +26,7 @@ $(document).ready(function ()
 			{
 				alert("login failed");
 			}
-		},
-			'json');
+		});
 	}
 
 	function doRegistration()
@@ -54,16 +46,7 @@ $(document).ready(function ()
 			alert("input error");
 			return;
 		}
-
-			$.post(
-				'/api/register',
-			{
-				email : email_adress,
-				password : $.sha1(password_original),
-				challenge : Recaptcha.get_challenge(),
-				response : Recaptcha.get_response()
-			},
-				function (data)
+			NovastoryApi.register(email_adress, password_original, Recaptcha.get_challenge(), Recaptcha.get_response(), function (data)
 			{
 
 				if (data.error == null || data.error)
@@ -75,8 +58,7 @@ $(document).ready(function ()
 					Recaptcha.destroy();
 					alert("okay");
 				}
-			},
-				'json');
+			});
 
 	}
 
