@@ -23,6 +23,7 @@ public:
 
 	void parsePost();
 private:
+	QTcpSocket* socket;
 	QList<DataHandler*> handlers;
 	QHash<QString, QString> postVariables;
 };

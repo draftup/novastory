@@ -3,6 +3,10 @@
 #include <QFile>
 #include <QDir>
 #include <QTcpSocket>
+
+#include <QMimeDatabase>
+#include <QMimeType>
+
 namespace novastory
 {
 
@@ -20,12 +24,33 @@ RawFileHandler::~RawFileHandler()
 
 bool RawFileHandler::handle(const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& get /* = "" */)
 {
-	const QString filePath = workingDirectory + path;
+	QString filePath = workingDirectory + path;
+	
+	if(path == "/")
+	{
+		filePath = workingDirectory + "/index.html";
+	}
+	
 	QFile existFile(filePath);
 	if (existFile.open(QIODevice::ReadOnly))
 	{
 		qDebug() << "Raw file handler: " << filePath;
-		socket->write(existFile.readAll());
+
+		QByteArray data = existFile.readAll();
+
+		QMimeDatabase db;
+		QMimeType mime = db.mimeTypeForFileNameAndData(existFile.fileName(), data);
+
+		qDebug() << "Raw file type is: " << mime.name();
+
+		socket->write(
+			("HTTP/1.1 200 OK\n"
+			"Server: novastory\n"
+			"Content-Type: " + mime.name() + "\n"
+			"Content-Length: " + QString::number(data.size()) + "\n\n").toLatin1()
+			);
+
+		socket->write(data);
 
 		return true;
 	}

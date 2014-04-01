@@ -12,6 +12,7 @@ int WebProcess::processCounter = 0;
 
 WebProcess::WebProcess(int socket_descriptor) : socketDescriptor(socket_descriptor)
 {
+	setObjectName(QString("WebProcess ") + socket_descriptor);
 	setAutoDelete(true);
 	qDebug() << "THREAD WorkProcess started (now active instances: " << ++WebProcess::processCounter << ")";
 }
@@ -25,6 +26,7 @@ void WebProcess::run()
 {
 	socket.reset(new QTcpSocket);
 	VERIFY(socket->setSocketDescriptor(socketDescriptor));
+	qDebug() << "Socket" << socketDescriptor << "openned";
 	VERIFY(connect(socket.data(), SIGNAL(readyRead()), this, SLOT(showHtmlPage()), Qt::DirectConnection));
 	eventLoop.reset(new QEventLoop);
 	VERIFY(connect(socket.data(), SIGNAL(aboutToClose()), this, SLOT(onSocketClosed()), Qt::DirectConnection));
@@ -53,6 +55,7 @@ void WebProcess::showHtmlPage()
 void WebProcess::onSocketClosed()
 {
 	eventLoop->exit();
+	qDebug() << "Socket" << socket->socketDescriptor() << "closed";
 }
 
 void WebProcess::onBytesWriten(qint64 bytes)
