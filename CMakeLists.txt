@@ -13,6 +13,7 @@ set (CMAKE_MODULE_PATH
 )
 include(cmake/testing.cmake)
 include(cmake/qtx.cmake)
+include(cmake/doxigenHelper.cmake)
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 
@@ -83,6 +84,8 @@ include_directories( ${Qt5Sql_INCLUDE_DIRS} )
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Core_EXECUTABLE_COMPILE_FLAGS}")
 find_package(OpenSSL REQUIRED)
 include_directories( ${OPENSSL_INCLUDE_DIR} )
+
+SETUP_DOXYGEN()
 
 SETUP_TESTING()
 add_subdirectory(src)
