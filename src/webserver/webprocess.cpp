@@ -8,7 +8,7 @@
 namespace novastory
 {
 
-int WebProcess::processCounter = 0;
+std::atomic<int> WebProcess::processCounter(0);
 
 WebProcess::WebProcess(int socket_descriptor) : socketDescriptor(socket_descriptor)
 {

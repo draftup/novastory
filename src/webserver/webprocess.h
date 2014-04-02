@@ -6,6 +6,7 @@
 class QTcpSocket;
 #include <QScopedPointer>
 #include <QEventLoop>
+#include <atomic>
 
 namespace novastory
 {
@@ -27,7 +28,7 @@ private:
 	QScopedPointer<QTcpSocket> socket;
 	QScopedPointer<QEventLoop> eventLoop;
 	int socketDescriptor;
-	static int processCounter;
+	static std::atomic<int> processCounter;
 };
 
 }
