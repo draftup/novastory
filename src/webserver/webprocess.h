@@ -22,6 +22,7 @@ private slots:
 	void onSocketClosed();
 	void onBytesWriten(qint64 bytes);
 	void closedByInterval();
+	void onSocketDisconnected();
 private:
 	QScopedPointer<QTcpSocket> socket;
 	QScopedPointer<QEventLoop> eventLoop;

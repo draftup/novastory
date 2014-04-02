@@ -30,6 +30,7 @@ void WebProcess::run()
 	VERIFY(connect(socket.data(), SIGNAL(readyRead()), this, SLOT(showHtmlPage()), Qt::DirectConnection));
 	eventLoop.reset(new QEventLoop);
 	VERIFY(connect(socket.data(), SIGNAL(aboutToClose()), this, SLOT(onSocketClosed()), Qt::DirectConnection));
+	VERIFY(connect(socket.data(), SIGNAL(disconnected()), this, SLOT(onSocketDisconnected()), Qt::DirectConnection));
 	VERIFY(connect(socket.data(), SIGNAL(bytesWritten(qint64)), this, SLOT(onBytesWriten(qint64)), Qt::DirectConnection));
 	QTimer::singleShot(30000, this, SLOT(closedByInterval()));
 	eventLoop->exec();
@@ -52,9 +53,13 @@ void WebProcess::showHtmlPage()
 	socket->close();
 }
 
-void WebProcess::onSocketClosed()
+void WebProcess::onSocketDisconnected()
 {
 	eventLoop->exit();
+}
+
+void WebProcess::onSocketClosed()
+{
 	qDebug() << "Socket" << socket->socketDescriptor() << "closed";
 }
 
