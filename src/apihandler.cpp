@@ -96,12 +96,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		json = version.toJson();
 	}
 
-	socket->write(
-		("HTTP/1.1 200 OK\n"
-		"Server: novastory\n"
-		"Content-Type: application/json\n"
-		"Content-Length: " + QString::number(json.size()) + "\n\n").toLatin1()
-	);
+	socket->write(htmlHeaderGen("application/json", json.size()));
 	socket->write(json);
 
 	return true;

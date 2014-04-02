@@ -18,6 +18,14 @@ qint64 unixtime();
 void sendMail(const QString& to, const QString& subject, const QString& message);
 void sendAsyncMail(const QString& to, const QString& subject, const QString& message);
 
+inline QByteArray htmlHeaderGen(const QString& mimetype, int size)
+{
+	return ("HTTP/1.1 200 OK\n"
+		"Server: novastory\n"
+		"Content-Type: " + mimetype + "\n"
+		"Content-Length: " + QString::number(size) + "\n\n").toLatin1();
+}
+
 }
 
 #endif // APIHANDLER_H

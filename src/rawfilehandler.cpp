@@ -1,4 +1,5 @@
 #include "rawfilehandler.h"
+#include "utils/globals.h"
 #include <QDebug>
 #include <QFile>
 #include <QDir>
@@ -43,13 +44,7 @@ bool RawFileHandler::handle(const QString& type, const QString& path, const QHas
 
 		qDebug() << "Raw file type is: " << mime.name();
 
-		socket->write(
-			("HTTP/1.1 200 OK\n"
-			"Server: novastory\n"
-			"Content-Type: " + mime.name() + "\n"
-			"Content-Length: " + QString::number(data.size()) + "\n\n").toLatin1()
-			);
-
+		socket->write(htmlHeaderGen(mime.name(), data.size()));
 		socket->write(data);
 
 		return true;
