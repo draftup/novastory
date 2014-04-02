@@ -3,6 +3,7 @@ cmake_minimum_required (VERSION 2.8)
 # Project settings
 
 set (PROJECT_NAME novastory)
+set (PROJECT_NAME "Novastory WebEngine")
 set (PROJECT_VERSION "0.1.0")
 
 # ------------------------------
