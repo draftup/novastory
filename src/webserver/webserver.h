@@ -12,12 +12,12 @@ class WebServer : public QTcpServer
 	Q_OBJECT
 
 public:
-	WebServer(QObject* parent = 0);
+	WebServer(QObject* parent = nullptr, quint16 initializationPort = 8008);
 	virtual ~WebServer();
 
-	static WebServer& Instance()
+	static WebServer& Instance(quint16 initializationPort = 8008)
 	{
-		static WebServer theSingleInstance;
+		static WebServer theSingleInstance(nullptr, initializationPort);
 		return theSingleInstance;
 	}
 

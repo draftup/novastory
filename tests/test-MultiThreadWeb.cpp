@@ -18,6 +18,7 @@ signals:
 
 void Test_MultiThreadWeb::setDirectoryTest()
 {
+	novastory::WebServer::Instance(8007);
 	novastory::WebServer::Instance().setDirectory(QDir::currentPath());
 	QString path = novastory::WebServer::Instance().directory();
 	QVERIFY(path.size() > 0);
@@ -85,7 +86,7 @@ void Test_MultiThreadWeb::multifileTest()
 		});
 	}
 	for(int i = 0; i < readersCount; ++i)
-		htmlReader[i].connectToHost("127.0.0.1", 8008);
+		htmlReader[i].connectToHost("127.0.0.1", novastory::WebServer::Instance().serverPort());
 
 	QEventLoop loop;
 	connect(this, SIGNAL(webQuit()), &loop, SLOT(quit()));
@@ -108,7 +109,7 @@ void Test_MultiThreadWeb::basewebTest()
 		QVERIFY(html.indexOf("<head>", Qt::CaseInsensitive) >= 0);
 		htmlReader.close();
 	});
-	htmlReader.connectToHost("127.0.0.1", 8008);
+	htmlReader.connectToHost("127.0.0.1", novastory::WebServer::Instance().serverPort());
 
 	QEventLoop loop;
 	connect(this, SIGNAL(webQuit()), &loop, SLOT(quit()));
