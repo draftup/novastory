@@ -1,6 +1,8 @@
 #include "webrouter.h"
 #include "rawfilehandler.h"
 #include "apihandler.h"
+#include "utils/globals.h"
+#include "webserver/templator.h"
 #include <QTextStream>
 #include <QTcpSocket>
 #include <QUrl>
@@ -38,14 +40,8 @@ void WebRouter::sendHtml()
 	if(!isHandeled)
 	{
 		qDebug() << "404 Error, page not founded";
-		socket->write(
-			"HTTP/1.1 404 Not Found\n"
-			"Server: Novastory\n"
-			"Connection: close\n"
-			"Content-Length: 16\n"
-			"Content-Type: text/html\n\n"
-			"404 Not founded."
-		);
+		QByteArray responce = Templator::generate("Page not founded", "404 Page not founded");
+		socket->write(htmlHeaderGen("text/html", responce.size(), "404 Not Found") + responce);
 	}
 }
 

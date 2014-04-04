@@ -7,6 +7,7 @@ class Test_MultiThreadWeb: public QObject
 {
 	Q_OBJECT
 private slots:
+	void setDirectoryTest();
 	void basewebTest();
 	void multifileTest();
 private:
@@ -15,10 +16,20 @@ signals:
 	void webQuit();
 };
 
+void Test_MultiThreadWeb::setDirectoryTest()
+{
+	novastory::WebServer::Instance().setDirectory(QDir::currentPath());
+	QString path = novastory::WebServer::Instance().directory();
+	QVERIFY(path.size() > 0);
+	novastory::WebServer::Instance().setDirectory(QDir::currentPath() + "/");
+	QCOMPARE(novastory::WebServer::Instance().directory(), path);
+	novastory::WebServer::Instance().setDirectory("");
+	QCOMPARE(novastory::WebServer::Instance().directory(), path);
+	novastory::WebServer::Instance().resetDirectory();
+}
+
 void Test_MultiThreadWeb::multifileTest()
 {
-	novastory::WebServer w;
-
 	QStringList testFiles;
 	testFiles 
 		<< "/images/fbook-inactive.png" 
@@ -34,7 +45,6 @@ void Test_MultiThreadWeb::multifileTest()
 	int threadCount = 0;
 	int maxThread = 0;
 	int threadLeft = readersCount;
-	novastory::RawFileHandler fh(nullptr);
 	for(int i = 0; i < readersCount; ++i)
 	{
 		connect(&htmlReader[i], &QTcpSocket::connected, [&htmlReader, i, &threadCount, &maxThread, &testFiles](){
@@ -53,9 +63,11 @@ void Test_MultiThreadWeb::multifileTest()
 				emit webQuit();
 			}
 		});
-		connect(&htmlReader[i], &QTcpSocket::readyRead, [&htmlReader, i, &threadCount, &testFiles, &fh](){
+		connect(&htmlReader[i], &QTcpSocket::readyRead, [&htmlReader, i, &threadCount, &testFiles](){
 			QByteArray html = htmlReader[i].readAll();
-			QFile file(fh.directory() + testFiles[i]);
+			QString publicDirectory = novastory::WebServer::Instance().directory();
+			qDebug() << "Public directory: " << publicDirectory;
+			QFile file(publicDirectory + testFiles[i]);
 			QVERIFY(file.open(QIODevice::ReadOnly));
 			QByteArray fileData = file.readAll();
 			QByteArray dataWithHeader;
@@ -82,8 +94,6 @@ void Test_MultiThreadWeb::multifileTest()
 
 void Test_MultiThreadWeb::basewebTest()
 {
-	novastory::WebServer w;
-
 	QTcpSocket htmlReader;
 	connect(&htmlReader, &QTcpSocket::connected, [&htmlReader](){
 		qDebug() << "connect";

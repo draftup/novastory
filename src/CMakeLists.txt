@@ -44,6 +44,7 @@ set(HEADERS
 	rawfilehandler.h
 	logger.h
 	apihandler.h
+	webserver/templator.h
 	webserver/webrouter.h
 	webserver/webrequest.h
 )
@@ -64,6 +65,7 @@ set(SOURCES
 	apihandler.cpp
 	jsonthrower.cpp
 	logger.cpp
+	webserver/templator.cpp
 	webserver/webserver.cpp
 	webserver/webprocess.cpp
 	webserver/webrouter.cpp

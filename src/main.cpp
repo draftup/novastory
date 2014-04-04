@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 #endif
 
 	Logger::Instance().setWriteToLogFile(true); // Log all to file output
-	WebServer w;
+	WebServer::Instance();
 
 	return a.exec();
 }

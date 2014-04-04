@@ -88,13 +88,14 @@ void sendAsyncMail(const QString& to, const QString& subject, const QString& mes
  *
  * @param	mimetype	The mimetype of file
  * @param	size		The size of file
+ * @param	status		Html status (200 by default)
  *
  * @return	Html header. Apeend you body to it.
  */
 
-inline QByteArray htmlHeaderGen(const QString& mimetype, int size)
+inline QByteArray htmlHeaderGen(const QString& mimetype, int size, const QString& status = "200 OK")
 {
-	return ("HTTP/1.1 200 OK\n"
+	return ("HTTP/1.1 " + status + "\n"
 		"Server: novastory\n"
 		"Content-Type: " + mimetype + "\n"
 		"Content-Length: " + QString::number(size) + "\n\n").toLatin1();

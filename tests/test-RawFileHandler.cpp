@@ -2,6 +2,9 @@
 #include <QTcpSocket>
 #include <QCoreApplication>
 #include "rawfilehandler.h"
+#include "webserver/webserver.h"
+
+using namespace novastory;
 
 class Test_RawFileHandler: public QObject
 {
@@ -12,7 +15,6 @@ private slots:
 	void cleanup();
 	void cleanupTestCase();
 
-	void setDirectoryTest();
 	void handleTest();
 	void defaultHandleTest();
 private:
@@ -38,26 +40,16 @@ void Test_RawFileHandler::cleanupTestCase()
 {
 }
 
-void Test_RawFileHandler::setDirectoryTest()
-{
-	handler->setDirectory(QDir::currentPath());
-	QString path = handler->directory();
-	QVERIFY(path.size() > 0);
-	handler->setDirectory(QDir::currentPath() + "/");
-	QCOMPARE(handler->directory(), path);
-	handler->setDirectory("");
-	QCOMPARE(handler->directory(), path);
-}
-
 void Test_RawFileHandler::handleTest()
 {
-	handler->setDirectory(QCoreApplication::applicationDirPath());
+	WebServer::Instance().setDirectory(QCoreApplication::applicationDirPath());
 	QVERIFY(handler->handle("GET", "/test-RawFileHandler.testfile"));
 	QVERIFY(!handler->handle("GET", "/test-RawFileHandle.testfile"));
 }
 
 void Test_RawFileHandler::defaultHandleTest()
 {
+	WebServer::Instance().resetDirectory();
 	QVERIFY(handler->handle("GET", "/images/main.png"));
 }
 
