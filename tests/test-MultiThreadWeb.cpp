@@ -32,13 +32,13 @@ void Test_MultiThreadWeb::multifileTest()
 {
 	QStringList testFiles;
 	testFiles 
-		<< "/images/fbook-inactive.png" 
-		<< "/images/fbook.png"
-		<< "/images/gplus-inactive.png"
-		<< "/images/gplus.png"
-		<< "/images/settings.png"
-		<< "/images/write.png"
-		<< "/images/logout.png";
+		<< "/images/editor.svg" 
+		<< "/images/fbook.svg"
+		<< "/images/gplus.svg"
+		<< "/images/login.svg"
+		<< "/images/message.svg"
+		<< "/images/message-unread.svg"
+		<< "/images/mylibrary.svg";
 
 	const int readersCount = 7;
 	QTcpSocket htmlReader[readersCount]; // number of readers
@@ -75,7 +75,7 @@ void Test_MultiThreadWeb::multifileTest()
 			//adding header
 			dataWithHeader = ("HTTP/1.1 200 OK\n"
 				"Server: novastory\n"
-				"Content-Type: image/png\n"
+				"Content-Type: image/svg+xml\n"
 				"Content-Length: " + QString::number(fileData.size()) + "\n\n").toLatin1()
 				+ fileData;
 			
