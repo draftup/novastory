@@ -40,7 +40,7 @@ void WebRouter::sendHtml()
 	if(!isHandeled)
 	{
 		qDebug() << "404 Error, page not founded";
-		QByteArray responce = Templator::generate("Page not founded", "404 Page not founded");
+		QByteArray responce = Templator::generate("Page not founded", "<div style=\"text-align: center;\"><img src=\"/images/404.jpg\" /></div>");
 		socket->write(htmlHeaderGen("text/html", responce.size(), "404 Not Found") + responce);
 	}
 }
