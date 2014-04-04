@@ -20,7 +20,7 @@ body {
 /* содержание страницы, сдвигаем вниз от хедера */
 #page-content
 {
-	padding-top: 48px;
+	padding-top: 45px;
 }
 
 /*Верхняя панель: кнопки навигации*/
@@ -50,6 +50,7 @@ body {
 	height:25px;
 	width:300px;
 	margin-left:40px;
+	vertical-align: middle;
 }
 
 input[type="search"] {
@@ -59,6 +60,8 @@ input[type="search"] {
 	width:220px;
 	height:23px;
 	margin-left:5px;
+	display: block;
+	float: left;
 }
 
 /*Верхняя панель: графа поиска: кнопки фильтрации*/
