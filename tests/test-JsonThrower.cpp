@@ -26,12 +26,12 @@ void Test_JsonThrower::initTestCase()
 
 void Test_JsonThrower::init()
 {
-	
+
 }
 
 void Test_JsonThrower::cleanup()
 {
-	
+
 }
 
 void Test_JsonThrower::cleanupTestCase()

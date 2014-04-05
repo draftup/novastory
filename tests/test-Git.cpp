@@ -21,12 +21,12 @@ void Test_Git::initTestCase()
 
 void Test_Git::init()
 {
-	
+
 }
 
 void Test_Git::cleanup()
 {
-	
+
 }
 
 void Test_Git::cleanupTestCase()

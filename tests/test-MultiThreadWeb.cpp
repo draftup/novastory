@@ -32,39 +32,42 @@ void Test_MultiThreadWeb::setDirectoryTest()
 void Test_MultiThreadWeb::multifileTest()
 {
 	QStringList testFiles;
-	testFiles 
-		<< "/images/editor.svg" 
-		<< "/images/fbook.svg"
-		<< "/images/gplus.svg"
-		<< "/images/login.svg"
-		<< "/images/message.svg"
-		<< "/images/message-unread.svg"
-		<< "/images/mylibrary.svg";
+	testFiles
+			<< "/images/editor.svg"
+			<< "/images/fbook.svg"
+			<< "/images/gplus.svg"
+			<< "/images/login.svg"
+			<< "/images/message.svg"
+			<< "/images/message-unread.svg"
+			<< "/images/mylibrary.svg";
 
 	const int readersCount = 7;
 	QTcpSocket htmlReader[readersCount]; // number of readers
 	int threadCount = 0;
 	int maxThread = 0;
 	int threadLeft = readersCount;
-	for(int i = 0; i < readersCount; ++i)
+	for (int i = 0; i < readersCount; ++i)
 	{
-		connect(&htmlReader[i], &QTcpSocket::connected, [&htmlReader, i, &threadCount, &maxThread, &testFiles](){
+		connect(&htmlReader[i], &QTcpSocket::connected, [&htmlReader, i, &threadCount, &maxThread, &testFiles]()
+		{
 			qDebug() << "connect";
 			threadCount++;
 			maxThread = std::max(maxThread, threadCount);
 			htmlReader[i].write(("GET " + testFiles[i] + " HTTP/1.1\nHost: www.example.com").toLatin1());
 		});
-		connect(&htmlReader[i], &QTcpSocket::disconnected, [this, &threadLeft, &maxThread](){
+		connect(&htmlReader[i], &QTcpSocket::disconnected, [this, &threadLeft, &maxThread]()
+		{
 			qDebug() << "disconnect";
 			threadLeft--;
-			if(!threadLeft) // quit
+			if (!threadLeft) // quit
 			{
 				qDebug() << "max thread: " << maxThread;
 				QVERIFY(maxThread > 1);
 				emit webQuit();
 			}
 		});
-		connect(&htmlReader[i], &QTcpSocket::readyRead, [&htmlReader, i, &threadCount, &testFiles](){
+		connect(&htmlReader[i], &QTcpSocket::readyRead, [&htmlReader, i, &threadCount, &testFiles]()
+		{
 			QByteArray html = htmlReader[i].readAll();
 			QString publicDirectory = novastory::WebServer::Instance().directory();
 			qDebug() << "Public directory: " << publicDirectory;
@@ -75,18 +78,20 @@ void Test_MultiThreadWeb::multifileTest()
 
 			//adding header
 			dataWithHeader = ("HTTP/1.1 200 OK\n"
-				"Server: novastory\n"
-				"Content-Type: image/svg+xml\n"
-				"Content-Length: " + QString::number(fileData.size()) + "\n\n").toLatin1()
-				+ fileData;
-			
+							  "Server: novastory\n"
+							  "Content-Type: image/svg+xml\n"
+							  "Content-Length: " + QString::number(fileData.size()) + "\n\n").toLatin1()
+							 + fileData;
+
 			QVERIFY(dataWithHeader == html);
 			threadCount--;
 			htmlReader[i].close();
 		});
 	}
-	for(int i = 0; i < readersCount; ++i)
+	for (int i = 0; i < readersCount; ++i)
+	{
 		htmlReader[i].connectToHost("127.0.0.1", novastory::WebServer::Instance().serverPort());
+	}
 
 	QEventLoop loop;
 	connect(this, SIGNAL(webQuit()), &loop, SLOT(quit()));
@@ -96,15 +101,18 @@ void Test_MultiThreadWeb::multifileTest()
 void Test_MultiThreadWeb::basewebTest()
 {
 	QTcpSocket htmlReader;
-	connect(&htmlReader, &QTcpSocket::connected, [&htmlReader](){
+	connect(&htmlReader, &QTcpSocket::connected, [&htmlReader]()
+	{
 		qDebug() << "connect";
 		htmlReader.write("GET /index.html HTTP/1.1\nHost: www.example.com");
 	});
-	connect(&htmlReader, &QTcpSocket::disconnected, [this](){
+	connect(&htmlReader, &QTcpSocket::disconnected, [this]()
+	{
 		qDebug() << "disconnect";
 		emit webQuit();
 	});
-	connect(&htmlReader, &QTcpSocket::readyRead, [&htmlReader](){
+	connect(&htmlReader, &QTcpSocket::readyRead, [&htmlReader]()
+	{
 		QByteArray html = htmlReader.readAll();
 		QVERIFY(html.indexOf("<head>", Qt::CaseInsensitive) >= 0);
 		htmlReader.close();

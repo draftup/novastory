@@ -26,12 +26,12 @@ void Test_Globals::initTestCase()
 
 void Test_Globals::init()
 {
-	
+
 }
 
 void Test_Globals::cleanup()
 {
-	
+
 }
 
 void Test_Globals::cleanupTestCase()

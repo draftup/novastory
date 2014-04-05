@@ -24,12 +24,12 @@ void Test_Logger::initTestCase()
 
 void Test_Logger::init()
 {
-	
+
 }
 
 void Test_Logger::cleanup()
 {
-	
+
 }
 
 void Test_Logger::cleanupTestCase()

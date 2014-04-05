@@ -28,12 +28,12 @@ void Test_TextEditor::initTestCase()
 
 void Test_TextEditor::init()
 {
-	
+
 }
 
 void Test_TextEditor::cleanup()
 {
-	
+
 }
 
 void Test_TextEditor::cleanupTestCase()

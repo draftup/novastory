@@ -26,12 +26,12 @@ void Test_QMySqlSimple::initTestCase()
 
 void Test_QMySqlSimple::init()
 {
-	
+
 }
 
 void Test_QMySqlSimple::cleanup()
 {
-	
+
 }
 
 void Test_QMySqlSimple::cleanupTestCase()

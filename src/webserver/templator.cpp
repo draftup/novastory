@@ -15,7 +15,7 @@ QByteArray Templator::generate(
 	static QString templateData;
 	QString generatedTemplate;
 
-	if(templateData.isEmpty())
+	if (templateData.isEmpty())
 	{
 		const QString workingDirectory = WebServer::Instance().directory();
 		QFile templateFile(workingDirectory + "/template.html");
@@ -27,8 +27,8 @@ QByteArray Templator::generate(
 
 		templateData = templateFile.readAll();
 	}
-	
-	
+
+
 	//replace data
 	generatedTemplate = templateData.replace("{title}", title);
 	generatedTemplate = generatedTemplate.replace("{article}", article);

@@ -37,12 +37,12 @@ void Test_LogicUsers::initTestCase()
 
 void Test_LogicUsers::init()
 {
-	
+
 }
 
 void Test_LogicUsers::cleanup()
 {
-	
+
 }
 
 void Test_LogicUsers::cleanupTestCase()
@@ -171,7 +171,7 @@ void Test_LogicUsers::validateUser()
 	QCOMPARE(q.size(), 1);
 	q.exec("SELECT * FROM usersverify WHERE email = 'testmail@test.com'");
 	QCOMPARE(q.size(), 0);
-	
+
 }
 
 /********************** DECLARE_TEST LIST ****************************/

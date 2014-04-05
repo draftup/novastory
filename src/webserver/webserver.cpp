@@ -40,7 +40,7 @@ void WebServer::incomingConnection(qintptr socketDescriptor)
 	QThreadPool::globalInstance()->start(new WebProcess(socketDescriptor));
 }
 
-void WebServer::setDirectory( const QString& path )
+void WebServer::setDirectory(const QString& path)
 {
 	QDir targetDirectory(path);
 	if (targetDirectory.exists())

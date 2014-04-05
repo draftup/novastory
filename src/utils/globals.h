@@ -55,7 +55,7 @@ qint64 unixtime();
  * @param	subject		 	Mail subject
  * @param	textofmessage	Sending message
  *
- * @see sendAsyncMail()		
+ * @see sendAsyncMail()
  *
  * @note This method work synchronously. Use @ref sendAsyncMail() for async calls.
  */
@@ -70,11 +70,11 @@ void sendMail(const QString& to, const QString& subject, const QString& message)
  * @param	to			 	Email address for given mail
  * @param	subject		 	Mail subject
  * @param	message			Sending message
- * 							
- * @see sendMail()		
+ *
+ * @see sendMail()
  *
  * @note This method work asynchronously. Use @ref sendMail() for sync calls.
- * 		 
+ *
  */
 void sendAsyncMail(const QString& to, const QString& subject, const QString& message);
 
@@ -96,9 +96,9 @@ void sendAsyncMail(const QString& to, const QString& subject, const QString& mes
 inline QByteArray htmlHeaderGen(const QString& mimetype, int size, const QString& status = "200 OK")
 {
 	return ("HTTP/1.1 " + status + "\n"
-		"Server: novastory\n"
-		"Content-Type: " + mimetype + "\n"
-		"Content-Length: " + QString::number(size) + "\n\n").toLatin1();
+			"Server: novastory\n"
+			"Content-Type: " + mimetype + "\n"
+			"Content-Length: " + QString::number(size) + "\n\n").toLatin1();
 }
 
 }

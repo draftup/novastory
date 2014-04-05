@@ -31,12 +31,12 @@ void Test_Recaptcha::initTestCase()
 
 void Test_Recaptcha::init()
 {
-	
+
 }
 
 void Test_Recaptcha::cleanup()
 {
-	
+
 }
 
 void Test_Recaptcha::cleanupTestCase()

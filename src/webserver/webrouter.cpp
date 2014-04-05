@@ -37,7 +37,7 @@ void WebRouter::sendHtml()
 	{
 		isHandeled |= handler->handle(parsedValues["type"], path(), postVariables);
 	}
-	if(!isHandeled)
+	if (!isHandeled)
 	{
 		qDebug() << "404 Error, page not founded";
 		QByteArray responce = Templator::generate("Page not founded", "<div style=\"text-align: center;\"><img src=\"/images/404.jpg\" /></div>");
