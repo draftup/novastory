@@ -10,8 +10,11 @@ body {
 	height:260px;
 	width:420px;
 	background:#EDEDED;
-	position:relative;
+	position:fixed;
 	font-size:10pt;
+	margin: -130px 0 0 -210px;
+	top: 50%;
+	left: 50%;
 }
 
 /*Кнопки навигации*/
