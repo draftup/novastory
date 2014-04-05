@@ -25,7 +25,6 @@ astyle \
 	--lineend=windows \
 	--suffix=none \
 	--preserve-date \
-	src/*.h \
-	src/*.cpp \
-	tests/*.h \
-	tests/*.cpp
+	"src/*.h" \
+	"src/*.cpp" \
+	"tests/*.cpp"
