@@ -68,14 +68,14 @@ $(document).ready(function ()
 			return;
 		}
 
-		if(!$('#registration-panel #checkterms').prop('checked'))
+		if (!$('#registration-panel #checkterms').prop('checked'))
 		{
 			alert("you must agree with terms");
 			return;
 		}
-		
-		var trueRegistrationBody =  $('#registration-panel #registration-body').clone();
-		
+
+		var trueRegistrationBody = $('#registration-panel #registration-body').clone();
+
 		// init captcha
 		Recaptcha.create(
 			"6LfjsO4SAAAAADEhNeb51KeXPpVu_vtFQRC0w4iO",
@@ -137,60 +137,7 @@ $(document).ready(function ()
 				$('#login-panel #newacc').click(function ()
 				{
 					$("#login-panel").hide();
-
-					if (!$('#registration-panel').exists())
-					{
-						$('#register-space').load('/modal-register.html', null, function ()
-						{
-
-							$('#registration-panel #myacc').click(function ()
-							{
-								$('#registration-panel').hide();
-								$('#login-panel').show();
-							}
-							);
-
-							$('#registration-panel #regmail').keyup(function (e)
-							{
-								if (e.keyCode == 13)
-								{
-									doRecaptcha();
-								}
-							}
-							);
-
-							$('#registration-panel #regpass').keyup(function (e)
-							{
-								if (e.keyCode == 13)
-								{
-									doRecaptcha();
-								}
-							}
-							);
-
-							$('#registration-panel #confregpass').keyup(function (e)
-							{
-								if (e.keyCode == 13)
-								{
-									doRecaptcha();
-								}
-							}
-							);
-
-							$('#registration-panel #tocapcha').click(function ()
-							{
-								doRecaptcha();
-							}
-							);
-						}
-						);
-					}
-					else
-					{
-						$('#login-panel').hide();
-						$('#registration-panel').show();
-					}
-
+					$('#registration-panel').show();
 				}
 				);
 			}
@@ -211,6 +158,55 @@ $(document).ready(function ()
 			{
 				$("#registration-panel").hide();
 			}
+		}
+
+		if (!$('#registration-panel').exists())
+		{
+			$('#register-space').load('/modal-register.html', null, function ()
+			{
+				$('#registration-panel').hide();
+
+				$('#registration-panel #myacc').click(function ()
+				{
+					$('#registration-panel').hide();
+					$('#login-panel').show();
+				}
+				);
+
+				$('#registration-panel #regmail').keyup(function (e)
+				{
+					if (e.keyCode == 13)
+					{
+						doRecaptcha();
+					}
+				}
+				);
+
+				$('#registration-panel #regpass').keyup(function (e)
+				{
+					if (e.keyCode == 13)
+					{
+						doRecaptcha();
+					}
+				}
+				);
+
+				$('#registration-panel #confregpass').keyup(function (e)
+				{
+					if (e.keyCode == 13)
+					{
+						doRecaptcha();
+					}
+				}
+				);
+
+				$('#registration-panel #tocapcha').click(function ()
+				{
+					doRecaptcha();
+				}
+				);
+			}
+			);
 		}
 	}
 	);
