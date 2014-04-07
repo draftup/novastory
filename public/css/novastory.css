@@ -18,8 +18,8 @@ body {
 }
 
 /* содержание страницы, сдвигаем вниз от хедера */
-#page-content
-{
+
+#page-content {
 	padding-top: 45px;
 }
 
@@ -92,7 +92,7 @@ input[type="search"] {
 
 /*Верхняя панель: кнопка логина*/
 
-.login {
+#login {
 	background: #99146F;
 	width: 140px;
 	display: inline-block;
@@ -102,19 +102,39 @@ input[type="search"] {
 	color: #FFFFFF;
 }
 
-#modal-login {
-	cursor:pointer;
+#logout {
+	background: #99146F;
+	width: 280px;
+	display: inline-block;
+	position:absolute;
+	right:-140px;
+	-moz-transition:all 0.5s;
+	-o-transition:all 0.5s;
+	-webkit-transition:all 0.5s;
+	transition:all 0.5s;
 }
 
-.login a {
-	cursor:pointer;
+#login, #logout a {
+	cursor:default;
+}
+
+#logout:hover {
+	right:0px;
+}
+
+#logname {
+	width:140px;
+	text-align:center;
+	color: #FFFFFF;
+	float:left;
 }
 
 .logico {
 	height:30px;
 	width:30px;
-	margin-right:25px;
 	margin-top:5px;
+	margin-right:25px;
+	cursor:pointer;
 	float:right;
 }
 
@@ -125,6 +145,11 @@ input[type="search"] {
 
 #outico {
 	background:url(../images/logout.svg);
+	background-size:contain;
+}
+
+#setico {
+	background:url(../images/settings.svg);
 	background-size:contain;
 }
 
