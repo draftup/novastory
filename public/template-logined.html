@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" id="novastory_project">
+<head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <title>{title}</title> 
+  <meta name="description" content="Book writing system" /> 
+  <meta name="keywords" content="books, social network, soundcloud" /> 
+  <link media="screen" rel="stylesheet" type="text/css" href="css/novastory.css" /> 
+  <script>
+	    var USERID = {user.userid};
+	    var STOKEN = '{user.stoken}';
+  </script>
+  <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+  <script type="text/javascript" src="js/common.js"></script>
+  <script type="text/javascript" src="js/novastory.api.js"></script>
+  <script type="text/javascript" src="js/novastory.js"></script>
+</head>
+<body>
+	<header class="page-header">
+		
+		<div class="left-button current-button" id="mainpage">
+		<a>Main</a>
+		</div>
+		
+		<div class="left-button" id="librarypage">
+		<a>Library</a>
+		</div>
+		
+		<div class="searchout">
+		<input type="search" id="novasearch" placeholder="Search">
+		<div class="searchfilter" id="postfilter" title="serach in posts"></div>
+		<div class="searchfilter" id="userfilter" title="search in authors"></div>
+		<div class="searchfilter" id="biblfilter" title="search in books"></div>
+		</div>
+
+		<div class="tools">
+			<div class="avatar" id="mypage"><img src="filth.jpg"></div>
+			<div class="toolico" id="mylibico"></div>
+			<div class="toolico" id="messico"></div>
+			<div class="toolico" id="editico"></div>
+			<div class="separator"></div>
+		</div>
+		<div class="login" id="logsett"><a>Vasya</a></div>
+	</header>
+
+	<article id="page-content">
+		{article}
+	</article>
+<footer>
+	{powered}
+</footer>
+</body>
+</html>

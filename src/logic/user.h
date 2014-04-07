@@ -34,8 +34,9 @@ public:
 
 	bool login(const QString& email, const QString& sha1password);
 	bool loginByToken(const QString& email, const QString& token);
+	bool loginByToken(const int quserid, const QString& token);
 	bool isLogined() const;
-	const QString& token();
+	const QString& token() const;
 
 	const QString& salt() const;
 	void setSalt(const QString& salt);
@@ -57,7 +58,7 @@ protected:
 	}
 	inline QString generateToken(qint64 time, int userid, const QString& usersalt)
 	{
-		return sha1(time + sha1(userid + sha1(usersalt) + sha1("degitx-jelu-leparusvega")));
+		return sha1(QString::number(time) + sha1(QString::number(userid) + sha1(usersalt) + sha1("degitx-jelu-leparusvega")));
 	}
 private:
 	int m_userid;

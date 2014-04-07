@@ -35,13 +35,25 @@ void WebRouter::sendHtml()
 	bool isHandeled = false;
 	for (DataHandler* handler : handlers)
 	{
-		isHandeled |= handler->handle(parsedValues["type"], path(), postVariables);
+		isHandeled |= handler->handle(parsedValues["type"], path(), postVariables, QString(), cookieVariables);
 	}
 	if (!isHandeled)
 	{
 		qDebug() << "404 Error, page not founded";
-		QByteArray responce = Templator::generate("Page not founded", "<div style=\"text-align: center;\"><img src=\"/images/404.jpg\" /></div>");
-		socket->write(htmlHeaderGen("text/html", responce.size(), "404 Not Found") + responce);
+		if(!coockie("userid").isNull())
+		{
+			User user;
+			if(user.loginByToken(coockie("userid").toInt(), coockie("stoken")))
+			{
+				QByteArray responce = Templator::generateLogined(user, "Page not founded", "<div style=\"text-align: center;\"><img src=\"/images/404.jpg\" /></div>");
+				socket->write(htmlHeaderGen("text/html", responce.size(), "404 Not Found") + responce);
+			}
+		}
+		else
+		{
+			QByteArray responce = Templator::generate("Page not founded", "<div style=\"text-align: center;\"><img src=\"/images/404.jpg\" /></div>");
+			socket->write(htmlHeaderGen("text/html", responce.size(), "404 Not Found") + responce);
+		}
 	}
 }
 
@@ -75,6 +87,34 @@ void WebRouter::parse()
 {
 	WebRequest::parse();
 	parsePost();
+	parseCookie();
+}
+
+void WebRouter::parseCookie()
+{
+	QString data = parsedValues["Cookie"];
+	if (data.isEmpty())
+	{
+		return;
+	}
+
+	for (QString pair : data.split("; "))
+	{
+		QStringList keyValuePair = pair.split("=");
+
+		if (keyValuePair.size() != 2)
+		{
+			continue;
+		}
+
+		auto element = cookieVariables.insert(keyValuePair[0], keyValuePair[1].trimmed());
+		qDebug() << "Parsed cookie " << element.key() << "=" << element.value();
+	}
+}
+
+QString WebRouter::coockie(const QString& name)
+{
+	return cookieVariables[name];
 }
 
 }

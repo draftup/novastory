@@ -106,6 +106,9 @@ void Test_LogicUsers::loginByTokenTest()
 	User same_user;
 	QVERIFY(!same_user.loginByToken("dasdasd@dasdasd.com", "232323-dasdasdasdas"));
 	QVERIFY(same_user.loginByToken("dasdasd@dasdasd.com", user.token()));
+	User iduser;
+	QVERIFY(iduser.loginByToken(userid, user.token()));
+	QVERIFY(!iduser.loginByToken(3543543, user.token()));
 }
 
 void Test_LogicUsers::deleteUserTest()

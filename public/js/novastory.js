@@ -7,6 +7,8 @@ jQuery.fn.exists = function ()
 }
 
 includeJS("js/jquery.sha1.js");
+includeJS("js/jquery.cookie.js");
+var USERID;
 var STOKEN;
 
 $(document).ready(function ()
@@ -20,8 +22,13 @@ $(document).ready(function ()
 		{
 			if (data.logined != null && data.logined)
 			{
-				alert("login successful");
+				USERID = data.userid;
 				STOKEN = data.token;
+				alert(data.userid);
+				alert(data.token);
+				$.cookie("userid", data.userid, {path: '/'});
+				$.cookie("stoken", data.token, {path: '/'});
+				window.location.href=window.location.href;
 			}
 			else
 			{

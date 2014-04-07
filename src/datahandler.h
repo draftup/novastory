@@ -11,7 +11,13 @@ namespace novastory
 class DataHandler
 {
 public:
-	virtual bool handle(const QString& type, const QString& path, const QHash<QString, QString>& post = QHash<QString, QString>(), const QString& get = "") = 0;
+	virtual bool handle(
+		const QString& type,
+		const QString& path,
+		const QHash<QString, QString>& post = QHash<QString, QString>(),
+		const QString& get = QString(),
+		const QHash<QString, QString>& cookies = QHash<QString, QString>()
+	) = 0;
 };
 
 }

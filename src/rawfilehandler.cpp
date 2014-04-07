@@ -21,7 +21,8 @@ RawFileHandler::~RawFileHandler()
 
 }
 
-bool RawFileHandler::handle(const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& get /* = "" */)
+bool RawFileHandler::handle(const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& get /* = "" */,
+							const QHash<QString, QString>& cookies /*= QHash<QString, QString>()*/)
 {
 	const QString workingDirectory = WebServer::Instance().directory();
 	QString filePath = workingDirectory + path;

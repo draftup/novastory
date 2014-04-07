@@ -23,7 +23,8 @@ ApiHandler::~ApiHandler()
 
 }
 
-bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& /* get = "" */)
+bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& /* get = "" */,
+						const QHash<QString, QString>& cookies /* = QHash<QString, QString>() */)
 {
 	if (path.left(4) != "/api")
 	{
@@ -42,6 +43,8 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	}
 
 	QString hook = hookList[2];
+
+	QString stoken = cookies["stoken"].isNull() ? post["stoken"] : cookies["stoken"];
 
 	QByteArray json;
 
@@ -71,7 +74,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	else if (hook == "editorupdate")
 	{
 		User user;
-		if (user.loginByToken(post["email"], post["token"]))
+		if (user.loginByToken(post["email"], stoken))
 		{
 			TextEditor editor;
 			editor.setUserID(user.userid());

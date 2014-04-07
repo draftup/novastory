@@ -1,5 +1,6 @@
 #include <QtTest>
 #include <QTcpSocket>
+#include <functional>
 #include "webserver/webserver.h"
 #include "rawfilehandler.h"
 
@@ -10,8 +11,10 @@ private slots:
 	void setDirectoryTest();
 	void basewebTest();
 	void multifileTest();
+	void cookieTest();
 private:
 	void mChecker();
+	void CreateServerConnection(const QByteArray& writeData, std::function<void(const QString& data)> func);
 signals:
 	void webQuit();
 };
@@ -98,23 +101,23 @@ void Test_MultiThreadWeb::multifileTest()
 	loop.exec();
 }
 
-void Test_MultiThreadWeb::basewebTest()
+void Test_MultiThreadWeb::CreateServerConnection(const QByteArray& writeData, std::function<void(const QString& data)> func)
 {
 	QTcpSocket htmlReader;
-	connect(&htmlReader, &QTcpSocket::connected, [&htmlReader]()
+	connect(&htmlReader, &QTcpSocket::connected, [&htmlReader, &writeData]()
 	{
 		qDebug() << "connect";
-		htmlReader.write("GET /index.html HTTP/1.1\nHost: www.example.com");
+		htmlReader.write(writeData);
 	});
 	connect(&htmlReader, &QTcpSocket::disconnected, [this]()
 	{
 		qDebug() << "disconnect";
 		emit webQuit();
 	});
-	connect(&htmlReader, &QTcpSocket::readyRead, [&htmlReader]()
+	connect(&htmlReader, &QTcpSocket::readyRead, [&htmlReader, &func]()
 	{
 		QByteArray html = htmlReader.readAll();
-		QVERIFY(html.indexOf("<head>", Qt::CaseInsensitive) >= 0);
+		func(html);
 		htmlReader.close();
 	});
 	htmlReader.connectToHost("127.0.0.1", novastory::WebServer::Instance().serverPort());
@@ -123,6 +126,27 @@ void Test_MultiThreadWeb::basewebTest()
 	connect(this, SIGNAL(webQuit()), &loop, SLOT(quit()));
 	loop.exec();
 }
+
+void Test_MultiThreadWeb::basewebTest()
+{
+	CreateServerConnection("GET /index.html HTTP/1.1\nHost: www.example.com", [](const QString & html)
+	{
+		QVERIFY(html.indexOf("<head>", Qt::CaseInsensitive) >= 0);
+	});
+}
+
+void Test_MultiThreadWeb::cookieTest()
+{
+	CreateServerConnection(
+		"GET /index.html HTTP/1.1\n"
+		"Cookie: testcookie=testval\n"
+		"Host: www.example.com",
+		[](const QString & html)
+	{
+		QVERIFY(html.indexOf("<head>", Qt::CaseInsensitive) >= 0);
+	});
+}
+
 
 /********************** DECLARE_TEST LIST ****************************/
 QTEST_MAIN(Test_MultiThreadWeb)

@@ -93,10 +93,11 @@ void sendAsyncMail(const QString& to, const QString& subject, const QString& mes
  * @return	Html header. Apeend you body to it.
  */
 
-inline QByteArray htmlHeaderGen(const QString& mimetype, int size, const QString& status = "200 OK")
+inline QByteArray htmlHeaderGen(const QString& mimetype, int size, const QString& status = "200 OK", const QString& additional = QString())
 {
 	return ("HTTP/1.1 " + status + "\n"
 			"Server: novastory\n"
+			+ additional +
 			"Content-Type: " + mimetype + "\n"
 			"Content-Length: " + QString::number(size) + "\n\n").toLatin1();
 }

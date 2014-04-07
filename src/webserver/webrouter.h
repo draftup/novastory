@@ -22,10 +22,15 @@ public:
 	void parse() override;
 
 	void parsePost();
+
+	void parseCookie();
+	QString coockie(const QString& name);
+
 private:
 	QTcpSocket* socket;
 	QList<DataHandler*> handlers;
 	QHash<QString, QString> postVariables;
+	QHash<QString, QString> cookieVariables;
 };
 
 }

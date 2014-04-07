@@ -197,9 +197,11 @@ bool novastory::User::login(const QString& semail, const QString& sha1password)
 	Q_ASSERT(quserid > 0);
 
 	qint64 current_time = unixtime();
-	m_token = current_time + QString("-") + generateToken(current_time, quserid, qsalt);
+	m_token = QString::number(current_time) + QString("-") + generateToken(current_time, quserid, qsalt);
 
 	JSON_INSERT("logined", true);
+	JSON_INSERT("email", semail);
+	JSON_INSERT("userid", quserid);
 	JSON_INSERT("token", m_token);
 
 	query.seek(-1);
@@ -245,7 +247,7 @@ bool novastory::User::loginByToken(const QString& semail, const QString& token)
 	int useridNo = query.record().indexOf("userid");
 	int quserid = query.value(useridNo).toInt();
 
-	if (sha1(tokenDate + sha1(quserid + sha1(qsalt) + sha1("degitx-jelu-leparusvega"))) != tokenKey)
+	if (sha1(tokenDate + sha1(QString::number(quserid) + sha1(qsalt) + sha1("degitx-jelu-leparusvega"))) != tokenKey)
 	{
 		JSON_ERROR("Token for user " + semail + " was wrong", 4);
 		return false;
@@ -254,6 +256,64 @@ bool novastory::User::loginByToken(const QString& semail, const QString& token)
 	m_token = token;
 
 	JSON_INSERT("logined", true);
+	JSON_INSERT("userid", quserid);
+	JSON_INSERT("email", semail);
+	JSON_INSERT("token", m_token);
+
+	query.seek(-1);
+	return syncProcess(query);
+}
+
+bool novastory::User::loginByToken( const int quserid, const QString& token )
+{
+	if (quserid <= 0 || token.isEmpty())
+	{
+		JSON_ERROR("token or userid are not valid", 1);
+		return false;
+	}
+
+	QStringList tokenList = token.split("-");
+	if (tokenList.size() != 2)
+	{
+		JSON_ERROR("Not valid token", 3);
+		return false;
+	}
+
+	QString tokenDate = tokenList[0];
+	QString tokenKey = tokenList[1];
+
+	setUserID(quserid);
+
+	SqlQuery query;
+	query.prepare("SELECT * FROM users WHERE userid = :userid");
+	query.bindValue(":userid", userid());
+
+	VERIFY(query.exec());
+
+	if (query.size() != 1)
+	{
+		JSON_ERROR(QString("User with such userid not founded: ") + quserid, 2);
+		return false;
+	}
+
+	VERIFY(query.next());
+
+	int saltNo = query.record().indexOf("salt");
+	QString qsalt = query.value(saltNo).toString();
+	int emailNo = query.record().indexOf("email");
+	QString qemail = query.value(emailNo).toString();
+
+	if (sha1(tokenDate + sha1(QString::number(quserid) + sha1(qsalt) + sha1("degitx-jelu-leparusvega"))) != tokenKey)
+	{
+		JSON_ERROR(QString("Token for user ") + QString::number(quserid) + " was wrong", 4);
+		return false;
+	}
+
+	m_token = token;
+
+	JSON_INSERT("logined", true);
+	JSON_INSERT("userid", quserid);
+	JSON_INSERT("email", qemail);
 	JSON_INSERT("token", m_token);
 
 	query.seek(-1);
@@ -265,7 +325,7 @@ bool novastory::User::isLogined() const
 	return !m_token.isEmpty();
 }
 
-const QString& novastory::User::token()
+const QString& novastory::User::token() const
 {
 	return m_token;
 }

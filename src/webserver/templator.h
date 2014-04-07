@@ -2,6 +2,7 @@
 #define TEMPLATOR_H
 
 #include <QByteArray>
+#include "logic/user.h"
 
 namespace novastory
 {
@@ -32,6 +33,12 @@ public:
 		const QString& title = "Novastory",
 		const QString& article = QString()
 	);
+
+	static QByteArray generateLogined(
+		const User& user,
+		const QString& title = "Novastory",
+		const QString& article = QString()
+		);
 };
 }
 
