@@ -40,10 +40,10 @@ void WebRouter::sendHtml()
 	if (!isHandeled)
 	{
 		qDebug() << "404 Error, page not founded";
-		if(!coockie("userid").isNull())
+		if (!coockie("userid").isNull())
 		{
 			User user;
-			if(user.loginByToken(coockie("userid").toInt(), coockie("stoken")))
+			if (user.loginByToken(coockie("userid").toInt(), coockie("stoken")))
 			{
 				QByteArray responce = Templator::generateLogined(user, "Page not founded", "<div style=\"text-align: center;\"><img src=\"/images/404.jpg\" /></div>");
 				socket->write(htmlHeaderGen("text/html", responce.size(), "404 Not Found") + responce);

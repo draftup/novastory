@@ -264,7 +264,7 @@ bool novastory::User::loginByToken(const QString& semail, const QString& token)
 	return syncProcess(query);
 }
 
-bool novastory::User::loginByToken( const int quserid, const QString& token )
+bool novastory::User::loginByToken(const int quserid, const QString& token)
 {
 	if (quserid <= 0 || token.isEmpty())
 	{

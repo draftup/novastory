@@ -39,7 +39,7 @@ QByteArray Templator::generate(
 	return generatedTemplate.toUtf8();
 }
 
-QByteArray Templator::generateLogined( const User& user, const QString& title /*= "Novastory"*/, const QString& article /*= QString() */ )
+QByteArray Templator::generateLogined(const User& user, const QString& title /*= "Novastory"*/, const QString& article /*= QString() */)
 {
 	static QString templateData;
 	QString generatedTemplate;
