@@ -14,7 +14,7 @@ var STOKEN;
 $(document).ready(function ()
 {
 
-	function doLogin()
+	function login()
 	{
 		var login = $('#loginmail').val();
 		var pass = $('#loginpass').val();
@@ -24,16 +24,16 @@ $(document).ready(function ()
 			{
 				USERID = data.userid;
 				STOKEN = data.token;
-				alert(data.userid);
-				alert(data.token);
 				$.cookie("userid", data.userid,
 				{
-					path : '/'
+					path : '/',
+					expires: 7
 				}
 				);
 				$.cookie("stoken", data.token,
 				{
-					path : '/'
+					path : '/',
+					expires: 7
 				}
 				);
 				window.location.href = window.location.href;
@@ -44,6 +44,15 @@ $(document).ready(function ()
 			}
 		}
 		);
+	}
+	
+	function logout()
+	{
+		$.removeCookie("userid");
+		$.removeCookie("stoken");
+		
+		// reload page after logout
+		window.location.href = window.location.href;
 	}
 
 	function proceedRegistration(email_adress, password_original, password_verify, challenge, response)
@@ -149,7 +158,7 @@ $(document).ready(function ()
 				{
 					if (e.keyCode == 13)
 					{
-						doLogin();
+						login();
 					}
 				}
 				);
@@ -158,14 +167,14 @@ $(document).ready(function ()
 				{
 					if (e.keyCode == 13)
 					{
-						doLogin();
+						login();
 					}
 				}
 				);
 
 				$('#loginbutt').click(function ()
 				{
-					doLogin();
+					login();
 				}
 				);
 
@@ -283,5 +292,8 @@ $(document).ready(function ()
 	}
 	);
 
+	$('#outico').click(function(){
+		logout();
+	})
 }
 );
