@@ -239,6 +239,7 @@ bool SmtpClient::connectToHost()
 			{
 				qDebug() << ((QSslSocket*) socket)->errorString();
 				emit SmtpError(ConnectionTimeoutError);
+				Q_UNUSED(ConnectionTimeoutError);
 				return false;
 			}
 
