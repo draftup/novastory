@@ -15,6 +15,9 @@ body {
 	width:100%;
 	min-width:1000px;
 	line-height:40px;
+	-webkit-box-shadow:0 1px 8px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+	-moz-box-shadow:0 1px 8px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+	box-shadow:0 1px 8px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 }
 
 /* содержание страницы, сдвигаем вниз от хедера */
@@ -92,30 +95,27 @@ input[type="search"] {
 
 /*Верхняя панель: кнопка логина*/
 
-#login {
+.logblock {
 	background: #99146F;
-	width: 140px;
 	display: inline-block;
-	text-align: center;
 	position:absolute;
-	right:0px;
 	color: #FFFFFF;
 }
 
+#login {
+	width: 140px;
+	text-align: center;
+	right:0px;
+	cursor:default;
+}
+
 #logout {
-	background: #99146F;
 	width: 280px;
-	display: inline-block;
-	position:absolute;
 	right:-140px;
 	-moz-transition:all 0.5s;
 	-o-transition:all 0.5s;
 	-webkit-transition:all 0.5s;
 	transition:all 0.5s;
-}
-
-#login, #logout a {
-	cursor:default;
 }
 
 #logout:hover {
@@ -125,8 +125,9 @@ input[type="search"] {
 #logname {
 	width:140px;
 	text-align:center;
-	color: #FFFFFF;
 	float:left;
+	overflow:hidden;
+	cursor:default;
 }
 
 .logico {
@@ -174,18 +175,18 @@ input[type="search"] {
 
 /*Верхняя панель: пользователь: аватар*/
 
-.avatar {
+#panelava {
 	height: 40px;
 	width:40px;
 	border-radius:50%;
 	-webkit-border-radius:50%;
 	-moz-border-radius:50%;
-	margin-left:-25px;
+	margin-left:-20px;
 	float:left;
 	cursor:pointer;
 }
 
-.avatar img {
+#panelava img {
 	height:inherit;
 	width:inherit;
 	border-radius:50%;
