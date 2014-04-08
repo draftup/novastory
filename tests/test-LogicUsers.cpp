@@ -20,10 +20,12 @@ private slots:
 	void userSyncTest();
 	void loginTest();
 	void loginByTokenTest();
+	void confirmPasswordReset();
 	void deleteUserTest();
 	void validateUser();
 private:
 	int userid;
+	QString salt;
 	SqlDatabase db;
 };
 
@@ -61,6 +63,8 @@ void Test_LogicUsers::insetDataTest()
 	QVERIFY(users.userid() > 0); // from last insert
 
 	userid = users.userid();
+	salt = users.salt();
+	QVERIFY(salt.size() > 0);
 }
 
 void Test_LogicUsers::userDuplicatinTest()
@@ -110,6 +114,25 @@ void Test_LogicUsers::loginByTokenTest()
 	QVERIFY(iduser.loginByToken(userid, user.token()));
 	QVERIFY(!iduser.loginByToken(3543543, user.token()));
 }
+
+
+void Test_LogicUsers::confirmPasswordReset()
+{
+	QString newpass = "afkdhs";
+	QString token = md5("tokentest");
+	User vu;
+	SqlQuery("INSERT INTO userspassforgot VALUES('" + token + "', '" + QString::number(userid) + "', '" + vu.generatePassword(sha1(newpass), salt) + "')");
+	QVERIFY(!vu.confirmPasswordReset(md5("tokent")));
+	QVERIFY(vu.confirmPasswordReset(token));
+	User logintest;
+	QVERIFY(!logintest.login("dasdasd@dasdasd.com", sha1("dasdasdasd")));
+	QVERIFY(logintest.login("dasdasd@dasdasd.com", sha1(newpass)));
+
+	// check cleanup
+	SqlQuery q("SELECT * FROM userspassforgot WHERE token = '" + token + "'");
+	QVERIFY(q.size() == 0);
+}
+
 
 void Test_LogicUsers::deleteUserTest()
 {

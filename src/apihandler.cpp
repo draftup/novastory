@@ -37,7 +37,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	{
 		return false;
 	}
-	if (hookList.size() == 4 && hookList[2] != "validate")
+	if (hookList.size() == 4 && hookList[2] != "validate" && hookList[2] != "resetpassword")
 	{
 		return false;
 	}
@@ -63,6 +63,18 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	{
 		User user;
 		user.login(post["email"], post["password"]);
+		json = user.jsonString().toUtf8();
+	}
+	else if(hook == "forgotpassword")
+	{
+		User user;
+		user.forgotPasswordMessageSend(post["email"]);
+		json = user.jsonString().toUtf8();
+	}
+	else if(hook == "resetpassword")
+	{
+		User user;
+		user.confirmPasswordReset(hookList[3]);
 		json = user.jsonString().toUtf8();
 	}
 	else if (hook == "validate")

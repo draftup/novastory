@@ -363,3 +363,112 @@ bool novastory::User::removeUser()
 	return false;
 }
 
+bool novastory::User::forgotPasswordMessageSend(const QString& uemail)
+{
+	if (uemail.isEmpty())
+	{
+		JSON_ERROR("email are not valid", 1);
+		return false;
+	}
+
+	SqlQuery query;
+	query.prepare("SELECT userid, salt, password FROM users WHERE email = ?");
+	query.bindValue(0, uemail);
+	VERIFY(query.exec());
+	if (query.size() != 1)
+	{
+		JSON_ERROR("no such user", 2);
+		return false;    // noting to delete
+	}
+
+	VERIFY(query.next());
+
+	int quserid = query.value("userid").toInt();
+	QString salt = query.value("salt").toString();
+	QString password = query.value("password").toString();
+
+	SqlQuery queryFCreation;
+	queryFCreation.prepare("INSERT INTO userspassforgot VALUES(:token, :userid, :newpassword)");
+	QString token = md5(password);
+	queryFCreation.bindValue(":token", token);
+	queryFCreation.bindValue(":userid", quserid);
+
+	char newpass[9];
+	for (int i = 0; i < 8 ; ++i)
+	{
+		newpass[i] = 'a' + rand() % ('Z' - 'a');
+	}
+	newpass[8] = '\0';
+
+	queryFCreation.bindValue(":newpassword", generatePassword(sha1(newpass), salt));
+
+	if (!queryFCreation.exec())
+	{
+		JSON_ERROR("Duplication, you already recive mail", 3);
+		return false;    // noting to delete
+	}
+
+	qDebug() << "Sending request for user " << uemail << "to reset password";
+
+	setEmail(uemail);
+	setUserID(quserid);
+
+	sendAsyncMail(
+		m_email,
+		"Forgot password notification (novastory.org)",
+		"To reset your password click link:\nhttp://novastory.org/api/resetpassword/" + token + "\n\n"
+		"Your new password will be: " + newpass + "\n\n"
+		"Next time don't foget it :)."
+	);
+
+	JSON_INSERT("sended", true);
+
+	return true;
+}
+
+bool novastory::User::confirmPasswordReset( const QString& forgotToken )
+{
+	if (forgotToken.size() != 32)
+	{
+		JSON_ERROR("wrong token", 1);
+		return false;
+	}
+
+	SqlQuery queryF;
+	queryF.prepare("SELECT * FROM userspassforgot WHERE token = :token");
+	queryF.bindValue(":token", forgotToken);
+	VERIFY(queryF.exec());
+
+	if(queryF.size() != 1)
+	{
+		JSON_ERROR("no such token reset", 2);
+		return false;
+	}
+
+	VERIFY(queryF.next());
+
+	int quserid = queryF.value("userid").toInt();
+	QString newpassword = queryF.value("newpassword").toString();
+
+	SqlQuery queryU;
+	queryU.prepare("UPDATE users SET password = :password WHERE userid = :userid");
+	queryU.bindValue(":password", newpassword);
+	queryU.bindValue(":userid", quserid);
+
+	bool status = queryU.exec();
+	if(status)
+	{
+		qDebug() << "Password succesfully reseted to new for user " << quserid;
+		setUserID(quserid);
+
+		SqlQuery queryClean;
+		queryClean.prepare("DELETE FROM userspassforgot WHERE token = :token");
+		queryClean.bindValue(":token", forgotToken);
+		VERIFY(queryClean.exec());
+	}
+	
+	JSON_INSERT("reseted", true);
+
+	return status;
+}
+

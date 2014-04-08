@@ -23,7 +23,7 @@ public:
 
 	inline void JSON_ERROR(const QString& errorDesc, int error_type = 0)
 	{
-		qDebug() << errorDesc;
+		qDebug() << "Error type" << error_type << ":" << errorDesc;
 		jsonMainObject.insert("error", QJsonValue(true));
 		jsonMainObject.insert("errorDescription", QJsonValue(errorDesc));
 		jsonMainObject.insert("errorType", QJsonValue(error_type));

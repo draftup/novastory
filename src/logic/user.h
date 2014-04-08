@@ -38,6 +38,9 @@ public:
 	bool isLogined() const;
 	const QString& token() const;
 
+	bool forgotPasswordMessageSend(const QString& email);
+	bool confirmPasswordReset(const QString& forgotToken);
+
 	const QString& salt() const;
 	void setSalt(const QString& salt);
 	void resetSalt();

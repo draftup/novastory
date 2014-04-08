@@ -26,9 +26,17 @@ $(document).ready(function ()
 				STOKEN = data.token;
 				alert(data.userid);
 				alert(data.token);
-				$.cookie("userid", data.userid, {path: '/'});
-				$.cookie("stoken", data.token, {path: '/'});
-				window.location.href=window.location.href;
+				$.cookie("userid", data.userid,
+				{
+					path : '/'
+				}
+				);
+				$.cookie("stoken", data.token,
+				{
+					path : '/'
+				}
+				);
+				window.location.href = window.location.href;
 			}
 			else
 			{
@@ -111,6 +119,26 @@ $(document).ready(function ()
 		);
 	}
 
+	function doRestorePassword()
+	{
+		var email = $('#restore-panel #restoremail').val();
+
+		NovastoryApi.restorepassword(email, function (data)
+		{
+			if (data.error == null || data.error)
+			{
+				alert("error on registration");
+			}
+			else
+			{
+				alert("sended");
+				$("#login-panel").show();
+				$("#restore-panel").hide();
+			}
+		}
+		);
+	}
+
 	$('#login').click(function ()
 	{
 		if (!$('#login-panel').exists())
@@ -147,6 +175,13 @@ $(document).ready(function ()
 					$('#registration-panel').show();
 				}
 				);
+
+				$('#login-panel #restorepass').click(function ()
+				{
+					$("#login-panel").hide();
+					$('#restore-panel').show();
+				}
+				);
 			}
 			);
 		}
@@ -165,6 +200,36 @@ $(document).ready(function ()
 			{
 				$("#registration-panel").hide();
 			}
+		}
+
+		if (!$('#restore-panel').exists())
+		{
+			$('#restore-space').load('/modal-restore.html', null, function ()
+			{
+				$('#restore-panel').hide();
+			
+				$('#restore-panel #restorepassword').click(function ()
+				{
+					doRestorePassword();
+				}
+				);
+				
+
+				$('#restore-panel #backtologin').click(function(){
+					$('#restore-panel').hide();
+					$("#login-panel").show();
+				});
+				
+				$('#restore-panel #restoremail').keyup(function (e)
+				{
+					if (e.keyCode == 13)
+					{
+						doRestorePassword();
+					}
+				}
+				);
+			}
+			);
 		}
 
 		if (!$('#registration-panel').exists())
