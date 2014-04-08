@@ -111,7 +111,7 @@ $(document).ready(function ()
 		);
 	}
 
-	$('#modal-login').click(function ()
+	$('#login').click(function ()
 	{
 		if (!$('#login-panel').exists())
 		{
