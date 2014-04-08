@@ -426,7 +426,7 @@ bool novastory::User::forgotPasswordMessageSend(const QString& uemail)
 	return true;
 }
 
-bool novastory::User::confirmPasswordReset( const QString& forgotToken )
+bool novastory::User::confirmPasswordReset(const QString& forgotToken)
 {
 	if (forgotToken.size() != 32)
 	{
@@ -439,7 +439,7 @@ bool novastory::User::confirmPasswordReset( const QString& forgotToken )
 	queryF.bindValue(":token", forgotToken);
 	VERIFY(queryF.exec());
 
-	if(queryF.size() != 1)
+	if (queryF.size() != 1)
 	{
 		JSON_ERROR("no such token reset", 2);
 		return false;
@@ -456,7 +456,7 @@ bool novastory::User::confirmPasswordReset( const QString& forgotToken )
 	queryU.bindValue(":userid", quserid);
 
 	bool status = queryU.exec();
-	if(status)
+	if (status)
 	{
 		qDebug() << "Password succesfully reseted to new for user " << quserid;
 		setUserID(quserid);
@@ -466,7 +466,7 @@ bool novastory::User::confirmPasswordReset( const QString& forgotToken )
 		queryClean.bindValue(":token", forgotToken);
 		VERIFY(queryClean.exec());
 	}
-	
+
 	JSON_INSERT("reseted", true);
 
 	return status;

@@ -65,13 +65,13 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		user.login(post["email"], post["password"]);
 		json = user.jsonString().toUtf8();
 	}
-	else if(hook == "forgotpassword")
+	else if (hook == "forgotpassword")
 	{
 		User user;
 		user.forgotPasswordMessageSend(post["email"]);
 		json = user.jsonString().toUtf8();
 	}
-	else if(hook == "resetpassword")
+	else if (hook == "resetpassword")
 	{
 		User user;
 		user.confirmPasswordReset(hookList[3]);
