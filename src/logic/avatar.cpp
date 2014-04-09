@@ -88,7 +88,7 @@ bool novastory::Avatar::sync()
 	return true;
 }
 
-novastory::Avatar::Avatar()
+novastory::Avatar::Avatar() : m_userid(-1), m_conentSize(0)
 {
 	setObjectName("avatars");
 }
