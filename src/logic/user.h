@@ -18,6 +18,10 @@ class User : protected Sqlizable, public JsonThrower
 	Q_PROPERTY(QString password READ password WRITE setPassword RESET resetPassword)
 	Q_PROPERTY(QString salt READ salt WRITE setSalt RESET resetSalt)
 	Q_PROPERTY(QString email READ email WRITE setEmail RESET resetEmail)
+
+	Q_PROPERTY(QString firstname READ firstName WRITE setFirstName RESET resetFirstName)
+	Q_PROPERTY(QString lastname READ lastName WRITE setLastName RESET resetLastName)
+	Q_PROPERTY(QString nickname READ nickName WRITE setNickName RESET resetNickName)
 public:
 	User();
 
@@ -52,6 +56,18 @@ public:
 	bool removeUser();
 
 	static User* verifyUser(const QString& token);
+
+	const QString& firstName() const { return m_firstname; };
+	void setFirstName(const QString& name) { m_firstname = name; };
+	void resetFirstName(){ m_firstname = QString(); };
+
+	const QString& lastName() const { return m_lastname; };
+	void setLastName(const QString& name) { m_lastname = name; };
+	void resetLastName(){ m_lastname = QString(); };
+
+	const QString& nickName() const { return m_nickname; };
+	void setNickName(const QString& name) { m_nickname = name; };
+	void resetNickName(){ m_nickname = QString(); };
 protected:
 	QString generateSalt() const;
 	void setPassword(const QString& password);
@@ -70,6 +86,10 @@ private:
 	QString m_email;
 
 	QString m_token;
+
+	QString m_firstname;
+	QString m_lastname;
+	QString m_nickname;
 };
 
 }

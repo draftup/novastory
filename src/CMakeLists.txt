@@ -30,6 +30,7 @@ set(HEADERS_TOMOC
 	logic/user.h
 	logic/captcha.h
 	logic/texteditor.h
+	logic/avatar.h
 )
 
 set(HEADERS
@@ -57,6 +58,7 @@ set(SOURCES
 	logic/user.cpp
 	logic/captcha.cpp
 	logic/texteditor.cpp
+	logic/avatar.cpp
 	
 	utils/globals.cpp
 	
