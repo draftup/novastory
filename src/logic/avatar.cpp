@@ -1,6 +1,8 @@
 #include "avatar.h"
 #include <QDebug>
 #include "utils/globals.h"
+#include <QMimeDatabase>
+#include <QMimeType>
 
 int novastory::Avatar::userid() const
 {
@@ -56,7 +58,7 @@ bool novastory::Avatar::sync()
 	}
 
 	SqlQuery q;
-	q.prepare("SELECT users.email, users.userid, avatars.avatar FROM users LEFT JOIN avatars ON(avatars.userid = users.userid) WHERE " + addwhere);
+	q.prepare("SELECT users.email, avatars.* FROM users LEFT JOIN avatars ON(avatars.userid = users.userid) WHERE " + addwhere);
 	if (quserid > 0)
 	{
 		q.bindValue(0, quserid);
@@ -78,6 +80,10 @@ bool novastory::Avatar::sync()
 	setUserid(q.value("userid").toInt());
 	setEmail(q.value("email").toString());
 	setAvatar(q.value("avatar").toByteArray());
+	setContentSize(q.value("contentsize").toUInt());
+	setContentType(q.value("contenttype").toString());
+
+	Q_ASSERT(contentSize() == avatar().size());
 
 	return true;
 }
@@ -90,9 +96,16 @@ novastory::Avatar::Avatar()
 bool novastory::Avatar::update()
 {
 	SqlQuery q;
-	q.prepare("INSERT INTO " + objectName() + "(userid, avatar) VALUES(:userid, :avatar) ON DUPLICATE KEY UPDATE avatar = :avatar");
+	q.prepare("INSERT INTO " + objectName() + "(userid, avatar, contenttype, contentsize) VALUES(:userid, :avatar, :contenttype, :contentsize) ON DUPLICATE KEY UPDATE avatar = :avatar, contenttype = :contenttype, contentsize = :contentsize");
 	q.bindValue(":userid", userid());
-	q.bindValue(":avatar", avatar());
+	QByteArray ava = avatar();
+	q.bindValue(":avatar", ava);
+
+	QMimeDatabase db;
+	QMimeType mime = db.mimeTypeForData(ava);
+
+	q.bindValue(":contenttype", mime.name());
+	q.bindValue(":contentsize", ava.size());
 	return q.exec();
 }
 
@@ -100,15 +113,15 @@ bool novastory::Avatar::remove()
 {
 	SqlQuery q;
 	int quserid = userid();
-	if(quserid > 0)
+	if (quserid > 0)
 	{
 		q.prepare("DELETE FROM " + objectName() + " WHERE userid = :userid");
 		q.bindValue(":userid", quserid);
 		return q.exec();
 	}
-	
+
 	QString qemail = email();
-	if(qemail.isEmpty())
+	if (qemail.isEmpty())
 	{
 		return false;
 	}

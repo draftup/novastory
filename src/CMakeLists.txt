@@ -43,6 +43,7 @@ set(HEADERS
 	config.h
 	datahandler.h
 	rawfilehandler.h
+	avatarshandler.h
 	logger.h
 	apihandler.h
 	webserver/templator.h
@@ -64,6 +65,7 @@ set(SOURCES
 	
 	recaptcha.cpp
 	rawfilehandler.cpp
+	avatarshandler.cpp
 	apihandler.cpp
 	jsonthrower.cpp
 	logger.cpp
