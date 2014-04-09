@@ -29,6 +29,7 @@ public:
 
 	bool sync();
 	bool update();
+	bool remove();
 private:
 	int m_userid;
 	QByteArray m_avatar;

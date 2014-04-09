@@ -95,3 +95,26 @@ bool novastory::Avatar::update()
 	q.bindValue(":avatar", avatar());
 	return q.exec();
 }
+
+bool novastory::Avatar::remove()
+{
+	SqlQuery q;
+	int quserid = userid();
+	if(quserid > 0)
+	{
+		q.prepare("DELETE FROM " + objectName() + " WHERE userid = :userid");
+		q.bindValue(":userid", quserid);
+		return q.exec();
+	}
+	
+	QString qemail = email();
+	if(qemail.isEmpty())
+	{
+		return false;
+	}
+
+	q.prepare("DELETE avatars FROM avatars INNER JOIN users ON(users.userid = avatars.userid) WHERE users.email = :email");
+	q.bindValue(":email", qemail);
+
+	return q.exec();
+}

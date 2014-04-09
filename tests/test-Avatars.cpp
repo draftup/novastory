@@ -21,9 +21,11 @@ private slots:
 
 	void updateTest();
 	void syncTest();
+	void removeTest();
 private:
 	SqlDatabase db;
 	User newuser;
+	Avatar avatar;
 };
 
 void Test_Avatars::initTestCase()
@@ -77,17 +79,28 @@ void Test_Avatars::syncTest()
 	a1.setUserid(uid);
 	QVERIFY(a1.sync());
 
-	Avatar a2;
-	a2.setEmail(email);
-	QVERIFY(a2.sync());
+	avatar.setEmail(email);
+	QVERIFY(avatar.sync());
 
 	QFile f("404.jpg");
 	QVERIFY(f.open(QIODevice::ReadOnly));
 
 	QByteArray bf = f.readAll();
 
-	QVERIFY(a2.avatar() == bf);
+	QVERIFY(avatar.avatar() == bf);
 	f.close();
+}
+
+void Test_Avatars::removeTest()
+{
+	QString email = avatar.email();
+
+	Avatar ra;
+	ra.setEmail(email);
+	QVERIFY(ra.remove());
+
+	SqlQuery q("SELECT * FROM avatars WHERE userid = " + QString::number(avatar.userid()));
+	QCOMPARE(q.size(), 0);
 }
 
 /********************** DECLARE_TEST LIST ****************************/
