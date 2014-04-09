@@ -88,6 +88,8 @@ void Test_Avatars::syncTest()
 	QByteArray bf = f.readAll();
 
 	QVERIFY(avatar.avatar() == bf);
+	QCOMPARE(avatar.contentSize(), (unsigned int)bf.size());
+	QCOMPARE(avatar.contentType(), QString("image/jpeg"));
 	f.close();
 }
 
