@@ -7,7 +7,7 @@ int novastory::Avatar::userid() const
 	return m_userid;
 }
 
-void novastory::Avatar::setUserid( int userid )
+void novastory::Avatar::setUserid(int userid)
 {
 	m_userid = userid;
 }
@@ -17,7 +17,7 @@ const QByteArray& novastory::Avatar::avatar() const
 	return m_avatar;
 }
 
-void novastory::Avatar::setAvatar( const QByteArray& avatar )
+void novastory::Avatar::setAvatar(const QByteArray& avatar)
 {
 	m_avatar = avatar;
 }
@@ -27,7 +27,7 @@ const QString& novastory::Avatar::email() const
 	return m_email;
 }
 
-void novastory::Avatar::setEmail( const QString& email )
+void novastory::Avatar::setEmail(const QString& email)
 {
 	m_email = email;
 }
@@ -38,14 +38,14 @@ bool novastory::Avatar::sync()
 
 	int quserid = userid();
 	QString qemail;
-	if(quserid > 0)
+	if (quserid > 0)
 	{
 		addwhere = "users.userid = ?";
 	}
 	else
 	{
 		qemail = email();
-		if(!qemail.isEmpty())
+		if (!qemail.isEmpty())
 		{
 			addwhere = "users.email = ?";
 		}
@@ -57,14 +57,18 @@ bool novastory::Avatar::sync()
 
 	SqlQuery q;
 	q.prepare("SELECT users.email, users.userid, avatars.avatar FROM users LEFT JOIN avatars ON(avatars.userid = users.userid) WHERE " + addwhere);
-	if(quserid > 0)
+	if (quserid > 0)
+	{
 		q.bindValue(0, quserid);
+	}
 	else
+	{
 		q.bindValue(0, qemail);
+	}
 
 	VERIFY(q.exec());
 
-	if(q.size() != 1)
+	if (q.size() != 1)
 	{
 		return false;
 	}

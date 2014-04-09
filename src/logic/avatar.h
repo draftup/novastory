@@ -23,7 +23,7 @@ public:
 
 	const QByteArray& avatar() const;
 	void setAvatar(const QByteArray& avatar);
-	
+
 	const QString& email() const;
 	void setEmail(const QString& email);
 

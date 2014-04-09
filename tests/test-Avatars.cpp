@@ -58,7 +58,7 @@ void Test_Avatars::updateTest()
 
 	QFile f("404.jpg");
 	QVERIFY(f.open(QIODevice::ReadOnly));
-	
+
 	QByteArray bf = f.readAll();
 	a.setUserid(uid);
 	a.setAvatar(bf);

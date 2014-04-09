@@ -59,15 +59,15 @@ public:
 
 	const QString& firstName() const { return m_firstname; };
 	void setFirstName(const QString& name) { m_firstname = name; };
-	void resetFirstName(){ m_firstname = QString(); };
+	void resetFirstName() { m_firstname = QString(); };
 
 	const QString& lastName() const { return m_lastname; };
 	void setLastName(const QString& name) { m_lastname = name; };
-	void resetLastName(){ m_lastname = QString(); };
+	void resetLastName() { m_lastname = QString(); };
 
 	const QString& nickName() const { return m_nickname; };
 	void setNickName(const QString& name) { m_nickname = name; };
-	void resetNickName(){ m_nickname = QString(); };
+	void resetNickName() { m_nickname = QString(); };
 protected:
 	QString generateSalt() const;
 	void setPassword(const QString& password);
