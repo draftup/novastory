@@ -196,18 +196,15 @@ $(document).ready(function ()
 		}
 		else
 		{
-			if ($('#login-panel').is(":hidden"))
+			if (!$('#login-panel').is(":hidden") || !$('#registration-panel').is(":hidden") || !$('#restore-panel').is(":hidden"))
 			{
-				$("#login-panel").show();
+				$("#login-panel").hide();
+				$("#registration-panel").hide();
+				$("#restore-panel").hide();
 			}
 			else
 			{
-				$("#login-panel").hide();
-			}
-
-			if (!$('#registration-panel').is(":hidden"))
-			{
-				$("#registration-panel").hide();
+				$("#login-panel").show();
 			}
 		}
 
