@@ -76,27 +76,15 @@ $(document).ready(function ()
 
 	function doRecaptcha()
 	{
+		if($("#registration-panel #tocapcha").attr('class') != 'enabled')
+		{
+			alert($("#registration-panel #tocapcha").attr('class'));
+			return;
+		}
+	
 		var email_adress = $('#registration-panel #regmail').val();
 		var password_original = $('#registration-panel #regpass').val();
 		var password_verify = $('#registration-panel #confregpass').val();
-
-		if (email_adress == null || password_original == null || password_verify == null)
-		{
-			alert("input error");
-			return;
-		}
-
-		if (password_original != password_verify)
-		{
-			alert("input error");
-			return;
-		}
-
-		if (!$('#registration-panel #checkterms').prop('checked'))
-		{
-			alert("you must agree with terms");
-			return;
-		}
 
 		var trueRegistrationBody = $('#registration-panel #registration-body').clone();
 
@@ -152,7 +140,7 @@ $(document).ready(function ()
 	{
 		if (!$('#login-panel').exists())
 		{
-			$('#login-space').load('/modal-login.html', null, function ()
+			$('#login-space').load('/modal-login.html #login-panel', null, function ()
 			{
 				$('#loginmail').keyup(function (e)
 				{
@@ -210,7 +198,7 @@ $(document).ready(function ()
 
 		if (!$('#restore-panel').exists())
 		{
-			$('#restore-space').load('/modal-restore.html', null, function ()
+			$('#restore-space').load('/modal-restore.html #restore-panel', null, function ()
 			{
 				$('#restore-panel').hide();
 			
@@ -240,7 +228,7 @@ $(document).ready(function ()
 
 		if (!$('#registration-panel').exists())
 		{
-			$('#register-space').load('/modal-register.html', null, function ()
+			$('#register-space').load('/modal-register.html #registration-panel', null, function ()
 			{
 				$('#registration-panel').hide();
 
@@ -251,8 +239,37 @@ $(document).ready(function ()
 				}
 				);
 
+				function checkReady()
+				{
+					var email_adress = $('#registration-panel #regmail').val();
+					var password_original = $('#registration-panel #regpass').val();
+					var password_verify = $('#registration-panel #confregpass').val();
+					
+					if(email_adress.length == 0 || password_original.length == 0 || password_verify.length == 0)
+					{
+						$("#registration-panel #tocapcha").attr('class', 'disabled');
+						return;
+					}
+					
+					if(password_original != password_verify)
+					{
+						$("#registration-panel #tocapcha").attr('class', 'disabled');
+						return;
+					}
+					
+					if(!$('#registration-panel #checkterms').prop('checked'))
+					{
+						$("#registration-panel #tocapcha").attr('class', 'disabled');
+						return;
+					}
+					
+					$("#registration-panel #tocapcha").attr('class', 'enabled');
+				}
+				
 				$('#registration-panel #regmail').keyup(function (e)
 				{
+					checkReady();
+				
 					if (e.keyCode == 13)
 					{
 						doRecaptcha();
@@ -262,6 +279,8 @@ $(document).ready(function ()
 
 				$('#registration-panel #regpass').keyup(function (e)
 				{
+					checkReady();
+				
 					if (e.keyCode == 13)
 					{
 						doRecaptcha();
@@ -271,6 +290,8 @@ $(document).ready(function ()
 
 				$('#registration-panel #confregpass').keyup(function (e)
 				{
+					checkReady();
+				
 					if (e.keyCode == 13)
 					{
 						doRecaptcha();
@@ -283,6 +304,11 @@ $(document).ready(function ()
 					doRecaptcha();
 				}
 				);
+				
+				$('#registration-panel #checkterms').click(function()
+				{
+					checkReady();
+				});
 			}
 			);
 		}

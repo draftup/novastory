@@ -205,12 +205,12 @@ input[type="checkbox"] {
 	float:right;
 }
 
-.disabeled {
+.disabled {
 	background:url(../images/modal-login/forward.svg) no-repeat;
 	background-size:contain;
 }
 
-.enabeled {
+.enabled {
 	background:url(../images/modal-login/forwardact.svg) no-repeat;
 	background-size:contain;
 }
