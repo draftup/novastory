@@ -79,8 +79,9 @@ body {
 
 .modal-body {
 	height:220px;
+	width:300px;
+	left:58px;
 	position:absolute;
-	width:100%;
 	top:40px;
 }
 
@@ -92,10 +93,9 @@ body {
 	height:30px;
 	background: white;
 	border: 1px solid #DBDBDB;
-	left:58px;
 }
 
-input[type="email"], [type="password"] {
+input[type="email"], [type="password"], [type="text"] {
 	border:none;
 	outline:none;
 	-webkit-appearance:none;
@@ -123,7 +123,7 @@ input[type="email"], [type="password"] {
 
 .buttonblock {
 	position:absolute;
-	left:60px;
+	left:2px;
 	top:135px;
 }
 
@@ -170,7 +170,7 @@ input[type="email"], [type="password"] {
 #fbooklogin {
 	background:url(../images/fbook.svg);
 	background-size:contain;
-	margin-left:10px;
+	margin-left:8px;
 }
 
 #gpluslogin {
@@ -187,7 +187,6 @@ input[type="checkbox"] {
 .iagree {
 	position:absolute;
 	width:295px;
-	left:60px;
 	top:160px;
 	color:#474747;
 }
@@ -195,7 +194,7 @@ input[type="checkbox"] {
 .iagree span {
 	float:left;
 	margin-top:2px;
-	margin-left:2px;
+	margin-left:4px;
 }
 
 #tocapcha {
@@ -261,7 +260,32 @@ input[type="checkbox"] {
 .instruct {
 	position:absolute;
 	width:300px;
-	left:60px;
-	top:130px;
+	left:5px;
+	top:70px;
 	color:#99146F;
+}
+
+/*Страница настройки профиля*/
+
+input[type="text"], [type="password"] {
+	border:none;
+	outline:none;
+	-webkit-appearance:none;
+	height:28px;
+	width:290px;
+	font-size:10pt;
+	margin-left:5px;
+}
+
+.settblock {
+	height:60px;
+	width:450px;
+	background:url(../images/modal-settings/profile.svg) no-repeat #99146F;
+	background-size:contain;
+	background-position:right;
+	margin:25px;
+}
+
+.settblock a {
+	top:70px;
 }
