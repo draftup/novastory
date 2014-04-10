@@ -27,13 +27,13 @@ $(document).ready(function ()
 				$.cookie("userid", data.userid,
 				{
 					path : '/',
-					expires: 7
+					expires : 7
 				}
 				);
 				$.cookie("stoken", data.token,
 				{
 					path : '/',
-					expires: 7
+					expires : 7
 				}
 				);
 				window.location.href = window.location.href;
@@ -45,12 +45,12 @@ $(document).ready(function ()
 		}
 		);
 	}
-	
+
 	function logout()
 	{
 		$.removeCookie("userid");
 		$.removeCookie("stoken");
-		
+
 		// reload page after logout
 		window.location.href = window.location.href;
 	}
@@ -76,12 +76,11 @@ $(document).ready(function ()
 
 	function doRecaptcha()
 	{
-		if($("#registration-panel #tocapcha").attr('class') != 'enabled')
+		if ($("#registration-panel #tocapcha").attr('class') != 'enabled')
 		{
-			alert($("#registration-panel #tocapcha").attr('class'));
 			return;
 		}
-	
+
 		var email_adress = $('#registration-panel #regmail').val();
 		var password_original = $('#registration-panel #regpass').val();
 		var password_verify = $('#registration-panel #confregpass').val();
@@ -201,19 +200,20 @@ $(document).ready(function ()
 			$('#restore-space').load('/modal-restore.html #restore-panel', null, function ()
 			{
 				$('#restore-panel').hide();
-			
+
 				$('#restore-panel #restorepassword').click(function ()
 				{
 					doRestorePassword();
 				}
 				);
-				
 
-				$('#restore-panel #backtologin').click(function(){
+				$('#restore-panel #backtologin').click(function ()
+				{
 					$('#restore-panel').hide();
 					$("#login-panel").show();
-				});
-				
+				}
+				);
+
 				$('#restore-panel #restoremail').keyup(function (e)
 				{
 					if (e.keyCode == 13)
@@ -244,32 +244,32 @@ $(document).ready(function ()
 					var email_adress = $('#registration-panel #regmail').val();
 					var password_original = $('#registration-panel #regpass').val();
 					var password_verify = $('#registration-panel #confregpass').val();
-					
-					if(email_adress.length == 0 || password_original.length == 0 || password_verify.length == 0)
+
+					if (email_adress.length == 0 || password_original.length == 0 || password_verify.length == 0)
 					{
 						$("#registration-panel #tocapcha").attr('class', 'disabled');
 						return;
 					}
-					
-					if(password_original != password_verify)
+
+					if (password_original != password_verify)
 					{
 						$("#registration-panel #tocapcha").attr('class', 'disabled');
 						return;
 					}
-					
-					if(!$('#registration-panel #checkterms').prop('checked'))
+
+					if (!$('#registration-panel #checkterms').prop('checked'))
 					{
 						$("#registration-panel #tocapcha").attr('class', 'disabled');
 						return;
 					}
-					
+
 					$("#registration-panel #tocapcha").attr('class', 'enabled');
 				}
-				
+
 				$('#registration-panel #regmail').keyup(function (e)
 				{
 					checkReady();
-				
+
 					if (e.keyCode == 13)
 					{
 						doRecaptcha();
@@ -280,7 +280,7 @@ $(document).ready(function ()
 				$('#registration-panel #regpass').keyup(function (e)
 				{
 					checkReady();
-				
+
 					if (e.keyCode == 13)
 					{
 						doRecaptcha();
@@ -291,7 +291,7 @@ $(document).ready(function ()
 				$('#registration-panel #confregpass').keyup(function (e)
 				{
 					checkReady();
-				
+
 					if (e.keyCode == 13)
 					{
 						doRecaptcha();
@@ -304,19 +304,22 @@ $(document).ready(function ()
 					doRecaptcha();
 				}
 				);
-				
-				$('#registration-panel #checkterms').click(function()
+
+				$('#registration-panel #checkterms').click(function ()
 				{
 					checkReady();
-				});
+				}
+				);
 			}
 			);
 		}
 	}
 	);
 
-	$('#outico').click(function(){
+	$('#outico').click(function ()
+	{
 		logout();
-	})
+	}
+	)
 }
 );
