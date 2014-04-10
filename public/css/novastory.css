@@ -1,4 +1,4 @@
-body {
+﻿body {
 	font-family: Arial, Verdana,  sans-serif;
 	font-size: 11pt;
 	background: #FFFFFF;
@@ -15,9 +15,6 @@ body {
 	width:100%;
 	min-width:1000px;
 	line-height:40px;
-	-webkit-box-shadow:0 1px 8px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-	-moz-box-shadow:0 1px 8px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-	box-shadow:0 1px 8px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 }
 
 /* содержание страницы, сдвигаем вниз от хедера */
