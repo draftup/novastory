@@ -115,7 +115,7 @@ input[type="search"] {
 	transition:all 0.5s;
 }
 
-#logout:hover {
+#logout:active {
 	right:0px;
 }
 
