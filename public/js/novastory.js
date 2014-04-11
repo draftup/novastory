@@ -13,6 +13,48 @@ var STOKEN;
 
 $(document).ready(function ()
 {
+	Novastory = {}
+
+	Novastory.animationLocker = false;
+
+	Novastory.popupHelper = function (message)
+	{
+		var pw = $('#popup-message');
+		pw.text(message);
+		pw.show();
+
+		if (!this.animationLocker)
+		{
+			this.animationLocker = true;
+			$("#popup-message").animate(
+			{
+				top : "70",
+				opacity : 0.6
+			}, 400).delay(1200).animate(
+			{
+				top : "50%",
+				opacity : 0
+			}, 500, function ()
+			{
+				pw.css('top', '0px');
+				pw.hide();
+				Novastory.animationLocker = false;
+			}
+			);
+		}
+	}
+
+	Novastory.error = function (errormessage)
+	{
+		$('#popup-message').attr('class', 'error');
+		this.popupHelper(errormessage);
+	}
+	
+	Novastory.ok = function(okmessage)
+	{
+		$('#popup-message').attr('class', 'ok');
+		this.popupHelper(okmessage);
+	}
 
 	function login()
 	{
@@ -40,7 +82,7 @@ $(document).ready(function ()
 			}
 			else
 			{
-				alert("login failed");
+				Novastory.error("Login failed. Check your login and password");
 			}
 		}
 		);
@@ -62,12 +104,12 @@ $(document).ready(function ()
 
 			if (data.error == null || data.error)
 			{
-				alert("error on registration");
+				Novastory.error("Registration error");
 			}
 			else
 			{
 				$('#registration-panel #registration-body').text("Congratulations with registration");
-				alert("okay");
+				Novastory.ok("Congratulations with registration");
 			}
 		}
 		);
@@ -123,11 +165,11 @@ $(document).ready(function ()
 		{
 			if (data.error == null || data.error)
 			{
-				alert("error on registration");
+				Novastory.error("Error on password restore");
 			}
 			else
 			{
-				alert("sended");
+				Novastory.ok("Message sended to your email");
 				$("#login-panel").show();
 				$("#restore-panel").hide();
 			}
