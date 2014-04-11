@@ -7,7 +7,7 @@
 #define SMTP_SERVER "smtp.gmail.com"
 #define SMTP_PORT 465
 #define SMTP_USER "uruchie.org@gmail.com"
-#define SMTP_PASSWORD "uruchiesrv0"
+#define SMTP_PASSWORD "uruchiesrver"
 
 #define MYSQL_HOST "localhost"
 #define MYSQL_DATABASE "novastory"
