@@ -218,6 +218,7 @@ input[type="search"] {
 /* Всплывающие подсказки */ 
 
 #popup-message {
+	display: none;
 	position: fixed;
 	height: 60px;
 	margin-left: -200px;
