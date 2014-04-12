@@ -222,18 +222,19 @@ input[type="search"] {
 	height: 60px;
 	margin-left: -200px;
 	left: 50%;
+	top: 80px;
 	text-align: center;
 	color: #FFFFFF;
 	font-size: 13pt;
 	opacity: 0;
 	animation:shest;
-	-webkit-animation: popup 5s;
-	-o-animation: popup 5s;
-	-moz-animation: popup 5s;
-	animation: popup 5s;
+	-webkit-animation: popup 4s;
+	-o-animation: popup 4s;
+	-moz-animation: popup 4s;
+	animation: popup 4s;
 }
 
-#popup-message a {
+#popup-text {
 	line-height:60px;
 	width: 300px;
 	position:absolute;
@@ -244,29 +245,29 @@ input[type="search"] {
 
 @keyframes popup {
   0% { opacity: 0; }
-  40% { opacity: 0.8; }
-  70% { opacity: 0.8; }
+  25% { opacity: 0.8; }
+  75% { opacity: 0.8; }
   0% { opacity: 0; }
 }
   
 @-webkit-keyframes popup {
   0% { opacity: 0; }
-  40% { opacity: 0.8; }
-  70% { opacity: 0.8; }
+  25% { opacity: 0.8; }
+  75% { opacity: 0.8; }
   0% { opacity: 0; }
 }
 
 @-o-keyframes popup {
   0% { opacity: 0; }
-  40% { opacity: 0.8; }
-  70% { opacity: 0.8; }
+  25% { opacity: 0.8; }
+  75% { opacity: 0.8; }
   0% { opacity: 0; }
 }
 
 @-moz-keyframes popup {
   0% { opacity: 0; }
-  40% { opacity: 0.8; }
-  70% { opacity: 0.8; }
+  25% { opacity: 0.8; }
+  75% { opacity: 0.8; }
   0% { opacity: 0; }
 }
 
