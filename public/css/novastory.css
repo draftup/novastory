@@ -227,7 +227,6 @@ input[type="search"] {
 	color: #FFFFFF;
 	font-size: 13pt;
 	opacity: 0;
-	animation:shest;
 	-webkit-animation: popup 4s;
 	-o-animation: popup 4s;
 	-moz-animation: popup 4s;
