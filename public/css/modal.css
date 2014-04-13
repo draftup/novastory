@@ -204,16 +204,9 @@ input[type="checkbox"] {
 	float:right;
 }
 
-.disabled {
-	background:url(../images/modal-login/forward.svg) no-repeat;
-	background-size:contain;
+#tocapcha.enabled #forward {
+	fill:#99146F;
 }
-
-.enabled {
-	background:url(../images/modal-login/forwardact.svg) no-repeat;
-	background-size:contain;
-}
-	
 
 /*Страница восставновления пароля: кнопка возврата на страницу логина*/
 
@@ -226,13 +219,18 @@ input[type="checkbox"] {
 	top:10px;
 	left:195px;
 	cursor:pointer;
-	background:url(../images/modal-login/forward.svg) no-repeat;
-	background-size:contain;
 }
 
-#backtologin:hover {
-	background:url(../images/modal-login/forwardact.svg) no-repeat;
-	background-size:contain;
+#forward {
+	fill:#A7A7A7;
+	-moz-transition:all 0.2s;
+	-o-transition:all 0.2s;
+	-webkit-transition:all 0.2s;
+	transition:all 0.2s;
+}
+
+#backtologin:hover #forward {
+	fill:#99146F;
 }
 
 /*Страница восставновления пароля: форма ввода пароля, кнопка поддтверждения и текст*/
@@ -277,15 +275,26 @@ input[type="text"], [type="password"] {
 	margin-left:5px;
 }
 
-.settblock {
-	height:60px;
-	width:450px;
-	background:url(../images/modal-settings/profile.svg) no-repeat #99146F;
-	background-size:contain;
-	background-position:right;
-	margin:25px;
+#avaloader {
+	position:absolute;
+	width:105px;
+	height:105px;
+	border: 4px dashed #A7A7A7;
+	background:url(../images/modal-settings/ava.svg) center center no-repeat;
+	background-size:70px 70px;
+	left:365px;
+	top:50px;
+	-moz-transition:all 0.2s;
+	-o-transition:all 0.2s;
+	-webkit-transition:all 0.2s;
+	transition:all 0.2s;
+	cursor:pointer;
 }
 
-.settblock a {
-	top:70px;
+#avaloader:hover {
+	background-size:76px 76px;
+}
+
+#editoron {
+	position:absolute;
 }
