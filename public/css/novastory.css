@@ -233,7 +233,7 @@ input[type="search"] {
 	border-radius: 15px;
 	
 	text-align: center;
-	padding-top: 10px;
+	padding: 10px 0px 0px 20px;
 	font-size: 200%; /* Размер шрифта в процентах */ 
 	color: white;
 }
@@ -241,11 +241,20 @@ input[type="search"] {
 #popup-message.error
 {
 	box-shadow: 0 0 25px rgb(255,0,0);
-	background: red;
+	background:url(../images/x-mark.svg) no-repeat red;
+	background-size:contain;
 }
 
 #popup-message.ok
 {
 	box-shadow: 0 0 25px rgb(0,255,0);
-	background: green;
+	background:url(../images/check-mark.svg) no-repeat green;
+	background-size:contain;
+}
+
+#popup-message.warning
+{
+	box-shadow: 0 0 25px #FF8C00;
+	background:url(../images/warning.svg) no-repeat #FF8C00;
+	background-size:contain;
 }

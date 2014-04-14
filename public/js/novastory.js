@@ -55,6 +55,12 @@ $(document).ready(function ()
 		$('#popup-message').attr('class', 'ok');
 		this.popupHelper(okmessage);
 	}
+	
+	Novastory.warning = function(wmessage)
+	{
+		$('#popup-message').attr('class', 'warning');
+		this.popupHelper(wmessage);
+	}
 
 	function login()
 	{
