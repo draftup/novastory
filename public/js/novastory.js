@@ -15,11 +15,33 @@ $(document).ready(function ()
 {
 	Novastory = {}
 
+	Novastory.animationLocker = false;
+
 	Novastory.popupHelper = function (message)
 	{
-		$('#popup-message').hide();
-		$('#popup-message').show();
-		$('#popup-text').text(message);
+		var pw = $('#popup-message');
+		pw.text(message);
+		pw.show();
+
+		if (!this.animationLocker)
+		{
+			this.animationLocker = true;
+			$("#popup-message").animate(
+			{
+				top : "70",
+				opacity : 0.6
+			}, 400).delay(1700).animate(
+			{
+				top : "50%",
+				opacity : 0
+			}, 500, function ()
+			{
+				pw.css('top', '0px');
+				pw.hide();
+				Novastory.animationLocker = false;
+			}
+			);
+		}
 	}
 
 	Novastory.error = function (errormessage)

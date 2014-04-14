@@ -219,114 +219,33 @@ input[type="search"] {
 
 /* Всплывающие подсказки */ 
 
-#popup-message {
+#popup-message
+{
 	display: none;
 	position: fixed;
-	height: 60px;
-	margin-left: -210px;
+	width: 60%;
+	width: 700px;
+	height: 40px;
+	margin-left: -350px;
 	left: 50%;
-	top: 80px;
-	text-align: center;
-	color: #FFFFFF;
-	font-size: 13pt;
+	top: 0px;
 	opacity: 0;
-	-webkit-animation: popup 4s;
-	-o-animation: popup 4s;
-	-moz-animation: popup 4s;
-	animation: popup 4s;
+	border-radius: 15px;
+	
+	text-align: center;
+	padding-top: 10px;
+	font-size: 200%; /* Размер шрифта в процентах */ 
+	color: white;
 }
 
-#popup-text {
-	line-height:60px;
-	width: 330px;
-	position:absolute;
-	margin-left:50px;
+#popup-message.error
+{
+	box-shadow: 0 0 25px rgb(255,0,0);
+	background: red;
 }
 
-/* Всплывающие подсказки: анимация*/
-
-@keyframes popup {
-  0% { opacity: 0; }
-  25% { opacity: 0.8; }
-  75% { opacity: 0.8; }
-  0% { opacity: 0; }
-}
-  
-@-webkit-keyframes popup {
-  0% { opacity: 0; }
-  25% { opacity: 0.8; }
-  75% { opacity: 0.8; }
-  0% { opacity: 0; }
-}
-
-@-o-keyframes popup {
-  0% { opacity: 0; }
-  25% { opacity: 0.8; }
-  75% { opacity: 0.8; }
-  0% { opacity: 0; }
-}
-
-@-moz-keyframes popup {
-  0% { opacity: 0; }
-  25% { opacity: 0.8; }
-  75% { opacity: 0.8; }
-  0% { opacity: 0; }
-}
-
-/* Всплывающие подсказки: исконка и её варианты */
-
-#popup-ico {
-	width: 60px;
-	height: 60px;
-	position:absolute;
-}
-
-#popup-message.check #popup-ico {
-	background:url(../images/check-mark.svg) no-repeat #FFFFFF;
-	background-size:contain;
-	border-radius:50%;
-}
-
-#popup-message.error #popup-ico {
-	background:url(../images/x-mark.svg) no-repeat;
-	background-size:contain;
-}
-
-#popup-message.warning #popup-ico {
-	background:url(../images/warning.svg) no-repeat;
-	background-size:contain;
-}
-
-/* Всплывающие подсказки: поле с сообщением и его варианты*/
-
-#popup-background {
-	width: 330px;
-	height: 42px;
-	margin-left:35px;
-	margin-top:9px;
-	position:absolute;
-}
-
-#popup-message.check #popup-background {
-	background: #6CDA6C;
-	width: 360px;
-}
-
-#popup-message.error #popup-background {
-	background: #FF3333;
-	border-bottom: 10px solid #FF3333;
-	border-left: 9px solid #FFFFFF;
-	border-top: 10px solid #FF3333;
-	line-height:45px;
-	margin-left:49px;
-	height: 24px;
-	margin-top:8px;
-}
-
-#popup-message.warning #popup-background {
-	background: #FFA319;
-	height: 0px;
-	border-left: 24px solid #FFFFFF;
-	border-top: 42px solid #FFA319;
-	line-height:45px;
+#popup-message.ok
+{
+	box-shadow: 0 0 25px rgb(0,255,0);
+	background: green;
 }
