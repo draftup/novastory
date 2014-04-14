@@ -138,16 +138,16 @@ void Logger::log(const QString& text, QtMsgType type)
 			logStream->flush();
 		}
 
-		if(errorStream)
+		if (errorStream)
 		{
 			switch (type)
 			{
 			case QtCriticalMsg:
 			case QtFatalMsg:
-				{
-					*errorStream << record;
-					errorStream->flush();
-				}
+			{
+				*errorStream << record;
+				errorStream->flush();
+			}
 			default:
 				break;
 			}
