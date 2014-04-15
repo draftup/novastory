@@ -220,20 +220,21 @@ input[type="search"] {
 /* Всплывающие подсказки */ 
 
 #popup-message {
-	display: none;
+	display:none;
 	position: fixed;
 	height: 60px;
 	margin-left: -210px;
 	left: 50%;
-	top: 80px;
+	top: 70px;
 	text-align: center;
 	color: #FFFFFF;
 	font-size: 13pt;
-	opacity: 0;
-	-webkit-animation: popup 4s;
-	-o-animation: popup 4s;
-	-moz-animation: popup 4s;
-	animation: popup 4s;
+	opacity:0;
+	-webkit-animation: popup 3.5s;
+	-o-animation: popup 3.5s;
+	-moz-animation: popup 3.5s;
+	animation: popup 3.5s;
+	z-index:-1;
 }
 
 #popup-text {
@@ -246,31 +247,31 @@ input[type="search"] {
 /* Всплывающие подсказки: анимация*/
 
 @keyframes popup {
-  0% { opacity: 0; }
-  25% { opacity: 0.8; }
-  75% { opacity: 0.8; }
-  0% { opacity: 0; }
+  0% { opacity: 0; top:-10px;}
+  15% { opacity: 1; top:70px;}
+  80% { opacity: 1; top:70px;}
+  100% { opacity: 0;}
 }
   
 @-webkit-keyframes popup {
-  0% { opacity: 0; }
-  25% { opacity: 0.8; }
-  75% { opacity: 0.8; }
-  0% { opacity: 0; }
+  0% { opacity: 0; top:-10px;}
+  15% { opacity: 1; top:70px;}
+  80% { opacity: 1; top:70px;}
+  100% { opacity: 0;}
 }
 
 @-o-keyframes popup {
-  0% { opacity: 0; }
-  25% { opacity: 0.8; }
-  75% { opacity: 0.8; }
-  0% { opacity: 0; }
+  0% { opacity: 0; top:-10px;}
+  15% { opacity: 1; top:70px;}
+  80% { opacity: 1; top:70px;}
+  100% { opacity: 0;}
 }
 
 @-moz-keyframes popup {
-  0% { opacity: 0; }
-  25% { opacity: 0.8; }
-  75% { opacity: 0.8; }
-  0% { opacity: 0; }
+  0% { opacity: 0; top:-10px;}
+  15% { opacity: 1; top:70px;}
+  80% { opacity: 1; top:70px;}
+  100% { opacity: 0;}
 }
 
 /* Всплывающие подсказки: исконка и её варианты */
@@ -310,6 +311,7 @@ input[type="search"] {
 #popup-message.check #popup-background {
 	background: #6CDA6C;
 	width: 360px;
+	border-radius: 0px 7px 7px 0;
 }
 
 #popup-message.error #popup-background {
