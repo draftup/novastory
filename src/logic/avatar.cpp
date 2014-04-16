@@ -102,9 +102,52 @@ novastory::Avatar::Avatar() : m_userid(-1), m_conentSize(0)
 
 bool novastory::Avatar::update()
 {
+	QString addwhere;
+
+	int quserid = userid();
+	QString qemail;
+	if (quserid > 0)
+	{
+		addwhere = "userid = ?";
+	}
+	else
+	{
+		qemail = email();
+		if (!qemail.isEmpty())
+		{
+			addwhere = "email = ?";
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	SqlQuery qcheck;
+	qcheck.prepare("SELECT userid FROM users WHERE " + addwhere);
+	if (quserid > 0)
+	{
+		qcheck.bindValue(0, quserid);
+	}
+	else
+	{
+		qcheck.bindValue(0, qemail);
+	}
+
+	VERIFY(qcheck.exec());
+
+	if (qcheck.size() != 1)
+	{
+		JSON_ERROR("No such user", 2);
+		return false;
+	}
+
+	VERIFY(qcheck.next());
+	int realuserid = qcheck.value("userid").toInt();
+
 	SqlQuery q;
 	q.prepare("INSERT INTO " + objectName() + "(userid, avatar, contenttype, contentsize) VALUES(:userid, :avatar, :contenttype, :contentsize) ON DUPLICATE KEY UPDATE avatar = :avatar, contenttype = :contenttype, contentsize = :contentsize");
-	q.bindValue(":userid", userid());
+	q.bindValue(":userid", realuserid);
 	QByteArray ava = avatar();
 	q.bindValue(":avatar", ava);
 
@@ -113,8 +156,6 @@ bool novastory::Avatar::update()
 		JSON_ERROR("No avatar data set", 1);
 		return false;
 	}
-
-	qDebug() << ava.size();
 
 	QMimeDatabase db;
 	QMimeType mime = db.mimeTypeForData(ava);

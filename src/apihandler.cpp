@@ -46,6 +46,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	QString hook = hookList[2];
 
 	QString stoken = cookies["stoken"].isNull() ? post["stoken"] : cookies["stoken"];
+	int userid = cookies["userid"].isNull() ? post["userid"].toInt() : cookies["userid"].toInt();
 
 	QByteArray json;
 
@@ -103,6 +104,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	{
 		Avatar avatar;
 		avatar.setAvatar(DataImage(post["avatar"]));
+		avatar.setUserid(userid);
 		avatar.update();
 		json = avatar.jsonString().toUtf8();
 	}

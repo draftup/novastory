@@ -62,10 +62,14 @@ void Test_Avatars::updateTest()
 	QVERIFY(f.open(QIODevice::ReadOnly));
 
 	QByteArray bf = f.readAll();
-	a.setUserid(uid);
 	a.setAvatar(bf);
 	f.close();
 
+	a.setUserid(332543252); // no such user
+	QVERIFY(!a.update());
+	QCOMPARE(a.jsonErrorType(), 2);
+
+	a.setUserid(uid);
 	QVERIFY(a.update());
 }
 
