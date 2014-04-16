@@ -17,15 +17,8 @@ void WebRequest::parse()
 	QString data = bindedSocket->readAll();
 
 	QStringList dataArray = data.split("\n\r\n");
-
-	if (dataArray.size() != 2)
-	{
-		qDebug() << "Unknown data type";
-		return;
-	}
-
 	QStringList headerArray = dataArray[0].split("\n");
-	QString body = dataArray[1];
+	QString body = (dataArray.size() == 2) ? dataArray[1] : QString();
 	dataArray.clear();
 
 	qDebug() << "WEB REQUEST: " << data;
