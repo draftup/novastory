@@ -11,7 +11,7 @@ private slots:
 	void init();
 	void cleanup();
 	void cleanupTestCase();
-	
+
 	void mainTest();
 private:
 
@@ -20,7 +20,7 @@ private:
 
 void Test_DataImage::initTestCase()
 {
-	data = 
+	data =
 		"data:image/gif;base64,R0lGODlhEAAQAPecAMoXF8sXF9kZGf39/d8aGrgVFexbWtgZGeUcHNQYGNwZG"
 		"cQWFv38/McXF8kXF/Xy8uDb28AWFvWpp+UeHe94eeU6O8gfHu1nZPbe3skdHeQaHNFdXPXW1PWqq7EWFtAY"
 		"GO5ub97IyO55evzp6ck2NuhOUO5sbK4UFPDm5vn29udUVutaWNi5ub84OfCBf8iFhfn398NRUt4ZGexZWvz8"

@@ -2,10 +2,10 @@
 #include <QRegExp>
 #include <QDebug>
 
-void novastory::DataImage::processImage( const QString& data )
+void novastory::DataImage::processImage(const QString& data)
 {
 	QRegExp rx("data:(.*);base64,(.*)");
-	if(rx.indexIn(data) >= 0)
+	if (rx.indexIn(data) >= 0)
 	{
 		m_mimetype = rx.cap(1);
 		QByteArray::operator=(fromBase64(rx.cap(2).toLatin1()));
@@ -17,7 +17,7 @@ const QString& novastory::DataImage::mimeType() const
 	return m_mimetype;
 }
 
-novastory::DataImage::DataImage( const QString& data ) : QByteArray()
+novastory::DataImage::DataImage(const QString& data) : QByteArray()
 {
 	processImage(data);
 }
