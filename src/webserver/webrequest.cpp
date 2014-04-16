@@ -15,11 +15,22 @@ WebRequest::WebRequest(QTcpSocket* bindedSocket)
 void WebRequest::parse()
 {
 	QString data = bindedSocket->readAll();
-	QStringList dataArray = data.split("\n");
+
+	QStringList dataArray = data.split("\n\r\n");
+
+	if (dataArray.size() != 2)
+	{
+		qDebug() << "Unknown data type";
+		return;
+	}
+
+	QStringList headerArray = dataArray[0].split("\n");
+	QString body = dataArray[1];
+	dataArray.clear();
 
 	qDebug() << "WEB REQUEST: " << data;
 
-	if (dataArray.size() == 0)
+	if (headerArray.size() == 0)
 	{
 		qDebug() << "Browser agent don't recive any info";
 		return;
@@ -27,7 +38,7 @@ void WebRequest::parse()
 
 	QRegExp getRx("(GET|POST) (.*) HTTP/([0-9.]+)");
 	int pos = 0;
-	if ((pos = getRx.indexIn(dataArray[0])) != -1)
+	if ((pos = getRx.indexIn(headerArray[0])) != -1)
 	{
 		parsedValues["type"] = getRx.cap(1);
 		parsedValues["path"] = getRx.cap(2);
@@ -46,40 +57,35 @@ void WebRequest::parse()
 
 	// Parsing requst lines
 	QRegExp paramRx("(.*): (.*)");
-	int coINT = 0;
-	QString postData;
-	for (int i = 1; i < dataArray.size(); ++i)
+	for (int i = 1; i < headerArray.size(); ++i)
 	{
 		int posParam = 0;
-		if ((posParam = paramRx.indexIn(dataArray[i])) != -1)
+		if ((posParam = paramRx.indexIn(headerArray[i])) != -1)
 		{
 			QString param = paramRx.cap(1);
 			QString value = paramRx.cap(2);
 			parsedValues[param] = value;
 		}
-		else if (dataArray[i] == "\r")
-		{
-			coINT = i;
-		}
-
-		if (parsedValues["type"] == "POST" && coINT > 0 && coINT != i)
-		{
-			postData += (i - 1 == coINT) ? dataArray[i] : '\n' + dataArray[i];
-		}
 	}
 
 	if (parsedValues["type"] == "POST")
 	{
-		parsedValues["POST"] = postData;
-
-		qDebug() << "POST data: " << postData;
+		parsedValues["POST"] = body;
+		qDebug() << "POST data: " << body;
 	}
 
 
-	if (postData.size() > 0 && !parsedValues["Content-Length"].isEmpty() && postData.size() != parsedValues["Content-Length"].toInt())
+	if (body.size() > 0 && !parsedValues["Content-Length"].isEmpty() && body.size() != parsedValues["Content-Length"].toInt())
 	{
-		qDebug() << "Wrong post size";
+		while(body.size() != parsedValues["Content-Length"].toInt())
+		{
+			bindedSocket->waitForReadyRead();
+			body += bindedSocket->readAll();
+		}
+
+		qDebug() << body.size();
 	}
+
 }
 
 bool WebRequest::isParsed() const

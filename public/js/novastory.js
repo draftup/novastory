@@ -395,6 +395,7 @@ $(document).ready(function ()
 						reader.onload = function(e) {
 							$("#avapreview").show();
 							$("#avapreview").attr('src', e.target.result);
+							NovastoryApi.updateAvatar(e.target.result);
 						};
 						reader.readAsDataURL(file);
 					}

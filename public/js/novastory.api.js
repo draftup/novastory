@@ -36,3 +36,14 @@ NovastoryApi.restorepassword = function (email, callback)
 		callback,
 		'json');
 }
+
+NovastoryApi.updateAvatar = function (avatar, callback)
+{
+	$.post(
+		'/api/updateavatar',
+	{
+		avatar : avatar
+	},
+		callback,
+		'json');
+}

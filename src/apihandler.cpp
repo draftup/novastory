@@ -8,6 +8,7 @@
 #include "logic/captcha.h"
 #include "logic/user.h"
 #include "logic/texteditor.h"
+#include "logic/avatar.h"
 
 namespace novastory
 {
@@ -97,6 +98,13 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		{
 			json = user.jsonString().toUtf8();
 		}
+	}
+	else if(hook == "updateavatar")
+	{
+		Avatar avatar;
+		avatar.setAvatar(DataImage(post["avatar"]));
+		avatar.update();
+		json = avatar.jsonString().toUtf8();
 	}
 	else if (hook == "version")
 	{

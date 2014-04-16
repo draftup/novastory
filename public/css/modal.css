@@ -265,6 +265,47 @@ input[type="checkbox"] {
 
 /*Страница настройки профиля*/
 
+#greeting {
+	width:490px;
+	height:60px;
+	background: #FFA13D;
+	font-size:22pt;
+	padding-left:30px;
+	line-height:60px;
+	color: #FFFFFF;
+}
+
+/*Страница настройки профиля: кнопка сохранения*/
+
+.buttonblock.sett {
+	position:absolute;
+	left:30px;
+	top:370px;
+}
+
+#savesett {
+	width:100px;
+	height:30px;
+	font-size:12pt;
+	color:white;
+	cursor:pointer;
+	text-align:center;
+	background:#99146F;
+}
+
+#savesett a {
+	display:block;
+	margin-top:7px;
+}
+
+/*Страница настройки профиля: поля ввода*/
+
+.textarea.modsett {
+	margin-top:20px;
+	margin-left:30px;
+	position:relative;
+}
+
 input[type="text"], [type="password"] {
 	border:none;
 	outline:none;
@@ -275,6 +316,8 @@ input[type="text"], [type="password"] {
 	margin-left:5px;
 }
 
+/*Страница настройки профиля: поле загрузки аватара*/
+
 #avaloader {
 	position:absolute;
 	width:105px;
@@ -282,8 +325,8 @@ input[type="text"], [type="password"] {
 	border: 4px dashed #A7A7A7;
 	background:url(../images/modal-settings/ava.svg) center center no-repeat;
 	background-size:70px 70px;
-	left:365px;
-	top:50px;
+	left:370px;
+	margin-top:20px;
 	-moz-transition:all 0.2s;
 	-o-transition:all 0.2s;
 	-webkit-transition:all 0.2s;
@@ -304,5 +347,7 @@ input[type="text"], [type="password"] {
 }
 
 #editoron {
-	position:absolute;
+	position:relative;
+	margin-top:30px;
+	left:30px;
 }

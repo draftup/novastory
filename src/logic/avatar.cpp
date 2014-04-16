@@ -22,6 +22,13 @@ const QByteArray& novastory::Avatar::avatar() const
 void novastory::Avatar::setAvatar(const QByteArray& avatar)
 {
 	m_avatar = avatar;
+	setContentSize(avatar.size());
+}
+
+void novastory::Avatar::setAvatar( const DataImage& image )
+{
+	setAvatar((QByteArray)image);
+	setContentType(image.mimeType());
 }
 
 const QString& novastory::Avatar::email() const
@@ -100,6 +107,14 @@ bool novastory::Avatar::update()
 	q.bindValue(":userid", userid());
 	QByteArray ava = avatar();
 	q.bindValue(":avatar", ava);
+
+	if(ava.size() == 0)
+	{
+		JSON_ERROR("No avatar data set", 1);
+		return false;
+	}
+
+	qDebug() << ava.size();
 
 	QMimeDatabase db;
 	QMimeType mime = db.mimeTypeForData(ava);
