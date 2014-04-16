@@ -59,7 +59,7 @@ void WebRouter::sendHtml()
 	}
 }
 
-QString WebRouter::postData() const
+const QString& WebRouter::postData() const
 {
 	return parsedValues["POST"];
 }

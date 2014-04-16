@@ -68,22 +68,19 @@ void WebRequest::parse()
 		}
 	}
 
-	if (parsedValues["type"] == "POST")
-	{
-		parsedValues["POST"] = body;
-		qDebug() << "POST data: " << body;
-	}
-
-
 	if (body.size() > 0 && !parsedValues["Content-Length"].isEmpty() && body.size() != parsedValues["Content-Length"].toInt())
 	{
 		while (body.size() != parsedValues["Content-Length"].toInt())
 		{
 			bindedSocket->waitForReadyRead();
-			body += bindedSocket->readAll();
+			body.append(bindedSocket->readAll());
 		}
+	}
 
-		qDebug() << body.size();
+	if (parsedValues["type"] == "POST")
+	{
+		parsedValues["POST"] = body;
+		qDebug() << "POST data: " << ((body.size() > 1024) ? body.left(1024) : body);
 	}
 
 }
