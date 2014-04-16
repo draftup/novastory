@@ -26,14 +26,16 @@ public:
 	void messageOutput(QtMsgType type, const char* msg);
 #endif
 
-	void log(const QString& text);
+	void log(const QString& text, QtMsgType type);
 
 	void setWriteToLogFile(bool writToFile);
 private:
 	void initializeFileLog();
 
 	QFile* logFile;
+	QFile* errorFile;
 	QTextStream* logStream;
+	QTextStream* errorStream;
 	bool isWriteToFile;
 	QMutex m_mutex;
 };

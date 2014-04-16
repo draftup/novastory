@@ -219,98 +219,42 @@ input[type="search"] {
 
 /* Всплывающие подсказки */ 
 
-#popup-message {
-	display:none;
+#popup-message
+{
+	display: none;
 	position: fixed;
-	height: 45px;
-	margin-left: -210px;
-	width:330px;
+	width: 60%;
+	width: 700px;
+	height: 40px;
+	margin-left: -350px;
 	left: 50%;
-	color: #FFFFFF;
-	font-size: 13pt;
-	font-weight:130;
-	z-index:-1;
-	opacity:0;
-	top:0px;
-	-webkit-animation: popup 3.5s;
-	-o-animation: popup 3.5s;
-	-moz-animation: popup 3.5s;
-	animation: popup 3.5s;
-	border-radius: 0px 0px 5px 5px;
-}
-
-#popup-text {
+	top: 0px;
+	opacity: 0;
+	border-radius: 15px;
+	
 	text-align: center;
-	width:265px;
-	height:inherit;
-	margin-left:40px;
-	line-height:40px;	
+	padding: 10px 0px 0px 20px;
+	font-size: 200%; /* Размер шрифта в процентах */ 
+	color: white;
 }
 
-/* Всплывающие подсказки: анимация*/
-
-@keyframes popup {
-  0% { opacity: 0.8; top:0px;}
-  10% { opacity: 1; top:40px;}
-  80% { opacity: 1; top:40px;}
-  100% { opacity: 0.5;}
-}
-  
-@-webkit-keyframes popup {
-  0% { opacity: 0; top:0px;}
-  10% { opacity: 1; top:40px;}
-  90% { opacity: 1; top:40px;}
-  100% { opacity: 0;}
-}
-
-@-o-keyframes popup {
-  0% { opacity: 0; top:0px;}
-  10% { opacity: 1; top:40px;}
-  80% { opacity: 1; top:40px;}
-  100% { opacity: 0;}
-}
-
-@-moz-keyframes popup {
-  0% { opacity: 0.8; top:0px;}
-  10% { opacity: 1; top:40px;}
-  90% { opacity: 1; top:40px;}
-  100% { opacity: 0.5; top:-10px;}
-}
-
-/* Всплывающие подсказки: исконка и её варианты */
-
-#popup-ico {
-	width: 35px;
-	height: 35px;
-	position:absolute;
-	top:4px;
-	left:15px;
-}
-
-#popup-message.check {
-	background: #6CDA6C;
-}
-
-#popup-message.error {
-	background: #FF3333;
-
-}
-
-#popup-message.warning {
-	background: #FFA319;
-}
-
-#popup-message.check #popup-ico {
-	background:url(../images/check-mark.svg) no-repeat ;
+#popup-message.error
+{
+	box-shadow: 0 0 25px rgb(255,0,0);
+	background:url(../images/x-mark.svg) no-repeat red;
 	background-size:contain;
 }
 
-#popup-message.error #popup-ico {
-	background:url(../images/x-mark.svg) no-repeat;
+#popup-message.ok
+{
+	box-shadow: 0 0 25px rgb(0,255,0);
+	background:url(../images/check-mark.svg) no-repeat green;
 	background-size:contain;
 }
 
-#popup-message.warning #popup-ico {
-	background:url(../images/warning.svg) no-repeat;
+#popup-message.warning
+{
+	box-shadow: 0 0 25px #FF8C00;
+	background:url(../images/warning.svg) no-repeat #FF8C00;
 	background-size:contain;
 }

@@ -18,6 +18,8 @@ void messageOutput(QtMsgType type, const char* msg);
 Logger::Logger() :
 	logFile(nullptr),
 	logStream(nullptr),
+	errorFile(nullptr),
+	errorStream(nullptr),
 	isWriteToFile(false)
 {
 
@@ -32,6 +34,8 @@ Logger::~Logger()
 #endif
 	delete logStream;
 	delete logFile;
+	delete errorStream;
+	delete errorFile;
 }
 
 void Logger::initializeFileLog()
@@ -41,18 +45,26 @@ void Logger::initializeFileLog()
 		return;    // Already initialized file log
 	}
 
-	QString path;
+	QString logPath;
+	QString errorPath;
 #ifdef Q_OS_WIN
-	path = "novastory.log";
+	logPath = "novastory.log";
+	errorPath = "novastory.errors.log";
 #else
 	//path = "/var/log/novastory.log";
-	path = "novastory.log";
+	logPath = "novastory.log";
+	errorPath = "novastory.errors.log";
 #endif
 	Q_ASSERT(!logFile);
-	logFile = new QFile(path);
+	Q_ASSERT(!errorFile);
+	logFile = new QFile(logPath);
 	logFile->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
+	errorFile = new QFile(errorPath);
+	errorFile->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
 	Q_ASSERT(!logStream);
+	Q_ASSERT(!errorStream);
 	logStream = new QTextStream(logFile);
+	errorStream = new QTextStream(errorFile);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
 	previousMsgHandler = qInstallMessageHandler(&novastory::messageOutput);
@@ -86,7 +98,7 @@ void Logger::messageOutput(QtMsgType type, const char* msg)
 
 	message += msg;
 
-	log(message);
+	log(message, type);
 
 	if (type == QtFatalMsg)
 	{
@@ -111,7 +123,7 @@ void Logger::messageOutput(QtMsgType type, const char* msg)
 	}
 }
 
-void Logger::log(const QString& text)
+void Logger::log(const QString& text, QtMsgType type)
 {
 	if (isWriteToFile)
 	{
@@ -124,6 +136,21 @@ void Logger::log(const QString& text)
 		{
 			*logStream << record;
 			logStream->flush();
+		}
+
+		if (errorStream)
+		{
+			switch (type)
+			{
+			case QtCriticalMsg:
+			case QtFatalMsg:
+			{
+				*errorStream << record;
+				errorStream->flush();
+			}
+			default:
+				break;
+			}
 		}
 	}
 }
