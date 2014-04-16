@@ -26,7 +26,7 @@ public:
 	void messageOutput(QtMsgType type, const char* msg);
 #endif
 
-	void log(const QString& text, QtMsgType type);
+	void log(const QString& text, QtMsgType type = QtMsgType::QtDebugMsg);
 
 	void setWriteToLogFile(bool writToFile);
 private:

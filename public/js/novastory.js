@@ -49,14 +49,14 @@ $(document).ready(function ()
 		$('#popup-message').attr('class', 'error');
 		this.popupHelper(errormessage);
 	}
-	
-	Novastory.ok = function(okmessage)
+
+	Novastory.ok = function (okmessage)
 	{
 		$('#popup-message').attr('class', 'ok');
 		this.popupHelper(okmessage);
 	}
-	
-	Novastory.warning = function(wmessage)
+
+	Novastory.warning = function (wmessage)
 	{
 		$('#popup-message').attr('class', 'warning');
 		this.popupHelper(wmessage);
@@ -368,6 +368,52 @@ $(document).ready(function ()
 	{
 		logout();
 	}
-	)
+	);
+
+	// Profile settings
+	$('#setico').click(function ()
+	{
+		if (!$('#modal-sett').exists())
+		{
+			$('#settings-space').load('/modal-settings.html #modal-sett', null, function ()
+			{
+				function handleFileSelect(event)
+				{
+					event.stopPropagation();
+					event.preventDefault();
+
+					var files = event.dataTransfer.files; // FileList object.
+					for (var i = 0, file; file = files[i]; i++)
+					{
+						// Only process image files.
+						if (!file.type.match('image.*'))
+						{
+							continue;
+						}
+						
+						var reader = new FileReader();
+						reader.onload = function(e) {
+							$("#avapreview").show();
+							$("#avapreview").attr('src', e.target.result);
+						};
+						reader.readAsDataURL(file);
+					}
+				}
+
+				function handleDragOver(evt)
+				{
+					evt.stopPropagation();
+					evt.preventDefault();
+					evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+				}
+
+				var dropZone = document.getElementById('avaloader');
+				dropZone.addEventListener('dragover', handleDragOver, false);
+				dropZone.addEventListener('drop', handleFileSelect, false);
+			}
+			);
+		}
+	}
+	);
 }
 );

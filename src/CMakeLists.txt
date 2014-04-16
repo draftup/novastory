@@ -26,7 +26,7 @@ set(HEADERS_TOMOC
 	webserver/webprocess.h
 	recaptcha.h
 	sql/sqlizable.h
-
+	
 	logic/user.h
 	logic/captcha.h
 	logic/texteditor.h
@@ -38,6 +38,7 @@ set(HEADERS
 	sql/sqldatabase.h
 	
 	utils/globals.h
+	dataimage.h
 
 	jsonthrower.h
 	config.h
@@ -62,6 +63,7 @@ set(SOURCES
 	logic/avatar.cpp
 	
 	utils/globals.cpp
+	dataimage.cpp
 	
 	recaptcha.cpp
 	rawfilehandler.cpp

@@ -291,6 +291,14 @@ input[type="text"], [type="password"] {
 	cursor:pointer;
 }
 
+#avaloader  #avapreview
+{
+	width:105px;
+	height:105px;
+	border: 0px;
+	display: none;
+}
+
 #avaloader:hover {
 	background-size:76px 76px;
 }
