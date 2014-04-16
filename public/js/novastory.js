@@ -388,14 +388,20 @@ $(document).ready(function ()
 						// Only process image files.
 						if (!file.type.match('image.*'))
 						{
+							Novastory.error("Please drop image");
 							continue;
 						}
-						
+
 						var reader = new FileReader();
-						reader.onload = function(e) {
+						reader.onload = function (e)
+						{
 							$("#avapreview").show();
 							$("#avapreview").attr('src', e.target.result);
-							NovastoryApi.updateAvatar(e.target.result);
+							NovastoryApi.updateAvatar(e.target.result, function ()
+							{
+									Novastory.ok("Your avatar updated. You can continues to update profile.");
+							}
+							);
 						};
 						reader.readAsDataURL(file);
 					}
