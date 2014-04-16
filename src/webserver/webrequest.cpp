@@ -77,7 +77,7 @@ void WebRequest::parse()
 
 	if (body.size() > 0 && !parsedValues["Content-Length"].isEmpty() && body.size() != parsedValues["Content-Length"].toInt())
 	{
-		while(body.size() != parsedValues["Content-Length"].toInt())
+		while (body.size() != parsedValues["Content-Length"].toInt())
 		{
 			bindedSocket->waitForReadyRead();
 			body += bindedSocket->readAll();

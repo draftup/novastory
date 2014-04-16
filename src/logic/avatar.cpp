@@ -25,7 +25,7 @@ void novastory::Avatar::setAvatar(const QByteArray& avatar)
 	setContentSize(avatar.size());
 }
 
-void novastory::Avatar::setAvatar( const DataImage& image )
+void novastory::Avatar::setAvatar(const DataImage& image)
 {
 	setAvatar((QByteArray)image);
 	setContentType(image.mimeType());
@@ -108,7 +108,7 @@ bool novastory::Avatar::update()
 	QByteArray ava = avatar();
 	q.bindValue(":avatar", ava);
 
-	if(ava.size() == 0)
+	if (ava.size() == 0)
 	{
 		JSON_ERROR("No avatar data set", 1);
 		return false;
