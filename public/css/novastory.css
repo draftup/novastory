@@ -222,70 +222,87 @@ input[type="search"] {
 #popup-message {
 	display:none;
 	position: fixed;
-	height: 60px;
+	height: 45px;
 	margin-left: -210px;
+	width:330px;
 	left: 50%;
-	top: 70px;
-	text-align: center;
 	color: #FFFFFF;
 	font-size: 13pt;
+	font-weight:130;
+	z-index:-1;
 	opacity:0;
+	top:0px;
 	-webkit-animation: popup 3.5s;
 	-o-animation: popup 3.5s;
 	-moz-animation: popup 3.5s;
 	animation: popup 3.5s;
-	z-index:-1;
+	border-radius: 0px 0px 5px 5px;
 }
 
 #popup-text {
-	line-height:60px;
-	width: 330px;
-	position:absolute;
-	margin-left:50px;
+	text-align: center;
+	width:265px;
+	height:inherit;
+	margin-left:40px;
+	line-height:40px;	
 }
 
 /* Всплывающие подсказки: анимация*/
 
 @keyframes popup {
-  0% { opacity: 0; top:-10px;}
-  15% { opacity: 1; top:70px;}
-  80% { opacity: 1; top:70px;}
-  100% { opacity: 0;}
+  0% { opacity: 0.8; top:0px;}
+  10% { opacity: 1; top:40px;}
+  80% { opacity: 1; top:40px;}
+  100% { opacity: 0.5;}
 }
   
 @-webkit-keyframes popup {
-  0% { opacity: 0; top:-10px;}
-  15% { opacity: 1; top:70px;}
-  80% { opacity: 1; top:70px;}
+  0% { opacity: 0; top:0px;}
+  10% { opacity: 1; top:40px;}
+  90% { opacity: 1; top:40px;}
   100% { opacity: 0;}
 }
 
 @-o-keyframes popup {
-  0% { opacity: 0; top:-10px;}
-  15% { opacity: 1; top:70px;}
-  80% { opacity: 1; top:70px;}
+  0% { opacity: 0; top:0px;}
+  10% { opacity: 1; top:40px;}
+  80% { opacity: 1; top:40px;}
   100% { opacity: 0;}
 }
 
 @-moz-keyframes popup {
-  0% { opacity: 0; top:-10px;}
-  15% { opacity: 1; top:70px;}
-  80% { opacity: 1; top:70px;}
-  100% { opacity: 0;}
+  0% { opacity: 0.8; top:0px;}
+  10% { opacity: 1; top:40px;}
+  90% { opacity: 1; top:40px;}
+  100% { opacity: 0.5; top:-10px;}
 }
 
 /* Всплывающие подсказки: исконка и её варианты */
 
 #popup-ico {
-	width: 60px;
-	height: 60px;
+	width: 35px;
+	height: 35px;
 	position:absolute;
+	top:4px;
+	left:15px;
+}
+
+#popup-message.check {
+	background: #6CDA6C;
+}
+
+#popup-message.error {
+	background: #FF3333;
+
+}
+
+#popup-message.warning {
+	background: #FFA319;
 }
 
 #popup-message.check #popup-ico {
-	background:url(../images/check-mark.svg) no-repeat #FFFFFF;
+	background:url(../images/check-mark.svg) no-repeat ;
 	background-size:contain;
-	border-radius:50%;
 }
 
 #popup-message.error #popup-ico {
@@ -296,39 +313,4 @@ input[type="search"] {
 #popup-message.warning #popup-ico {
 	background:url(../images/warning.svg) no-repeat;
 	background-size:contain;
-}
-
-/* Всплывающие подсказки: поле с сообщением и его варианты*/
-
-#popup-background {
-	width: 330px;
-	height: 42px;
-	margin-left:35px;
-	margin-top:9px;
-	position:absolute;
-}
-
-#popup-message.check #popup-background {
-	background: #6CDA6C;
-	width: 360px;
-	border-radius: 0px 7px 7px 0;
-}
-
-#popup-message.error #popup-background {
-	background: #FF3333;
-	border-bottom: 10px solid #FF3333;
-	border-left: 9px solid #FFFFFF;
-	border-top: 10px solid #FF3333;
-	line-height:45px;
-	margin-left:49px;
-	height: 24px;
-	margin-top:8px;
-}
-
-#popup-message.warning #popup-background {
-	background: #FFA319;
-	height: 0px;
-	border-left: 24px solid #FFFFFF;
-	border-top: 42px solid #FFA319;
-	line-height:45px;
 }
