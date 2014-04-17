@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 
 	pid_t pid = getpid();
 
-	FILE* fp = fopen("novastory.pid", "w");
+	FILE* fp = fopen((a.applicationDirPath() + "/novastory.pid").toLatin1().data(), "w");
 	if (!fp)
 	{
 		perror("fopen");
