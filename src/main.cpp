@@ -22,6 +22,17 @@ int main(int argc, char* argv[])
 			}
 		}
 	}
+
+	pid_t pid = getpid();
+
+	FILE *fp = fopen("novastory.pid", "w");
+	if (!fp) {
+		perror("fopen");
+		exit(EXIT_FAILURE);
+	}
+
+	fprintf(fp, "%d\n", pid);
+	fclose(fp);
 #endif
 
 	Logger::Instance().setWriteToLogFile(true); // Log all to file output
