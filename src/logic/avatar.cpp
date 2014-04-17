@@ -135,7 +135,7 @@ bool novastory::Avatar::update()
 	q.bindValue(":contenttype", mime.name());
 	q.bindValue(":contentsize", ava.size());
 	bool status = q.exec();
-	if(status)
+	if (status)
 	{
 		qDebug() << "Avatar for user " << email() << " updated";
 	}
@@ -162,7 +162,7 @@ bool novastory::Avatar::remove()
 	q.prepare("DELETE FROM " + objectName() + " WHERE userid = :userid");
 	q.bindValue(":userid", quserid);
 	bool status = q.exec();
-	if(status)
+	if (status)
 	{
 		qDebug() << "Avatar for user " << email() << " removed";
 	}
