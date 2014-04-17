@@ -45,7 +45,7 @@ void WebProcess::showHtmlPage()
 	qDebug() << "path = " << urlRouter.path();
 	urlRouter.sendHtml();
 
-	while (socket->bytesToWrite() > 0)
+	while (socket->bytesToWrite() > 0 && socket->state() != QAbstractSocket::UnconnectedState)
 	{
 		socket->waitForBytesWritten();
 	}
