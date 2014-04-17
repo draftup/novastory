@@ -35,7 +35,7 @@ if [ ! -d "$LIVE_DIRECTORY/$SUBFOLDER" ]; then
 	make test
 	if [ $? -eq 0 ]; then
 		make install
-		kill ${cat $LIVE_DIRECTORY/current/bin/novastory.pid}
+		kill `cat $LIVE_DIRECTORY/current/bin/novastory.pid`
 		rm -f $LIVE_DIRECTORY/current
 		ln -s "$LIVE_DIRECTORY/$SUBFOLDER" "$LIVE_DIRECTORY/current"
 		"$LIVE_DIRECTORY/current/bin/novastory_server" -d
