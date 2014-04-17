@@ -134,7 +134,17 @@ bool novastory::Avatar::update()
 
 	q.bindValue(":contenttype", mime.name());
 	q.bindValue(":contentsize", ava.size());
-	return q.exec();
+	bool status = q.exec();
+	if(status)
+	{
+		qDebug() << "Avatar for user " << email() << " updated";
+	}
+	else
+	{
+		qDebug() << "Avatar for user " << email() << " failed on update";
+	}
+
+	return status;
 }
 
 bool novastory::Avatar::remove()
@@ -151,7 +161,17 @@ bool novastory::Avatar::remove()
 
 	q.prepare("DELETE FROM " + objectName() + " WHERE userid = :userid");
 	q.bindValue(":userid", quserid);
-	return q.exec();
+	bool status = q.exec();
+	if(status)
+	{
+		qDebug() << "Avatar for user " << email() << " removed";
+	}
+	else
+	{
+		qDebug() << "Avatar for user " << email() << " failed on removing";
+	}
+
+	return status;
 }
 
 const novastory::User& novastory::Avatar::user() const
