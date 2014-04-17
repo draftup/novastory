@@ -4,6 +4,7 @@
 #include "sql/sqlizable.h"
 #include "jsonthrower.h"
 #include "dataimage.h"
+#include "user.h"
 
 class Test_Avatar;
 
@@ -31,6 +32,9 @@ public:
 	const QString& email() const;
 	void setEmail(const QString& email);
 
+	const User& user() const;
+	void setUser(const User& user);
+
 	bool sync();
 	bool update();
 	bool remove();
@@ -41,9 +45,8 @@ public:
 	const QString& contentType() const { return m_contentType; };
 	void setContentType(const QString& ct) { m_contentType = ct; };
 private:
-	int m_userid;
+	User m_user;
 	QByteArray m_avatar;
-	QString m_email;
 	unsigned int m_conentSize;
 	QString m_contentType;
 };

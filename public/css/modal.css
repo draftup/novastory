@@ -339,7 +339,11 @@ input[type="text"], [type="password"] {
 	width:105px;
 	height:105px;
 	border: 0px;
-	display: none;
+}
+
+#avaloader #avatardialog
+{
+
 }
 
 #avaloader:hover {

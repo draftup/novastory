@@ -417,6 +417,13 @@ $(document).ready(function ()
 				var dropZone = document.getElementById('avaloader');
 				dropZone.addEventListener('dragover', handleDragOver, false);
 				dropZone.addEventListener('drop', handleFileSelect, false);
+				
+				$("#avapreview").attr('src', "/avatar/" + USERID);
+				
+				$("#avaloader").click(function(){
+				alert("woo");
+					$("#avatardialog").trigger('click');
+				});
 			}
 			);
 		}

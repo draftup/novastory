@@ -104,7 +104,9 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	{
 		Avatar avatar;
 		avatar.setAvatar(DataImage(post["avatar"]));
-		avatar.setUserid(userid);
+		User user;
+		user.loginByToken(userid, stoken);
+		avatar.setUser(user);
 		avatar.update();
 		json = avatar.jsonString().toUtf8();
 	}

@@ -35,6 +35,7 @@ void Test_Avatars::initTestCase()
 	newuser.setEmail("doentcare@dsadasd.ds");
 	newuser.setRawPassword("doentcare");
 	QVERIFY(newuser.addUser());
+	QVERIFY(newuser.login("doentcare@dsadasd.ds", sha1("doentcare")));
 }
 
 void Test_Avatars::init()
@@ -69,7 +70,7 @@ void Test_Avatars::updateTest()
 	QVERIFY(!a.update());
 	QCOMPARE(a.jsonErrorType(), 2);
 
-	a.setUserid(uid);
+	a.setUser(newuser);
 	QVERIFY(a.update());
 }
 
@@ -103,6 +104,8 @@ void Test_Avatars::removeTest()
 
 	Avatar ra;
 	ra.setEmail(email);
+	QVERIFY(!ra.remove());
+	ra.setUser(newuser);
 	QVERIFY(ra.remove());
 
 	SqlQuery q("SELECT * FROM avatars WHERE userid = " + QString::number(avatar.userid()));

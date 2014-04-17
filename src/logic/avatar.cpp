@@ -6,12 +6,12 @@
 
 int novastory::Avatar::userid() const
 {
-	return m_userid;
+	return m_user.userid();
 }
 
 void novastory::Avatar::setUserid(int userid)
 {
-	m_userid = userid;
+	m_user.setUserID(userid);
 }
 
 const QByteArray& novastory::Avatar::avatar() const
@@ -33,12 +33,12 @@ void novastory::Avatar::setAvatar(const DataImage& image)
 
 const QString& novastory::Avatar::email() const
 {
-	return m_email;
+	return m_user.email();
 }
 
 void novastory::Avatar::setEmail(const QString& email)
 {
-	m_email = email;
+	m_user.setEmail(email);
 }
 
 bool novastory::Avatar::sync()
@@ -95,55 +95,20 @@ bool novastory::Avatar::sync()
 	return true;
 }
 
-novastory::Avatar::Avatar() : m_userid(-1), m_conentSize(0)
+novastory::Avatar::Avatar() : m_conentSize(0)
 {
 	setObjectName("avatars");
 }
 
 bool novastory::Avatar::update()
 {
-	QString addwhere;
-
-	int quserid = userid();
-	QString qemail;
-	if (quserid > 0)
+	if(!m_user.isLogined())
 	{
-		addwhere = "userid = ?";
-	}
-	else
-	{
-		qemail = email();
-		if (!qemail.isEmpty())
-		{
-			addwhere = "email = ?";
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	SqlQuery qcheck;
-	qcheck.prepare("SELECT userid FROM users WHERE " + addwhere);
-	if (quserid > 0)
-	{
-		qcheck.bindValue(0, quserid);
-	}
-	else
-	{
-		qcheck.bindValue(0, qemail);
-	}
-
-	VERIFY(qcheck.exec());
-
-	if (qcheck.size() != 1)
-	{
-		JSON_ERROR("No such user", 2);
+		JSON_ERROR("User not logined", 2);
 		return false;
 	}
 
-	VERIFY(qcheck.next());
-	int realuserid = qcheck.value("userid").toInt();
+	int realuserid = userid();
 
 	SqlQuery q;
 	q.prepare("INSERT INTO " + objectName() + "(userid, avatar, contenttype, contentsize) VALUES(:userid, :avatar, :contenttype, :contentsize) ON DUPLICATE KEY UPDATE avatar = :avatar, contenttype = :contenttype, contentsize = :contentsize");
@@ -167,23 +132,27 @@ bool novastory::Avatar::update()
 
 bool novastory::Avatar::remove()
 {
-	SqlQuery q;
-	int quserid = userid();
-	if (quserid > 0)
+	if(!m_user.isLogined())
 	{
-		q.prepare("DELETE FROM " + objectName() + " WHERE userid = :userid");
-		q.bindValue(":userid", quserid);
-		return q.exec();
-	}
-
-	QString qemail = email();
-	if (qemail.isEmpty())
-	{
+		JSON_ERROR("User not logined", 3);
 		return false;
 	}
 
-	q.prepare("DELETE avatars FROM avatars INNER JOIN users ON(users.userid = avatars.userid) WHERE users.email = :email");
-	q.bindValue(":email", qemail);
+	SqlQuery q;
+	int quserid = userid();
+	Q_ASSERT(quserid > 0);
 
+	q.prepare("DELETE FROM " + objectName() + " WHERE userid = :userid");
+	q.bindValue(":userid", quserid);
 	return q.exec();
+}
+
+const novastory::User& novastory::Avatar::user() const
+{
+	return m_user;
+}
+
+void novastory::Avatar::setUser( const novastory::User& user )
+{
+	m_user = user;
 }
