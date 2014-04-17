@@ -3,6 +3,7 @@
 #include "utils/globals.h"
 #include <QMimeDatabase>
 #include <QMimeType>
+#include "config.h"
 
 int novastory::Avatar::userid() const
 {
@@ -119,6 +120,12 @@ bool novastory::Avatar::update()
 	if (ava.size() == 0)
 	{
 		JSON_ERROR("No avatar data set", 1);
+		return false;
+	}
+
+	if(ava.size() > AVATAR_LIMIT_BYTES)
+	{
+		JSON_ERROR("Avatar is too big", 3);
 		return false;
 	}
 

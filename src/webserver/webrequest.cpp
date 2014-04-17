@@ -2,6 +2,7 @@
 #include <QTcpSocket>
 #include "utils/globals.h"
 #include <QRegExp>
+#include "config.h"
 
 namespace novastory
 {
@@ -14,18 +15,19 @@ WebRequest::WebRequest(QTcpSocket* bindedSocket)
 
 void WebRequest::parse()
 {
-	QString data = bindedSocket->readAll();
+	QString data = bindedSocket->read(CONTENT_LIMIT_BYTES);
 
 	QStringList dataArray = data.split("\n\r\n");
 	QStringList headerArray = dataArray[0].split("\n");
 	QString body = (dataArray.size() == 2) ? dataArray[1] : QString();
+	
+	qDebug() << "Requst Header: " << dataArray[0];
+	
 	dataArray.clear();
-
-	qDebug() << "WEB REQUEST: " << data;
 
 	if (headerArray.size() == 0)
 	{
-		qDebug() << "Browser agent don't recive any info";
+		qWarning() << "Browser agent don't recive any header info";
 		return;
 	}
 
@@ -44,7 +46,7 @@ void WebRequest::parse()
 	}
 	else
 	{
-		qDebug() << "Doesn't looks like browser request, aborting";
+		qWarning() << "Doesn't looks like browser request, aborting";
 		return;
 	}
 
@@ -61,12 +63,28 @@ void WebRequest::parse()
 		}
 	}
 
+	if(parsedValues["Content-Length"].toInt() > CONTENT_LIMIT_BYTES)
+	{
+		qDebug() << "Too big request, aborting";
+		return;
+	}
+
 	if (body.size() > 0 && !parsedValues["Content-Length"].isEmpty() && body.size() != parsedValues["Content-Length"].toInt())
 	{
-		while (body.size() != parsedValues["Content-Length"].toInt())
+		int length = parsedValues["Content-Length"].toInt();
+		while (body.size() != length)
 		{
-			bindedSocket->waitForReadyRead();
+			if(!bindedSocket->waitForReadyRead())
+			{
+				qDebug() << "Connection timeout";
+				return;
+			}
 			body.append(bindedSocket->readAll());
+			if(body.size() > length)
+			{
+				qCritical() << "Wrong request size. Very wrong.";
+				return;
+			}
 		}
 	}
 

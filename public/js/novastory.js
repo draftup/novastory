@@ -387,15 +387,28 @@ $(document).ready(function ()
 							Novastory.error("Please drop image");
 							continue;
 						}
+						
+						if(file.size > 1 * 1024 * 1024)
+						{
+							Novastory.error("File must be less than 1MB");
+							continue;
+						}
 
 						var reader = new FileReader();
 						reader.onload = function (e)
 						{
 							$("#avapreview").show();
 							$("#avapreview").attr('src', e.target.result);
-							NovastoryApi.updateAvatar(e.target.result, function ()
+							NovastoryApi.updateAvatar(e.target.result, function (data)
 							{
-								Novastory.ok("Your avatar updated. You can continues to update profile.");
+								if (data.error != null && data.error)
+								{
+									Novastory.error("Error on file upload");
+								}
+								else
+								{
+									Novastory.ok("Your avatar updated. You can continues to update profile.");
+								}
 							}
 							);
 						};
