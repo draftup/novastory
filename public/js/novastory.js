@@ -370,6 +370,10 @@ $(document).ready(function ()
 	}
 	);
 
+	$("#panelava img").error(function(){
+		$(this).hide();
+	});
+	
 	// Profile settings
 	$('#setico').click(function ()
 	{
@@ -408,6 +412,8 @@ $(document).ready(function ()
 								else
 								{
 									Novastory.ok("Your avatar updated. You can continues to update profile.");
+									$("#panelava img").show();
+									$("#panelava img").attr('src', e.target.result);
 								}
 							}
 							);
@@ -447,6 +453,10 @@ $(document).ready(function ()
 					processImageFiles($(this)[0].files);
 				}
 				);
+				
+				$("#avapreview").error(function(){
+					$(this).hide();
+				});
 			}
 			);
 		}
