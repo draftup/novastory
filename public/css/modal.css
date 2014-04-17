@@ -341,9 +341,9 @@ input[type="text"], [type="password"] {
 	border: 0px;
 }
 
-#avaloader #avatardialog
+#avatardialog
 {
-
+	display: none;
 }
 
 #avaloader:hover {

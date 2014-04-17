@@ -377,12 +377,8 @@ $(document).ready(function ()
 		{
 			$('#settings-space').load('/modal-settings.html #modal-sett', null, function ()
 			{
-				function handleFileSelect(event)
+				function processImageFiles(files)
 				{
-					event.stopPropagation();
-					event.preventDefault();
-
-					var files = event.dataTransfer.files; // FileList object.
 					for (var i = 0, file; file = files[i]; i++)
 					{
 						// Only process image files.
@@ -399,12 +395,19 @@ $(document).ready(function ()
 							$("#avapreview").attr('src', e.target.result);
 							NovastoryApi.updateAvatar(e.target.result, function ()
 							{
-									Novastory.ok("Your avatar updated. You can continues to update profile.");
+								Novastory.ok("Your avatar updated. You can continues to update profile.");
 							}
 							);
 						};
 						reader.readAsDataURL(file);
 					}
+				}
+
+				function handleFileSelect(event)
+				{
+					event.stopPropagation();
+					event.preventDefault();
+					processImageFiles(event.dataTransfer.files); // FileList object.
 				}
 
 				function handleDragOver(evt)
@@ -417,13 +420,20 @@ $(document).ready(function ()
 				var dropZone = document.getElementById('avaloader');
 				dropZone.addEventListener('dragover', handleDragOver, false);
 				dropZone.addEventListener('drop', handleFileSelect, false);
-				
+
 				$("#avapreview").attr('src', "/avatar/" + USERID);
-				
-				$("#avaloader").click(function(){
-				alert("woo");
+
+				$("#avaloader").click(function ()
+				{
 					$("#avatardialog").trigger('click');
-				});
+				}
+				);
+
+				$("#avatardialog").change(function ()
+				{
+					processImageFiles($(this)[0].files);
+				}
+				);
 			}
 			);
 		}
