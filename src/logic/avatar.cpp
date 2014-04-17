@@ -123,7 +123,7 @@ bool novastory::Avatar::update()
 		return false;
 	}
 
-	if(ava.size() > AVATAR_LIMIT_BYTES)
+	if (ava.size() > AVATAR_LIMIT_BYTES)
 	{
 		JSON_ERROR("Avatar is too big", 3);
 		return false;

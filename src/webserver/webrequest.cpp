@@ -20,9 +20,9 @@ void WebRequest::parse()
 	QStringList dataArray = data.split("\n\r\n");
 	QStringList headerArray = dataArray[0].split("\n");
 	QString body = (dataArray.size() == 2) ? dataArray[1] : QString();
-	
+
 	qDebug() << "Requst Header: " << dataArray[0];
-	
+
 	dataArray.clear();
 
 	if (headerArray.size() == 0)
@@ -63,7 +63,7 @@ void WebRequest::parse()
 		}
 	}
 
-	if(parsedValues["Content-Length"].toInt() > CONTENT_LIMIT_BYTES)
+	if (parsedValues["Content-Length"].toInt() > CONTENT_LIMIT_BYTES)
 	{
 		qDebug() << "Too big request, aborting";
 		return;
@@ -74,13 +74,13 @@ void WebRequest::parse()
 		int length = parsedValues["Content-Length"].toInt();
 		while (body.size() != length)
 		{
-			if(!bindedSocket->waitForReadyRead())
+			if (!bindedSocket->waitForReadyRead())
 			{
 				qDebug() << "Connection timeout";
 				return;
 			}
 			body.append(bindedSocket->readAll());
-			if(body.size() > length)
+			if (body.size() > length)
 			{
 				qCritical() << "Wrong request size. Very wrong.";
 				return;
