@@ -268,7 +268,7 @@ bool Sqlizable::removeSQL(const QString& basis)
 }
 
 // Nothing is copying
-Sqlizable & Sqlizable::operator=( const Sqlizable & obj)
+Sqlizable& Sqlizable::operator=(const Sqlizable& obj)
 {
 	return *this;
 }

@@ -21,7 +21,7 @@ public:
 	bool syncSQL(const QList<QString>& basis);
 	bool syncSQL(const QString& basis);
 
-	Sqlizable &operator =(const Sqlizable &);
+	Sqlizable& operator =(const Sqlizable&);
 protected:
 	bool syncProcess(SqlQuery& query);
 };

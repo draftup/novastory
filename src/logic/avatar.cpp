@@ -102,7 +102,7 @@ novastory::Avatar::Avatar() : m_conentSize(0)
 
 bool novastory::Avatar::update()
 {
-	if(!m_user.isLogined())
+	if (!m_user.isLogined())
 	{
 		JSON_ERROR("User not logined", 2);
 		return false;
@@ -132,7 +132,7 @@ bool novastory::Avatar::update()
 
 bool novastory::Avatar::remove()
 {
-	if(!m_user.isLogined())
+	if (!m_user.isLogined())
 	{
 		JSON_ERROR("User not logined", 3);
 		return false;
@@ -152,7 +152,7 @@ const novastory::User& novastory::Avatar::user() const
 	return m_user;
 }
 
-void novastory::Avatar::setUser( const novastory::User& user )
+void novastory::Avatar::setUser(const novastory::User& user)
 {
 	m_user = user;
 }
