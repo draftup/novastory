@@ -10,6 +10,7 @@
   <script>
 	    var USERID = {user.userid};
 	    var STOKEN = '{user.stoken}';
+		var EMAIL = '{user.email}';
   </script>
   <script type="text/javascript" src="/js/jquery-2.1.0.min.js"></script>
   <script type="text/javascript" src="/js/common.js"></script>
@@ -35,13 +36,13 @@
 		</div>
 
 		<div class="logblock" id="logout">
-			<div id="logname">Vasya</div>
+			<div id="logname">{user.namemail}</div>
 			<div class="logico" id="outico" title="logout"></div>
 			<div class="logico" id="setico" title="profile settings"></div>
 		</div>
 
 		<div class="tools">
-			<div id="panelava"><img src="filth.jpg"></div>
+			<div id="panelava"><img src="/avatar/{user.email}"></div>
 			<div class="toolico" id="mylibico" title="my library"></div>
 			<div class="toolico" id="messico" title="inbox"></div>
 			<div class="toolico" id="editico" title="writer"></div>
