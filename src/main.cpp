@@ -25,8 +25,9 @@ int main(int argc, char* argv[])
 
 	pid_t pid = getpid();
 
-	FILE *fp = fopen("novastory.pid", "w");
-	if (!fp) {
+	FILE* fp = fopen("novastory.pid", "w");
+	if (!fp)
+	{
 		perror("fopen");
 		exit(EXIT_FAILURE);
 	}
