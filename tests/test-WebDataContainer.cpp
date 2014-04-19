@@ -1,9 +1,9 @@
 #include <QtTest>
-#include "dataimage.h"
+#include "webdatacontainer.h"
 
 using namespace novastory;
 
-class Test_DataImage: public QObject
+class Test_WebDataContainer: public QObject
 {
 	Q_OBJECT
 private slots:
@@ -18,7 +18,7 @@ private:
 	QString data;
 };
 
-void Test_DataImage::initTestCase()
+void Test_WebDataContainer::initTestCase()
 {
 	data =
 		"data:image/gif;base64,R0lGODlhEAAQAPecAMoXF8sXF9kZGf39/d8aGrgVFexbWtgZGeUcHNQYGNwZG"
@@ -40,24 +40,24 @@ void Test_DataImage::initTestCase()
 		"nIET58THjaQmaN64IstkXSMCVH7YI0WNlL0Rsigd0AAOw==";
 }
 
-void Test_DataImage::init()
+void Test_WebDataContainer::init()
 {
 
 }
 
-void Test_DataImage::cleanup()
+void Test_WebDataContainer::cleanup()
 {
 
 }
 
-void Test_DataImage::cleanupTestCase()
+void Test_WebDataContainer::cleanupTestCase()
 {
 
 }
 
-void Test_DataImage::mainTest()
+void Test_WebDataContainer::mainTest()
 {
-	DataImage img(data);
+	WebDataContainer img(data);
 
 	QFile f("rating_1_on.gif");
 	QVERIFY(f.open(QIODevice::ReadOnly));
@@ -69,5 +69,5 @@ void Test_DataImage::mainTest()
 
 
 /********************** DECLARE_TEST LIST ****************************/
-QTEST_MAIN(Test_DataImage)
-#include "test-DataImage.moc"
+QTEST_MAIN(Test_WebDataContainer)
+#include "test-WebDataContainer.moc"

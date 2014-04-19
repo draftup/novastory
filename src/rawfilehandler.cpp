@@ -33,21 +33,31 @@ bool RawFileHandler::handle(const QString& type, const QString& path, const QHas
 	}
 
 	QFile existFile(filePath);
-	if (existFile.open(QIODevice::ReadOnly))
+	if(existFile.exists())
 	{
-		qDebug() << "Raw file handler: " << filePath;
+		// First, looking in cache
+		QByteArray inCacheData = WebServer::Instance().cache().get(existFile.symLinkTarget().toStdString());
+		if(!inCacheData.isNull())
+		{
 
-		QByteArray data = existFile.readAll();
+		}
 
-		QMimeDatabase db;
-		QMimeType mime = db.mimeTypeForFileNameAndData(existFile.fileName(), data);
+		if (existFile.open(QIODevice::ReadOnly))
+		{
+			qDebug() << "Raw file handler: " << filePath;
 
-		qDebug() << "Raw file type is: " << mime.name();
+			QByteArray data = existFile.readAll();
 
-		socket->write(htmlHeaderGen(mime.name(), data.size()));
-		socket->write(data);
+			QMimeDatabase db;
+			QMimeType mime = db.mimeTypeForFileNameAndData(existFile.fileName(), data);
 
-		return true;
+			qDebug() << "Raw file type is: " << mime.name();
+
+			socket->write(htmlHeaderGen(mime.name(), data.size()));
+			socket->write(data);
+
+			return true;
+		}
 	}
 
 	return false;

@@ -1,8 +1,8 @@
-#include "dataimage.h"
+#include "webdatacontainer.h"
 #include <QRegExp>
 #include <QDebug>
 
-void novastory::DataImage::processImage(const QString& data)
+void novastory::WebDataContainer::processImage(const QString& data)
 {
 	QRegExp rx("data:(.*);base64,(.*)");
 	if (rx.indexIn(data) >= 0)
@@ -12,17 +12,17 @@ void novastory::DataImage::processImage(const QString& data)
 	}
 }
 
-const QString& novastory::DataImage::mimeType() const
+const QString& novastory::WebDataContainer::mimeType() const
 {
 	return m_mimetype;
 }
 
-novastory::DataImage::DataImage(const QString& data) : QByteArray()
+novastory::WebDataContainer::WebDataContainer(const QString& data) : QByteArray()
 {
 	processImage(data);
 }
 
-QString novastory::DataImage::toString() const
+QString novastory::WebDataContainer::toString() const
 {
 	return QString("data:%1;base64,%2").arg(m_mimetype).arg(QString::fromLatin1(toBase64()));
 }

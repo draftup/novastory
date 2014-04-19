@@ -3,7 +3,7 @@
 
 #include "sql/sqlizable.h"
 #include "jsonthrower.h"
-#include "dataimage.h"
+#include "webdatacontainer.h"
 #include "user.h"
 
 class Test_Avatar;
@@ -27,7 +27,7 @@ public:
 
 	const QByteArray& avatar() const;
 	void setAvatar(const QByteArray& avatar);
-	void setAvatar(const DataImage& image);
+	void setAvatar(const WebDataContainer& image);
 
 	const QString& email() const;
 	void setEmail(const QString& email);

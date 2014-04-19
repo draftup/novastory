@@ -3,6 +3,7 @@
 
 #include <QTcpServer>
 #include "webprocess.h"
+#include "utils/bytecache.hpp"
 
 namespace novastory
 {
@@ -24,11 +25,13 @@ public:
 	void setDirectory(const QString& path);
 	QString directory() const;
 	void resetDirectory();
+	ByteCache& cache();
 protected:
 	void incomingConnection(qintptr socketDescriptor) override;
 
 private:
 	QString publicDirectory;
+	ByteCache webCache;
 };
 
 }

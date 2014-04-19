@@ -40,7 +40,7 @@ set(HEADERS
 	utils/globals.h
 	utils/lrucache.hpp
 	utils/bytecache.hpp
-	dataimage.h
+	webdatacontainer.h
 
 	jsonthrower.h
 	config.h
@@ -65,7 +65,7 @@ set(SOURCES
 	logic/avatar.cpp
 	
 	utils/globals.cpp
-	dataimage.cpp
+	webdatacontainer.cpp
 	
 	recaptcha.cpp
 	rawfilehandler.cpp

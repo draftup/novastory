@@ -26,7 +26,7 @@ void novastory::Avatar::setAvatar(const QByteArray& avatar)
 	setContentSize(avatar.size());
 }
 
-void novastory::Avatar::setAvatar(const DataImage& image)
+void novastory::Avatar::setAvatar(const WebDataContainer& image)
 {
 	setAvatar((QByteArray)image);
 	setContentType(image.mimeType());

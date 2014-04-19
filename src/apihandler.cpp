@@ -103,7 +103,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	else if (hook == "updateavatar")
 	{
 		Avatar avatar;
-		avatar.setAvatar(DataImage(post["avatar"]));
+		avatar.setAvatar(WebDataContainer(post["avatar"]));
 		User user;
 		user.loginByToken(userid, stoken);
 		avatar.setUser(user);

@@ -1,5 +1,5 @@
-#ifndef DATAIMAGE_H
-#define DATAIMAGE_H
+#ifndef WEBDATACONTAINER_H
+#define WEBDATACONTAINER_H
 
 #include <QByteArray>
 #include <QString>
@@ -15,10 +15,10 @@ namespace novastory
  * @date	16.04.2014
  */
 
-class DataImage : public QByteArray
+class WebDataContainer : public QByteArray
 {
 public:
-	DataImage(const QString& data);
+	WebDataContainer(const QString& data);
 	const QString& mimeType() const;
 	QString toString() const;
 protected:
@@ -29,4 +29,4 @@ private:
 
 }
 
-#endif // APIHANDLER_H
+#endif // WEBDATACONTAINER_H

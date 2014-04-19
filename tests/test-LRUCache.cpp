@@ -1,5 +1,7 @@
 #include <QtTest>
 #include "utils/lrucache.hpp"
+#include "utils/bytecache.hpp"
+#include <QByteArray>
 
 using namespace cache;
 
@@ -16,6 +18,7 @@ private slots:
 	void numTest2();
 	void dataTest();
 	void withoutLimit();
+	void byteCache();
 private:
 };
 
@@ -49,17 +52,17 @@ void Test_LRUCache::numTest1()
 
 	QBENCHMARK
 	{
-	for (int i = 0; i < NUM_OF_TEST1_RECORDS; ++i)
-	{
-		cache.put(i, i);
-	}
+		for (int i = 0; i < NUM_OF_TEST1_RECORDS; ++i)
+		{
+			cache.put(i, i);
+		}
 
-	for (int i = 0; i < NUM_OF_TEST1_RECORDS; ++i)
-	{
-		//if (!cache.exists(i)) assert(false);
-		QVERIFY(cache.exists(i));
-		QCOMPARE(cache.get(i), i);
-	}
+		for (int i = 0; i < NUM_OF_TEST1_RECORDS; ++i)
+		{
+			//if (!cache.exists(i)) assert(false);
+			QVERIFY(cache.exists(i));
+			QCOMPARE(cache.get(i), i);
+		}
 	}
 
 	QCOMPARE(cache.size(), (size_t)NUM_OF_TEST1_RECORDS);
@@ -71,21 +74,21 @@ void Test_LRUCache::numTest2()
 
 	QBENCHMARK
 	{
-	for (int i = 0; i < NUM_OF_TEST2_RECORDS; ++i)
-	{
-		cache.put(i, i);
-	}
+		for (int i = 0; i < NUM_OF_TEST2_RECORDS; ++i)
+		{
+			cache.put(i, i);
+		}
 
-	for (int i = 0; i < NUM_OF_TEST2_RECORDS - TEST2_CACHE_CAPACITY; ++i)
-	{
-		QVERIFY(!cache.exists(i));
-	}
+		for (int i = 0; i < NUM_OF_TEST2_RECORDS - TEST2_CACHE_CAPACITY; ++i)
+		{
+			QVERIFY(!cache.exists(i));
+		}
 
-	for (int i = NUM_OF_TEST2_RECORDS - TEST2_CACHE_CAPACITY; i < NUM_OF_TEST2_RECORDS; ++i)
-	{
-		QVERIFY(cache.exists(i));
-		QCOMPARE(cache.get(i), i);
-	}
+		for (int i = NUM_OF_TEST2_RECORDS - TEST2_CACHE_CAPACITY; i < NUM_OF_TEST2_RECORDS; ++i)
+		{
+			QVERIFY(cache.exists(i));
+			QCOMPARE(cache.get(i), i);
+		}
 	}
 
 	QCOMPARE(cache.size(), (size_t)TEST2_CACHE_CAPACITY);
@@ -136,6 +139,27 @@ void Test_LRUCache::withoutLimit()
 	cache.put("one", "onedata");
 	cache.put("two", "twodata");
 	QCOMPARE(cache.get("two"), std::string("twodata"));
+}
+
+void Test_LRUCache::byteCache()
+{
+	novastory::ByteCache cache(16);
+	QByteArray v1; v1.fill('x', 8);
+	QByteArray v2; v2.fill('y', 6);
+	cache.put("1", v1);
+	cache.put("2", v2);
+	QVERIFY(cache.exists("1"));
+	QVERIFY(cache.exists("2"));
+	QByteArray v3; v3.fill('z', 1);
+	cache.put("3", v3);
+	QVERIFY(cache.exists("3"));
+	v3.fill('p', 2);
+	cache.put("4", v3);
+	QVERIFY(cache.exists("4"));
+	QVERIFY(!cache.exists("1"));
+	QCOMPARE(cache.maxSize(), (size_t)16);
+	QCOMPARE(cache.currentSize(), (size_t)9);
+	QCOMPARE(cache.get("4"), QByteArray("pp"));
 }
 
 

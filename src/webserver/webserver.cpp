@@ -5,12 +5,13 @@
 #include "sql/sqldatabase.h"
 #include <QThreadPool>
 #include <QDir>
+#include "config.h"
 
 namespace novastory
 {
 
 WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/)
-	: QTcpServer(parent)
+	: QTcpServer(parent), webCache(CACHE_SIZE)
 {
 	setObjectName("WebServer");
 
@@ -73,6 +74,11 @@ void WebServer::resetDirectory()
 QString WebServer::directory() const
 {
 	return publicDirectory;
+}
+
+ByteCache& WebServer::cache()
+{
+	return webCache;
 }
 
 
