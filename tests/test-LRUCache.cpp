@@ -162,7 +162,7 @@ void Test_LRUCache::byteCache()
 	QCOMPARE(cache.maxSize(), (size_t)16);
 	QCOMPARE(cache.currentSize(), (size_t)9);
 	QCOMPARE(static_cast<QByteArray>(cache.get("4")), QByteArray("pp"));
-	
+
 	// Change Test
 	cache.put("2", v2);
 	QCOMPARE(cache.currentSize(), (size_t)9); // must be same

@@ -36,13 +36,15 @@ bool RawFileHandler::handle(const QString& type, const QString& path, const QHas
 	if (existFile.exists())
 	{
 		// First, looking in cache
-		try {
+		try
+		{
 			WebDataContainer inCacheData = WebServer::Instance().cache().get(filePath.toStdString());
 			qDebug() << "Readed from cache " << filePath;
 			socket->write(htmlHeaderGen(inCacheData.mimeType(), inCacheData.size()));
 			socket->write(inCacheData);
 			return true;
-		} catch(std::range_error&)
+		}
+		catch (std::range_error&)
 		{
 			if (existFile.open(QIODevice::ReadOnly))
 			{
