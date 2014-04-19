@@ -38,6 +38,7 @@ set(HEADERS
 	sql/sqldatabase.h
 	
 	utils/globals.h
+	utils/lrucache.hpp
 	dataimage.h
 
 	jsonthrower.h
