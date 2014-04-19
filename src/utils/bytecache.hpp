@@ -28,6 +28,7 @@ public:
 
 	void setMaxSize(size_t size)
 	{
+		std::lock_guard<std::mutex> lock(_mutex);
 		maxBytes = size;
 		while(needCleanup())
 			cleanup();
