@@ -22,7 +22,7 @@ public:
 	typedef typename std::pair<key_t, value_t> key_value_pair_t;
 	typedef typename std::list<key_value_pair_t>::iterator list_iterator_t;
 
-	LRUCache(size_t max_size) :
+	LRUCache(size_t max_size = 0) :
 		_max_size(max_size) {
 	}
 	
@@ -36,7 +36,7 @@ public:
 		_cache_items_list.push_front(key_value_pair_t(key, value));
 		_cache_items_map[key] = _cache_items_list.begin();
 		
-		if (_cache_items_map.size() > _max_size) {
+		if (_max_size > 0 && _cache_items_map.size() > _max_size) {
 			auto last = _cache_items_list.end();
 			last--;
 			_cache_items_map.erase(last->first);

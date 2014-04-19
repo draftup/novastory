@@ -15,6 +15,7 @@ private slots:
 	void numTest1();
 	void numTest2();
 	void dataTest();
+	void withoutLimit();
 private:
 };
 
@@ -46,6 +47,8 @@ void Test_LRUCache::numTest1()
 {
 	cache::LRUCache<int, int> cache(NUM_OF_TEST1_RECORDS);
 
+	QBENCHMARK
+	{
 	for (int i = 0; i < NUM_OF_TEST1_RECORDS; ++i)
 	{
 		cache.put(i, i);
@@ -57,6 +60,7 @@ void Test_LRUCache::numTest1()
 		QVERIFY(cache.exists(i));
 		QCOMPARE(cache.get(i), i);
 	}
+	}
 
 	QCOMPARE(cache.size(), (size_t)NUM_OF_TEST1_RECORDS);
 }
@@ -65,6 +69,8 @@ void Test_LRUCache::numTest2()
 {
 	cache::LRUCache<int, int> cache(TEST2_CACHE_CAPACITY);
 
+	QBENCHMARK
+	{
 	for (int i = 0; i < NUM_OF_TEST2_RECORDS; ++i)
 	{
 		cache.put(i, i);
@@ -79,6 +85,7 @@ void Test_LRUCache::numTest2()
 	{
 		QVERIFY(cache.exists(i));
 		QCOMPARE(cache.get(i), i);
+	}
 	}
 
 	QCOMPARE(cache.size(), (size_t)TEST2_CACHE_CAPACITY);
@@ -99,13 +106,12 @@ void Test_LRUCache::dataTest()
 	QCOMPARE(cache.get("two"), std::string("two"));
 	QCOMPARE(cache.get("three"), std::string("three"));
 
+	// Pop Test
 	cache.put("four", "four");
 	QVERIFY(cache.exists("two"));
 	QVERIFY(cache.exists("three"));
 	QVERIFY(cache.exists("four"));
-
 	QCOMPARE(cache.get("four"), std::string("four"));
-
 	bool error_caught = false;
 	try
 	{
@@ -115,7 +121,21 @@ void Test_LRUCache::dataTest()
 	{
 		error_caught = true;
 	}
+
+	// ordering test on get
+	QCOMPARE(cache.get("two"), std::string("two"));
+	cache.put("five", "five");
+	QVERIFY(cache.exists("two"));
+
 	QVERIFY(error_caught);
+}
+
+void Test_LRUCache::withoutLimit()
+{
+	cache::LRUCache<std::string, std::string> cache;
+	cache.put("one", "onedata");
+	cache.put("two", "twodata");
+	QCOMPARE(cache.get("two"), std::string("twodata"));
 }
 
 
