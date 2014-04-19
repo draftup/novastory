@@ -46,11 +46,13 @@ void Test_LRUCache::numTest1()
 {
 	cache::LRUCache<int, int> cache(NUM_OF_TEST1_RECORDS);
 
-	for (int i = 0; i < NUM_OF_TEST1_RECORDS; ++i) {
+	for (int i = 0; i < NUM_OF_TEST1_RECORDS; ++i)
+	{
 		cache.put(i, i);
 	}
 
-	for (int i = 0; i < NUM_OF_TEST1_RECORDS; ++i) {
+	for (int i = 0; i < NUM_OF_TEST1_RECORDS; ++i)
+	{
 		//if (!cache.exists(i)) assert(false);
 		QVERIFY(cache.exists(i));
 		QCOMPARE(cache.get(i), i);
@@ -63,15 +65,18 @@ void Test_LRUCache::numTest2()
 {
 	cache::LRUCache<int, int> cache(TEST2_CACHE_CAPACITY);
 
-	for (int i = 0; i < NUM_OF_TEST2_RECORDS; ++i) {
+	for (int i = 0; i < NUM_OF_TEST2_RECORDS; ++i)
+	{
 		cache.put(i, i);
 	}
 
-	for (int i = 0; i < NUM_OF_TEST2_RECORDS - TEST2_CACHE_CAPACITY; ++i) {
+	for (int i = 0; i < NUM_OF_TEST2_RECORDS - TEST2_CACHE_CAPACITY; ++i)
+	{
 		QVERIFY(!cache.exists(i));
 	}
 
-	for (int i = NUM_OF_TEST2_RECORDS - TEST2_CACHE_CAPACITY; i < NUM_OF_TEST2_RECORDS; ++i) {
+	for (int i = NUM_OF_TEST2_RECORDS - TEST2_CACHE_CAPACITY; i < NUM_OF_TEST2_RECORDS; ++i)
+	{
 		QVERIFY(cache.exists(i));
 		QCOMPARE(cache.get(i), i);
 	}
@@ -102,9 +107,12 @@ void Test_LRUCache::dataTest()
 	QCOMPARE(cache.get("four"), std::string("four"));
 
 	bool error_caught = false;
-	try{
+	try
+	{
 		cache.get("one");
-	} catch (std::range_error&) {
+	}
+	catch (std::range_error&)
+	{
 		error_caught = true;
 	}
 	QVERIFY(error_caught);
