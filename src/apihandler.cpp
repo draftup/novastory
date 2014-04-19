@@ -108,7 +108,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		User user;
 		user.loginByToken(userid, stoken);
 		avatar.setUser(user);
-		if(avatar.update())
+		if (avatar.update())
 		{
 			WebServer::Instance().cache().remove(("/avatar/" + QString::number(avatar.userid())).toStdString());
 			WebServer::Instance().cache().remove(("/avatar/" + avatar.email()).toStdString());
