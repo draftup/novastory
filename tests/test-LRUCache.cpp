@@ -175,6 +175,7 @@ void Test_LRUCache::byteCache()
 	//remove test
 	cache.remove("3");
 	QCOMPARE(cache.currentSize(), (size_t)4);
+	cache.remove("25");
 }
 
 

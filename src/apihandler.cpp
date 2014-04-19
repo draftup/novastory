@@ -5,6 +5,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+#include "webserver/webserver.h"
 #include "logic/captcha.h"
 #include "logic/user.h"
 #include "logic/texteditor.h"
@@ -107,7 +108,11 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		User user;
 		user.loginByToken(userid, stoken);
 		avatar.setUser(user);
-		avatar.update();
+		if(avatar.update())
+		{
+			WebServer::Instance().cache().remove(("/avatar/" + QString::number(avatar.userid())).toStdString());
+			WebServer::Instance().cache().remove(("/avatar/" + avatar.email()).toStdString());
+		}
 		json = avatar.jsonString().toUtf8();
 	}
 	else if (hook == "version")
