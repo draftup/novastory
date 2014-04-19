@@ -33,11 +33,11 @@ bool RawFileHandler::handle(const QString& type, const QString& path, const QHas
 	}
 
 	QFile existFile(filePath);
-	if(existFile.exists())
+	if (existFile.exists())
 	{
 		// First, looking in cache
 		QByteArray inCacheData = WebServer::Instance().cache().get(existFile.symLinkTarget().toStdString());
-		if(!inCacheData.isNull())
+		if (!inCacheData.isNull())
 		{
 
 		}
