@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QTcpSocket>
 #include "logic/avatar.h"
+#include "webserver/webserver.h"
 
 namespace novastory
 {
@@ -22,27 +23,41 @@ bool AvatarsHandler::handle(const QString& type, const QString& path, const QHas
 {
 	if (path.startsWith("/avatar/"))
 	{
-		QString someavatar = path.mid((int)strlen("/avatar/"));
-		int id = someavatar.toInt();
-		Avatar avatar;
-		if (id > 0)
+		try
 		{
-			avatar.setUserid(id);
+			WebDataContainer inCacheData = WebServer::Instance().cache().get(path.toStdString());
+			qDebug() << "Readed from cache " << path << "(Current cache size:" << WebServer::Instance().cache().currentSize() << ")";
+			socket->write(htmlHeaderGen(inCacheData.mimeType(), inCacheData.size()));
+			socket->write(inCacheData);
+			return true;
+		}
+		catch (std::range_error&)
+		{
+			QString someavatar = path.mid((int)strlen("/avatar/"));
+			int id = someavatar.toInt();
+			Avatar avatar;
+			if (id > 0)
+			{
+				avatar.setUserid(id);
+				if (avatar.sync())
+				{
+					WebServer::Instance().cache().put(path.toStdString(), WebDataContainer(avatar.avatar(), avatar.contentType()));
+					showAvatar(avatar);
+				}
+				return true;
+			}
+			if (!someavatar.contains("@"))
+			{
+				return false; // who knows what it is
+			}
+
+			avatar.setEmail(someavatar);
 			if (avatar.sync())
 			{
+				WebServer::Instance().cache().put(path.toStdString(), WebDataContainer(avatar.avatar(), avatar.contentType()));
 				showAvatar(avatar);
 			}
 			return true;
-		}
-		if (!someavatar.contains("@"))
-		{
-			return false; // who knows what it is
-		}
-
-		avatar.setEmail(someavatar);
-		if (avatar.sync())
-		{
-			showAvatar(avatar);
 		}
 	}
 

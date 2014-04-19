@@ -39,7 +39,7 @@ bool RawFileHandler::handle(const QString& type, const QString& path, const QHas
 		try
 		{
 			WebDataContainer inCacheData = WebServer::Instance().cache().get(filePath.toStdString());
-			qDebug() << "Readed from cache " << filePath;
+			qDebug() << "Readed from cache " << path << "(Current cache size:" << WebServer::Instance().cache().currentSize() << ")";
 			socket->write(htmlHeaderGen(inCacheData.mimeType(), inCacheData.size()));
 			socket->write(inCacheData);
 			return true;
