@@ -31,8 +31,13 @@ public:
 		std::lock_guard<std::mutex> lock(_mutex);
 		auto it = _cache_items_map.find(key);
 		if (it != _cache_items_map.end()) {
+			onChangeValue(it->second->second, value);
 			_cache_items_list.erase(it->second);
 			_cache_items_map.erase(it);
+		}
+		else
+		{
+			onInsertValue(value);
 		}
 			
 		_cache_items_list.push_front(key_value_pair_t(key, value));
@@ -67,15 +72,18 @@ protected:
 		return _max_size > 0 && _cache_items_map.size() > 0 && _cache_items_map.size() > _max_size;
 	}
 
-	virtual value_t cleanup()
+	inline void cleanup()
 	{
 		auto last = _cache_items_list.end();
 		last--;
-		value_t deleted_value = last->second;
+		onDeleteValue(last->second);
 		_cache_items_map.erase(last->first);
 		_cache_items_list.pop_back();
-		return deleted_value;
 	}
+
+	virtual void onDeleteValue(const value_t& value_old) {};
+	virtual void onChangeValue(const value_t& value_old, const value_t& value_new) {};
+	virtual void onInsertValue(const value_t& value_new) {};
 
 	std::mutex _mutex;
 private:

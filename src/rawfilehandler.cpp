@@ -36,27 +36,33 @@ bool RawFileHandler::handle(const QString& type, const QString& path, const QHas
 	if (existFile.exists())
 	{
 		// First, looking in cache
-		QByteArray inCacheData = WebServer::Instance().cache().get(existFile.symLinkTarget().toStdString());
-		if (!inCacheData.isNull())
-		{
-
-		}
-
-		if (existFile.open(QIODevice::ReadOnly))
-		{
-			qDebug() << "Raw file handler: " << filePath;
-
-			QByteArray data = existFile.readAll();
-
-			QMimeDatabase db;
-			QMimeType mime = db.mimeTypeForFileNameAndData(existFile.fileName(), data);
-
-			qDebug() << "Raw file type is: " << mime.name();
-
-			socket->write(htmlHeaderGen(mime.name(), data.size()));
-			socket->write(data);
-
+		try {
+			WebDataContainer inCacheData = WebServer::Instance().cache().get(filePath.toStdString());
+			qDebug() << "Readed from cache " << filePath;
+			socket->write(htmlHeaderGen(inCacheData.mimeType(), inCacheData.size()));
+			socket->write(inCacheData);
 			return true;
+		} catch(std::range_error&)
+		{
+			if (existFile.open(QIODevice::ReadOnly))
+			{
+				qDebug() << "Raw file handler: " << filePath;
+
+				QByteArray data = existFile.readAll();
+
+				QMimeDatabase db;
+				QMimeType mime = db.mimeTypeForFileNameAndData(existFile.fileName(), data);
+
+				qDebug() << "Raw file type is: " << mime.name();
+
+				socket->write(htmlHeaderGen(mime.name(), data.size()));
+				socket->write(data);
+
+				// Save in cache
+				WebServer::Instance().cache().put(filePath.toStdString(), WebDataContainer(data, mime.name()));
+
+				return true;
+			}
 		}
 	}
 

@@ -18,9 +18,12 @@ namespace novastory
 class WebDataContainer : public QByteArray
 {
 public:
-	WebDataContainer(const QString& data);
+	WebDataContainer();
+	WebDataContainer(const QString& rfc2397data);
+	WebDataContainer(const QByteArray & other, const QString& mimetype = QString());
 	const QString& mimeType() const;
 	QString toString() const;
+	void setMimeType(const QString& mime);
 protected:
 	void processImage(const QString& data);
 private:

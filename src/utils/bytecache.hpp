@@ -3,11 +3,11 @@
 
 #include "lrucache.hpp"
 #include <QString>
-#include <QByteArray>
+#include "webdatacontainer.h"
 
 namespace novastory {
 
-class ByteCache : public cache::LRUCache<std::string, QByteArray> 
+class ByteCache : public cache::LRUCache<std::string, WebDataContainer> 
 {
 public:
 	ByteCache(size_t bytes = 0) : LRUCache(0), maxBytes(bytes), m_currentSize(0)
@@ -15,9 +15,8 @@ public:
 		
 	};
 
-	void put(const std::string& key, const QByteArray& value)
+	void put(const std::string& key, const WebDataContainer& value)
 	{
-		m_currentSize += value.size();
 		LRUCache::put(key, value);
 	}
 
@@ -43,12 +42,22 @@ protected:
 	{
 		return LRUCache::needCleanup() || (maxBytes > 0 && m_currentSize > maxBytes);
 	}
-	QByteArray cleanup() override
+
+	void onDeleteValue(const WebDataContainer& value_old) override
 	{
-		QByteArray ret = LRUCache::cleanup();
-		m_currentSize -= ret.size();
-		return ret;
+		m_currentSize -= value_old.size();
 	}
+
+	void onChangeValue(const WebDataContainer& value_old, const WebDataContainer& value_new) override
+	{
+		m_currentSize -= value_old.size();
+		m_currentSize += value_new.size();
+	};
+	void onInsertValue(const WebDataContainer& value_new) override
+	{
+		m_currentSize += value_new.size();
+	};
+
 private:
 	size_t maxBytes;
 	size_t m_currentSize;

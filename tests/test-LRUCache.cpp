@@ -154,12 +154,21 @@ void Test_LRUCache::byteCache()
 	cache.put("3", v3);
 	QVERIFY(cache.exists("3"));
 	v3.fill('p', 2);
+
+	// Insert Test
 	cache.put("4", v3);
 	QVERIFY(cache.exists("4"));
 	QVERIFY(!cache.exists("1"));
 	QCOMPARE(cache.maxSize(), (size_t)16);
 	QCOMPARE(cache.currentSize(), (size_t)9);
-	QCOMPARE(cache.get("4"), QByteArray("pp"));
+	QCOMPARE(static_cast<QByteArray>(cache.get("4")), QByteArray("pp"));
+	
+	// Change Test
+	cache.put("2", v2);
+	QCOMPARE(cache.currentSize(), (size_t)9); // must be same
+	cache.put("2", v3);
+	QCOMPARE(cache.currentSize(), (size_t)5);
+	QCOMPARE(static_cast<QByteArray>(cache.get("3")), QByteArray("z"));
 }
 
 
