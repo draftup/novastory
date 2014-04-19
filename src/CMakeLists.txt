@@ -39,6 +39,7 @@ set(HEADERS
 	
 	utils/globals.h
 	utils/lrucache.hpp
+	utils/bytecache.hpp
 	dataimage.h
 
 	jsonthrower.h

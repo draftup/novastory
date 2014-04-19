@@ -36,11 +36,8 @@ public:
 		_cache_items_list.push_front(key_value_pair_t(key, value));
 		_cache_items_map[key] = _cache_items_list.begin();
 		
-		if (_max_size > 0 && _cache_items_map.size() > _max_size) {
-			auto last = _cache_items_list.end();
-			last--;
-			_cache_items_map.erase(last->first);
-			_cache_items_list.pop_back();
+		while (needCleanup()) {
+			cleanup();
 		}
 	}
 	
@@ -61,7 +58,21 @@ public:
 	size_t size() const {
 		return _cache_items_map.size();
 	}
-	
+protected:
+	virtual bool needCleanup() const
+	{
+		return _max_size > 0 && _cache_items_map.size() > 0 && _cache_items_map.size() > _max_size;
+	}
+
+	virtual value_t cleanup()
+	{
+		auto last = _cache_items_list.end();
+		last--;
+		value_t deleted_value = last->second;
+		_cache_items_map.erase(last->first);
+		_cache_items_list.pop_back();
+		return deleted_value;
+	}
 private:
 	std::list<key_value_pair_t> _cache_items_list;
 	std::unordered_map<key_t, list_iterator_t> _cache_items_map;
