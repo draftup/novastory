@@ -63,6 +63,18 @@ public:
 		return _cache_items_map.find(key) != _cache_items_map.end();
 	}
 	
+	void remove(const key_t& key)
+	{
+		std::lock_guard<std::mutex> lock(_mutex);
+		auto it = _cache_items_map.find(key);
+		if(it != _cache_items_map.end())
+		{
+			onDeleteValue(it->second->second);
+			_cache_items_list.erase(it->second);
+			_cache_items_map.erase(it);
+		}
+	}
+
 	size_t size() const {
 		return _cache_items_map.size();
 	}

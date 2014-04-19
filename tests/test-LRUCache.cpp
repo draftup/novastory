@@ -124,13 +124,15 @@ void Test_LRUCache::dataTest()
 	{
 		error_caught = true;
 	}
+	QVERIFY(error_caught);
 
 	// ordering test on get
 	QCOMPARE(cache.get("two"), std::string("two"));
 	cache.put("five", "five");
 	QVERIFY(cache.exists("two"));
-
-	QVERIFY(error_caught);
+	cache.remove("five");
+	QVERIFY(!cache.exists("five"));
+	QVERIFY(cache.exists("two"));
 }
 
 void Test_LRUCache::withoutLimit()
@@ -169,6 +171,10 @@ void Test_LRUCache::byteCache()
 	cache.put("2", v3);
 	QCOMPARE(cache.currentSize(), (size_t)5);
 	QCOMPARE(static_cast<QByteArray>(cache.get("3")), QByteArray("z"));
+
+	//remove test
+	cache.remove("3");
+	QCOMPARE(cache.currentSize(), (size_t)4);
 }
 
 
