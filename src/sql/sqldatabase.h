@@ -12,6 +12,7 @@ namespace novastory
 class SqlDatabase : public QSqlDatabase
 {
 public:
+	SqlDatabase(const SqlDatabase& olddb);
 	SqlDatabase(const QSqlDatabase& olddb);
 	virtual ~SqlDatabase();
 	static SqlDatabase& open(Qt::HANDLE threadId);

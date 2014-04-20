@@ -5,6 +5,10 @@
 namespace novastory
 {
 
+SqlDatabase::SqlDatabase(const SqlDatabase& olddb) : QSqlDatabase(olddb)
+{
+}
+
 SqlDatabase::SqlDatabase(const QSqlDatabase& olddb) : QSqlDatabase(olddb)
 {
 }
