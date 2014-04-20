@@ -72,6 +72,7 @@ novastory::User::User() : m_userid(-1)
 	setObjectName("users");
 	setProperty("auto_increment", QVariant("userid"));
 	setProperty("primary_key", QVariant("userid"));
+	setProperty("hidden", QVariant("salt,password"));
 }
 
 void novastory::User::setRawPassword(const QString& password)
@@ -470,5 +471,35 @@ bool novastory::User::confirmPasswordReset(const QString& forgotToken)
 	JSON_INSERT("reseted", true);
 
 	return status;
+}
+
+bool novastory::User::update()
+{
+	if(!isLogined())
+	{
+		JSON_ERROR("not loggined", 1);
+		return false;
+	}
+
+	if(!updateSQL("userid", QList<QString>() << "salt" << "password" << "email"))
+	{
+		JSON_ERROR("failed to update", 2);
+		return false;
+	}
+
+	return true;
+}
+
+void novastory::User::appendProfileJson()
+{
+	jsonReset();
+
+	if(!isLogined())
+	{
+		JSON_ERROR("not loggined", 1);
+		return;
+	}
+
+	JSON_INSERT("user", jsonObject());
 }
 

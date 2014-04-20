@@ -273,6 +273,145 @@ Sqlizable& Sqlizable::operator=(const Sqlizable& obj)
 	return *this;
 }
 
+bool Sqlizable::updateSQL(const QList<QString>& basis, const QList<QString>& ignoreVariables /* = QList<QString>() */)
+{
+	QString objName = objectName();
+	if (objName.isEmpty())
+	{
+		return false; // No object name, we doesn't know name of table
+	}
+
+	SqlQuery query;
+
+	QString sql = QString("UPDATE `") + objName + "` SET ";
+
+	const QMetaObject* mObject = metaObject();
+	const int propCount = mObject->propertyCount();
+	if (propCount == 0)
+		return false;
+
+	QVariant auto_increment = property("auto_increment");
+	bool isAutoIncrement = auto_increment.isValid();
+
+	QList<QVariant> values;
+
+	for (int i = 0; i < propCount; ++i)
+	{
+		QMetaProperty prop = mObject->property(i);
+
+		if (isObjectType(prop.userType()))
+		{
+			continue;
+		}
+
+		const QString& propName = prop.name();
+		QVariant propValue = prop.read(this);
+
+		// Skip objectName
+		if (propName == "objectName")
+		{
+			continue;
+		}
+
+		// Skip auto_increment value
+		if (isAutoIncrement)
+		{
+			if (propName == auto_increment.toString())
+			{
+				continue;
+			}
+		}
+
+		// ignore list
+		if(ignoreVariables.indexOf(propName) >= 0)
+			continue;
+
+		values.append(propValue);
+
+		sql += (i == propCount - 1) ? "`" + propName + "` = ? WHERE " : "`" + propName + "` = ?, ";
+	}
+
+	// Founding keys
+	QList<QVariant> internalValues;
+
+	for (QString questVar : basis)
+	{
+		QVariant propValue = property(questVar.toUtf8());
+		sql += (internalValues.size() == 0) ? questVar + " = ?" : " AND " + questVar + " = ?";
+		internalValues.append(propValue);
+	}
+
+	qDebug() << sql;
+
+	VERIFY(query.prepare(sql));
+
+	for (int i = 0; i < values.count(); ++i)
+	{
+		query.bindValue(i, values.at(i));
+	}
+
+	for (int i = 0, j = values.count(); i < internalValues.size(); ++i, ++j)
+	{
+		query.bindValue(j, internalValues[i]);
+	}
+
+	if (!query.exec())
+	{
+		qWarning() << "Updating " << objName << " failed";
+		return false;
+	}
+
+	return true;
+}
+
+bool Sqlizable::updateSQL( const QString& basis, const QList<QString>& ignoreVariables /* = QList<QString>() */ )
+{
+	return updateSQL(QList<QString>() << basis, ignoreVariables);
+}
+
+QJsonObject Sqlizable::jsonObject() const
+{
+	QJsonObject obj;
+
+	const QMetaObject* mObject = metaObject();
+	const int propCount = mObject->propertyCount();
+
+	QVariant hiddenArray = property("hidden");
+	bool isHiddenFields = hiddenArray.isValid();
+	QStringList hiddenFields;
+	if(isHiddenFields)
+	{
+		hiddenFields = hiddenArray.toString().split(",");
+	}
+
+	for (int i = 0; i < propCount; ++i)
+	{
+		QMetaProperty prop = mObject->property(i);
+
+		if (isObjectType(prop.userType()))
+		{
+			continue;
+		}
+
+		const QString& propName = prop.name();
+		QVariant propValue = prop.read(this);
+
+		// Skip objectName
+		if (propName == "objectName")
+		{
+			continue;
+		}
+
+		// ignore list
+		if(hiddenFields.indexOf(propName) >= 0)
+			continue;
+
+		obj.insert(propName, QJsonValue::fromVariant(property(propName.toUtf8())));
+	}
+
+	return obj;
+}
+
 }
 
 

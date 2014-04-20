@@ -47,3 +47,25 @@ NovastoryApi.updateAvatar = function (avatar, callback)
 		callback,
 		'json');
 }
+
+NovastoryApi.updateProfile = function (firstname, lastname, nickname, callback)
+{
+	$.post(
+		'/api/updateprofile',
+	{
+		firstname : firstname,
+		lastname : lastname,
+		nickname : nickname
+	},
+		callback,
+		'json');
+}
+
+NovastoryApi.myProfile = function (callback)
+{
+	$.post(
+		'/api/myprofile',
+	{},
+		callback,
+		'json');
+}

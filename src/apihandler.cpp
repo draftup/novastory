@@ -115,6 +115,23 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		}
 		json = avatar.jsonString().toUtf8();
 	}
+	else if (hook == "updateprofile")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		user.setFirstName(post["firstname"]);
+		user.setLastName(post["lastname"]);
+		user.setNickName(post["nickname"]);
+		user.update();
+		json = user.jsonString().toUtf8();
+	}
+	else if (hook == "myprofile")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		user.appendProfileJson();
+		json = user.jsonString().toUtf8();
+	}
 	else if (hook == "version")
 	{
 		// Default

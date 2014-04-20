@@ -26,6 +26,9 @@ public:
 	User();
 
 	bool addUser();
+	bool update();
+
+	void appendProfileJson();
 
 	int userid() const;
 	void setUserID(int userid);

@@ -370,10 +370,12 @@ $(document).ready(function ()
 	}
 	);
 
-	$("#panelava img").error(function(){
+	$("#panelava img").error(function ()
+	{
 		$(this).hide();
-	});
-	
+	}
+	);
+
 	// Profile settings
 	$('#setico').click(function ()
 	{
@@ -381,6 +383,26 @@ $(document).ready(function ()
 		{
 			$('#settings-space').load('/modal-settings.html #modal-sett', null, function ()
 			{
+				// Hide from user until profile info is loaded
+				$("#modal-sett").hide();
+
+				// Loading my profile
+				NovastoryApi.myProfile(function (data)
+				{
+					if (data.error != null && data.error)
+					{
+						Novastory.error("Error durring profile loading");
+					}
+					else
+					{
+						$("#myfirstname").val(data.user.firstname);
+						$("#mylastname").val(data.user.lastname);
+						$("#mynickname").val(data.user.nickname);
+						$("#modal-sett").show();
+					}
+				}
+				);
+
 				function processImageFiles(files)
 				{
 					for (var i = 0, file; file = files[i]; i++)
@@ -391,8 +413,8 @@ $(document).ready(function ()
 							Novastory.error("Please drop image");
 							continue;
 						}
-						
-						if(file.size > 1 * 1024 * 1024)
+
+						if (file.size > 1 * 1024 * 1024)
 						{
 							Novastory.error("File must be less than 1MB");
 							continue;
@@ -453,12 +475,39 @@ $(document).ready(function ()
 					processImageFiles($(this)[0].files);
 				}
 				);
-				
-				$("#avapreview").error(function(){
+
+				$("#avapreview").error(function ()
+				{
 					$(this).hide();
-				});
+				}
+				);
+
+				$("#savesett").click(function ()
+				{
+					NovastoryApi.updateProfile($("#myfirstname").val(), $("#mylastname").val(), $("#mynickname").val(), function (data)
+					{
+						if (data.error != null && data.error)
+						{
+							Novastory.error("Error on profile update. Contact administation.");
+						}
+						else
+						{
+							Novastory.ok("Your profile updated");
+						}
+					}
+					);
+					$("#modal-sett").hide();
+				}
+				);
 			}
 			);
+		}
+		else // panel already exists (hide show)
+		{
+			if ($("#modal-sett").is(":hidden"))
+				$("#modal-sett").show();
+			else
+				$("#modal-sett").hide();
 		}
 	}
 	);
