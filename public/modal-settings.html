@@ -8,24 +8,34 @@
 <body>
 
 	<div class="modal-window" id="modal-sett">
-		<div id="greeting">Настройте профиль</div>
-		<div id="avaloader"><img id="avapreview" src="" height="200" alt="Avatar preview..."></div>
-		<input type="file" id="avatardialog" />
-		<div class="textarea modsett">
-			<input type="text" id="myfirstname" placeholder="Your first name" required>
+		<div class="navi current">
+			<div class="naviico" id="profsett"><a>Personal</a></div>
 		</div>
-		<div class="textarea modsett">
-			<input type="text" id="mylastname" placeholder="Your last name" required>
-		</div>
-		<div class="textarea modsett">
-			<input type="text" id="mynickname" placeholder="Your nickname / pseudonym" required>
-		</div>
-		<div class="textarea modsett">
-			<input type="text" id="myplace" placeholder="Place you live" required>
+		<div class="navi">
+			<div class="naviico" id="editsett"><a>Editor</a></div>
 		</div>
 
-		<div id="editoron"><input type="checkbox"><div>Editor<div><div>
-		<div class="buttonblock sett"><div id="savesett"><a>Save</a></div></div>
+		<div class="modal-body">
+			<div id="avaloader"></div>
+			
+			<div class="textarea modsett">
+				<input type="text" id="myfirstname" placeholder="Your first name" required>
+			</div>
+			<div class="textarea modsett">
+				<input type="text" id="mylastname" placeholder="Your last name" required>
+			</div>
+			<div class="textarea modsett">
+				<input type="text" id="mynickname" placeholder="Your nickname / pseudonym" required>
+			</div>
+			<div class="textarea modsett">
+				<input type="text" id="myplace" placeholder="Place you live" required>
+			</div>
+		</div>
+
+		<div class="buttonblock sett">
+				<div id="savesett"><a>Save</a></div>
+				<span id="cancsett">Cancel</span>
+		</div>
 
 		
 	</div>
