@@ -11,7 +11,7 @@ namespace novastory
 class SqlDatabase : public QSqlDatabase
 {
 public:
-	SqlDatabase(bool openOnStart = false, const QString & connectionName = QLatin1String( defaultConnection ));
+	SqlDatabase(bool openOnStart = false, const QString& connectionName = QLatin1String(defaultConnection));
 	virtual ~SqlDatabase();
 };
 
@@ -20,7 +20,7 @@ struct Databases
 	SqlDatabase& open(Qt::HANDLE threadId)
 	{
 		QMutexLocker locker(&databasesLocker);
-		if(databases.contains(threadId))
+		if (databases.contains(threadId))
 		{
 			return databases[threadId];
 		}
@@ -33,8 +33,10 @@ struct Databases
 	void close(Qt::HANDLE threadId)
 	{
 		QMutexLocker locker(&databasesLocker);
-		if(databases.contains(threadId))
+		if (databases.contains(threadId))
+		{
 			qDebug() << "Database connection closed (current connections:" << databases.size() - 1 << ")";
+		}
 		databases.remove(threadId);
 	}
 
