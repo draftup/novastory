@@ -14,10 +14,10 @@ SqlDatabase::~SqlDatabase()
 
 }
 
-SqlDatabase& SqlDatabase::open( Qt::HANDLE threadId )
+SqlDatabase& SqlDatabase::open(Qt::HANDLE threadId)
 {
 	QString id = QString::number((unsigned long long) threadId);
-	if(contains(id))
+	if (contains(id))
 	{
 		return SqlDatabase(database(id));
 	}
@@ -29,16 +29,16 @@ SqlDatabase& SqlDatabase::open( Qt::HANDLE threadId )
 	newdb.setUserName(MYSQL_USER);
 	newdb.setPassword(MYSQL_PASSWORD);
 	VERIFY(newdb.open());
-	
+
 	qDebug() << "New database connection opened (current connections:" << connectionNames().size() << ")";
 
 	return SqlDatabase(newdb);
 }
 
-void SqlDatabase::close( Qt::HANDLE threadId )
+void SqlDatabase::close(Qt::HANDLE threadId)
 {
 	QString id = QString::number((unsigned long long) threadId);
-	if(contains(id))
+	if (contains(id))
 	{
 		removeDatabase(id);
 		qDebug() << "Database connection closed (current connections:" << connectionNames().size() << ")";
