@@ -17,13 +17,10 @@ private slots:
 	void cleanupTestCase();
 
 	void testMain();
-private:
-	SqlDatabase db;
 };
 
 void Test_TextEditor::initTestCase()
 {
-	QVERIFY(db.open());
 }
 
 void Test_TextEditor::init()

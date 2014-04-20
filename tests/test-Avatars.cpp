@@ -23,15 +23,12 @@ private slots:
 	void syncTest();
 	void removeTest();
 private:
-	SqlDatabase db;
 	User newuser;
 	Avatar avatar;
 };
 
 void Test_Avatars::initTestCase()
 {
-	QVERIFY(db.open());
-
 	newuser.setEmail("doentcare@dsadasd.ds");
 	newuser.setRawPassword("doentcare");
 	QVERIFY(newuser.addUser());

@@ -5,22 +5,44 @@
 namespace novastory
 {
 
-SqlDatabase::SqlDatabase(bool openOnStart, const QString& connectionName) : QSqlDatabase(addDatabase("QMYSQL", connectionName))
+SqlDatabase::SqlDatabase(const QSqlDatabase& olddb) : QSqlDatabase(olddb)
 {
-	setConnectOptions("MYSQL_OPT_RECONNECT=1");
-	setHostName(MYSQL_HOST);
-	setDatabaseName(MYSQL_DATABASE);
-	setUserName(MYSQL_USER);
-	setPassword(MYSQL_PASSWORD);
-	if (openOnStart)
-	{
-		VERIFY(open());
-	}
 }
 
 SqlDatabase::~SqlDatabase()
 {
 
+}
+
+SqlDatabase& SqlDatabase::open( Qt::HANDLE threadId )
+{
+	QString id = QString::number((unsigned long long) threadId);
+	if(contains(id))
+	{
+		return SqlDatabase(database(id));
+	}
+
+	QSqlDatabase newdb = addDatabase("QMYSQL", id);
+	newdb.setConnectOptions("MYSQL_OPT_RECONNECT=1");
+	newdb.setHostName(MYSQL_HOST);
+	newdb.setDatabaseName(MYSQL_DATABASE);
+	newdb.setUserName(MYSQL_USER);
+	newdb.setPassword(MYSQL_PASSWORD);
+	VERIFY(newdb.open());
+	
+	qDebug() << "New database connection opened (current connections:" << connectionNames().size() << ")";
+
+	return SqlDatabase(newdb);
+}
+
+void SqlDatabase::close( Qt::HANDLE threadId )
+{
+	QString id = QString::number((unsigned long long) threadId);
+	if(contains(id))
+	{
+		removeDatabase(id);
+		qDebug() << "Database connection closed (current connections:" << connectionNames().size() << ")";
+	}
 }
 
 }

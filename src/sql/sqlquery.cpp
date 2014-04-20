@@ -56,7 +56,7 @@ bool SqlQuery::exec()
 	return result;
 }
 
-SqlQuery::SqlQuery(const QString& query /*= QString()*/) : QSqlQuery(query, Databases::Instance().open(QThread::currentThreadId()))
+SqlQuery::SqlQuery(const QString& query /*= QString()*/) : QSqlQuery(query, SqlDatabase::open(QThread::currentThreadId()))
 {
 	if (!query.isEmpty())
 	{

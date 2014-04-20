@@ -37,7 +37,7 @@ void WebProcess::run()
 	eventLoop->exec();
 
 	// Closing all db related to this thread
-	Databases::Instance().close(QThread::currentThreadId());
+	SqlDatabase::close(QThread::currentThreadId());
 }
 
 

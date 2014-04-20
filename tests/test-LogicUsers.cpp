@@ -26,12 +26,10 @@ private slots:
 private:
 	int userid;
 	QString salt;
-	SqlDatabase db;
 };
 
 void Test_LogicUsers::initTestCase()
 {
-	QVERIFY(db.open());
 	SqlQuery q;
 	QVERIFY(q.exec("DELETE FROM users WHERE email = 'dasdasd@dasdasd.com'"));
 	QVERIFY(q.exec("DELETE FROM users WHERE email = 'testmail@test.com'"));

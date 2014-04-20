@@ -14,14 +14,11 @@ private slots:
 	void connectTest();
 	void queryTest();
 	void dataTest();
-private:
-	novastory::SqlDatabase* database;
 };
 
 void Test_QMySqlSimple::initTestCase()
 {
 	QVERIFY(novastory::SqlDatabase::isDriverAvailable("QMYSQL"));
-	database = new novastory::SqlDatabase;
 }
 
 void Test_QMySqlSimple::init()
@@ -38,12 +35,11 @@ void Test_QMySqlSimple::cleanupTestCase()
 {
 	novastory::SqlQuery query;
 	QVERIFY(query.exec("DROP TABLE `testtable`"));
-	delete database;
 }
 
 void Test_QMySqlSimple::connectTest()
 {
-	QVERIFY(database->open());
+	//QVERIFY(database->open());
 }
 
 void Test_QMySqlSimple::queryTest()
