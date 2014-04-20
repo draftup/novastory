@@ -2,7 +2,6 @@
 #include "recaptcha.h"
 #include "logic/captcha.h"
 #include "utils/globals.h"
-#include "sql/sqldatabase.h"
 
 using namespace novastory;
 
@@ -24,7 +23,6 @@ private:
 
 void Test_Recaptcha::initTestCase()
 {
-	SqlDatabase::Instance();
 	SqlQuery q;
 	QVERIFY(q.exec("DELETE FROM usersverify WHERE email = 'dsdasd@gmail.com'"));
 }

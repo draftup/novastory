@@ -1,6 +1,8 @@
 #include "sqlquery.h"
 #include <QDebug>
 #include <QSqlError>
+#include <QThread>
+#include "sqldatabase.h"
 
 namespace novastory
 {
@@ -54,7 +56,7 @@ bool SqlQuery::exec()
 	return result;
 }
 
-SqlQuery::SqlQuery(const QString& query /*= QString()*/, QSqlDatabase db /*= QSqlDatabase()*/) : QSqlQuery(query, db)
+SqlQuery::SqlQuery(const QString& query /*= QString()*/) : QSqlQuery(query, Databases::Instance().open(QThread::currentThreadId()))
 {
 	if (!query.isEmpty())
 	{

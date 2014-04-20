@@ -5,7 +5,7 @@
 namespace novastory
 {
 
-SqlDatabase::SqlDatabase(bool openOnStart) : QSqlDatabase(addDatabase("QMYSQL"))
+SqlDatabase::SqlDatabase(bool openOnStart, const QString & connectionName) : QSqlDatabase(addDatabase("QMYSQL", connectionName))
 {
 	setConnectOptions("MYSQL_OPT_RECONNECT=1");
 	setHostName(MYSQL_HOST);

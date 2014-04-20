@@ -23,7 +23,6 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/)
 
 	VERIFY(listen(QHostAddress::Any, initializationPort));
 	qDebug() << "Web server started at " << serverAddress() << ":" << serverPort();
-	SqlDatabase::Instance(); // first call
 	QThreadPool::globalInstance()->setMaxThreadCount(5); // Maximum of working threads
 	QThreadPool::globalInstance()->setExpiryTimeout(30000);
 }

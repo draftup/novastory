@@ -10,7 +10,7 @@ class SqlQuery : public QSqlQuery
 {
 public:
 	SqlQuery(QSqlResult* result) : QSqlQuery(result) {};
-	SqlQuery(const QString& query = QString(), QSqlDatabase db = QSqlDatabase());
+	SqlQuery(const QString& query = QString());
 	SqlQuery(QSqlDatabase db) : QSqlQuery(db) {};
 	SqlQuery(const QSqlQuery& other) : QSqlQuery(other) {};
 	virtual ~SqlQuery() {};

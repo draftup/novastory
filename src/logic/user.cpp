@@ -475,13 +475,13 @@ bool novastory::User::confirmPasswordReset(const QString& forgotToken)
 
 bool novastory::User::update()
 {
-	if(!isLogined())
+	if (!isLogined())
 	{
 		JSON_ERROR("not loggined", 1);
 		return false;
 	}
 
-	if(!updateSQL("userid", QList<QString>() << "salt" << "password" << "email"))
+	if (!updateSQL("userid", QList<QString>() << "salt" << "password" << "email"))
 	{
 		JSON_ERROR("failed to update", 2);
 		return false;
@@ -494,7 +494,7 @@ void novastory::User::appendProfileJson()
 {
 	jsonReset();
 
-	if(!isLogined())
+	if (!isLogined())
 	{
 		JSON_ERROR("not loggined", 1);
 		return;

@@ -4,6 +4,7 @@
 #include "utils/globals.h"
 #include <QThreadPool>
 #include <QTimer>
+#include "sql/sqldatabase.h"
 
 namespace novastory
 {
@@ -34,6 +35,9 @@ void WebProcess::run()
 	VERIFY(connect(socket.data(), SIGNAL(bytesWritten(qint64)), this, SLOT(onBytesWriten(qint64)), Qt::DirectConnection));
 	QTimer::singleShot(30000, this, SLOT(closedByInterval()));
 	eventLoop->exec();
+
+	// Closing all db related to this thread
+	Databases::Instance().close(QThread::currentThreadId());
 }
 
 

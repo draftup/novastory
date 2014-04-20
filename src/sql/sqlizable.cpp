@@ -288,7 +288,9 @@ bool Sqlizable::updateSQL(const QList<QString>& basis, const QList<QString>& ign
 	const QMetaObject* mObject = metaObject();
 	const int propCount = mObject->propertyCount();
 	if (propCount == 0)
+	{
 		return false;
+	}
 
 	QVariant auto_increment = property("auto_increment");
 	bool isAutoIncrement = auto_increment.isValid();
@@ -323,8 +325,10 @@ bool Sqlizable::updateSQL(const QList<QString>& basis, const QList<QString>& ign
 		}
 
 		// ignore list
-		if(ignoreVariables.indexOf(propName) >= 0)
+		if (ignoreVariables.indexOf(propName) >= 0)
+		{
 			continue;
+		}
 
 		values.append(propValue);
 
@@ -364,7 +368,7 @@ bool Sqlizable::updateSQL(const QList<QString>& basis, const QList<QString>& ign
 	return true;
 }
 
-bool Sqlizable::updateSQL( const QString& basis, const QList<QString>& ignoreVariables /* = QList<QString>() */ )
+bool Sqlizable::updateSQL(const QString& basis, const QList<QString>& ignoreVariables /* = QList<QString>() */)
 {
 	return updateSQL(QList<QString>() << basis, ignoreVariables);
 }
@@ -379,7 +383,7 @@ QJsonObject Sqlizable::jsonObject() const
 	QVariant hiddenArray = property("hidden");
 	bool isHiddenFields = hiddenArray.isValid();
 	QStringList hiddenFields;
-	if(isHiddenFields)
+	if (isHiddenFields)
 	{
 		hiddenFields = hiddenArray.toString().split(",");
 	}
@@ -403,8 +407,10 @@ QJsonObject Sqlizable::jsonObject() const
 		}
 
 		// ignore list
-		if(hiddenFields.indexOf(propName) >= 0)
+		if (hiddenFields.indexOf(propName) >= 0)
+		{
 			continue;
+		}
 
 		obj.insert(propName, QJsonValue::fromVariant(property(propName.toUtf8())));
 	}
