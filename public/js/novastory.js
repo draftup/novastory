@@ -499,6 +499,10 @@ $(document).ready(function ()
 					$("#modal-sett").hide();
 				}
 				);
+				
+				$("#cancsett").click(function(){
+					$("#modal-sett").hide();
+				});
 			}
 			);
 		}
