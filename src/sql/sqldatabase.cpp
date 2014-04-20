@@ -18,12 +18,12 @@ SqlDatabase::~SqlDatabase()
 
 }
 
-SqlDatabase& SqlDatabase::open(Qt::HANDLE threadId)
+SqlDatabase SqlDatabase::open(Qt::HANDLE threadId)
 {
 	QString id = QString::number((unsigned long long) threadId);
 	if (contains(id))
 	{
-		return SqlDatabase(database(id));
+		return database(id);
 	}
 
 	QSqlDatabase newdb = addDatabase("QMYSQL", id);
@@ -36,7 +36,7 @@ SqlDatabase& SqlDatabase::open(Qt::HANDLE threadId)
 
 	qDebug() << "New database connection opened (current connections:" << connectionNames().size() << ")";
 
-	return SqlDatabase(newdb);
+	return newdb;
 }
 
 void SqlDatabase::close(Qt::HANDLE threadId)
