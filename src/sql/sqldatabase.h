@@ -4,6 +4,7 @@
 #include <QSqlDatabase>
 #include <QHash>
 #include <QDebug>
+#include <QMutex>
 
 namespace novastory
 {
