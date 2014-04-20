@@ -23,13 +23,6 @@ body {
 	box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 }
 
-#modal-sett {
-	height:760px;
-	width:520px;
-	margin: -380px 0 0 -260px;
-}
-
-
 /*Кнопки навигации*/
 
 .navi {
@@ -43,8 +36,6 @@ body {
 	height:25px;
 	margin-left:50px;
 	margin-top:12px;
-	background:url(../images/modal-login/login.svg) no-repeat;
-	background-size:contain;
 	float:left;
 	cursor:pointer;
 }
@@ -55,8 +46,27 @@ body {
 	display:block;
 }
 
+#modal-sett .naviico {
+	margin-left:30%;
+}
+
+#myacc {
+	background:url(../images/modal-login/login.svg) no-repeat;
+	background-size:contain;
+}
+
 #newacc {
 	background:url(../images/modal-login/regi.svg) no-repeat;
+	background-size:contain;
+}
+
+#profsett {
+	background:url(../images/modal-settings/profile.svg) no-repeat;
+	background-size:contain;
+}
+
+#editsett {
+	background:url(../images/modal-settings/editor.svg) no-repeat;
 	background-size:contain;
 }
 
@@ -72,6 +82,16 @@ body {
 
 .current #newacc {
 	background:url(../images/modal-login/regicurr.svg) no-repeat;
+	background-size:contain;
+}
+
+.current #profsett {
+	background:url(../images/modal-settings/profile-curr.svg) no-repeat;
+	background-size:contain;
+}
+
+.current #editsett {
+	background:url(../images/modal-settings/editor-curr.svg) no-repeat;
 	background-size:contain;
 }
 
@@ -265,14 +285,16 @@ input[type="checkbox"] {
 
 /*Страница настройки профиля*/
 
-#greeting {
-	width:490px;
-	height:60px;
-	background: #FFA13D;
-	font-size:22pt;
-	padding-left:30px;
-	line-height:60px;
-	color: #FFFFFF;
+#modal-sett {
+	height:380px;
+	width:520px;
+	margin: -380px 0 0 -260px;
+}
+
+#modal-sett .modal-body {
+	left:30px;
+	position:absolute;
+	top:40px;
 }
 
 /*Страница настройки профиля: кнопка сохранения*/
@@ -280,8 +302,24 @@ input[type="checkbox"] {
 .buttonblock.sett {
 	position:absolute;
 	left:30px;
-	top:370px;
+	top:300px;
 }
+
+#savesett {
+	width:100px;
+	height:30px;
+	font-size:12pt;
+	color:white;
+	cursor:pointer;
+	text-align:center;
+	background:#99146F;
+	float:left;
+}
+
+#cancsett {
+	cursor:pointer;
+}
+
 
 #savesett {
 	width:100px;
@@ -302,7 +340,6 @@ input[type="checkbox"] {
 
 .textarea.modsett {
 	margin-top:20px;
-	margin-left:30px;
 	position:relative;
 }
 
@@ -325,8 +362,8 @@ input[type="text"], [type="password"] {
 	border: 4px dashed #A7A7A7;
 	background:url(../images/modal-settings/ava.svg) center center no-repeat;
 	background-size:70px 70px;
-	left:370px;
-	margin-top:20px;
+	left:340px;
+	margin-top:55px;
 	-moz-transition:all 0.2s;
 	-o-transition:all 0.2s;
 	-webkit-transition:all 0.2s;
