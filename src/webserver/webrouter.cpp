@@ -25,10 +25,12 @@ QString WebRouter::path() const
 void WebRouter::removeHandler(DataHandler* handler)
 {
 	QMutableListIterator< QSharedPointer<DataHandler> > i(handlers);
-	while (i.hasNext()) 
+	while (i.hasNext())
 	{
 		if (i.next().data() == handler)
+		{
 			i.remove();
+		}
 	}
 }
 
