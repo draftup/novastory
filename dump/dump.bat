@@ -1,0 +1,1 @@
+"d:\Program Files\MariaDB 5.5\bin\mysqldump.exe" -u root -p novastory > novastory.sql
