@@ -88,7 +88,7 @@ void WebRouter::parsePost()
 			continue;
 		}
 
-		postVariables.insert(keyValuePair[0], QUrl::fromPercentEncoding(keyValuePair[1].toUtf8()));
+		postVariables.insert(keyValuePair[0], QUrl::fromPercentEncoding(keyValuePair[1].replace(QChar('+'), "%20").toUtf8()));
 	}
 }
 
