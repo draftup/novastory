@@ -24,18 +24,23 @@ QString WebRouter::path() const
 
 void WebRouter::removeHandler(DataHandler* handler)
 {
-	handlers.removeAll(handler);
+	QMutableListIterator< QSharedPointer<DataHandler> > i(handlers);
+	while (i.hasNext()) 
+	{
+		if (i.next().data() == handler)
+			i.remove();
+	}
 }
 
 void WebRouter::appendHandler(DataHandler* handler)
 {
-	handlers.append(handler);
+	handlers.append(QSharedPointer<DataHandler>(handler));
 }
 
 void WebRouter::sendHtml()
 {
 	bool isHandeled = false;
-	for (DataHandler* handler : handlers)
+	for (QSharedPointer<DataHandler> handler : handlers)
 	{
 		isHandeled |= handler->handle(parsedValues["type"], path(), postVariables, QString(), cookieVariables);
 	}

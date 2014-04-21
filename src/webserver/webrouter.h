@@ -6,6 +6,7 @@
 class QTcpSocket;
 #include <QString>
 #include <QHash>
+#include <QSharedPointer>
 
 namespace novastory
 {
@@ -28,7 +29,7 @@ public:
 
 private:
 	QTcpSocket* socket;
-	QList<DataHandler*> handlers;
+	QList< QSharedPointer<DataHandler> > handlers;
 	QHash<QString, QString> postVariables;
 	QHash<QString, QString> cookieVariables;
 };
