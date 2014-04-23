@@ -52,3 +52,8 @@ QString novastory::WebDataContainer::eTag() const
 
 	return QString().sprintf("\"%xT-%xO\"", m_modificated.toMSecsSinceEpoch(), size());
 }
+
+void novastory::WebDataContainer::setRFCData( const QString& rfc2397data )
+{
+	processImage(rfc2397data);
+}

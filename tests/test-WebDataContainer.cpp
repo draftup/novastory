@@ -13,6 +13,7 @@ private slots:
 	void cleanupTestCase();
 
 	void mainTest();
+	void etagTest();
 private:
 
 	QString data;
@@ -65,6 +66,23 @@ void Test_WebDataContainer::mainTest()
 	QVERIFY(img == f.readAll());
 
 	QCOMPARE(img.toString(), data);
+}
+
+void Test_WebDataContainer::etagTest()
+{
+	WebDataContainer img(data);
+	img.setModificatedDate(QDateTime::fromMSecsSinceEpoch(5));
+	QString eTag = img.eTag();
+	QVERIFY(eTag.size() > 0);
+	img.setModificatedDate(QDateTime::fromMSecsSinceEpoch(10));
+	QVERIFY(eTag != img.eTag());
+	img.setModificatedDate(QDateTime::fromMSecsSinceEpoch(5));
+	QCOMPARE(img.eTag(), eTag);
+	img = QByteArray("dasdasdasd");
+	img.setModificatedDate(QDateTime::fromMSecsSinceEpoch(5));
+	QVERIFY(eTag != img.eTag());
+	img.setRFCData(data);
+	QCOMPARE(img.eTag(), eTag);
 }
 
 

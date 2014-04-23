@@ -31,6 +31,8 @@ public:
 	const QDateTime& modificatedDate() const { return m_modificated; };
 
 	QString eTag() const;
+
+	void setRFCData(const QString& rfc2397data);
 protected:
 	void processImage(const QString& data);
 private:
