@@ -114,7 +114,7 @@ inline QByteArray htmlHeaderGen(const QString& mimetype, int size, const QString
 			"Date: " + RFC822Date(QDateTime::currentDateTime()) + "\n"
 			+ additional +
 			"Content-Type: " + mimetype + "\n"
-			"Content-Length: " + QString::number(size) + "\n\n").toLatin1();
+			"Content-Length: " + QString::number(size) + "\n\r\n").toLatin1();
 }
 
 inline QByteArray htmlHeaderGen(const WebDataContainer& data, const QString& status = "200 OK", const QString& additional = QString())

@@ -79,14 +79,11 @@ void Test_MultiThreadWeb::multifileTest()
 			QByteArray fileData = file.readAll();
 			QByteArray dataWithHeader;
 
-			//adding header
-			dataWithHeader = ("HTTP/1.1 200 OK\n"
-							  "Server: novastory\n"
-							  "Content-Type: image/svg+xml\n"
-							  "Content-Length: " + QString::number(fileData.size()) + "\n\n").toLatin1()
-							 + fileData;
+			QStringList htmlSplit = QString(html).split(QString::number(fileData.size()) + "\n\r\n");
+			QVERIFY(htmlSplit.size() == 2);
+			QVERIFY(htmlSplit[0].indexOf("Content-Type: image/svg+xml") >= 0);
 
-			QVERIFY(dataWithHeader == html);
+			QVERIFY(fileData == htmlSplit[1]);
 			threadCount--;
 			htmlReader[i].close();
 		});
