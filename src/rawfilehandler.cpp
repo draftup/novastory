@@ -7,6 +7,7 @@
 
 #include <QMimeDatabase>
 #include <QMimeType>
+#include <QFileInfo>
 
 namespace novastory
 {
@@ -40,7 +41,7 @@ bool RawFileHandler::handle(const QString& type, const QString& path, const QHas
 		{
 			WebDataContainer inCacheData = WebServer::Instance().cache().get(filePath.toStdString());
 			qDebug() << "Readed from cache " << path << "(Current cache size:" << WebServer::Instance().cache().currentSize() << ")";
-			socket->write(htmlHeaderGen(inCacheData.mimeType(), inCacheData.size()));
+			socket->write(htmlHeaderGen(inCacheData));
 			socket->write(inCacheData);
 			return true;
 		}
@@ -57,11 +58,15 @@ bool RawFileHandler::handle(const QString& type, const QString& path, const QHas
 
 				qDebug() << "Raw file type is: " << mime.name();
 
-				socket->write(htmlHeaderGen(mime.name(), data.size()));
-				socket->write(data);
+				WebDataContainer webData(data, mime.name());
+				QFileInfo info(existFile);
+				webData.setModificatedDate(info.lastModified());
 
 				// Save in cache
-				WebServer::Instance().cache().put(filePath.toStdString(), WebDataContainer(data, mime.name()));
+				WebServer::Instance().cache().put(filePath.toStdString(), webData);
+
+				socket->write(htmlHeaderGen(webData));
+				socket->write(data);
 
 				return true;
 			}

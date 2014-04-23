@@ -27,7 +27,7 @@ bool AvatarsHandler::handle(const QString& type, const QString& path, const QHas
 		{
 			WebDataContainer inCacheData = WebServer::Instance().cache().get(path.toStdString());
 			qDebug() << "Readed from cache " << path << "(Current cache size:" << WebServer::Instance().cache().currentSize() << ")";
-			socket->write(htmlHeaderGen(inCacheData.mimeType(), inCacheData.size()));
+			socket->write(htmlHeaderGen(inCacheData));
 			socket->write(inCacheData);
 			return true;
 		}
@@ -41,8 +41,12 @@ bool AvatarsHandler::handle(const QString& type, const QString& path, const QHas
 				avatar.setUserid(id);
 				if (avatar.sync())
 				{
-					WebServer::Instance().cache().put(path.toStdString(), WebDataContainer(avatar.avatar(), avatar.contentType()));
-					showAvatar(avatar);
+					WebDataContainer newAvatar(avatar.avatar(), avatar.contentType());
+
+					WebServer::Instance().cache().put(path.toStdString(), newAvatar);
+					
+					socket->write(htmlHeaderGen(newAvatar));
+					socket->write(newAvatar);
 				}
 				return true;
 			}
@@ -54,20 +58,18 @@ bool AvatarsHandler::handle(const QString& type, const QString& path, const QHas
 			avatar.setEmail(someavatar);
 			if (avatar.sync())
 			{
-				WebServer::Instance().cache().put(path.toStdString(), WebDataContainer(avatar.avatar(), avatar.contentType()));
-				showAvatar(avatar);
+				WebDataContainer newAvatar(avatar.avatar(), avatar.contentType());
+
+				WebServer::Instance().cache().put(path.toStdString(), newAvatar);
+
+				socket->write(htmlHeaderGen(newAvatar));
+				socket->write(newAvatar);
 			}
 			return true;
 		}
 	}
 
 	return false;
-}
-
-void AvatarsHandler::showAvatar(const Avatar& avatar)
-{
-	socket->write(htmlHeaderGen(avatar.contentType(), avatar.contentSize()));
-	socket->write(avatar.avatar());
 }
 
 

@@ -31,7 +31,7 @@ void WebRequest::parse()
 		return;
 	}
 
-	QRegExp getRx("(GET|POST) (.*) HTTP/([0-9.]+)");
+	QRegExp getRx("(GET|POST|HEAD) (.*) HTTP/([0-9.]+)");
 	int pos = 0;
 	if ((pos = getRx.indexIn(headerArray[0])) != -1)
 	{

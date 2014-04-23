@@ -2,6 +2,10 @@
 #define GLOBALS_H
 
 #include <QString>
+#include <QDateTime>
+#include <QTimeZone>
+#include "webdatacontainer.h"
+#include <QLocale>
 
 #ifdef QT_NO_DEBUG
 #define VERIFY(x) (x)
@@ -78,6 +82,16 @@ void sendMail(const QString& to, const QString& subject, const QString& message)
  */
 void sendAsyncMail(const QString& to, const QString& subject, const QString& message);
 
+inline QString RFC822Date(const QDateTime& time)
+{
+	QLocale::setDefault(QLocale::c());
+	QDateTime rfcTime = time;
+	rfcTime = rfcTime.toTimeZone(QTimeZone("Etc/GMT"));
+	QString date = QLocale::c().toString(rfcTime, "ddd, dd MMM yyyy HH:mm:ss") + " GMT";
+	QLocale::setDefault(QLocale::system());
+	return date;
+}
+
 /**
  * @fn	inline QByteArray htmlHeaderGen(const QString& mimetype, int size)
  *
@@ -97,9 +111,23 @@ inline QByteArray htmlHeaderGen(const QString& mimetype, int size, const QString
 {
 	return ("HTTP/1.1 " + status + "\n"
 			"Server: novastory\n"
+			"Date: " + RFC822Date(QDateTime::currentDateTime()) + "\n"
 			+ additional +
 			"Content-Type: " + mimetype + "\n"
 			"Content-Length: " + QString::number(size) + "\n\n").toLatin1();
+}
+
+inline QByteArray htmlHeaderGen(const WebDataContainer& data, const QString& status = "200 OK", const QString& additional = QString())
+{
+	QString addAdditional = additional;
+	QString etag = data.eTag();
+	if(!etag.isEmpty())
+		addAdditional += QString("ETag: %1\n").arg(etag);
+
+	if(!data.modificatedDate().isNull())
+		addAdditional += QString("Last-Modified: %1\n").arg(RFC822Date(data.modificatedDate()));
+
+	return htmlHeaderGen(data.mimeType(), data.size(), status, addAdditional);
 }
 
 }

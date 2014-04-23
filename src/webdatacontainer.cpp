@@ -42,3 +42,11 @@ void novastory::WebDataContainer::setMimeType(const QString& mime)
 {
 	m_mimetype = mime;
 }
+
+QString novastory::WebDataContainer::eTag() const
+{
+	if(m_modificated.isNull())
+		return QString();
+
+	return QString().sprintf("\"%xT-%xO\"", m_modificated.toMSecsSinceEpoch(), size());
+}

@@ -3,6 +3,7 @@
 
 #include <QByteArray>
 #include <QString>
+#include <QDateTime>
 
 namespace novastory
 {
@@ -21,13 +22,20 @@ public:
 	WebDataContainer();
 	WebDataContainer(const QString& rfc2397data);
 	WebDataContainer(const QByteArray& other, const QString& mimetype = QString());
-	const QString& mimeType() const;
 	QString toString() const;
+
 	void setMimeType(const QString& mime);
+	const QString& mimeType() const;
+
+	void setModificatedDate(const QDateTime& date) { m_modificated = date; };
+	const QDateTime& modificatedDate() const { return m_modificated; };
+
+	QString eTag() const;
 protected:
 	void processImage(const QString& data);
 private:
 	QString m_mimetype;
+	QDateTime m_modificated;
 };
 
 }

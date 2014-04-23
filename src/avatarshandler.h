@@ -15,8 +15,6 @@ public:
 	virtual ~AvatarsHandler();
 	bool handle(const QString& type, const QString& path, const QHash<QString, QString>& post = QHash<QString, QString>(), const QString& get = QString(),
 				const QHash<QString, QString>& cookies = QHash<QString, QString>()) override;
-
-	void showAvatar(const Avatar& avatar);
 private:
 	QTcpSocket* socket;
 };
