@@ -44,7 +44,7 @@ bool AvatarsHandler::handle(const QString& type, const QString& path, const QHas
 					WebDataContainer newAvatar(avatar.avatar(), avatar.contentType());
 
 					WebServer::Instance().cache().put(path.toStdString(), newAvatar);
-					
+
 					socket->write(htmlHeaderGen(newAvatar));
 					socket->write(newAvatar);
 				}

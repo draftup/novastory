@@ -121,11 +121,15 @@ inline QByteArray htmlHeaderGen(const WebDataContainer& data, const QString& sta
 {
 	QString addAdditional = additional;
 	QString etag = data.eTag();
-	if(!etag.isEmpty())
+	if (!etag.isEmpty())
+	{
 		addAdditional += QString("ETag: %1\n").arg(etag);
+	}
 
-	if(!data.modificatedDate().isNull())
+	if (!data.modificatedDate().isNull())
+	{
 		addAdditional += QString("Last-Modified: %1\n").arg(RFC822Date(data.modificatedDate()));
+	}
 
 	return htmlHeaderGen(data.mimeType(), data.size(), status, addAdditional);
 }
