@@ -42,7 +42,7 @@ bool AvatarsHandler::handle(const QString& type, const QString& path, const QHas
 				if (avatar.sync())
 				{
 					WebDataContainer newAvatar(avatar.avatar(), avatar.contentType());
-
+					newAvatar.setModificatedDate(avatar.modifyDate());
 					WebServer::Instance().cache().put(path.toStdString(), newAvatar);
 
 					socket->write(htmlHeaderGen(newAvatar));
@@ -59,7 +59,7 @@ bool AvatarsHandler::handle(const QString& type, const QString& path, const QHas
 			if (avatar.sync())
 			{
 				WebDataContainer newAvatar(avatar.avatar(), avatar.contentType());
-
+				newAvatar.setModificatedDate(avatar.modifyDate());
 				WebServer::Instance().cache().put(path.toStdString(), newAvatar);
 
 				socket->write(htmlHeaderGen(newAvatar));

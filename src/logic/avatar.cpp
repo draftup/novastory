@@ -90,6 +90,7 @@ bool novastory::Avatar::sync()
 	setAvatar(q.value("avatar").toByteArray());
 	setContentSize(q.value("contentsize").toUInt());
 	setContentType(q.value("contenttype").toString());
+	setModifyDate(q.value("modifydate").toDateTime());
 
 	Q_ASSERT(contentSize() == avatar().size());
 

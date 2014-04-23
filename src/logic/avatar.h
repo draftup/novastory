@@ -44,11 +44,15 @@ public:
 
 	const QString& contentType() const { return m_contentType; };
 	void setContentType(const QString& ct) { m_contentType = ct; };
+
+	const QDateTime& modifyDate() const { return m_modifyDate; };
+	void setModifyDate(const QDateTime& md) { m_modifyDate = md; };
 private:
 	User m_user;
 	QByteArray m_avatar;
 	unsigned int m_conentSize;
 	QString m_contentType;
+	QDateTime m_modifyDate;
 };
 
 }
