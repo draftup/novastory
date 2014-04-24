@@ -75,14 +75,19 @@ public:
 	void resetNickName() { m_nickname = QString(); };
 
 	const QString& profileId() const { return m_profileid; };
-	void setProfileId(const QString& name) { 
-		if(!profileRegExp().exactMatch(name))
+	void setProfileId(const QString& name)
+	{
+		if (!profileRegExp().exactMatch(name))
+		{
 			return;
+		}
 
-		if(name.size() > 64)
+		if (name.size() > 64)
+		{
 			return;
+		}
 
-		m_profileid = name; 
+		m_profileid = name;
 	};
 	void resetProfileId() { m_profileid = QString(); };
 

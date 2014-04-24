@@ -24,8 +24,10 @@ bool ProfileHandler::handle(const QString& type, const QString& path, const QHas
 	{
 		User userProfile;
 		userProfile.setProfileId(path.mid(1));
-		if(!userProfile.sync())
+		if (!userProfile.sync())
+		{
 			return false;
+		}
 	}
 
 	return false;

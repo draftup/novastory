@@ -505,14 +505,20 @@ void novastory::User::appendProfileJson()
 
 bool novastory::User::sync()
 {
-	if(userid() > 0)
+	if (userid() > 0)
+	{
 		return syncSQL("userid");
+	}
 
-	if(!email().isEmpty())
+	if (!email().isEmpty())
+	{
 		return syncSQL("email");
+	}
 
-	if(!profileId().isEmpty())
+	if (!profileId().isEmpty())
+	{
 		return syncSQL("profileid");
+	}
 
 	return false;
 }
