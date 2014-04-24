@@ -122,6 +122,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		user.setFirstName(post["firstname"]);
 		user.setLastName(post["lastname"]);
 		user.setNickName(post["nickname"]);
+		user.setProfileId(post["profileid"]);
 		user.update();
 		json = user.jsonString().toUtf8();
 	}

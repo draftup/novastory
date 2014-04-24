@@ -398,6 +398,7 @@ $(document).ready(function ()
 						$("#myfirstname").val(data.user.firstname);
 						$("#mylastname").val(data.user.lastname);
 						$("#mynickname").val(data.user.nickname);
+						$("#myprofileid").val(data.user.profileid);
 						$("#modal-sett").show();
 					}
 				}
@@ -484,7 +485,14 @@ $(document).ready(function ()
 
 				$("#savesett").click(function ()
 				{
-					NovastoryApi.updateProfile($("#myfirstname").val(), $("#mylastname").val(), $("#mynickname").val(), function (data)
+					var profileid = $("#myprofileid").val();
+					if(!profileid.match(/[A-Za-z0-9_]+/) || profileid.length > 64)
+					{
+						Novastory.error("You profile indificator contains bad symbols. Use latin.");
+						return;
+					}
+				
+					NovastoryApi.updateProfile($("#myfirstname").val(), $("#mylastname").val(), $("#mynickname").val(), profileid, function (data)
 					{
 						if (data.error != null && data.error)
 						{

@@ -2,6 +2,7 @@
 #include "rawfilehandler.h"
 #include "apihandler.h"
 #include "avatarshandler.h"
+#include "profilehandler.h"
 #include "utils/globals.h"
 #include "webserver/templator.h"
 #include <QTextStream>
@@ -15,6 +16,7 @@ WebRouter::WebRouter(QTcpSocket* bindedSocket) : WebRequest(bindedSocket), socke
 	appendHandler(new RawFileHandler(bindedSocket));
 	appendHandler(new ApiHandler(bindedSocket));
 	appendHandler(new AvatarsHandler(bindedSocket));
+	appendHandler(new ProfileHandler(bindedSocket));
 }
 
 QString WebRouter::path() const

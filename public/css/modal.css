@@ -286,9 +286,9 @@ input[type="checkbox"] {
 /*Страница настройки профиля*/
 
 #modal-sett {
-	height:380px;
+	height:400px;
 	width:520px;
-	margin: -380px 0 0 -260px;
+	margin: -300px 0 0 -260px;
 }
 
 #modal-sett .modal-body {
@@ -302,7 +302,7 @@ input[type="checkbox"] {
 .buttonblock.sett {
 	position:absolute;
 	left:30px;
-	top:300px;
+	top:330px;
 }
 
 #savesett {

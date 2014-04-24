@@ -193,7 +193,7 @@ bool Sqlizable::syncProcess(SqlQuery& query)
 {
 	if (query.size() != 1)
 	{
-		qWarning() << "Not only one record in database. Can not sync.";
+		qDebug() << "Not only one record in database. Can not sync.";
 		return false;
 	}
 

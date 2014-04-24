@@ -20,6 +20,7 @@ private slots:
 	void userSyncTest();
 	void loginTest();
 	void loginByTokenTest();
+	void syncTest();
 	void confirmPasswordReset();
 	void deleteUserTest();
 	void validateUser();
@@ -111,6 +112,22 @@ void Test_LogicUsers::loginByTokenTest()
 	User iduser;
 	QVERIFY(iduser.loginByToken(userid, user.token()));
 	QVERIFY(!iduser.loginByToken(3543543, user.token()));
+}
+
+
+void Test_LogicUsers::syncTest()
+{
+	User user1;
+	user1.setUserID(userid);
+	QVERIFY(user1.sync());
+	QCOMPARE(user1.email(), QString("dasdasd@dasdasd.com"));
+	User user2;
+	user2.setEmail("dasdas@dasdasd.com");
+	QVERIFY(!user2.sync());
+	user2.setEmail("dasdasd@dasdasd.com");
+	QVERIFY(user2.sync());
+	QCOMPARE(user2.userid(), userid);
+	QVERIFY(!user2.isLogined());
 }
 
 

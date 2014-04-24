@@ -22,11 +22,13 @@ class User : protected Sqlizable, public JsonThrower
 	Q_PROPERTY(QString firstname READ firstName WRITE setFirstName RESET resetFirstName)
 	Q_PROPERTY(QString lastname READ lastName WRITE setLastName RESET resetLastName)
 	Q_PROPERTY(QString nickname READ nickName WRITE setNickName RESET resetNickName)
+	Q_PROPERTY(QString profileid READ profileId WRITE setProfileId RESET resetProfileId)
 public:
 	User();
 
 	bool addUser();
 	bool update();
+	bool sync();
 
 	void appendProfileJson();
 
@@ -71,6 +73,23 @@ public:
 	const QString& nickName() const { return m_nickname; };
 	void setNickName(const QString& name) { m_nickname = name; };
 	void resetNickName() { m_nickname = QString(); };
+
+	const QString& profileId() const { return m_profileid; };
+	void setProfileId(const QString& name) { 
+		if(!profileRegExp().exactMatch(name))
+			return;
+
+		if(name.size() > 64)
+			return;
+
+		m_profileid = name; 
+	};
+	void resetProfileId() { m_profileid = QString(); };
+
+	static const QRegExp profileRegExp()
+	{
+		return QRegExp("[a-zA-Z0-9_]+");
+	}
 protected:
 	QString generateSalt() const;
 	void setPassword(const QString& password);
@@ -93,6 +112,7 @@ private:
 	QString m_firstname;
 	QString m_lastname;
 	QString m_nickname;
+	QString m_profileid;
 };
 
 }

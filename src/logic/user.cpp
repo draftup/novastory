@@ -503,3 +503,17 @@ void novastory::User::appendProfileJson()
 	JSON_INSERT("user", jsonObject());
 }
 
+bool novastory::User::sync()
+{
+	if(userid() > 0)
+		return syncSQL("userid");
+
+	if(!email().isEmpty())
+		return syncSQL("email");
+
+	if(!profileId().isEmpty())
+		return syncSQL("profileid");
+
+	return false;
+}
+
