@@ -110,13 +110,13 @@ inline QString RFC822Date(const QDateTime& time)
 inline QByteArray htmlHeaderGen(const QString& mimetype = QString(), int size = -1, const QString& status = "200 OK", const QString& additional = QString())
 {
 	return (
-			"HTTP/1.1 " + status + "\n"
-			"Server: novastory\n"
-			"Date: " + RFC822Date(QDateTime::currentDateTime()) + "\n"
-			+ additional +
-			((mimetype.isNull()) ? QString() : "Content-Type: " + mimetype + "\n") +
-			((size >= 0) ? "Content-Length: " + QString::number(size) + "\n\r\n" : "\n\r\n") 
-			).toLatin1();
+			   "HTTP/1.1 " + status + "\n"
+			   "Server: novastory\n"
+			   "Date: " + RFC822Date(QDateTime::currentDateTime()) + "\n"
+			   + additional +
+			   ((mimetype.isNull()) ? QString() : "Content-Type: " + mimetype + "\n") +
+			   ((size >= 0) ? "Content-Length: " + QString::number(size) + "\n\r\n" : "\n\r\n")
+		   ).toLatin1();
 }
 
 inline QByteArray htmlHeaderGen(const WebDataContainer& data, const QString& status = "200 OK", const QString& additional = QString())
