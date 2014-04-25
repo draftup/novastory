@@ -19,7 +19,7 @@ AvatarsHandler::~AvatarsHandler()
 }
 
 bool AvatarsHandler::handle(const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& get /* = "" */,
-							const QHash<QString, QString>& cookies /*= QHash<QString, QString>()*/)
+							const QHash<QString, QString>& header /*= QHash<QString, QString>()*/, const QHash<QString, QString>& cookies /*= QHash<QString, QString>()*/)
 {
 	if (path.startsWith("/avatar/"))
 	{
@@ -27,8 +27,21 @@ bool AvatarsHandler::handle(const QString& type, const QString& path, const QHas
 		{
 			WebDataContainer inCacheData = WebServer::Instance().cache().get(path.toStdString());
 			qDebug() << "Readed from cache " << path << "(Current cache size:" << WebServer::Instance().cache().currentSize() << ")";
-			socket->write(htmlHeaderGen(inCacheData));
-			socket->write(inCacheData);
+			
+			QString controlEtag = header["If-None-Match"];
+			QString eTag = inCacheData.eTag();
+
+			if(controlEtag == eTag)
+			{
+				qDebug() << "Requested cache data is good, sending only header";
+				socket->write(htmlHeaderGen(QString(), -1, "304 Not Modified"));
+			}
+			else
+			{
+				socket->write(htmlHeaderGen(inCacheData));
+				socket->write(inCacheData);
+			}
+			
 			return true;
 		}
 		catch (std::range_error&)
@@ -45,8 +58,19 @@ bool AvatarsHandler::handle(const QString& type, const QString& path, const QHas
 					newAvatar.setModificatedDate(avatar.modifyDate());
 					WebServer::Instance().cache().put(path.toStdString(), newAvatar);
 
-					socket->write(htmlHeaderGen(newAvatar));
-					socket->write(newAvatar);
+					QString controlEtag = header["If-None-Match"];
+					QString eTag = newAvatar.eTag();
+
+					if(controlEtag == eTag)
+					{
+						qDebug() << "Requested cache data is good, sending only header";
+						socket->write(htmlHeaderGen(QString(), -1, "304 Not Modified"));
+					}
+					else
+					{
+						socket->write(htmlHeaderGen(newAvatar));
+						socket->write(newAvatar);
+					}
 				}
 				return true;
 			}

@@ -46,7 +46,7 @@ void WebRouter::sendHtml()
 	bool isHandeled = false;
 	for (QSharedPointer<DataHandler> handler : handlers)
 	{
-		isHandeled |= handler->handle(parsedValues["type"], path(), postVariables, QString(), cookieVariables);
+		isHandeled |= handler->handle(parsedValues["type"], path(), postVariables, QString(), parsedValues, cookieVariables);
 	}
 	if (!isHandeled)
 	{

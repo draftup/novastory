@@ -58,7 +58,7 @@ void WebRequest::parse()
 		if ((posParam = paramRx.indexIn(headerArray[i])) != -1)
 		{
 			QString param = paramRx.cap(1);
-			QString value = paramRx.cap(2);
+			QString value = paramRx.cap(2).trimmed();
 			parsedValues[param] = value;
 		}
 	}
