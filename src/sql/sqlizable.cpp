@@ -16,17 +16,13 @@ Sqlizable::Sqlizable() : QObject()
 	setObjectName("SQLizable_BASE");
 }
 
-bool isObjectType(int type)
+// Nothing is copying
+Sqlizable::Sqlizable( const novastory::Sqlizable & obj)  : QObject()
 {
-	const int objectTypeIds[] =
-	{
-		qMetaTypeId<QObjectList>(),
-		qMetaTypeId<QObject*>(),
-		QVariant::ByteArray,
-	};
-
-	return std::find(std::begin(objectTypeIds), std::end(objectTypeIds), type) != std::end(objectTypeIds);
+	setObjectName(obj.objectName());
 }
+
+
 
 /*
 bool skipCleanVariant(const QVariant& variant)
@@ -270,6 +266,7 @@ bool Sqlizable::removeSQL(const QString& basis)
 // Nothing is copying
 Sqlizable& Sqlizable::operator=(const Sqlizable& obj)
 {
+	setObjectName(obj.objectName());
 	return *this;
 }
 
@@ -416,6 +413,37 @@ QJsonObject Sqlizable::jsonObject() const
 	}
 
 	return obj;
+}
+
+void Sqlizable::substitute( QString& data, QString prefix /*= QString()*/ ) const
+{
+	QString namesp = objectName();
+	const QMetaObject* mObject = metaObject();
+	const int propCount = mObject->propertyCount();
+
+	for (int i = 0; i < propCount; ++i)
+	{
+		QMetaProperty prop = mObject->property(i);
+
+		if (Sqlizable::isObjectType(prop.userType()))
+		{
+			continue;
+		}
+
+		const QString& propName = prop.name();
+		QVariant propValue = prop.read(this);
+
+		// Skip objectName
+		if (propName == "objectName")
+		{
+			continue;
+		}
+
+		if(prefix.isNull())
+			data = data.replace(QString("{%1.%2}").arg(namesp).arg(propName), propValue.toString());
+		else
+			data = data.replace(QString("{%1.%2.%3}").arg(prefix).arg(namesp).arg(propName), propValue.toString());
+	}
 }
 
 }

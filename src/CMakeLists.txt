@@ -48,6 +48,8 @@ set(HEADERS
 	rawfilehandler.h
 	avatarshandler.h
 	profilehandler.h
+	profile.h
+	htmltemplate.h
 	logger.h
 	apihandler.h
 	webserver/templator.h
@@ -72,6 +74,7 @@ set(SOURCES
 	rawfilehandler.cpp
 	avatarshandler.cpp
 	profilehandler.cpp
+	profile.cpp
 	apihandler.cpp
 	jsonthrower.cpp
 	logger.cpp

@@ -3,6 +3,8 @@
 #include <QDebug>
 #include <QTcpSocket>
 #include "logic/user.h"
+#include "profile.h"
+#include "webserver/templator.h"
 
 namespace novastory
 {
@@ -28,6 +30,15 @@ bool ProfileHandler::handle(const QString& type, const QString& path, const QHas
 		{
 			return false;
 		}
+
+		User loginedUser;
+		if(cookies.contains("userid"))
+			loginedUser.loginByToken(cookies["userid"].toInt(), cookies["stoken"]);
+
+		Profile profileBuilder(userProfile, loginedUser);
+		QByteArray responce = Templator::generate("Profile view", profileBuilder.html());
+		socket->write(htmlHeaderGen("text/html", responce.size()));
+		socket->write(responce);
 	}
 
 	return false;

@@ -95,6 +95,11 @@ public:
 	{
 		return QRegExp("[a-zA-Z0-9_]+");
 	}
+
+	void substitute(QString& data, QString prefix = QString()) const
+	{
+		Sqlizable::substitute(data, prefix);
+	}
 protected:
 	QString generateSalt() const;
 	void setPassword(const QString& password);
