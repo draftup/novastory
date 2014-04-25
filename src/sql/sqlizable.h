@@ -14,7 +14,7 @@ class Sqlizable : public QObject
 	Q_OBJECT
 public:
 	Sqlizable();
-	Sqlizable(const novastory::Sqlizable &);
+	Sqlizable(const novastory::Sqlizable&);
 	~Sqlizable() {};
 
 	bool insertSQL();

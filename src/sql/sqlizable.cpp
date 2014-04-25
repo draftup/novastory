@@ -17,7 +17,7 @@ Sqlizable::Sqlizable() : QObject()
 }
 
 // Nothing is copying
-Sqlizable::Sqlizable( const novastory::Sqlizable & obj)  : QObject()
+Sqlizable::Sqlizable(const novastory::Sqlizable& obj)  : QObject()
 {
 	setObjectName(obj.objectName());
 }
@@ -415,7 +415,7 @@ QJsonObject Sqlizable::jsonObject() const
 	return obj;
 }
 
-void Sqlizable::substitute( QString& data, QString prefix /*= QString()*/ ) const
+void Sqlizable::substitute(QString& data, QString prefix /*= QString()*/) const
 {
 	QString namesp = objectName();
 	const QMetaObject* mObject = metaObject();
@@ -439,10 +439,14 @@ void Sqlizable::substitute( QString& data, QString prefix /*= QString()*/ ) cons
 			continue;
 		}
 
-		if(prefix.isNull())
+		if (prefix.isNull())
+		{
 			data = data.replace(QString("{%1.%2}").arg(namesp).arg(propName), propValue.toString());
+		}
 		else
+		{
 			data = data.replace(QString("{%1.%2.%3}").arg(prefix).arg(namesp).arg(propName), propValue.toString());
+		}
 	}
 }
 

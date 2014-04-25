@@ -7,8 +7,8 @@ namespace novastory
 {
 class HtmlTemplate
 {
-	public:
-		virtual QByteArray html() const = 0;
+public:
+	virtual QByteArray html() const = 0;
 };
 }
 

@@ -8,26 +8,26 @@
 namespace novastory
 {
 
-	Profile::Profile( const User& target, const User& self /*= User()*/ ) : tragetUser(target), selfUser(self)
-	{
+Profile::Profile(const User& target, const User& self /*= User()*/) : tragetUser(target), selfUser(self)
+{
 
+}
+
+QByteArray Profile::html() const
+{
+	const QString workingDirectory = WebServer::Instance().directory();
+	QFile templateFile(workingDirectory + "/profile.html");
+	if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		qCritical() << "Template not founded";
+		return QByteArray();
 	}
 
-	QByteArray Profile::html() const 
-	{
-		const QString workingDirectory = WebServer::Instance().directory();
-		QFile templateFile(workingDirectory + "/profile.html");
-		if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text))
-		{
-			qCritical() << "Template not founded";
-			return QByteArray();
-		}
+	QString data = templateFile.readAll();
+	selfUser.substitute(data, "my");
+	tragetUser.substitute(data, "their");
 
-		QString data = templateFile.readAll();
-		selfUser.substitute(data, "my");
-		tragetUser.substitute(data, "their");
-
-		return data.toUtf8();
-	}
+	return data.toUtf8();
+}
 
 }

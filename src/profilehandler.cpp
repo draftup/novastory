@@ -32,8 +32,10 @@ bool ProfileHandler::handle(const QString& type, const QString& path, const QHas
 		}
 
 		User loginedUser;
-		if(cookies.contains("userid"))
+		if (cookies.contains("userid"))
+		{
 			loginedUser.loginByToken(cookies["userid"].toInt(), cookies["stoken"]);
+		}
 
 		Profile profileBuilder(userProfile, loginedUser);
 		QByteArray responce = Templator::generate("Profile view", profileBuilder.html());
