@@ -301,8 +301,8 @@ input[type="checkbox"] {
 
 .buttonblock.sett {
 	position:absolute;
-	left:30px;
 	top:330px;
+	left: 30px;
 }
 
 #savesett {
@@ -341,29 +341,49 @@ input[type="checkbox"] {
 .textarea.modsett {
 	margin-top:20px;
 	position:relative;
+	width: 280px;
 }
 
-input[type="text"], [type="password"] {
+.textarea.modsett input[type="text"], [type="password"] {
 	border:none;
 	outline:none;
 	-webkit-appearance:none;
 	height:28px;
-	width:290px;
+	width:270px;
 	font-size:10pt;
 	margin-left:5px;
+}
+
+#profidarea {
+	margin-top:20px;
+	position:relative;
+	display:inline-block;
+	height: 30px;
+	width:282px;
+	line-height:30px;
+}
+
+#profidarea .textarea.modsett {
+	width: 180px;
+	float:right;
+	margin-top:0px;
+}
+
+#profidarea input[type="text"], [type="password"] {
+	width: 170px;
 }
 
 /*Страница настройки профиля: поле загрузки аватара*/
 
 #avaloader {
 	position:absolute;
-	width:105px;
-	height:105px;
+	width:130px;
+	height:130px;
 	border: 4px dashed #A7A7A7;
 	background:url(../images/modal-settings/ava.svg) center center no-repeat;
 	background-size:70px 70px;
-	left:340px;
-	margin-top:55px;
+	left:320px;
+	margin-top:50px;
 	-moz-transition:all 0.2s;
 	-o-transition:all 0.2s;
 	-webkit-transition:all 0.2s;
@@ -371,24 +391,23 @@ input[type="text"], [type="password"] {
 	cursor:pointer;
 }
 
-#avaloader  #avapreview
-{
-	width:105px;
-	height:105px;
+#avaloader:hover {
+	background-size:90px 90px;
+}
+
+#avaloader div {
+	text-align:center;
+	margin-top: 140px;
+	color: #A7A7A7;
+	font-weight: bold;
+}
+
+#avaloader  #avapreview {
+	width:130px;
+	height:130px;
 	border: 0px;
 }
 
-#avatardialog
-{
+#avatardialog {
 	display: none;
-}
-
-#avaloader:hover {
-	background-size:76px 76px;
-}
-
-#editoron {
-	position:relative;
-	margin-top:30px;
-	left:30px;
 }
