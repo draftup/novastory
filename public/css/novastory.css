@@ -258,3 +258,15 @@ input[type="search"] {
 	background:url(../images/warning.svg) no-repeat #FF8C00;
 	background-size:contain;
 }
+
+/* Боковая панель справа */
+
+.rightpanel {
+	
+	position: absolute;
+	width:280px;
+	height: 100%;
+	right:0px;
+	background: #FFFFFF;
+	border-left: 1px solid black;
+}

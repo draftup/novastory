@@ -380,19 +380,15 @@ input[type="checkbox"] {
 	width:130px;
 	height:130px;
 	border: 4px dashed #A7A7A7;
-	background:url(../images/modal-settings/ava.svg) 50% 25% no-repeat;
-	background-size:60px 60px;
 	left:320px;
 	margin-top:50px;
-	-moz-transition:all 0.2s;
-	-o-transition:all 0.2s;
-	-webkit-transition:all 0.2s;
-	transition:all 0.2s;
-	cursor:pointer;
+	cursor: pointer;
 }
 
-#avaloader:hover {
-	background-size:80px 80px;
+#avaloader svg {
+	position: absolute;
+	left: 27px;
+	top: 10px;
 }
 
 #avaloader div {
