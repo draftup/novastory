@@ -189,6 +189,8 @@ input[type="search"] {
 	height:inherit;
 	width:inherit;
 	border-radius:50%;
+	-webkit-border-radius:50%;
+	-moz-border-radius:50%;
 }
 
 /*Верхняя панель: пользователь: инструменты*/
@@ -268,5 +270,63 @@ input[type="search"] {
 	height: 100%;
 	right:0px;
 	background: #FFFFFF;
-	border-left: 1px solid black;
+	border-left: 1px solid #EDEDED;
+}
+
+.rpcurrent {
+	width: 100%;
+	min-height: 80px;
+	margin-top:40px;
+	border-bottom: 1px solid #EDEDED;
+}
+
+#nounread {
+	width: 100%;
+	height: 80px;
+	text-align:center;
+	line-height: 80px;
+}
+
+.dialogref {
+	width: 260px;
+	height: 60px;
+	margin: 10px;
+	cursor: pointer;
+	border: 1px solid #EDEDED;
+}
+
+.newmess {
+	border-left: 2px solid #6CDA6C;
+}
+
+.messcount {
+	position:absolute;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	-webkit-border-radius:50%;
+	-moz-border-radius:50%;
+	background: #6CDA6C;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 9pt;
+	text-align:center;
+	line-height: 22px;
+	margin-top: 18px;
+}
+
+.dialogava {
+	position:absolute;
+	height: 50px;
+	width: 50px;
+	margin: 5px;
+	margin-left: 10px;
+}
+
+.dialogava img {
+	height:inherit;
+	width:inherit;
+	border-radius:50%;
+	-webkit-border-radius:50%;
+	-moz-border-radius:50%;
 }

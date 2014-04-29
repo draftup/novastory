@@ -288,7 +288,7 @@ input[type="checkbox"] {
 #modal-sett {
 	height:400px;
 	width:520px;
-	margin: -300px 0 0 -260px;
+	margin: -200px 0 0 -260px;
 }
 
 #modal-sett .modal-body {
@@ -380,6 +380,8 @@ input[type="checkbox"] {
 	width:130px;
 	height:130px;
 	border: 4px dashed #A7A7A7;
+	background:url(../images/modal-settings/ava.svg) 50% 25% no-repeat;
+	background-size:60px 60px;
 	left:320px;
 	margin-top:50px;
 	cursor: pointer;
