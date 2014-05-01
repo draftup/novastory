@@ -45,7 +45,7 @@ bool RawFileHandler::handle(const QString& type, const QString& path, const QHas
 			QString controlEtag = header["If-None-Match"];
 			QString eTag = inCacheData.eTag();
 
-			if (controlEtag == eTag)
+			if (controlEtag.size() > 0 && controlEtag == eTag)
 			{
 				qDebug() << "Requested cache data is good, sending only header";
 				socket->write(htmlHeaderGen(QString(), -1, "304 Not Modified"));
@@ -81,7 +81,7 @@ bool RawFileHandler::handle(const QString& type, const QString& path, const QHas
 				QString controlEtag = header["If-None-Match"];
 				QString eTag = webData.eTag();
 
-				if (controlEtag == eTag)
+				if (controlEtag.size() > 0 && controlEtag == eTag)
 				{
 					qDebug() << "Requested cache data is good, sending only header";
 					socket->write(htmlHeaderGen(QString(), -1, "304 Not Modified"));
