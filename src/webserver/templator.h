@@ -34,6 +34,12 @@ public:
 		const QString& article = QString()
 	);
 
+	static QByteArray generate(
+		const User& user,
+		const QString& title = "Novastory",
+		const QString& article = QString()
+	);
+
 	static QByteArray generateLogined(
 		const User& user,
 		const QString& title = "Novastory",

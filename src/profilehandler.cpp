@@ -39,7 +39,7 @@ bool ProfileHandler::handle(const QString& type, const QString& path, const QHas
 
 		Profile profileBuilder(userProfile, loginedUser);
 		QString profileElement = selectorId(profileBuilder.html(), "profile");
-		QByteArray responce = Templator::generate("Profile view", profileElement);
+		QByteArray responce = Templator::generate(loginedUser, "Profile view", profileElement);
 		socket->write(htmlHeaderGen("text/html", responce.size()));
 		socket->write(responce);
 	}
