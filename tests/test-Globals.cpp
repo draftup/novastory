@@ -18,6 +18,7 @@ private slots:
 	void unixtimeTest();
 	void mailSendTest();
 	void RFC822DateTest();
+	void selectorTest();
 };
 
 void Test_Globals::initTestCase()
@@ -67,6 +68,27 @@ void Test_Globals::mailSendTest()
 void Test_Globals::RFC822DateTest()
 {
 	QCOMPARE(RFC822Date(QDateTime::fromMSecsSinceEpoch(0)), QString("Thu, 01 Jan 1970 00:00:00 GMT"));
+}
+
+void Test_Globals::selectorTest()
+{
+	QCOMPARE(selectorId(QString(), "dg"), QString());
+	QCOMPARE(selectorId("aa<div id=\"deg\">dsds</div>bb", "dg"), QString("aa<div id=\"deg\">dsds</div>bb"));
+
+	// basic select
+	QCOMPARE(selectorId("aa<div id=\"deg\">dsds</div>bb", "deg"), QString("<div id=\"deg\">dsds</div>"));
+	QCOMPARE(selectorId("aa<div id='deg'>dsds</div>bb", "deg"), QString("<div id='deg'>dsds</div>"));
+	QCOMPARE(selectorId("aa<p id='deg'></p>bb", "deg"), QString("<p id='deg'></p>"));
+
+	// more hard tests
+	QCOMPARE(selectorId("aa<div id='deg'>dsds<div>blin</div></div>bb", "deg"), QString("<div id='deg'>dsds<div>blin</div></div>"));
+	QCOMPARE(selectorId("aa<div id='deg'>dsds<div id=\"hardcore\"><b>blin</b></div></div>bbb", "deg"), QString("<div id='deg'>dsds<div id=\"hardcore\"><b>blin</b></div></div>"));
+	QCOMPARE(selectorId("aa<div id='deg'>dsds<div id=\"hardcore\"><b>blin</b></div></div>bbb", "hardcore"), QString("<div id=\"hardcore\"><b>blin</b></div>"));
+	QCOMPARE(selectorId("<div id='ss'></div>aa<div id='deg'>dsds<div class='brolaf' id=\"hardcore\" name='weed'><b>blin</b></div></div>bbb", "hardcore"), QString("<div class='brolaf' id=\"hardcore\" name='weed'><b>blin</b></div>"));
+
+	// wrong html
+	QCOMPARE(selectorId("a<div id='ss'><div></div><div><div></div></div></div></div>c", "ss"), QString("<div id='ss'><div></div><div><div></div></div></div>"));
+	QCOMPARE(selectorId("aa<div id='deg'>dsds<div></div>bb", "deg"), QString("<div id='deg'>dsds<div></div>"));
 }
 
 

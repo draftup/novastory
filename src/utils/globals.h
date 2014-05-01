@@ -136,6 +136,10 @@ inline QByteArray htmlHeaderGen(const WebDataContainer& data, const QString& sta
 	return htmlHeaderGen(data.mimeType(), data.size(), status, addAdditional);
 }
 
+
+QString selectorId(const QString& html, const QString& selector);
+
+
 }
 
 #endif // APIHANDLER_H
