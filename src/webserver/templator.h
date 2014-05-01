@@ -38,7 +38,7 @@ public:
 		const User& user,
 		const QString& title = "Novastory",
 		const QString& article = QString()
-		);
+	);
 
 	static QByteArray generateLogined(
 		const User& user,
