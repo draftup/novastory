@@ -74,10 +74,9 @@ QByteArray Templator::generateLogined(const User& user, const QString& title /*=
 	generatedTemplate = templateData.replace("{title}", title);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
 	generatedTemplate = generatedTemplate.replace("{powered}", "2014 &copy; Copyright Novastory Engine " GIT_DESCRIBE " [r" GIT_REVISION "]");
-	generatedTemplate = generatedTemplate.replace("{user.userid}", QString::number(user.userid()));
-	generatedTemplate = generatedTemplate.replace("{user.stoken}", user.token());
-	generatedTemplate = generatedTemplate.replace("{user.email}", user.email());
-	generatedTemplate = generatedTemplate.replace("{user.namemail}", !user.firstName().isEmpty() ? user.firstName() : user.email());
+	user.substitute(generatedTemplate);
+	generatedTemplate = generatedTemplate.replace("{users.stoken}", user.token());
+	generatedTemplate = generatedTemplate.replace("{users.namemail}", !user.firstName().isEmpty() ? user.firstName() : user.email());
 
 	qDebug() << "Html template generated with title:" << title << "and article" << article;
 
