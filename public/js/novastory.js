@@ -376,6 +376,12 @@ $(document).ready(function ()
 	}
 	);
 
+	$("#panelava").click(function ()
+	{
+		window.location.href = '/' + PROFILEID;
+	}
+	);
+
 	// Profile settings
 	$('#setico').click(function ()
 	{
@@ -486,12 +492,12 @@ $(document).ready(function ()
 				$("#savesett").click(function ()
 				{
 					var profileid = $("#myprofileid").val();
-					if(!profileid.match(/[A-Za-z0-9_]+/) || profileid.length > 64)
+					if (!profileid.match(/[A-Za-z0-9_]+/) || profileid.length > 64)
 					{
 						Novastory.error("You profile indificator contains bad symbols. Use latin.");
 						return;
 					}
-				
+
 					NovastoryApi.updateProfile($("#myfirstname").val(), $("#mylastname").val(), $("#mynickname").val(), profileid, function (data)
 					{
 						if (data.error != null && data.error)
@@ -500,6 +506,12 @@ $(document).ready(function ()
 						}
 						else
 						{
+							$("#panelava").unbind('click');
+							$("#panelava").click(function ()
+							{
+								window.location.href = '/' + profileid;
+							}
+							);
 							Novastory.ok("Your profile updated");
 						}
 					}
@@ -507,10 +519,12 @@ $(document).ready(function ()
 					$("#modal-sett").hide();
 				}
 				);
-				
-				$("#cancsett").click(function(){
+
+				$("#cancsett").click(function ()
+				{
 					$("#modal-sett").hide();
-				});
+				}
+				);
 			}
 			);
 		}
