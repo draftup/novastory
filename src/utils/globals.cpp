@@ -55,20 +55,20 @@ void novastory::sendAsyncMail(const QString& to, const QString& subject, const Q
 	}).detach();
 }
 
-QString novastory::selectorId( const QString& html, const QString& selector)
+QString novastory::selectorId(const QString& html, const QString& selector)
 {
 	QHash<QString, int> tags;
 	QRegExp idTag("<([^\\s>]+)[^>]*id=['\"]" + selector + "['\"][^>]*>");
 	QRegExp simpleTag("</?([^\\s>/]+)[^>]*>");
 	int begin = 0, end = html.length(), pos = 0;
-	if((pos = idTag.indexIn(html, pos)) != -1)
+	if ((pos = idTag.indexIn(html, pos)) != -1)
 	{
 		tags[idTag.cap(1)]++;
 		begin = pos;
 		pos += idTag.matchedLength();
-		while(tags[idTag.cap(1)] > 0 && (pos = simpleTag.indexIn(html, pos)) != -1)
+		while (tags[idTag.cap(1)] > 0 && (pos = simpleTag.indexIn(html, pos)) != -1)
 		{
-			if(simpleTag.cap(0).startsWith("</"))
+			if (simpleTag.cap(0).startsWith("</"))
 			{
 				tags[simpleTag.cap(1)]--;
 			}
