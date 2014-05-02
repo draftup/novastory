@@ -8,7 +8,21 @@
 <body>
 
 	<div id="profile">
-		{my.users.email} такой же как у {their.users.email}
+		<div class="upinfo">
+			<img class="profile-avatar" src="/avatar/{their.users.email}" />
+			<div class="nickplace">
+				{their.users.firstname} {their.users.lastname}
+			</div>
+		</div>
+		<ul class="navigator">
+			<li>Wall</li>
+			<li class="focused">Information</li>
+		</ul>
+		<div id="profile-content">
+			Nickname: {their.users.nickname}
+			<br /><br />
+			And **** youself! :)
+		</div>
 	</div>
 
 </body>

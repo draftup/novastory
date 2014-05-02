@@ -1,0 +1,51 @@
+.profile-avatar
+{
+	width: 150px;
+	padding: 10px;
+	background: #EDEDED;
+	border-radius: 30px 30px 0px 0px;
+	float: left;
+	margin-left: 40px;
+}
+
+.nickplace
+{
+	float: left;
+	padding-left: 30px;
+	font-size: 22px;
+	padding-top: 75px;
+}
+
+.navigator
+{
+	clear: both;
+	width: 100%;
+	list-style: none;
+	display: block;
+	background: #EDEDED;
+}
+
+.navigator li
+{
+	float: left;
+	background: #EDEDED;
+	padding: 7px;
+	color: white;
+	cursor: pointer;
+	font-size: 18px;
+}
+
+.navigator li.focused
+{
+	background: grey;
+}
+
+#profile-content
+{
+	clear: both;
+	width: 95%;
+	background: #EDEDED;
+	padding: 15px;
+	border-radius: 15px;
+	min-height: 200px;
+}
