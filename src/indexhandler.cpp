@@ -20,10 +20,10 @@ IndexHandler::~IndexHandler()
 }
 
 bool IndexHandler::handle(const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& get /* = "" */,
-							const QHash<QString, QString>& header /* = QHash<QString, QString>()*/, const QHash<QString, QString>& cookies /*= QHash<QString, QString>()*/)
+						  const QHash<QString, QString>& header /* = QHash<QString, QString>()*/, const QHash<QString, QString>& cookies /*= QHash<QString, QString>()*/)
 {
 
-	if(path == "/" || path == "/index.php" || path == "/index.html" || path == "/index.htm" || path == "/index")
+	if (path == "/" || path == "/index.php" || path == "/index.html" || path == "/index.htm" || path == "/index")
 	{
 		User loginedUser;
 		if (cookies.contains("userid"))
