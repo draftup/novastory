@@ -47,6 +47,7 @@ set(HEADERS
 	datahandler.h
 	rawfilehandler.h
 	avatarshandler.h
+	indexhandler.h
 	profilehandler.h
 	profile.h
 	htmltemplate.h
@@ -73,6 +74,7 @@ set(SOURCES
 	recaptcha.cpp
 	rawfilehandler.cpp
 	avatarshandler.cpp
+	indexhandler.cpp
 	profilehandler.cpp
 	profile.cpp
 	apihandler.cpp
