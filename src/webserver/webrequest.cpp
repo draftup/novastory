@@ -32,8 +32,7 @@ void WebRequest::parse()
 	}
 
 	QRegExp getRx("(GET|POST|HEAD) (.*) HTTP/([0-9.]+)");
-	int pos = 0;
-	if ((pos = getRx.indexIn(headerArray[0])) != -1)
+	if (getRx.indexIn(headerArray[0]) != -1)
 	{
 		parsedValues["type"] = getRx.cap(1);
 		parsedValues["path"] = getRx.cap(2);
@@ -41,8 +40,6 @@ void WebRequest::parse()
 
 		qDebug() << "Web request type is: " << parsedValues["type"];
 		qDebug() << "Web request path is: " << parsedValues["path"];
-
-		pos = getRx.matchedLength();
 	}
 	else
 	{
@@ -54,8 +51,7 @@ void WebRequest::parse()
 	QRegExp paramRx("(.*): (.*)");
 	for (int i = 1; i < headerArray.size(); ++i)
 	{
-		int posParam = 0;
-		if ((posParam = paramRx.indexIn(headerArray[i])) != -1)
+		if (paramRx.indexIn(headerArray[i]) != -1)
 		{
 			QString param = paramRx.cap(1);
 			QString value = paramRx.cap(2).trimmed();
