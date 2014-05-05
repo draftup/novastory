@@ -537,5 +537,17 @@ $(document).ready(function ()
 		}
 	}
 	);
+
+	// hide chat panel
+	$('#chatpanel').hide();
+
+	$('#messico').click(function ()
+	{
+		if ($("#chatpanel").is(":hidden"))
+			$("#chatpanel").show();
+		else
+			$("#chatpanel").hide();
+	}
+	)
 }
 );
