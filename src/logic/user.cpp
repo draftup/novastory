@@ -151,7 +151,7 @@ novastory::User* novastory::User::verifyUser(const QString& token)
 	newUser->setSalt(capthaCheck.salt());
 	newUser->setEmail(capthaCheck.email());
 
-	VERIFY(capthaCheck.deleteByToken());
+	VERIFY(capthaCheck.deleteByEmail());
 
 	if (!newUser->addUser())
 	{

@@ -27,6 +27,7 @@ public:
 	void setToken(const QString& token);
 	bool syncByToken();
 	bool deleteByToken();
+	bool deleteByEmail();
 
 	const QString& password() const;
 	void setPassword(const QString& password);

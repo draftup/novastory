@@ -114,7 +114,7 @@ $(document).ready(function ()
 			}
 			else
 			{
-				$('#registration-panel #registration-body').text("Congratulations with registration");
+				$('#registration-panel #registration-body').text("Congratulations with registration. You must recive mail with authorization link.");
 				Novastory.ok("Congratulations with registration");
 			}
 		}
