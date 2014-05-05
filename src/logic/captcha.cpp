@@ -125,6 +125,18 @@ bool novastory::Captcha::deleteByToken()
 	return removeSQL("token");
 }
 
+
+bool novastory::Captcha::deleteByEmail()
+{
+	if (m_email.isEmpty())
+	{
+		return false;
+	}
+
+	return removeSQL("email");
+}
+
+
 void novastory::Captcha::sendVerificaionMail()
 {
 	if (m_token.isEmpty())

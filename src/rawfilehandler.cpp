@@ -28,11 +28,6 @@ bool RawFileHandler::handle(const QString& type, const QString& path, const QHas
 	const QString workingDirectory = WebServer::Instance().directory();
 	QString filePath = workingDirectory + path;
 
-	if (path == "/")
-	{
-		filePath = workingDirectory + "/index.html";
-	}
-
 	QFile existFile(filePath);
 	if (existFile.exists())
 	{

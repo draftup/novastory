@@ -43,12 +43,13 @@ void Test_LogicUsers::init()
 
 void Test_LogicUsers::cleanup()
 {
-
 }
 
 void Test_LogicUsers::cleanupTestCase()
 {
-
+	SqlQuery q;
+	q.exec("DELETE FROM redmine.users WHERE mail = 'dasdasd@dasdasd.com'");
+	q.exec("DELETE FROM redmine.users WHERE mail = 'testmail@test.com'");
 }
 
 void Test_LogicUsers::insetDataTest()

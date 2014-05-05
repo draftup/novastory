@@ -83,7 +83,10 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	else if (hook == "validate")
 	{
 		User* newUser = User::verifyUser(hookList[3]);
-		json = newUser->jsonString().toUtf8();
+		if (newUser)
+		{
+			json = newUser->jsonString().toUtf8();
+		}
 		delete newUser;
 	}
 	else if (hook == "editorupdate")

@@ -109,7 +109,27 @@ bool novastory::User::addUser()
 		return false;
 	}
 
-	return insertSQL();
+	bool status = insertSQL();
+	if (status)
+	{
+		// Redmine hook
+		SqlQuery redmine_query;
+		redmine_query.prepare("INSERT INTO redmine.users(`login`,`hashed_password`,`salt`,`mail`,`admin`,`status`,`language`,`type`,`mail_notification`,`created_on`,`updated_on`) VALUES(:login, :password, :salt, :mail, '0', '1', 'en','User','only_my_events', NOW(), NOW())");
+		redmine_query.bindValue(":login", m_email);
+		redmine_query.bindValue(":password", m_password);
+		redmine_query.bindValue(":salt", m_salt);
+		redmine_query.bindValue(":mail", m_email);
+		if (redmine_query.exec())
+		{
+			qDebug() << "Also inserted redmine user";
+		}
+		else
+		{
+			qDebug() << "No redmine db, no insert required";
+		}
+	}
+
+	return status;
 }
 
 QString novastory::User::generateSalt() const
@@ -131,7 +151,7 @@ novastory::User* novastory::User::verifyUser(const QString& token)
 	newUser->setSalt(capthaCheck.salt());
 	newUser->setEmail(capthaCheck.email());
 
-	VERIFY(capthaCheck.deleteByToken());
+	VERIFY(capthaCheck.deleteByEmail());
 
 	if (!newUser->addUser())
 	{
@@ -344,21 +364,57 @@ bool novastory::User::removeUser()
 			return false;    // noting to delete
 		}
 
-		return removeSQL("userid");
+		VERIFY(queryRemoveTest.next());
+		QString qemail = queryRemoveTest.value("email").toString();
+
+		bool status = removeSQL("userid");
+		if (status)
+		{
+			Q_ASSERT(qemail.size() > 0);
+			SqlQuery redmine_query;
+			redmine_query.prepare("DELETE FROM redmine.users WHERE mail = ?");
+			redmine_query.bindValue(0, qemail);
+			if (redmine_query.exec())
+			{
+				qDebug() << "Removed user from redmine";
+			}
+			else
+			{
+				qDebug() << "Redmine db didn't find. Nobody cares.";
+			}
+		}
+
+		return status;
 	}
 
 	if (!m_email.isEmpty())
 	{
 		SqlQuery queryRemoveTest;
 		queryRemoveTest.prepare("SELECT * FROM users WHERE email = ?");
-		queryRemoveTest.bindValue(0, m_email);
+		QString oldemail = m_email;
+		queryRemoveTest.bindValue(0, oldemail);
 		VERIFY(queryRemoveTest.exec());
 		if (queryRemoveTest.size() != 1)
 		{
 			return false;    // noting to delete
 		}
 
-		return removeSQL("email");
+		bool status = removeSQL("email");
+		if (status)
+		{
+			SqlQuery redmine_query;
+			redmine_query.prepare("DELETE FROM redmine.users WHERE mail = ?");
+			redmine_query.bindValue(0, oldemail);
+			if (redmine_query.exec())
+			{
+				qDebug() << "Removed user from redmine";
+			}
+			else
+			{
+				qDebug() << "Redmine db didn't find. Nobody cares.";
+			}
+		}
+		return status;
 	}
 
 	return false;
@@ -466,6 +522,24 @@ bool novastory::User::confirmPasswordReset(const QString& forgotToken)
 		queryClean.prepare("DELETE FROM userspassforgot WHERE token = :token");
 		queryClean.bindValue(":token", forgotToken);
 		VERIFY(queryClean.exec());
+
+		// Redmine hook
+		SqlQuery redmine_help_query("SELECT email FROM users WHERE userid = " + QString::number(quserid));
+		Q_ASSERT(redmine_help_query.size() == 1);
+		VERIFY(redmine_help_query.next());
+
+		SqlQuery redmine_query;
+		redmine_query.prepare("UPDATE redmine.users SET hashed_password = :password WHERE mail = :email");
+		redmine_query.bindValue(":password", newpassword);
+		redmine_query.bindValue(":email", redmine_help_query.value("email").toString());
+		if (redmine_query.exec())
+		{
+			qDebug() << "Removed user from redmine";
+		}
+		else
+		{
+			qDebug() << "Redmine db didn't find. Nobody cares.";
+		}
 	}
 
 	JSON_INSERT("reseted", true);
@@ -485,6 +559,21 @@ bool novastory::User::update()
 	{
 		JSON_ERROR("failed to update", 2);
 		return false;
+	}
+
+	// Redmine hook
+	SqlQuery redmine_query;
+	redmine_query.prepare("UPDATE redmine.users SET firstname = :firstname, lastname = :lastname, updated_on = NOW()  WHERE mail = :email");
+	redmine_query.bindValue(":firstname", firstName());
+	redmine_query.bindValue(":lastname", lastName());
+	redmine_query.bindValue(":email", email());
+	if (redmine_query.exec())
+	{
+		qDebug() << "Updated user from redmine";
+	}
+	else
+	{
+		qDebug() << "Redmine db didn't find. Nobody cares.";
 	}
 
 	return true;

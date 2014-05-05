@@ -17,10 +17,11 @@
 	line-height:40px;
 }
 
-/* содержание страницы, сдвигаем вниз от хедера */
+/* нижнюю панель смещаем вниз и делаем отступы по бокам */
 
 #page-content {
 	padding-top: 45px;
+	margin: 0px 3% 0px 3%;
 }
 
 /*Верхняя панель: кнопки навигации*/
@@ -31,6 +32,12 @@
 	display:inline-block;
 	text-align:center;
 	cursor:pointer;
+}
+
+
+.left-button a
+{
+	text-decoration: none;
 }
 
 .left-button:hover a {

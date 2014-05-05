@@ -3,6 +3,7 @@
 #include "apihandler.h"
 #include "avatarshandler.h"
 #include "profilehandler.h"
+#include "indexhandler.h"
 #include "utils/globals.h"
 #include "webserver/templator.h"
 #include <QTextStream>
@@ -14,6 +15,7 @@ namespace novastory
 WebRouter::WebRouter(QTcpSocket* bindedSocket) : WebRequest(bindedSocket), socket(bindedSocket)
 {
 	appendHandler(new RawFileHandler(bindedSocket));
+	appendHandler(new IndexHandler(bindedSocket));
 	appendHandler(new ApiHandler(bindedSocket));
 	appendHandler(new AvatarsHandler(bindedSocket));
 	appendHandler(new ProfileHandler(bindedSocket));
