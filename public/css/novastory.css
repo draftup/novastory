@@ -33,6 +33,12 @@
 	cursor:pointer;
 }
 
+
+.left-button a
+{
+	text-decoration: none;
+}
+
 .left-button:hover a {
 	color: #787878;
 }
