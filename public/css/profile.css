@@ -1,51 +1,110 @@
-.profile-avatar
-{
-	width: 150px;
-	padding: 10px;
-	background: #EDEDED;
-	border-radius: 30px 30px 0px 0px;
-	float: left;
-	margin-left: 40px;
+﻿body {
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 11pt;
+	background: #D9D9D9;
+	color:#474747;
+	margin: 0;
 }
 
-.nickplace
-{
-	float: left;
-	padding-left: 30px;
-	font-size: 22px;
-	padding-top: 75px;
+/* Область с контентом */
+
+#propage {
+	position: absolute;
+	height: 65%;
+	width: 900px;
+	background: #FFFFFF;
+	left: 50%;
+	margin: 260px 0 0 -450px;
 }
 
-.navigator
-{
-	clear: both;
-	width: 100%;
-	list-style: none;
-	display: block;
-	background: #EDEDED;
+/* Голова профиля */
+
+#prohead {
+	position:absolute;
+	height: 220px;
+	width: 900px;
+	background: #FFFFFF;
+	left: 50%;
+	margin: 20px 0 0 -450px;
 }
 
-.navigator li
-{
-	float: left;
-	background: #EDEDED;
-	padding: 7px;
-	color: white;
+/* Голова профиля: область информации */
+
+.proinfo {
+	position:absolute;
+	height: 180px;
+	width: 640px;
+	margin-left: 200px;
+	padding-left: 60px;
+	color:#FFFFFF;
+}
+
+.proinfo .proname {
+	position: absolute;
+	font-size: 16pt;
+	margin-top: 30px;
+}
+
+/* Голова профиля: арт-обложка */
+
+.proart {
+	position:absolute;
+	height: 180px;
+	width: 900px;
+	background: url(../proart.jpg) no-repeat;
+	background-size: cover;
+	opacity: 0.5;
+}
+
+.proartback {
+	position:absolute;
+	height: 180px;
+	width: 900px;
+	background: black;
+	opacity: 0.4;
+}
+
+/* Голова профиля: аватарка */
+
+.proava {
+	position: absolute;
+	height: 220px;
+	width: 220px;
+	margin: -10px;
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+}
+
+.proava img {
+	height:inherit;
+	width:inherit;
+}
+
+/* Голова профиля: навигация */
+
+.pronavi {
+	position:absolute;
+	height: 40px;
+	width: 640px;
+	bottom: 0px;
+	right: 0px;
+}
+
+.pronavi .button {
+	height: 40px;
+	text-align: center;
+	width: 110px;
+	line-height: 40px;
+	display:inline-block;
+	color: #A7A7A7;
+}
+
+.pronavi .button a {
 	cursor: pointer;
-	font-size: 18px;
 }
 
-.navigator li.focused
-{
-	background: grey;
-}
-
-#profile-content
-{
-	clear: both;
-	width: 95%;
-	background: #EDEDED;
-	padding: 15px;
-	border-radius: 15px;
-	min-height: 200px;
+.pronavi .button.current {
+	color: #99146F;
+	border-bottom: 2px solid #99146F;
 }

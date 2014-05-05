@@ -7,22 +7,21 @@
 
 <body>
 
-	<div id="profile">
-		<div class="upinfo">
-			<img class="profile-avatar" src="/avatar/{their.users.email}" />
-			<div class="nickplace">
-				{their.users.firstname} {their.users.lastname}
-			</div>
+	<div id="prohead">
+		
+		<div class="proart"></div>
+		<div class="proartback"></div>
+		<div class="proinfo">
+			<div class="proname">Саша [дуэлянт] Пушкин</div>
 		</div>
-		<ul class="navigator">
-			<li>Wall</li>
-			<li class="focused">Information</li>
-		</ul>
-		<div id="profile-content">
-			Nickname: {their.users.nickname}
-			<br /><br />
-			And **** youself! :)
+		<div class="proava"><img id="avapreview" src="pushkin.jpg" alt=" "></div>
+		<div class="pronavi">
+			<div class="button current" id="wallref"><a>Posts</a></div>
+			<div class="button" id="pubref"><a>Published</a></div>
+			<div class="button" id="proinforef"><a>Information</a></div>
 		</div>
+	</div>
+	<div id="propage">
 	</div>
 
 </body>
