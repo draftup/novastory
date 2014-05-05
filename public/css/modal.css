@@ -375,29 +375,46 @@ input[type="checkbox"] {
 
 /*Страница настройки профиля: поле загрузки аватара*/
 
-#avaloader {
+#avablock {
 	position:absolute;
 	width:130px;
 	height:130px;
-	border: 4px dashed #A7A7A7;
-	background:url(../images/modal-settings/ava.svg) 50% 25% no-repeat;
-	background-size:60px 60px;
 	left:320px;
-	margin-top:50px;
+	margin-top:20px;
 	cursor: pointer;
 }
 
-#avaloader svg {
-	position: absolute;
-	left: 27px;
-	top: 10px;
+#avaloader {
+	position:absolute;
+	width:inherit;
+	height:inherit;
+	border: 4px dashed #A7A7A7;
+	background:url(../images/modal-settings/ava.svg) 50% 50% no-repeat;
+	background-size:60px 60px;
+	-moz-transition: 1s;
+    -webkit-transition: 1s;
+    -o-transition: 1s;
+    transition: 1s;
 }
 
-#avaloader div {
+#avablock:hover #avaloader{
+	opacity: 0.3;
+}
+
+.loadertext {
 	text-align:center;
-	margin-top: 90px;
-	color: #A7A7A7;
-	font-weight: bold;
+	margin: 50px 0 0 20px;
+	width: 100px;
+	opacity: 0;
+	color: #99146F;
+	-moz-transition: 1s;
+    -webkit-transition: 1s;
+    -o-transition: 1s;
+    transition: 1s;
+}
+
+#avablock:hover .loadertext {
+	opacity: 1;
 }
 
 #avaloader  #avapreview {
@@ -409,5 +426,53 @@ input[type="checkbox"] {
 }
 
 #avatardialog {
+	display: none;
+}
+
+/*Страница настройки профиля: поле загрузки аватара*/
+
+#artblock {
+	position:absolute;
+	width:130px;
+	height:60px;
+	left:320px;
+	margin-top:190px;
+	cursor: pointer;
+}
+
+#artloader {
+	position:absolute;
+	width:inherit;
+	height:inherit;
+	border: 4px dashed #A7A7A7;
+	background:url(../images/modal-settings/art.svg) 50% 25% no-repeat;
+	background-size:60px 60px;
+	-moz-transition: 1s;
+    -webkit-transition: 1s;
+    -o-transition: 1s;
+    transition: 1s;
+}
+
+#artblock:hover #artloader{
+	opacity: 0.3;
+}
+
+#artblock:hover .loadertext {
+	opacity: 1;
+}
+
+#artblock .loadertext {
+	margin-top: 20px;
+}
+
+#artloader  #artpreview {
+	position:absolute;
+	width:138px;
+	height:68px;
+	margin: -4px;
+	border: 0px;
+}
+
+#artdialog {
 	display: none;
 }
