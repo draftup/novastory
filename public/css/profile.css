@@ -1,12 +1,4 @@
-﻿body {
-	font-family: Arial, Verdana, sans-serif;
-	font-size: 11pt;
-	background: #D9D9D9;
-	color:#474747;
-	margin: 0;
-}
-
-/* Область с контентом */
+﻿/* Область с контентом */
 
 #propage {
 	position: absolute;
