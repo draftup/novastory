@@ -126,7 +126,7 @@ void Test_MultiThreadWeb::CreateServerConnection(const QByteArray& writeData, st
 
 void Test_MultiThreadWeb::basewebTest()
 {
-	CreateServerConnection("GET /index.html HTTP/1.1\nHost: www.example.com", [](const QString & html)
+	CreateServerConnection("GET / HTTP/1.1\nHost: www.example.com", [](const QString & html)
 	{
 		QVERIFY(html.indexOf("<head>", Qt::CaseInsensitive) >= 0);
 	});
@@ -135,7 +135,7 @@ void Test_MultiThreadWeb::basewebTest()
 void Test_MultiThreadWeb::cookieTest()
 {
 	CreateServerConnection(
-		"GET /index.html HTTP/1.1\n"
+		"GET / HTTP/1.1\n"
 		"Cookie: testcookie=testval\n"
 		"Host: www.example.com",
 		[](const QString & html)

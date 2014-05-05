@@ -6,6 +6,7 @@
 #include <QThreadPool>
 #include <QDir>
 #include "config.h"
+#include <QMimeDatabase>
 
 namespace novastory
 {
@@ -20,6 +21,9 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/)
 	qDebug() << "-----------------------------------------\n";
 
 	resetDirectory();
+
+	// Initialize mime database
+	QMimeDatabase().mimeTypeForFile("index.html");
 
 	VERIFY(listen(QHostAddress::Any, initializationPort));
 	qDebug() << "Web server started at " << serverAddress() << ":" << serverPort();
