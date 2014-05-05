@@ -110,7 +110,7 @@ bool novastory::User::addUser()
 	}
 
 	bool status = insertSQL();
-	if(status)
+	if (status)
 	{
 		// Redmine hook
 		SqlQuery redmine_query;
@@ -119,7 +119,7 @@ bool novastory::User::addUser()
 		redmine_query.bindValue(":password", m_password);
 		redmine_query.bindValue(":salt", m_salt);
 		redmine_query.bindValue(":mail", m_email);
-		if(redmine_query.exec())
+		if (redmine_query.exec())
 		{
 			qDebug() << "Also inserted redmine user";
 		}
@@ -368,13 +368,13 @@ bool novastory::User::removeUser()
 		QString qemail = queryRemoveTest.value("email").toString();
 
 		bool status = removeSQL("userid");
-		if(status)
+		if (status)
 		{
 			Q_ASSERT(qemail.size() > 0);
 			SqlQuery redmine_query;
 			redmine_query.prepare("DELETE FROM redmine.users WHERE mail = ?");
 			redmine_query.bindValue(0, qemail);
-			if(redmine_query.exec())
+			if (redmine_query.exec())
 			{
 				qDebug() << "Removed user from redmine";
 			}
@@ -391,7 +391,8 @@ bool novastory::User::removeUser()
 	{
 		SqlQuery queryRemoveTest;
 		queryRemoveTest.prepare("SELECT * FROM users WHERE email = ?");
-		queryRemoveTest.bindValue(0, m_email);
+		QString oldemail = m_email;
+		queryRemoveTest.bindValue(0, oldemail);
 		VERIFY(queryRemoveTest.exec());
 		if (queryRemoveTest.size() != 1)
 		{
@@ -399,12 +400,12 @@ bool novastory::User::removeUser()
 		}
 
 		bool status = removeSQL("email");
-		if(status)
+		if (status)
 		{
 			SqlQuery redmine_query;
 			redmine_query.prepare("DELETE FROM redmine.users WHERE mail = ?");
-			redmine_query.bindValue(0, m_email);
-			if(redmine_query.exec())
+			redmine_query.bindValue(0, oldemail);
+			if (redmine_query.exec())
 			{
 				qDebug() << "Removed user from redmine";
 			}
@@ -531,7 +532,7 @@ bool novastory::User::confirmPasswordReset(const QString& forgotToken)
 		redmine_query.prepare("UPDATE redmine.users SET hashed_password = :password WHERE mail = :email");
 		redmine_query.bindValue(":password", newpassword);
 		redmine_query.bindValue(":email", redmine_help_query.value("email").toString());
-		if(redmine_query.exec())
+		if (redmine_query.exec())
 		{
 			qDebug() << "Removed user from redmine";
 		}
@@ -566,7 +567,7 @@ bool novastory::User::update()
 	redmine_query.bindValue(":firstname", firstName());
 	redmine_query.bindValue(":lastname", lastName());
 	redmine_query.bindValue(":email", email());
-	if(redmine_query.exec())
+	if (redmine_query.exec())
 	{
 		qDebug() << "Updated user from redmine";
 	}

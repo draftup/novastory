@@ -34,6 +34,8 @@ void Test_LogicUsers::initTestCase()
 	SqlQuery q;
 	QVERIFY(q.exec("DELETE FROM users WHERE email = 'dasdasd@dasdasd.com'"));
 	QVERIFY(q.exec("DELETE FROM users WHERE email = 'testmail@test.com'"));
+	q.exec("DELETE FROM redmine.users WHERE mail = 'dasdasd@dasdasd.com'");
+	q.exec("DELETE FROM redmine.users WHERE mail = 'testmail@test.com'");
 }
 
 void Test_LogicUsers::init()
