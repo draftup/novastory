@@ -15,6 +15,7 @@
 	width:100%;
 	min-width:1000px;
 	line-height:40px;
+	z-index:0;
 }
 
 /* нижнюю панель смещаем вниз и делаем отступы по бокам */
@@ -22,6 +23,7 @@
 #page-content {
 	padding-top: 45px;
 	margin: 0px 3% 0px 3%;
+	z-index: -2;
 }
 
 /*Верхняя панель: кнопки навигации*/
@@ -277,6 +279,7 @@ input[type="search"] {
 	padding-top: 40px;
 	background: #FFFFFF;
 	border-left: 1px solid #EDEDED;
+	z-index:-1;
 }
 
 /* Боковая панель справа: текущие */
