@@ -97,6 +97,81 @@
 }
 
 .pronavi .button.current {
+	color: #FF9E00;
+	border-bottom: 2px solid #FF9E00;
+}
+
+.pronavi .button.current.myown {
 	color: #99146F;
 	border-bottom: 2px solid #99146F;
+}
+
+/* Голова профиля: подписка */
+
+.profollow {
+	width: 140px;
+	height: 40px;
+	float: right;
+}
+
+/* Голова профиля: кнопка подписки */
+
+.subsarea {
+	position: absolute;
+	height: 50px;
+	width: 50px;
+	border-radius: 50%;
+	margin:  -5px 0 0 -25px;
+}
+
+#subsbutt {
+	position: absolute;
+	height: 50px;
+	width: 50px;
+	border-radius: 50%;
+	background: #EDEDED;
+	cursor: pointer;
+	-webkit-box-shadow: 0px 0px 1px 0px #535353;
+	-moz-box-shadow:    0px 0px 1px 0px #535353;
+	box-shadow:         0px 0px 1px 0px #9F9F9F;
+	-moz-transition: 0.5s;
+	-webkit-transition: 0.5s;
+	-o-transition: 0.5s;
+	transition: 0.5s;
+}
+
+#subsbutt svg {
+	margin: 13px 0 0 16px;
+}
+
+#subsbutt #rss-icon {
+	fill: #4EAF4E;
+}
+
+#subsbutt:hover {
+	-webkit-box-shadow: 0px 0px 5px 0px green;
+	-moz-box-shadow:    0px 0px 5px 0px green;
+	box-shadow:         0px 0px 5px 0px green;	
+}
+
+/* Голова профиля: настройки подписки */
+
+.subsblock {
+	position: absolute;
+	height: 40px;
+	width: 110px;
+	margin: 5px 25px;
+	background: #4EAF4E;
+	padding-left: 30px;
+	-moz-transition: 0.5s;
+	-webkit-transition: 0.5s;
+	-o-transition: 0.5s;
+	transition: 0.5s;
+}
+
+.substype {
+	display: inline-block;
+	width: 25px;
+	margin: 10px 0 0 5px;
+	cursor: pointer;
 }
