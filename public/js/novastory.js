@@ -477,7 +477,7 @@ $(document).ready(function ()
 				}
 				);
 
-				Novastory.attachDropArea('avaloader', function(image){
+				Novastory.attachDropArea('avablock', function(image){
 					$("#avapreview").show();
 					$("#avapreview").attr('src', image);
 					NovastoryApi.updateAvatar(image, function (data)
