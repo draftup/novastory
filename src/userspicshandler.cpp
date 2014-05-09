@@ -19,7 +19,7 @@ UsersPicsHandler::~UsersPicsHandler()
 }
 
 bool UsersPicsHandler::handle(const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& get /* = "" */,
-							const QHash<QString, QString>& header /*= QHash<QString, QString>()*/, const QHash<QString, QString>& cookies /*= QHash<QString, QString>()*/)
+							  const QHash<QString, QString>& header /*= QHash<QString, QString>()*/, const QHash<QString, QString>& cookies /*= QHash<QString, QString>()*/)
 {
 	if (path.startsWith("/userpic/"))
 	{
