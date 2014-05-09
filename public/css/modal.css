@@ -33,7 +33,7 @@
 }
 
 .naviico a {
-	margin-top:5px;
+	margin-top:3px;
 	margin-left:30px;
 	display:block;
 }
@@ -153,8 +153,8 @@ input[type="email"], [type="password"], [type="text"] {
 #loginbutt {
 	width:100px;
 	height:30px;
-	font-size:12pt;
 	color:white;
+	font-size:11pt;
 	cursor:pointer;
 	text-align:center;
 	background:#99146F;
@@ -163,7 +163,7 @@ input[type="email"], [type="password"], [type="text"] {
 
 #loginbutt a {
 	display:block;
-	margin-top:7px;
+	margin-top:5px;
 }
 
 /*Cтраница логина: вход через g+ и facebook*/
@@ -205,7 +205,6 @@ input[type="checkbox"] {
 
 .iagree span {
 	float:left;
-	margin-top:2px;
 	margin-left:4px;
 }
 
@@ -264,7 +263,7 @@ input[type="checkbox"] {
 
 .sendpass a {
 	display:block;
-	margin-top:6px;
+	margin-top:5px;
 }
 
 .instruct {
@@ -297,17 +296,6 @@ input[type="checkbox"] {
 	left: 30px;
 }
 
-#savesett {
-	width:100px;
-	height:30px;
-	font-size:12pt;
-	color:white;
-	cursor:pointer;
-	text-align:center;
-	background:#99146F;
-	float:left;
-}
-
 #cancsett {
 	cursor:pointer;
 }
@@ -321,11 +309,12 @@ input[type="checkbox"] {
 	cursor:pointer;
 	text-align:center;
 	background:#99146F;
+	float:left;
 }
 
 #savesett a {
 	display:block;
-	margin-top:7px;
+	margin-top:5px;
 }
 
 /*Страница настройки профиля: поля ввода*/
@@ -356,13 +345,13 @@ input[type="checkbox"] {
 }
 
 #profidarea .textarea.modsett {
-	width: 180px;
+	width: 170px;
 	float:right;
 	margin-top:0px;
 }
 
 #profidarea input[type="text"], [type="password"] {
-	width: 170px;
+	width: 160px;
 }
 
 /*Страница настройки профиля: поле загрузки аватара*/
@@ -394,6 +383,7 @@ input[type="checkbox"] {
 }
 
 .loadertext {
+	position:absolute;
 	text-align:center;
 	margin: 50px 0 0 20px;
 	width: 100px;
@@ -414,14 +404,14 @@ input[type="checkbox"] {
 	width:138px;
 	height:138px;
 	margin: -4px;
-	border: 0px;
+	display: none;
 }
 
 #avatardialog {
 	display: none;
 }
 
-/*Страница настройки профиля: поле загрузки аватара*/
+/*Страница настройки профиля: поле загрузки арта*/
 
 #artblock {
 	position:absolute;
@@ -454,7 +444,7 @@ input[type="checkbox"] {
 }
 
 #artblock .loadertext {
-	margin-top: 20px;
+	margin-top: 15px;
 }
 
 #artloader  #artpreview {
@@ -462,7 +452,7 @@ input[type="checkbox"] {
 	width:138px;
 	height:68px;
 	margin: -4px;
-	border: 0px;
+	display: none;
 }
 
 #artdialog {
