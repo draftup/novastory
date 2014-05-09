@@ -1,6 +1,8 @@
 #include "webdatacontainer.h"
 #include <QRegExp>
 #include <QDebug>
+#include <QMimeDatabase>
+#include <QMimeType>
 
 void novastory::WebDataContainer::processImage(const QString& data)
 {
@@ -56,4 +58,12 @@ QString novastory::WebDataContainer::eTag() const
 void novastory::WebDataContainer::setRFCData(const QString& rfc2397data)
 {
 	processImage(rfc2397data);
+}
+
+bool novastory::WebDataContainer::detectMimeType()
+{
+	QMimeDatabase db;
+	QMimeType mime = db.mimeTypeForData(*this);
+	m_mimetype = mime.name();
+	return mime.isValid();
 }

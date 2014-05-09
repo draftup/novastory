@@ -54,12 +54,11 @@ bool AvatarsHandler::handle(const QString& type, const QString& path, const QHas
 				avatar.setUserid(id);
 				if (avatar.sync())
 				{
-					WebDataContainer newAvatar(avatar.avatar(), avatar.contentType());
-					newAvatar.setModificatedDate(avatar.modifyDate());
-					WebServer::Instance().cache().put(path.toStdString(), newAvatar);
+					WebDataContainer avatarData = avatar.avatar();
+					WebServer::Instance().cache().put(path.toStdString(), avatarData);
 
 					QString controlEtag = header["If-None-Match"];
-					QString eTag = newAvatar.eTag();
+					QString eTag = avatarData.eTag();
 
 					if (controlEtag.size() > 0 && controlEtag == eTag)
 					{
@@ -68,8 +67,8 @@ bool AvatarsHandler::handle(const QString& type, const QString& path, const QHas
 					}
 					else
 					{
-						socket->write(htmlHeaderGen(newAvatar));
-						socket->write(newAvatar);
+						socket->write(htmlHeaderGen(avatarData));
+						socket->write(avatarData);
 					}
 				}
 				return true;
@@ -82,12 +81,11 @@ bool AvatarsHandler::handle(const QString& type, const QString& path, const QHas
 			avatar.setEmail(someavatar);
 			if (avatar.sync())
 			{
-				WebDataContainer newAvatar(avatar.avatar(), avatar.contentType());
-				newAvatar.setModificatedDate(avatar.modifyDate());
-				WebServer::Instance().cache().put(path.toStdString(), newAvatar);
+				WebDataContainer avatarData = avatar.avatar();
+				WebServer::Instance().cache().put(path.toStdString(), avatarData);
 
-				socket->write(htmlHeaderGen(newAvatar));
-				socket->write(newAvatar);
+				socket->write(htmlHeaderGen(avatarData));
+				socket->write(avatarData);
 			}
 			return true;
 		}

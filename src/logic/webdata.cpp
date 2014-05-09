@@ -1,8 +1,6 @@
 #include "webdata.h"
 #include <QDebug>
 #include "utils/globals.h"
-#include <QMimeDatabase>
-#include <QMimeType>
 #include "config.h"
 
 int novastory::WebData::userid() const
@@ -108,7 +106,7 @@ bool novastory::WebData::update()
 	SqlQuery q;
 	q.prepare("INSERT INTO " + objectName() + "(userid, data, contenttype, contentsize) VALUES(:userid, :data, :contenttype, :contentsize) ON DUPLICATE KEY UPDATE data = :data, contenttype = :contenttype, contentsize = :contentsize");
 	q.bindValue(":userid", realuserid);
-	QByteArray b_data = data();
+	WebDataContainer b_data = data();
 	q.bindValue(":data", b_data);
 
 	if (b_data.size() == 0)
@@ -123,10 +121,10 @@ bool novastory::WebData::update()
 		return false;
 	}
 
-	QMimeDatabase db;
-	QMimeType mime = db.mimeTypeForData(b_data);
+	// We also must control type inserted in db
+	b_data.detectMimeType();
 
-	q.bindValue(":contenttype", mime.name());
+	q.bindValue(":contenttype", b_data.mimeType());
 	q.bindValue(":contentsize", b_data.size());
 	bool status = q.exec();
 	if (status)

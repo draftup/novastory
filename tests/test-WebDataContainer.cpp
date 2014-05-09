@@ -14,6 +14,7 @@ private slots:
 
 	void mainTest();
 	void etagTest();
+	void detectDataTest();
 private:
 
 	QString data;
@@ -83,6 +84,15 @@ void Test_WebDataContainer::etagTest()
 	QVERIFY(eTag != img.eTag());
 	img.setRFCData(data);
 	QCOMPARE(img.eTag(), eTag);
+}
+
+void Test_WebDataContainer::detectDataTest()
+{
+	WebDataContainer img(data);
+	img.setMimeType("notimage");
+	QCOMPARE(img.mimeType(), QString("notimage"));
+	QVERIFY(img.detectMimeType());
+	QCOMPARE(img.mimeType(), QString("image/gif"));
 }
 
 
