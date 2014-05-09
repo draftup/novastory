@@ -404,7 +404,6 @@ input[type="checkbox"] {
 	width:138px;
 	height:138px;
 	margin: -4px;
-	display: none;
 }
 
 #avatardialog {
@@ -452,7 +451,6 @@ input[type="checkbox"] {
 	width:138px;
 	height:68px;
 	margin: -4px;
-	display: none;
 }
 
 #artdialog {
