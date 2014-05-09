@@ -77,6 +77,7 @@ void Test_Avatars::syncTest()
 	QString email = newuser.email();
 
 	Avatar a1;
+	QCOMPARE(a1.modifyDate().toMSecsSinceEpoch(), 0);
 	QVERIFY(!a1.sync());
 	a1.setUserid(uid);
 	QVERIFY(a1.sync());
@@ -92,6 +93,7 @@ void Test_Avatars::syncTest()
 	QVERIFY(avatar.avatar() == bf);
 	QCOMPARE(avatar.contentSize(), (unsigned int)bf.size());
 	QCOMPARE(avatar.contentType(), QString("image/jpeg"));
+	QVERIFY(avatar.modifyDate().toMSecsSinceEpoch() > 200);
 	f.close();
 }
 

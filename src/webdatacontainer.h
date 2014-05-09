@@ -26,6 +26,7 @@ public:
 
 	void setMimeType(const QString& mime);
 	const QString& mimeType() const;
+	bool detectMimeType();
 
 	void setModificatedDate(const QDateTime& date) { m_modificated = date; };
 	const QDateTime& modificatedDate() const { return m_modificated; };

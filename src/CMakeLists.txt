@@ -31,6 +31,7 @@ set(HEADERS_TOMOC
 	logic/captcha.h
 	logic/texteditor.h
 	logic/avatar.h
+	logic/webdata.h
 )
 
 set(HEADERS
@@ -67,6 +68,7 @@ set(SOURCES
 	logic/captcha.cpp
 	logic/texteditor.cpp
 	logic/avatar.cpp
+	logic/webdata.cpp
 	
 	utils/globals.cpp
 	webdatacontainer.cpp
