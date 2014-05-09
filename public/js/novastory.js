@@ -504,6 +504,31 @@ $(document).ready(function ()
 				}
 				);
 
+				Novastory.attachDropArea('artblock', function(image){
+					$("#artpreview").show();
+					$("#artpreview").attr('src', image);
+					NovastoryApi.updateUserPic(image, function (data)
+					{
+						if (data.error != null && data.error)
+						{
+							Novastory.error("Error on file upload");
+						}
+						else
+						{
+							Novastory.ok("Your profile pic updated. You can continues to update profile.");
+						}
+					}
+					);
+				});
+				
+				$("#artpreview").attr('src', "/userpic/" + USERID);
+
+				$("#artpreview").error(function ()
+				{
+					$(this).hide();
+				}
+				);
+				
 				$("#savesett").click(function ()
 				{
 					var profileid = $("#myprofileid").val();

@@ -48,6 +48,17 @@ NovastoryApi.updateAvatar = function (avatar, callback)
 		'json');
 }
 
+NovastoryApi.updateUserPic = function (userpic, callback)
+{
+	$.post(
+		'/api/updateuserpic',
+	{
+		userpic : userpic
+	},
+		callback,
+		'json');
+}
+
 NovastoryApi.updateProfile = function (firstname, lastname, nickname, profileid, callback)
 {
 	$.post(

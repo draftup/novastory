@@ -10,6 +10,7 @@
 #include "logic/user.h"
 #include "logic/texteditor.h"
 #include "logic/avatar.h"
+#include "logic/userpic.h"
 
 namespace novastory
 {
@@ -117,6 +118,20 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 			WebServer::Instance().cache().remove(("/avatar/" + avatar.email()).toStdString());
 		}
 		json = avatar.jsonString().toUtf8();
+	}
+	else if (hook == "updateuserpic")
+	{
+		UserPic userpic;
+		userpic.setUserPic(WebDataContainer(post["userpic"]));
+		User user;
+		user.loginByToken(userid, stoken);
+		userpic.setUser(user);
+		if (userpic.update())
+		{
+			WebServer::Instance().cache().remove(("/userpic/" + QString::number(userpic.userid())).toStdString());
+			WebServer::Instance().cache().remove(("/userpic/" + userpic.email()).toStdString());
+		}
+		json = userpic.jsonString().toUtf8();
 	}
 	else if (hook == "updateprofile")
 	{
