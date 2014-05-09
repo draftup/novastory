@@ -62,6 +62,73 @@ $(document).ready(function ()
 		this.popupHelper(wmessage);
 	}
 
+	Novastory.attachDropArea = function (selector_id, callback, files_match, limit_size)
+	{
+		files_match = files_match || 'image.*';
+		limit_size = limit_size || 1 * 1024 * 1024;
+
+		function processFiles(files)
+		{
+			for (var i = 0, file; file = files[i]; i++)
+			{
+				// Only process image files.
+				if (!file.type.match(files_match))
+				{
+					Novastory.error("Please drop image");
+					continue;
+				}
+
+				if (file.size > limit_size)
+				{
+					Novastory.error("File must be less than " + (limit_size / (1024 * 1024)) + "MB");
+					continue;
+				}
+
+				var reader = new FileReader();
+				reader.onload = function (e)
+				{
+					if(callback)
+						callback(e.target.result);
+				};
+				reader.readAsDataURL(file);
+			}
+		}
+
+		function handleFileSelect(event)
+		{
+			event.stopPropagation();
+			event.preventDefault();
+			processFiles(event.dataTransfer.files); // FileList object.
+		}
+
+		function handleDragOver(evt)
+		{
+			evt.stopPropagation();
+			evt.preventDefault();
+			evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+		}
+
+		var dropZone = document.getElementById(selector_id);
+		dropZone.addEventListener('dragover', handleDragOver, false);
+		dropZone.addEventListener('drop', handleFileSelect, false);
+
+		var dropZoneJQ = $(dropZone);
+		var dialog = $('<input type="file" id="' + selector_id + '-dialog" style="display: none;" />');
+		dropZoneJQ.after(dialog);
+
+		dropZoneJQ.click(function ()
+		{
+			dialog.trigger('click');
+		}
+		);
+
+		dialog.change(function ()
+		{
+			processFiles($(this)[0].files);
+		}
+		);
+	}
+
 	function login()
 	{
 		var login = $('#loginmail').val();
@@ -410,78 +477,26 @@ $(document).ready(function ()
 				}
 				);
 
-				function processImageFiles(files)
-				{
-					for (var i = 0, file; file = files[i]; i++)
+				Novastory.attachDropArea('avaloader', function(image){
+					$("#avapreview").show();
+					$("#avapreview").attr('src', image);
+					NovastoryApi.updateAvatar(image, function (data)
 					{
-						// Only process image files.
-						if (!file.type.match('image.*'))
+						if (data.error != null && data.error)
 						{
-							Novastory.error("Please drop image");
-							continue;
+							Novastory.error("Error on file upload");
 						}
-
-						if (file.size > 1 * 1024 * 1024)
+						else
 						{
-							Novastory.error("File must be less than 1MB");
-							continue;
+							Novastory.ok("Your avatar updated. You can continues to update profile.");
+							$("#panelava img").show();
+							$("#panelava img").attr('src', image);
 						}
-
-						var reader = new FileReader();
-						reader.onload = function (e)
-						{
-							$("#avapreview").show();
-							$("#avapreview").attr('src', e.target.result);
-							NovastoryApi.updateAvatar(e.target.result, function (data)
-							{
-								if (data.error != null && data.error)
-								{
-									Novastory.error("Error on file upload");
-								}
-								else
-								{
-									Novastory.ok("Your avatar updated. You can continues to update profile.");
-									$("#panelava img").show();
-									$("#panelava img").attr('src', e.target.result);
-								}
-							}
-							);
-						};
-						reader.readAsDataURL(file);
 					}
-				}
-
-				function handleFileSelect(event)
-				{
-					event.stopPropagation();
-					event.preventDefault();
-					processImageFiles(event.dataTransfer.files); // FileList object.
-				}
-
-				function handleDragOver(evt)
-				{
-					evt.stopPropagation();
-					evt.preventDefault();
-					evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-				}
-
-				var dropZone = document.getElementById('avaloader');
-				dropZone.addEventListener('dragover', handleDragOver, false);
-				dropZone.addEventListener('drop', handleFileSelect, false);
+					);
+				});
 
 				$("#avapreview").attr('src', "/avatar/" + USERID);
-
-				$("#avaloader").click(function ()
-				{
-					$("#avatardialog").trigger('click');
-				}
-				);
-
-				$("#avatardialog").change(function ()
-				{
-					processImageFiles($(this)[0].files);
-				}
-				);
 
 				$("#avapreview").error(function ()
 				{
