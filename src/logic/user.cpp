@@ -613,9 +613,9 @@ bool novastory::User::sync()
 	return false;
 }
 
-bool novastory::User::subscribe( const User& targetUser )
+bool novastory::User::subscribe(const User& targetUser)
 {
-	if(!isLogined())
+	if (!isLogined())
 	{
 		JSON_ERROR("not loggined", 1);
 		return false;
@@ -623,13 +623,13 @@ bool novastory::User::subscribe( const User& targetUser )
 
 	int uid = userid();
 	int targetid = targetUser.userid();
-	if(targetid <= 0)
+	if (targetid <= 0)
 	{
 		JSON_ERROR("target userid not founded", 2);
 		return false;
 	}
 
-	if(uid == targetid)
+	if (uid == targetid)
 	{
 		JSON_ERROR("Cannot subscribe to youself", 4);
 		return false;
@@ -637,16 +637,16 @@ bool novastory::User::subscribe( const User& targetUser )
 
 	SqlQuery query(QString("INSERT INTO subscriptions(userid, targetid) VALUES('%1', '%2')").arg(uid).arg(targetid));
 	bool isOk = (query.lastError().type() == QSqlError::NoError);
-	if(!isOk)
+	if (!isOk)
 	{
 		JSON_ERROR("Error on subscription", 3);
 	}
 	return isOk;
 }
 
-bool novastory::User::unsubscribe( const User& targetUser )
+bool novastory::User::unsubscribe(const User& targetUser)
 {
-	if(!isLogined())
+	if (!isLogined())
 	{
 		JSON_ERROR("not loggined", 1);
 		return false;
@@ -654,7 +654,7 @@ bool novastory::User::unsubscribe( const User& targetUser )
 
 	int uid = userid();
 	int targetid = targetUser.userid();
-	if(targetid <= 0)
+	if (targetid <= 0)
 	{
 		JSON_ERROR("target userid not founded", 2);
 		return false;
@@ -667,14 +667,18 @@ bool novastory::User::unsubscribe( const User& targetUser )
 QList<int> novastory::User::subscriptions()
 {
 	int uid = userid();
-	if(uid <= 0)
+	if (uid <= 0)
+	{
 		return QList<int>();
+	}
 
-	if(m_subscriptions_filled)
+	if (m_subscriptions_filled)
+	{
 		return m_subscriptions;
+	}
 
 	SqlQuery query(QString("SELECT * FROM subscriptions WHERE userid = '%1'").arg(uid));
-	while(query.next())
+	while (query.next())
 	{
 		m_subscriptions << query.value("targetid").toInt();
 	}
@@ -685,14 +689,18 @@ QList<int> novastory::User::subscriptions()
 QList<int> novastory::User::subscribed()
 {
 	int uid = userid();
-	if(uid <= 0)
+	if (uid <= 0)
+	{
 		return QList<int>();
+	}
 
-	if(m_subscribed_filled)
+	if (m_subscribed_filled)
+	{
 		return m_subscribed;
+	}
 
 	SqlQuery query(QString("SELECT * FROM subscriptions WHERE targetid = '%1'").arg(uid));
-	while(query.next())
+	while (query.next())
 	{
 		m_subscribed << query.value("userid").toInt();
 	}
