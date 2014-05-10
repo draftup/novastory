@@ -662,7 +662,7 @@ bool novastory::User::unsubscribe(User& targetUser)
 
 	SqlQuery query(QString("DELETE FROM subscriptions WHERE userid = '%1' AND targetid = '%2'").arg(uid).arg(targetid));
 	bool isOk = (query.lastError().type() == QSqlError::NoError);
-	if(isOk)
+	if (isOk)
 	{
 		m_subscriptions.removeAll(targetid);
 		targetUser.m_subscribed.removeAll(uid);
