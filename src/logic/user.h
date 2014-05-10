@@ -105,6 +105,7 @@ public:
 	bool unsubscribe(User& targetUser);
 	QList<int> subscriptions();
 	QList<int> subscribed();
+	bool isSubscribed(const User& targetUser);
 protected:
 	QString generateSalt() const;
 	void setPassword(const QString& password);

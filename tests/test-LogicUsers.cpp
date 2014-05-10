@@ -260,7 +260,9 @@ void Test_LogicUsers::subscribe()
 	QCOMPARE(sbuser1.subscriptions().size(), 0);
 
 	// unsubscribe
+	QVERIFY(sbuser2.isSubscribed(sbuser1));
 	QVERIFY(sbuser2.unsubscribe(sbuser1));
+	QVERIFY(!sbuser2.isSubscribed(sbuser1));
 	QCOMPARE(sbuser1.subscribed().size(), 1);
 	QCOMPARE(sbuser2.subscriptions().size(), 0);
 
