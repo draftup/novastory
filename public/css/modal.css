@@ -7,6 +7,7 @@
 	margin: -130px 0 0 -210px;
 	top: 50%;
 	left: 50%;
+	/*overflow:hidden;*/
 	-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 	-moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 	box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
@@ -87,14 +88,43 @@
 	background-size:contain;
 }
 
-/*Страница логина и регистрации*/
+/*Страницы логина, регистрации и восстановления*/
 
 .modal-body {
 	height:220px;
-	width:300px;
-	left:58px;
+	width:700px;
 	position:absolute;
 	top:40px;
+	left:58px;
+	-moz-transition: 0.5s;
+    -webkit-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
+}
+
+.modal-body#regtab {
+	margin-left: -420px;
+}
+
+#register-tab {
+	margin-left: 420px;
+}
+
+#restore-window {
+	position:fixed;
+	height:260px;
+	width:420px;
+	background:#EDEDED;
+	left:-58px;
+	top: 300px;
+	-moz-transition: 0.5s;
+    -webkit-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
+}
+
+.restore-window#up {
+	margin-top: -340px;
 }
 
 /*Cтраница логина: поля ввода, ссылка на восстановление пароля*/
@@ -224,8 +254,8 @@ input[type="checkbox"] {
 #backtologin {
 	width:30px;
 	height:30px;
-	transform:rotate(-90deg);
-	-webkit-transform:rotate(-90deg);
+	transform:rotate(90deg);
+	-webkit-transform:rotate(90deg);
 	position:absolute;
 	top:10px;
 	left:195px;
@@ -269,8 +299,8 @@ input[type="checkbox"] {
 .instruct {
 	position:absolute;
 	width:300px;
-	left:5px;
-	top:70px;
+	left:60px;
+	top:110px;
 	color:#99146F;
 }
 

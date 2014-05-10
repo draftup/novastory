@@ -45,7 +45,6 @@
 	width: 900px;
 	background: url(../proart.jpg) no-repeat;
 	background-size: cover;
-	opacity: 0.5;
 }
 
 .proartback {
@@ -53,7 +52,7 @@
 	height: 180px;
 	width: 900px;
 	background: black;
-	opacity: 0.4;
+	opacity: 0.1;
 }
 
 /* Голова профиля: аватарка */
