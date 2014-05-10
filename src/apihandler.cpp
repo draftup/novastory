@@ -4,6 +4,7 @@
 
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 
 #include "webserver/webserver.h"
 #include "logic/captcha.h"
@@ -122,6 +123,46 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		target.setUserID(post["targetid"].toInt());
 		user.unsubscribe(target);
 		json = user.jsonString().toUtf8();
+	}
+	else if (hook == "subscriptions")
+	{
+		User user;
+		user.setUserID(post["userid"].toInt());
+		QList<int> subscriptions = user.subscriptions();
+		QJsonDocument doc;
+		QJsonArray arr;
+		for(int id : subscriptions)
+		{
+			arr.push_back(id);
+		}
+		doc.setArray(arr);
+		json = doc.toJson();
+	}
+	else if (hook == "subscribed")
+	{
+		User user;
+		user.setUserID(post["userid"].toInt());
+		QList<int> subscriptions = user.subscribed();
+		QJsonDocument doc;
+		QJsonArray arr;
+		for(int id : subscriptions)
+		{
+			arr.push_back(id);
+		}
+		doc.setArray(arr);
+		json = doc.toJson();
+	}
+	else if (hook == "issubscribed")
+	{
+		User user;
+		user.setUserID(userid);
+		User tuser;
+		tuser.setUserID(post["targetid"].toInt());
+		QJsonDocument doc;
+		QJsonObject obj;
+		obj.insert("issubscribed", QJsonValue(user.isSubscribed(tuser)));
+		doc.setObject(obj);
+		json = doc.toJson();
 	}
 	else if (hook == "updateavatar")
 	{

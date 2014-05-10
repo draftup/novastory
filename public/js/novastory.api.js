@@ -81,3 +81,36 @@ NovastoryApi.myProfile = function (callback)
 		callback,
 		'json');
 }
+
+NovastoryApi.subscribe = function (targetuser, callback)
+{
+	$.post(
+		'/api/subscribe',
+	{
+		targetid : targetuser,
+	},
+		callback,
+		'json');
+}
+
+NovastoryApi.unsubscribe = function (targetuser, callback)
+{
+	$.post(
+		'/api/unsubscribe',
+	{
+		targetid : targetuser,
+	},
+		callback,
+		'json');
+}
+
+NovastoryApi.isSubscribed = function (targetuser, callback)
+{
+	$.post(
+		'/api/issubscribed',
+	{
+		targetid : targetuser,
+	},
+		callback,
+		'json');
+}
