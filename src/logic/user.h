@@ -102,7 +102,7 @@ public:
 	}
 
 	bool subscribe(const User& targetUser);
-	bool unsubscribe(const User& targetUser);
+	bool unsubscribe(User& targetUser);
 	QList<int> subscriptions();
 	QList<int> subscribed();
 protected:

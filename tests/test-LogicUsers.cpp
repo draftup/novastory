@@ -259,6 +259,14 @@ void Test_LogicUsers::subscribe()
 
 	QCOMPARE(sbuser1.subscriptions().size(), 0);
 
+	// unsubscribe
+	QVERIFY(sbuser2.unsubscribe(sbuser1));
+	QCOMPARE(sbuser1.subscribed().size(), 1);
+	QCOMPARE(sbuser2.subscriptions().size(), 0);
+
+	SqlQuery test2("SELECT * FROM subscriptions WHERE targetid = " + QString::number(sbuser1.userid()));
+	QCOMPARE(test2.size(), 1);
+
 	// cleanup
 	QVERIFY(sbuser1.removeUser());
 	QVERIFY(sbuser2.removeUser());

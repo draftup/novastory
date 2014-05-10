@@ -105,6 +105,24 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 			json = user.jsonString().toUtf8();
 		}
 	}
+	else if (hook == "subscribe")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		User target;
+		target.setUserID(post["targetid"].toInt());
+		user.subscribe(target);
+		json = user.jsonString().toUtf8();
+	}
+	else if (hook == "unsubscribe")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		User target;
+		target.setUserID(post["targetid"].toInt());
+		user.unsubscribe(target);
+		json = user.jsonString().toUtf8();
+	}
 	else if (hook == "updateavatar")
 	{
 		Avatar avatar;

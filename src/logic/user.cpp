@@ -644,7 +644,7 @@ bool novastory::User::subscribe(const User& targetUser)
 	return isOk;
 }
 
-bool novastory::User::unsubscribe(const User& targetUser)
+bool novastory::User::unsubscribe(User& targetUser)
 {
 	if (!isLogined())
 	{
@@ -661,7 +661,13 @@ bool novastory::User::unsubscribe(const User& targetUser)
 	}
 
 	SqlQuery query(QString("DELETE FROM subscriptions WHERE userid = '%1' AND targetid = '%2'").arg(uid).arg(targetid));
-	return query.lastError().type() == QSqlError::NoError;
+	bool isOk = (query.lastError().type() == QSqlError::NoError);
+	if(isOk)
+	{
+		m_subscriptions.removeAll(targetid);
+		targetUser.m_subscribed.removeAll(uid);
+	}
+	return isOk;
 }
 
 QList<int> novastory::User::subscriptions()
