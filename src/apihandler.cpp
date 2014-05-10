@@ -131,7 +131,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		QList<int> subscriptions = user.subscriptions();
 		QJsonDocument doc;
 		QJsonArray arr;
-		for(int id : subscriptions)
+		for (int id : subscriptions)
 		{
 			arr.push_back(id);
 		}
@@ -145,7 +145,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		QList<int> subscriptions = user.subscribed();
 		QJsonDocument doc;
 		QJsonArray arr;
-		for(int id : subscriptions)
+		for (int id : subscriptions)
 		{
 			arr.push_back(id);
 		}
