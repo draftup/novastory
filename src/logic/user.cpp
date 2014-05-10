@@ -714,7 +714,7 @@ QList<int> novastory::User::subscribed()
 	return m_subscribed;
 }
 
-bool novastory::User::isSubscribed(const User& targetUser )
+bool novastory::User::isSubscribed(const User& targetUser)
 {
 	return subscriptions().contains(targetUser.userid());
 }
