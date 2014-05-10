@@ -24,6 +24,7 @@ private slots:
 	void confirmPasswordReset();
 	void deleteUserTest();
 	void validateUser();
+	void subscribe();
 private:
 	int userid;
 	QString salt;
@@ -34,6 +35,9 @@ void Test_LogicUsers::initTestCase()
 	SqlQuery q;
 	QVERIFY(q.exec("DELETE FROM users WHERE email = 'dasdasd@dasdasd.com'"));
 	QVERIFY(q.exec("DELETE FROM users WHERE email = 'testmail@test.com'"));
+	q.exec("DELETE FROM users WHERE email = 'sbuser1@noemail.com'");
+	q.exec("DELETE FROM users WHERE email = 'sbuser2@noemail.com'");
+	q.exec("DELETE FROM users WHERE email = 'sbuser3@noemail.com'");
 }
 
 void Test_LogicUsers::init()
@@ -214,6 +218,51 @@ void Test_LogicUsers::validateUser()
 	q.exec("SELECT * FROM usersverify WHERE email = 'testmail@test.com'");
 	QCOMPARE(q.size(), 0);
 
+}
+
+void Test_LogicUsers::subscribe()
+{
+	//new users for test
+	User sbuser1;
+	sbuser1.setEmail("sbuser1@noemail.com");
+	sbuser1.setRawPassword("dogdog");
+	QVERIFY(sbuser1.addUser());
+	QVERIFY(sbuser1.userid() > 0);
+	User sbuser2;
+	sbuser2.setEmail("sbuser2@noemail.com");
+	sbuser2.setRawPassword("dogdog");
+	QVERIFY(sbuser2.addUser());
+	User sbuser3;
+	sbuser3.setEmail("sbuser3@noemail.com");
+	sbuser3.setRawPassword("dogdog");
+	QVERIFY(sbuser3.addUser());
+
+	QVERIFY(!sbuser2.subscribe(sbuser1)); // cannot done without login
+	QVERIFY(sbuser2.login("sbuser2@noemail.com", sha1("dogdog")));
+	QVERIFY(sbuser3.login("sbuser3@noemail.com", sha1("dogdog")));
+
+	QVERIFY(sbuser2.subscribe(sbuser1));
+	QVERIFY(!sbuser2.subscribe(sbuser2)); // same user fail
+	QVERIFY(sbuser3.subscribe(sbuser1));
+	QVERIFY(!sbuser3.subscribe(sbuser1)); // dublicate
+
+	SqlQuery test("SELECT * FROM subscriptions WHERE targetid = " + QString::number(sbuser1.userid()));
+	QCOMPARE(test.size(), 2);
+
+	QList<int> subscribtions = sbuser2.subscriptions();
+	QCOMPARE(subscribtions.size(), 1);
+	QCOMPARE(subscribtions[0], sbuser1.userid());
+
+	QList<int> subscribed = sbuser1.subscribed();
+	QCOMPARE(subscribed.size(), 2);
+	QVERIFY(subscribed.contains(sbuser3.userid()));
+
+	QCOMPARE(sbuser1.subscriptions().size(), 0);
+
+	// cleanup
+	QVERIFY(sbuser1.removeUser());
+	QVERIFY(sbuser2.removeUser());
+	QVERIFY(sbuser3.removeUser());
 }
 
 /********************** DECLARE_TEST LIST ****************************/

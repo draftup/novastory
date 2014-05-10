@@ -2,9 +2,18 @@
 #include <QVariant>
 #include <QDebug>
 #include <QSqlRecord>
+#include <QSqlError>
 #include "utils/globals.h"
 #include "sql/sqlquery.h"
 #include "logic/captcha.h"
+
+novastory::User::User() : m_userid(-1), m_subscriptions_filled(false), m_subscribed_filled(false)
+{
+	setObjectName("users");
+	setProperty("auto_increment", QVariant("userid"));
+	setProperty("primary_key", QVariant("userid"));
+	setProperty("hidden", QVariant("salt,password"));
+}
 
 int novastory::User::userid() const
 {
@@ -65,14 +74,6 @@ void novastory::User::setEmail(const QString& email)
 void novastory::User::resetEmail()
 {
 	m_email = QString();
-}
-
-novastory::User::User() : m_userid(-1)
-{
-	setObjectName("users");
-	setProperty("auto_increment", QVariant("userid"));
-	setProperty("primary_key", QVariant("userid"));
-	setProperty("hidden", QVariant("salt,password"));
 }
 
 void novastory::User::setRawPassword(const QString& password)
@@ -610,5 +611,92 @@ bool novastory::User::sync()
 	}
 
 	return false;
+}
+
+bool novastory::User::subscribe( const User& targetUser )
+{
+	if(!isLogined())
+	{
+		JSON_ERROR("not loggined", 1);
+		return false;
+	}
+
+	int uid = userid();
+	int targetid = targetUser.userid();
+	if(targetid <= 0)
+	{
+		JSON_ERROR("target userid not founded", 2);
+		return false;
+	}
+
+	if(uid == targetid)
+	{
+		JSON_ERROR("Cannot subscribe to youself", 4);
+		return false;
+	}
+
+	SqlQuery query(QString("INSERT INTO subscriptions(userid, targetid) VALUES('%1', '%2')").arg(uid).arg(targetid));
+	bool isOk = (query.lastError().type() == QSqlError::NoError);
+	if(!isOk)
+	{
+		JSON_ERROR("Error on subscription", 3);
+	}
+	return isOk;
+}
+
+bool novastory::User::unsubscribe( const User& targetUser )
+{
+	if(!isLogined())
+	{
+		JSON_ERROR("not loggined", 1);
+		return false;
+	}
+
+	int uid = userid();
+	int targetid = targetUser.userid();
+	if(targetid <= 0)
+	{
+		JSON_ERROR("target userid not founded", 2);
+		return false;
+	}
+
+	SqlQuery query(QString("DELETE FROM subscriptions WHERE userid = '%1' AND targetid = '%2'").arg(uid).arg(targetid));
+	return query.lastError().type() == QSqlError::NoError;
+}
+
+QList<int> novastory::User::subscriptions()
+{
+	int uid = userid();
+	if(uid <= 0)
+		return QList<int>();
+
+	if(m_subscriptions_filled)
+		return m_subscriptions;
+
+	SqlQuery query(QString("SELECT * FROM subscriptions WHERE userid = '%1'").arg(uid));
+	while(query.next())
+	{
+		m_subscriptions << query.value("targetid").toInt();
+	}
+	m_subscriptions_filled = true;
+	return m_subscriptions;
+}
+
+QList<int> novastory::User::subscribed()
+{
+	int uid = userid();
+	if(uid <= 0)
+		return QList<int>();
+
+	if(m_subscribed_filled)
+		return m_subscribed;
+
+	SqlQuery query(QString("SELECT * FROM subscriptions WHERE targetid = '%1'").arg(uid));
+	while(query.next())
+	{
+		m_subscribed << query.value("userid").toInt();
+	}
+	m_subscribed_filled = true;
+	return m_subscribed;
 }
 

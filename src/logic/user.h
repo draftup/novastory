@@ -100,6 +100,11 @@ public:
 	{
 		Sqlizable::substitute(data, prefix);
 	}
+
+	bool subscribe(const User& targetUser);
+	bool unsubscribe(const User& targetUser);
+	QList<int> subscriptions();
+	QList<int> subscribed();
 protected:
 	QString generateSalt() const;
 	void setPassword(const QString& password);
@@ -123,6 +128,11 @@ private:
 	QString m_lastname;
 	QString m_nickname;
 	QString m_profileid;
+
+	QList<int> m_subscriptions;
+	bool m_subscriptions_filled;
+	QList<int> m_subscribed;
+	bool m_subscribed_filled;
 };
 
 }
