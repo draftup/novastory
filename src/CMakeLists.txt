@@ -32,6 +32,7 @@ set(HEADERS_TOMOC
 	logic/texteditor.h
 	logic/avatar.h
 	logic/webdata.h
+	logic/userpic.h
 )
 
 set(HEADERS
@@ -48,6 +49,7 @@ set(HEADERS
 	datahandler.h
 	rawfilehandler.h
 	avatarshandler.h
+	userspicshandler.h
 	indexhandler.h
 	profilehandler.h
 	profile.h
@@ -69,6 +71,7 @@ set(SOURCES
 	logic/texteditor.cpp
 	logic/avatar.cpp
 	logic/webdata.cpp
+	logic/userpic.cpp
 	
 	utils/globals.cpp
 	webdatacontainer.cpp
@@ -76,6 +79,7 @@ set(SOURCES
 	recaptcha.cpp
 	rawfilehandler.cpp
 	avatarshandler.cpp
+	userspicshandler.cpp
 	indexhandler.cpp
 	profilehandler.cpp
 	profile.cpp

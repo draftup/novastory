@@ -2,6 +2,7 @@
 #include "rawfilehandler.h"
 #include "apihandler.h"
 #include "avatarshandler.h"
+#include "userspicshandler.h"
 #include "profilehandler.h"
 #include "indexhandler.h"
 #include "utils/globals.h"
@@ -18,6 +19,7 @@ WebRouter::WebRouter(QTcpSocket* bindedSocket) : WebRequest(bindedSocket), socke
 	appendHandler(new IndexHandler(bindedSocket));
 	appendHandler(new ApiHandler(bindedSocket));
 	appendHandler(new AvatarsHandler(bindedSocket));
+	appendHandler(new UsersPicsHandler(bindedSocket));
 	appendHandler(new ProfileHandler(bindedSocket));
 }
 
