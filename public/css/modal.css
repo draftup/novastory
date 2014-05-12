@@ -110,21 +110,21 @@
 	margin-left: 420px;
 }
 
-#restore-window {
-	position:fixed;
+.restore-win {
+	position:absolute;
 	height:260px;
 	width:420px;
 	background:#EDEDED;
-	left:-58px;
-	top: 300px;
+	margin-left:-58px;
+	margin-top: 300px;
 	-moz-transition: 0.5s;
     -webkit-transition: 0.5s;
     -o-transition: 0.5s;
     transition: 0.5s;
 }
 
-.restore-window#up {
-	margin-top: -340px;
+.restore-win#up {
+	margin-top: -40px;
 }
 
 /*Cтраница логина: поля ввода, ссылка на восстановление пароля*/

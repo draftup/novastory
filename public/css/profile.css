@@ -1,4 +1,4 @@
-п»ї/* Область с контентом */
+п»ї/* Р±Р»РѕРє СЃ РєРѕРЅС‚РµРЅС‚РѕРј */
 
 #propage {
 	position: absolute;
@@ -9,7 +9,7 @@
 	margin: 260px 0 0 -450px;
 }
 
-/* Голова профиля */
+/* С€Р°РїРєР° РїСЂРѕС„РёР»СЏ */
 
 #prohead {
 	position:absolute;
@@ -20,7 +20,7 @@
 	margin: 20px 0 0 -450px;
 }
 
-/* Голова профиля: область информации */
+/* С€Р°РїРєР° РїСЂРѕС„РёР»СЏ: РѕР±Р»Р°СЃС‚СЊ СЃ РёРЅС„РѕР№ */
 
 .proinfo {
 	position:absolute;
@@ -37,7 +37,7 @@
 	margin-top: 30px;
 }
 
-/* Голова профиля: арт-обложка */
+/* С€Р°РїРєР° РїСЂРѕС„РёР»СЏ: Р°СЂС‚ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ */
 
 .proart {
 	position:absolute;
@@ -54,7 +54,7 @@
 	opacity: 0.1;
 }
 
-/* Голова профиля: аватарка */
+/* С€Р°РїРєР° РїСЂРѕС„РёР»СЏ: Р°РІР°С‚Р°СЂРєР° */
 
 .proava {
 	position: absolute;
@@ -71,7 +71,7 @@
 	width:inherit;
 }
 
-/* Голова профиля: навигация */
+/* С€Р°РїРєР° РїСЂРѕС„РёР»СЏ: РЅР°РІРёРіР°С†РёСЏ */
 
 .pronavi {
 	position:absolute;
@@ -104,7 +104,7 @@
 	border-bottom: 2px solid #99146F;
 }
 
-/* Голова профиля: подписка */
+/* С€Р°РєР° РїСЂРѕС„РёР»СЏ: РѕР±Р»Р°СЃС‚СЊ РїРѕРґРїРёСЃРєРё */
 
 .profollow {
 	width: 130px;
@@ -113,36 +113,71 @@
 	float: right;
 }
 
-/* Голова профиля: кнопка подписки */
+/* С€Р°РїРєР° РїСЂРѕС„РёР»СЏ: РѕР±Р»Р°СЃС‚СЊ РїРѕРґРїРёСЃРєРё: РѕР±Р»Р°СЃС‚СЊ РёРєРѕРЅРєРё */
 
-#follbutt {
+#follico {
 	position: absolute;
 	height:inherit;
 	width: 30px;
-	cursor: pointer;
 	background: #FF9E00;
+}
+
+#follico svg {
+	margin: 5px 0 0 5px;
 	-moz-transition: 0.5s;
 	-webkit-transition: 0.5s;
 	-o-transition: 0.5s;
 	transition: 0.5s;
 }
 
-#follbutt svg {
-	margin: 5px 0 0 5px;
+.profollow#followed #follico {
+	background: #4EAF4E;
 }
 
-#follbutt #rss-icon {
+/* С€Р°РїРєР° РїСЂРѕС„РёР»СЏ: РѕР±Р»Р°СЃС‚СЊ РїРѕРґРїРёСЃРєРё: svg-РёРєРѕРЅРєРё */
+
+#follico path, polygon {
 	fill: #FFFFFF;
 }
 
-/* Голова профиля: настройки подписки */
+#follico #check-mark {
+	display: none;
+}
 
-.follblock {
+/* С€Р°РїРєР° РїСЂРѕС„РёР»СЏ: РѕР±Р»Р°СЃС‚СЊ РїРѕРґРїРёСЃРєРё: svg-РёРєРѕРЅРєРё РєРѕРіРґР° РїРѕРґРїРёСЃР°РЅ*/
+
+.profollow#followed #follico #follow-icon, #x-mark {
+	display: none;
+}
+
+.profollow#followed #follico #check-mark {
+	display:block;
+}
+
+/* С€Р°РїРєР° РїСЂРѕС„РёР»СЏ: РѕР±Р»Р°СЃС‚СЊ РїРѕРґРїРёСЃРєРё: svg-РёРєРѕРЅРєР° РґР»СЏ РѕС‚РїРёСЃРєРё*/
+
+.profollow#followed:hover #follico {
+	background: #FF9E00;
+	cursor: pointer;
+}
+
+.profollow#followed:hover #follico #check-mark {
+	display:none;
+}
+
+.profollow#followed:hover #follico #x-mark {
+	display:block;
+}
+
+/* С€Р°РїРєР° РїСЂРѕС„РёР»СЏ: РѕР±Р»Р°СЃС‚СЊ РїРѕРґРїРёСЃРєРё: РєРЅРѕРїРєР° */
+
+#follbutt {
 	position: absolute;
 	height: inherit;
 	width: 95px;
+	cursor: pointer;
 	background: #FF9E00;
-	margin-left: 31px;
+	margin-left: 32px;
 	text-align: center;
 	color: #FFFFFF;
 	line-height: 30px;
@@ -152,13 +187,8 @@
 	transition: 0.5s;
 }
 
-.follblock.followed {
-	background: #4EAF4E;
-}
 
-.folltype {
-	display: inline-block;
-	width: 25px;
-	margin: 10px 0 0 5px;
-	cursor: pointer;
+
+.profollow#followed #follbutt {
+	background: #4EAF4E;
 }
