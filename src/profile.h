@@ -10,12 +10,12 @@ namespace novastory
 class Profile : public HtmlTemplate
 {
 public:
-	Profile(const User& target, const User& self = User());
+	Profile(User* target, User* self);
 
 	QByteArray html() const override;
 private:
-	User selfUser;
-	User tragetUser;
+	User* selfUser;
+	User* tragetUser;
 };
 
 }
