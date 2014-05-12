@@ -18,6 +18,19 @@
 	z-index: 10;
 }
 
+/*нижняя панель*/
+
+footer {
+	background:#FFFFFF;
+	position:absolute;
+	height:25px;
+	width:100%;
+	min-width:1000px;
+	line-height:20px;
+	z-index: 10;
+	bottom: 0px;
+}
+
 /* нижнюю панель смещаем вниз и делаем отступы по бокам */
 
 #page-content {

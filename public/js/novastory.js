@@ -87,7 +87,7 @@ $(document).ready(function ()
 				var reader = new FileReader();
 				reader.onload = function (e)
 				{
-					if(callback)
+					if (callback)
 						callback(e.target.result);
 				};
 				reader.readAsDataURL(file);
@@ -477,7 +477,8 @@ $(document).ready(function ()
 				}
 				);
 
-				Novastory.attachDropArea('avablock', function(image){
+				Novastory.attachDropArea('avablock', function (image)
+				{
 					$("#avapreview").show();
 					$("#avapreview").attr('src', image);
 					NovastoryApi.updateAvatar(image, function (data)
@@ -494,7 +495,8 @@ $(document).ready(function ()
 						}
 					}
 					);
-				});
+				}
+				);
 
 				$("#avapreview").attr('src', "/avatar/" + USERID);
 
@@ -504,7 +506,8 @@ $(document).ready(function ()
 				}
 				);
 
-				Novastory.attachDropArea('artblock', function(image){
+				Novastory.attachDropArea('artblock', function (image)
+				{
 					$("#artpreview").show();
 					$("#artpreview").attr('src', image);
 					NovastoryApi.updateUserPic(image, function (data)
@@ -519,8 +522,9 @@ $(document).ready(function ()
 						}
 					}
 					);
-				});
-				
+				}
+				);
+
 				$("#artpreview").attr('src', "/userpic/" + USERID);
 
 				$("#artpreview").error(function ()
@@ -528,7 +532,7 @@ $(document).ready(function ()
 					$(this).hide();
 				}
 				);
-				
+
 				$("#savesett").click(function ()
 				{
 					var profileid = $("#myprofileid").val();
@@ -588,6 +592,76 @@ $(document).ready(function ()
 		else
 			$("#chatpanel").hide();
 	}
-	)
+	);
+
+	if ($('#follbutt').exists())
+	{
+		var profileid = parseInt($('#profileidspace').text());
+
+		if (profileid <= 0)
+		{
+			Novastory.error("Error durring profile loading");
+		}
+
+		var halfButton = $('#follbutt');
+		var fullButton = halfButton.parent();
+		fullButton.hide();
+
+		if (USERID != profileid)
+		{
+			NovastoryApi.isSubscribed(profileid, function (data)
+			{
+				fullButton.show();
+
+				var isSubscribed = data.issubscribed;
+
+				if (isSubscribed)
+				{
+					fullButton.attr('id', 'followed');
+					halfButton.text('Unfollow');
+				}
+
+				halfButton.click(function ()
+				{
+					if (!isSubscribed)
+					{
+						NovastoryApi.subscribe(profileid, function (data)
+						{
+							if (data.error != null && data.error)
+							{
+								Novastory.error("Error on subscribe");
+							}
+							else
+							{
+								isSubscribed = true;
+								fullButton.attr('id', 'followed');
+								halfButton.text('Unfollow');
+							}
+						}
+						);
+					}
+					else
+					{
+						NovastoryApi.unsubscribe(profileid, function (data)
+						{
+							if (data.error != null && data.error)
+							{
+								Novastory.error("Error on unsubscribe");
+							}
+							else
+							{
+								isSubscribed = false;
+								fullButton.attr('id', '');
+								halfButton.text('Follow');
+							}
+						}
+						);
+					}
+				}
+				);
+			}
+			);
+		}
+	}
 }
 );
