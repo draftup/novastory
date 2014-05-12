@@ -193,7 +193,7 @@
 
 /* шапка профиля: счётчик подписок */
 
-.myprocount {
+#myprocount {
 	position:absolute;
 	height: 40px;
 	width: 185px;

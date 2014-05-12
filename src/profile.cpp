@@ -8,7 +8,7 @@
 namespace novastory
 {
 
-Profile::Profile(const User& target, const User& self /*= User()*/) : tragetUser(target), selfUser(self)
+Profile::Profile(User* target, User* self) : tragetUser(target), selfUser(self)
 {
 
 }
@@ -24,8 +24,12 @@ QByteArray Profile::html() const
 	}
 
 	QString data = templateFile.readAll();
-	selfUser.substitute(data, "my");
-	tragetUser.substitute(data, "their");
+	selfUser->substitute(data, "my");
+	tragetUser->substitute(data, "their");
+
+	// Other fields
+	data = data.replace(QString("{their.users.subscriptions_count}"), QString::number(tragetUser->subscriptions().size()));
+	data = data.replace(QString("{their.users.subscribed_count}"), QString::number(tragetUser->subscribed().size()));
 
 	return data.toUtf8();
 }
