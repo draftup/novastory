@@ -34,6 +34,12 @@ bool RawFileHandler::handle(const QString& type, const QString& path, const QHas
 		// First, looking in cache
 		try
 		{
+#ifdef QT_DEBUG
+			if (filePath.endsWith(".js") || filePath.endsWith(".css") || filePath.endsWith(".html"))
+			{
+				throw std::range_error("debuging");
+			}
+#endif
 			WebDataContainer inCacheData = WebServer::Instance().cache().get(filePath.toStdString());
 			qDebug() << "Readed from cache " << path << "(Current cache size:" << WebServer::Instance().cache().currentSize() << ")";
 
