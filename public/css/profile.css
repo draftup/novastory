@@ -187,8 +187,51 @@
 	transition: 0.5s;
 }
 
-
-
 .profollow#followed #follbutt {
 	background: #4EAF4E;
+}
+
+/* шапка профиля: счётчик подписок */
+
+.myprocount {
+	position:absolute;
+	height: 40px;
+	width: 185px;
+	bottom: 0px;
+	right: 0px;
+	background: #99146F;
+	color: #FFFFFF;
+	line-height: 40px;
+	display:none;
+}
+
+#myfollowers, #ifollow {
+	height: 40px;
+	text-align: center;
+}
+
+#myfollowers a, #ifollow a {
+	cursor: pointer;
+}
+
+#myfollowers {
+	width: 110px;
+	font-size: 14px;
+	float:left;
+	padding: 0 10px 0 10px;
+}
+
+#ifollow {
+	width: 50px;
+	font-size: 14px;
+	float:right;
+	color: #FF9E00;
+}
+
+.proseparator {
+	background:#C272A9;
+	height:15px;
+	width:1px;
+	float:left;
+	margin-top:13px;
 }
