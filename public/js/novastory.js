@@ -606,14 +606,14 @@ $(document).ready(function ()
 		var halfButton = $('#follbutt');
 		var fullButton = halfButton.parent();
 
+		fullButton.hide();
+		
 		if (USERID == profileid)
 		{
-			fullButton.hide();
 			$("#myprocount").show();
 		}
 		else
 		{
-			fullButton.show();
 			$("#myprocount").hide();
 			NovastoryApi.isSubscribed(profileid, function (data)
 			{
