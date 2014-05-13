@@ -611,6 +611,8 @@ $(document).ready(function ()
 		if (USERID == profileid)
 		{
 			$("#myprocount").show();
+			// свой профиль
+			$('#wallref').addClass('myown');
 		}
 		else
 		{
