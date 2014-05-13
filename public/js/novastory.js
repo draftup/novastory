@@ -585,12 +585,33 @@ $(document).ready(function ()
 	// hide chat panel
 	$('#chatpanel').hide();
 
+	$("#chatpanel").css('right', '-280px');
 	$('#messico').click(function ()
 	{
-		if ($("#chatpanel").is(":hidden"))
-			$("#chatpanel").show();
+		var panel = $("#chatpanel");
+		if (panel.is(":hidden"))
+		{
+			panel.show();
+			panel.animate(
+			{
+				right : "0"
+			}, 300, function ()
+			{
+				// Animation complete.
+			}
+			);
+		}
 		else
-			$("#chatpanel").hide();
+		{
+			panel.animate(
+			{
+				right : "-280"
+			}, 300, function ()
+			{
+				panel.hide();
+			}
+			);
+		}
 	}
 	);
 
@@ -607,7 +628,7 @@ $(document).ready(function ()
 		var fullButton = halfButton.parent();
 
 		fullButton.hide();
-		
+
 		if (USERID == profileid)
 		{
 			$("#myprocount").show();
