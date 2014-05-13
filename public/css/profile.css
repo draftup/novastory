@@ -1,12 +1,21 @@
 ﻿/* блок с контентом */
 
 #propage {
-	position: absolute;
-	height: 65%;
+	position:absolute;
+	min-height: 70%;
 	width: 900px;
 	background: #FFFFFF;
-	left: 50%;
-	margin: 260px 0 0 -450px;
+	margin: 260px 0 0 0;
+}
+
+/* блок со статистикой */
+
+#proactivity {
+	position: absolute;
+	width: 250px;
+	height: 700px;
+	background: #FFFFFF;
+	margin: 20px 0 0 920px;
 }
 
 /* шапка профиля */
@@ -16,8 +25,7 @@
 	height: 220px;
 	width: 900px;
 	background: #FFFFFF;
-	left: 50%;
-	margin: 20px 0 0 -450px;
+	margin: 20px 0 0 0;
 }
 
 /* шапка профиля: область с инфой */
@@ -32,9 +40,23 @@
 }
 
 .proinfo .proname {
-	position: absolute;
-	font-size: 16pt;
+	position: relative;
+	font-size: 15pt;
 	margin-top: 30px;
+	display: inline-block;
+}
+
+.proinfo .pronick {
+	position: relative;
+	font-size: 11pt;
+	top: -1px;
+	display: inline-block;
+}
+
+.proinfo .proplace {
+	position: absolute;
+	font-size: 11pt;
+	margin-top: 20px;
 }
 
 /* шапка профиля: арт пользователя */
@@ -51,7 +73,7 @@
 	height: 180px;
 	width: 900px;
 	background: black;
-	opacity: 0.3;
+	opacity: 0.2;
 }
 
 /* шапка профиля: аватарка */
@@ -234,3 +256,5 @@
 	float:left;
 	margin-top:13px;
 }
+
+/* шапка профиля: счётчик подписок */

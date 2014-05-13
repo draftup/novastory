@@ -6,12 +6,15 @@
 
 <body>
 
+<article id="page-content">
+
 	<div id="prohead">
 		<div style="display:none;" id="profileidspace">{their.users.userid}</div>
 		<div class="proart" style="background: url('/userpic/{their.users.email}') no-repeat;"></div>
 		<div class="proartback"></div>
 		<div class="proinfo">
-			<div class="proname">{their.users.firstname} {their.users.nickname} {their.users.lastname}</div>
+			<div class="proname">{their.users.firstname} {their.users.lastname} | </div>
+			<div class="pronick">{their.users.nickname}</div>
 		</div>
 		<div class="proava"><img id="proavapreview" src="/avatar/{their.users.email}" alt=" "></div>
 		<div class="pronavi">
@@ -39,6 +42,10 @@
 	</div>
 	<div id="propage">
 	</div>
+	<div id="proactivity">
+	</div>
+
+</article>
 
 </body>
 
