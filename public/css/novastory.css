@@ -34,9 +34,13 @@ footer {
 /* нижнюю панель смещаем вниз и делаем отступы по бокам */
 
 #page-content {
+	position:absolute;
 	min-height: 100%;
-	padding-top: 45px;
+	width: 1200px;
+	margin-top: 45px;
 	z-index: 0;
+	left: 50%;
+	margin: 0 0 0 -600px;
 }
 
 /*Верхняя панель: кнопки навигации*/
