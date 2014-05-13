@@ -101,7 +101,7 @@
 
 .pronavi .button.current.myown {
 	color: #99146F;
-	border-bottom: 2px solid #99146F;
+	border-bottom: 2px solid #C272A9;
 }
 
 /* шака профиля: область подписки */
@@ -199,8 +199,8 @@
 	width: 185px;
 	bottom: 0px;
 	right: 0px;
-	background: #99146F;
-	color: #FFFFFF;
+	background: #FFFFFF;
+	color: #99146F;
 	line-height: 40px;
 }
 
