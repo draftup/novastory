@@ -37,7 +37,7 @@ footer {
 	position:absolute;
 	min-height: 100%;
 	width: 1200px;
-	margin-top: 45px;
+	padding-top: 45px;
 	z-index: 0;
 	left: 50%;
 	margin: 0 0 0 -600px;
