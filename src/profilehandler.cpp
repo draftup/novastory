@@ -38,7 +38,7 @@ bool ProfileHandler::handle(const QString& type, const QString& path, const QHas
 		}
 
 		Profile profileBuilder(&userProfile, &loginedUser);
-		QString profileElement = selectorId(profileBuilder.html(), "profile");
+		QString profileElement = selectorId(profileBuilder.html(), "propage");
 
 		QString title = userProfile.nickName();
 		if (title.isEmpty())
