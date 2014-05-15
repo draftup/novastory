@@ -242,18 +242,23 @@ void Test_LogicUsers::subscribe()
 	QVERIFY(sbuser3.login("sbuser3@noemail.com", sha1("dogdog")));
 
 	QVERIFY(sbuser2.subscribe(sbuser1));
+	QCOMPARE(sbuser2.subscriptions().size(), 1);
+	QCOMPARE(sbuser1.subscribed().size(), 1);
 	QVERIFY(!sbuser2.subscribe(sbuser2)); // same user fail
 	QVERIFY(sbuser3.subscribe(sbuser1));
+	QCOMPARE(sbuser3.subscriptions().size(), 1);
+	QCOMPARE(sbuser2.subscriptions().size(), 1);
+	QCOMPARE(sbuser1.subscribed().size(), 2);
 	QVERIFY(!sbuser3.subscribe(sbuser1)); // dublicate
 
 	SqlQuery test("SELECT * FROM subscriptions WHERE targetid = " + QString::number(sbuser1.userid()));
 	QCOMPARE(test.size(), 2);
 
-	QList<int> subscribtions = sbuser2.subscriptions();
+	QList<User> subscribtions = sbuser2.subscriptions();
 	QCOMPARE(subscribtions.size(), 1);
-	QCOMPARE(subscribtions[0], sbuser1.userid());
+	QCOMPARE(subscribtions[0].userid(), sbuser1.userid());
 
-	QList<int> subscribed = sbuser1.subscribed();
+	QList<User> subscribed = sbuser1.subscribed();
 	QCOMPARE(subscribed.size(), 2);
 	QVERIFY(subscribed.contains(sbuser3.userid()));
 

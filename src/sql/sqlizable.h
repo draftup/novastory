@@ -44,6 +44,8 @@ public:
 	}
 protected:
 	bool syncProcess(SqlQuery& query);
+	void syncRecord(SqlQuery& query);
+	void syncRecord(QSqlRecord& query);
 };
 
 }

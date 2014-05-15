@@ -15,6 +15,12 @@ novastory::User::User() : m_userid(-1), m_subscriptions_filled(false), m_subscri
 	setProperty("hidden", QVariant("salt,password"));
 }
 
+novastory::User::User( int userid )
+{
+	User();
+	setUserID(userid);
+}
+
 int novastory::User::userid() const
 {
 	return m_userid;
@@ -613,7 +619,7 @@ bool novastory::User::sync()
 	return false;
 }
 
-bool novastory::User::subscribe(const User& targetUser)
+bool novastory::User::subscribe(User& targetUser)
 {
 	if (!isLogined())
 	{
@@ -641,6 +647,11 @@ bool novastory::User::subscribe(const User& targetUser)
 	{
 		JSON_ERROR("Error on subscription", 3);
 	}
+	else
+	{
+		m_subscriptions << targetUser;
+		targetUser.m_subscribed << *this;
+	}
 	return isOk;
 }
 
@@ -664,18 +675,26 @@ bool novastory::User::unsubscribe(User& targetUser)
 	bool isOk = (query.lastError().type() == QSqlError::NoError);
 	if (isOk)
 	{
-		m_subscriptions.removeAll(targetid);
-		targetUser.m_subscribed.removeAll(uid);
+		QMutableListIterator<User> i_sb(m_subscriptions);
+		while (i_sb.hasNext()) {
+			if (i_sb.next().userid() == targetid)
+				i_sb.remove();
+		}
+		QMutableListIterator<User> i_sd(targetUser.m_subscribed);
+		while (i_sd.hasNext()) {
+			if (i_sd.next().userid() == uid)
+				i_sd.remove();
+		}
 	}
 	return isOk;
 }
 
-QList<int> novastory::User::subscriptions()
+QList<novastory::User> novastory::User::subscriptions()
 {
 	int uid = userid();
 	if (uid <= 0)
 	{
-		return QList<int>();
+		return QList<novastory::User>();
 	}
 
 	if (m_subscriptions_filled)
@@ -683,21 +702,24 @@ QList<int> novastory::User::subscriptions()
 		return m_subscriptions;
 	}
 
-	SqlQuery query(QString("SELECT * FROM subscriptions WHERE userid = '%1'").arg(uid));
+	SqlQuery query(QString("SELECT users.* FROM subscriptions INNER JOIN users ON(users.userid = subscriptions.targetid) WHERE subscriptions.userid = '%1'").arg(uid));
+	m_subscriptions.clear();
 	while (query.next())
 	{
-		m_subscriptions << query.value("targetid").toInt();
+		User user;
+		user.syncRecord(query);
+		m_subscriptions << user;
 	}
 	m_subscriptions_filled = true;
 	return m_subscriptions;
 }
 
-QList<int> novastory::User::subscribed()
+QList<novastory::User> novastory::User::subscribed()
 {
 	int uid = userid();
 	if (uid <= 0)
 	{
-		return QList<int>();
+		return QList<novastory::User>();
 	}
 
 	if (m_subscribed_filled)
@@ -705,10 +727,13 @@ QList<int> novastory::User::subscribed()
 		return m_subscribed;
 	}
 
-	SqlQuery query(QString("SELECT * FROM subscriptions WHERE targetid = '%1'").arg(uid));
+	SqlQuery query(QString("SELECT users.* FROM subscriptions INNER JOIN users ON(users.userid = subscriptions.userid) WHERE subscriptions.targetid = '%1'").arg(uid));
+	m_subscribed.clear();
 	while (query.next())
 	{
-		m_subscribed << query.value("userid").toInt();
+		User user;
+		user.syncRecord(query);
+		m_subscribed << user;
 	}
 	m_subscribed_filled = true;
 	return m_subscribed;
@@ -716,6 +741,31 @@ QList<int> novastory::User::subscribed()
 
 bool novastory::User::isSubscribed(const User& targetUser)
 {
-	return subscriptions().contains(targetUser.userid());
+	QListIterator<User> it(subscriptions());
+	while (it.hasNext()) {
+		if (it.next().userid() == targetUser.userid())
+			return true;
+	}
+	return false;
+}
+
+bool novastory::User::operator==( int userid ) const
+{
+	return m_userid == userid;
+}
+
+bool novastory::User::operator==( const QString& email ) const
+{
+	return m_email == email;
+}
+
+bool novastory::User::operator==( const User &l ) const
+{
+	if(m_userid > 0 && l.m_userid > 0)
+		return m_userid == l.m_userid;
+	else if(!m_email.isEmpty() && !l.m_email.isEmpty())
+		return m_email == l.m_email;
+
+	return false;
 }
 
