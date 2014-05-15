@@ -24,9 +24,10 @@ DROP TABLE IF EXISTS `avatars`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `avatars` (
   `userid` int(10) unsigned NOT NULL,
-  `avatar` mediumblob,
+  `data` mediumblob,
   `contenttype` varchar(64) DEFAULT NULL,
   `contentsize` int(10) unsigned DEFAULT NULL,
+  `modifydate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`userid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -38,6 +39,32 @@ CREATE TABLE `avatars` (
 LOCK TABLES `avatars` WRITE;
 /*!40000 ALTER TABLE `avatars` DISABLE KEYS */;
 /*!40000 ALTER TABLE `avatars` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `subscriptions`
+--
+
+DROP TABLE IF EXISTS `subscriptions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `subscriptions` (
+  `userid` int(10) unsigned DEFAULT NULL,
+  `targetid` int(10) unsigned DEFAULT NULL,
+  `options` int(10) unsigned NOT NULL DEFAULT '0',
+  UNIQUE KEY `userid_2` (`userid`,`targetid`),
+  KEY `userid` (`userid`),
+  KEY `targetid` (`targetid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `subscriptions`
+--
+
+LOCK TABLES `subscriptions` WRITE;
+/*!40000 ALTER TABLE `subscriptions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `subscriptions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -79,9 +106,11 @@ CREATE TABLE `users` (
   `firstname` varchar(64) DEFAULT NULL,
   `lastname` varchar(64) DEFAULT NULL,
   `nickname` varchar(64) DEFAULT NULL,
+  `profileid` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`userid`),
-  KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=174 DEFAULT CHARSET=utf8;
+  KEY `email` (`email`),
+  KEY `profileid` (`profileid`)
+) ENGINE=InnoDB AUTO_INCREMENT=365 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,9 +119,24 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'9e018658fec3fc6e7fd4a5e7317aec70','1f8b9be4b10381dc1f86e0d98f539490','degitx@gmail.com','2014-04-20 17:29:13','Alexey','Kasyanchuk','DEgITx'),(173,'995ddff75421a80c6b932292422ab336','281f38d79f9703a2b3e23772e71721b2','testmail@test.com','2014-04-20 16:47:47',NULL,NULL,NULL);
+INSERT INTO `users` VALUES (2,'995ddff75421a80c6b932292422ab336','281f38d79f9703a2b3e23772e71721b2','someuser@gmail.com','2014-05-12 14:58:56','lol','notlol','tester','tester'),(226,'aa379344a1a68db67749f86e298495c9','9fb61927a7cbf0b7eb5fc85183ba2bfa','degitx@gmail.com','2014-05-05 20:02:22','Alexey','Kasyanchuk','degitx','degitx'),(364,'995ddff75421a80c6b932292422ab336','281f38d79f9703a2b3e23772e71721b2','testmail@test.com','2014-05-10 19:24:56',NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = cp866 */ ;
+/*!50003 SET character_set_results = cp866 */ ;
+/*!50003 SET collation_connection  = cp866_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 trigger delete_user after delete on users for each row begin delete from subscriptions where userid = OLD.userid OR targetid = OLD.userid; delete from avatars where userid = OLD.userid; delete from userspics where userid = OLD.userid; end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `userspassforgot`
@@ -120,6 +164,32 @@ LOCK TABLES `userspassforgot` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `userspics`
+--
+
+DROP TABLE IF EXISTS `userspics`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `userspics` (
+  `userid` int(10) unsigned NOT NULL,
+  `data` mediumblob,
+  `contenttype` varchar(64) DEFAULT NULL,
+  `contentsize` int(10) unsigned DEFAULT NULL,
+  `modifydate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`userid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `userspics`
+--
+
+LOCK TABLES `userspics` WRITE;
+/*!40000 ALTER TABLE `userspics` DISABLE KEYS */;
+/*!40000 ALTER TABLE `userspics` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `usersverify`
 --
 
@@ -143,7 +213,7 @@ CREATE TABLE `usersverify` (
 
 LOCK TABLES `usersverify` WRITE;
 /*!40000 ALTER TABLE `usersverify` DISABLE KEYS */;
-INSERT INTO `usersverify` VALUES ('1823c11c5d83bb1462a6629a09f710b9','facf1e5de373b98e8570b3e13b064729','3e0735b1da2e918559c9eb945c4aa680','dsdasd@gmail.com','2014-04-20 16:47:48'),('364e8efc1ebe7bf756cea1b1bfe1ae59','4aa85736960326891271cd424cdcd665','eb5f2d96a4fe7f4975c7918026491bd3','testp@dar.us','2014-04-05 08:41:34');
+INSERT INTO `usersverify` VALUES ('2b2522b312e01988ad48b990676b4418','8580268937bfb4bc26c7c925f55ac88c','552d31d4e523bd0d49e5c0c0093a0e6b','dsdasd@gmail.com','2014-05-09 23:51:28'),('364e8efc1ebe7bf756cea1b1bfe1ae59','4aa85736960326891271cd424cdcd665','eb5f2d96a4fe7f4975c7918026491bd3','testp@dar.us','2014-04-05 08:41:34');
 /*!40000 ALTER TABLE `usersverify` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -156,4 +226,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-04-21  3:23:11
+-- Dump completed on 2014-05-15 20:01:19
