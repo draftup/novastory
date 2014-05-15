@@ -110,7 +110,7 @@ public:
 
 	bool operator==(int userid) const;
 	bool operator==(const QString& email) const;
-	bool operator==(const User &l) const;
+	bool operator==(const User& l) const;
 protected:
 	QString generateSalt() const;
 	void setPassword(const QString& password);

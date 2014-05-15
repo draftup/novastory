@@ -201,13 +201,13 @@ bool Sqlizable::syncProcess(SqlQuery& query)
 
 
 
-void Sqlizable::syncRecord( SqlQuery& query )
+void Sqlizable::syncRecord(SqlQuery& query)
 {
 	QSqlRecord record = query.record();
 	syncRecord(record);
 }
 
-void Sqlizable::syncRecord( QSqlRecord& record )
+void Sqlizable::syncRecord(QSqlRecord& record)
 {
 	for (int i = 0; i < record.count(); ++i)
 	{

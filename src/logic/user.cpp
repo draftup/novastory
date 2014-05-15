@@ -15,7 +15,7 @@ novastory::User::User() : m_userid(-1), m_subscriptions_filled(false), m_subscri
 	setProperty("hidden", QVariant("salt,password"));
 }
 
-novastory::User::User( int userid )
+novastory::User::User(int userid)
 {
 	User();
 	setUserID(userid);
@@ -676,14 +676,20 @@ bool novastory::User::unsubscribe(User& targetUser)
 	if (isOk)
 	{
 		QMutableListIterator<User> i_sb(m_subscriptions);
-		while (i_sb.hasNext()) {
+		while (i_sb.hasNext())
+		{
 			if (i_sb.next().userid() == targetid)
+			{
 				i_sb.remove();
+			}
 		}
 		QMutableListIterator<User> i_sd(targetUser.m_subscribed);
-		while (i_sd.hasNext()) {
+		while (i_sd.hasNext())
+		{
 			if (i_sd.next().userid() == uid)
+			{
 				i_sd.remove();
+			}
 		}
 	}
 	return isOk;
@@ -742,29 +748,36 @@ QList<novastory::User> novastory::User::subscribed()
 bool novastory::User::isSubscribed(const User& targetUser)
 {
 	QListIterator<User> it(subscriptions());
-	while (it.hasNext()) {
+	while (it.hasNext())
+	{
 		if (it.next().userid() == targetUser.userid())
+		{
 			return true;
+		}
 	}
 	return false;
 }
 
-bool novastory::User::operator==( int userid ) const
+bool novastory::User::operator==(int userid) const
 {
 	return m_userid == userid;
 }
 
-bool novastory::User::operator==( const QString& email ) const
+bool novastory::User::operator==(const QString& email) const
 {
 	return m_email == email;
 }
 
-bool novastory::User::operator==( const User &l ) const
+bool novastory::User::operator==(const User& l) const
 {
-	if(m_userid > 0 && l.m_userid > 0)
+	if (m_userid > 0 && l.m_userid > 0)
+	{
 		return m_userid == l.m_userid;
-	else if(!m_email.isEmpty() && !l.m_email.isEmpty())
+	}
+	else if (!m_email.isEmpty() && !l.m_email.isEmpty())
+	{
 		return m_email == l.m_email;
+	}
 
 	return false;
 }
