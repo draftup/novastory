@@ -39,7 +39,7 @@ void WebProcess::run()
 	VERIFY(connect(socket.data(), SIGNAL(disconnected()), this, SLOT(onSocketDisconnected()), Qt::DirectConnection));
 	VERIFY(connect(socket.data(), SIGNAL(bytesWritten(qint64)), this, SLOT(onBytesWriten(qint64)), Qt::DirectConnection));
 	VERIFY(connect(timeout.data(), SIGNAL(timeout()), this, SLOT(closedByInterval()), Qt::DirectConnection));
-	
+
 	// Start event loop for this process worker (until disconnect of socket)
 	timeout->start(30000); // 30 second session limit
 	eventLoop->exec();
