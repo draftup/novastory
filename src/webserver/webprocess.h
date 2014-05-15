@@ -6,6 +6,7 @@
 class QTcpSocket;
 #include <QScopedPointer>
 #include <QEventLoop>
+#include <QTimer>
 #include <atomic>
 
 namespace novastory
@@ -27,6 +28,7 @@ private slots:
 private:
 	QScopedPointer<QTcpSocket> socket;
 	QScopedPointer<QEventLoop> eventLoop;
+	QScopedPointer<QTimer> timeout;
 	int socketDescriptor;
 	static std::atomic<int> processCounter;
 };

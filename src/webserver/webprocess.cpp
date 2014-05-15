@@ -25,15 +25,23 @@ WebProcess::~WebProcess()
 
 void WebProcess::run()
 {
+	// All classes must be initizalized in WebProcess Thread
 	socket.reset(new QTcpSocket);
-	VERIFY(socket->setSocketDescriptor(socketDescriptor));
-	qDebug() << "Socket" << socketDescriptor << "openned";
-	VERIFY(connect(socket.data(), SIGNAL(readyRead()), this, SLOT(showHtmlPage()), Qt::DirectConnection));
 	eventLoop.reset(new QEventLoop);
+	timeout.reset(new QTimer);
+	VERIFY(socket->setSocketDescriptor(socketDescriptor));
+	timeout->setSingleShot(true);
+	qDebug() << "Socket" << socketDescriptor << "openned";
+
+	// Connecting all socket slots
+	VERIFY(connect(socket.data(), SIGNAL(readyRead()), this, SLOT(showHtmlPage()), Qt::DirectConnection));
 	VERIFY(connect(socket.data(), SIGNAL(aboutToClose()), this, SLOT(onSocketClosed()), Qt::DirectConnection));
 	VERIFY(connect(socket.data(), SIGNAL(disconnected()), this, SLOT(onSocketDisconnected()), Qt::DirectConnection));
 	VERIFY(connect(socket.data(), SIGNAL(bytesWritten(qint64)), this, SLOT(onBytesWriten(qint64)), Qt::DirectConnection));
-	QTimer::singleShot(30000, this, SLOT(closedByInterval()));
+	VERIFY(connect(timeout.data(), SIGNAL(timeout()), this, SLOT(closedByInterval()), Qt::DirectConnection));
+	
+	// Start event loop for this process worker (until disconnect of socket)
+	timeout->start(30000); // 30 second session limit
 	eventLoop->exec();
 
 	// Closing all db related to this thread
