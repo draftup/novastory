@@ -36,6 +36,10 @@ int main(int argc, char* argv[])
 	fclose(fp);
 #endif
 
+	qDebug() << "----------------------------------------\n";
+	qDebug() << "	Novastory Server r" GIT_REVISION "\n";
+	qDebug() << "-----------------------------------------\n";
+
 	Logger::Instance().setWriteToLogFile(true); // Log all to file output
 	WebServer::Instance();
 

@@ -16,10 +16,6 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/)
 {
 	setObjectName("WebServer");
 
-	qDebug() << "----------------------------------------\n";
-	qDebug() << "	Novastory Server r" GIT_REVISION "\n";
-	qDebug() << "-----------------------------------------\n";
-
 	resetDirectory();
 
 	// Initialize mime database
