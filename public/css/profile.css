@@ -257,4 +257,38 @@
 	margin-top:13px;
 }
 
-/* шапка профиля: счётчик подписок */
+/* блок статистики: последние подписчики */
+
+.actelement {
+	position:relative;
+	height: 70px;
+	margin-top: 10px;
+}
+
+.aeheader {
+	position: absolute;
+	min-width: 110px;
+	width:inherit;
+	height: 10px;
+	text-align:center;
+	font-size:10pt;
+}
+
+.userava {
+	position: relative;
+	height: 40px;
+	width: 40px;
+	margin: 30px 0 0 10px;
+	border-radius: 50%;
+	-webkit-border-radius:50%;
+	-moz-border-radius:50%;
+	float:left;
+}
+
+.userava img {
+	height:inherit;
+	width:inherit;
+	border-radius:50%;
+	-webkit-border-radius:50%;
+	-moz-border-radius:50%;
+}
