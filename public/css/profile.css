@@ -285,6 +285,11 @@
 	float:left;
 }
 
+.userava a {
+	height:inherit;
+	width:inherit;
+}
+
 .userava img {
 	height:inherit;
 	width:inherit;
