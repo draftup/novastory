@@ -115,7 +115,7 @@ void Logger::messageOutput(QtMsgType type, const char* msg)
 		if (previousMsgHandler != nullptr)
 		{
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-			previousMsgHandler(type, context, msg);
+			previousMsgHandler(type, context, QDateTime::currentDateTimeUtc().toString("[hh:mm:ss] ") + msg);
 #else
 			previousMsgHandler(type, msg);
 #endif

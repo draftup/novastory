@@ -128,12 +128,12 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	{
 		User user;
 		user.setUserID(post["userid"].toInt());
-		QList<int> subscriptions = user.subscriptions();
+		QList<User> subscriptions = user.subscriptions();
 		QJsonDocument doc;
 		QJsonArray arr;
-		for (int id : subscriptions)
+		for (User& id : subscriptions)
 		{
-			arr.push_back(id);
+			arr.push_back(id.userid());
 		}
 		doc.setArray(arr);
 		json = doc.toJson();
@@ -142,12 +142,12 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	{
 		User user;
 		user.setUserID(post["userid"].toInt());
-		QList<int> subscriptions = user.subscribed();
+		QList<User> subscriptions = user.subscribed();
 		QJsonDocument doc;
 		QJsonArray arr;
-		for (int id : subscriptions)
+		for (User& id : subscriptions)
 		{
-			arr.push_back(id);
+			arr.push_back(id.userid());
 		}
 		doc.setArray(arr);
 		json = doc.toJson();

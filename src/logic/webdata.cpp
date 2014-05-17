@@ -115,7 +115,7 @@ bool novastory::WebData::update()
 		return false;
 	}
 
-	if (b_data.size() > AVATAR_LIMIT_BYTES)
+	if (b_data.size() > UPLOAD_LIMIT_BYTES)
 	{
 		JSON_ERROR("WebData is too big", 3);
 		return false;

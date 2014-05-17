@@ -25,6 +25,7 @@ class User : protected Sqlizable, public JsonThrower
 	Q_PROPERTY(QString profileid READ profileId WRITE setProfileId RESET resetProfileId)
 public:
 	User();
+	User(int userid);
 
 	bool addUser();
 	bool update();
@@ -101,11 +102,15 @@ public:
 		Sqlizable::substitute(data, prefix);
 	}
 
-	bool subscribe(const User& targetUser);
+	bool subscribe(User& targetUser);
 	bool unsubscribe(User& targetUser);
-	QList<int> subscriptions();
-	QList<int> subscribed();
+	QList<User> subscriptions();
+	QList<User> subscribed();
 	bool isSubscribed(const User& targetUser);
+
+	bool operator==(int userid) const;
+	bool operator==(const QString& email) const;
+	bool operator==(const User& l) const;
 protected:
 	QString generateSalt() const;
 	void setPassword(const QString& password);
@@ -130,9 +135,9 @@ private:
 	QString m_nickname;
 	QString m_profileid;
 
-	QList<int> m_subscriptions;
+	QList<User> m_subscriptions;
 	bool m_subscriptions_filled;
-	QList<int> m_subscribed;
+	QList<User> m_subscribed;
 	bool m_subscribed_filled;
 };
 

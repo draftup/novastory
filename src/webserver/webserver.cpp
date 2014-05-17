@@ -16,10 +16,6 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/)
 {
 	setObjectName("WebServer");
 
-	qDebug() << "----------------------------------------\n";
-	qDebug() << "	Novastory Server r" GIT_REVISION "\n";
-	qDebug() << "-----------------------------------------\n";
-
 	resetDirectory();
 
 	// Initialize mime database
@@ -27,7 +23,8 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/)
 
 	VERIFY(listen(QHostAddress::Any, initializationPort));
 	qDebug() << "Web server started at " << serverAddress() << ":" << serverPort();
-	QThreadPool::globalInstance()->setMaxThreadCount(5); // Maximum of working threads
+	QThreadPool::globalInstance()->setMaxThreadCount(WORKERS_NUMBER); // Maximum of working threads
+	qDebug() << "Maximum workers number: " << WORKERS_NUMBER;
 	QThreadPool::globalInstance()->setExpiryTimeout(30000);
 }
 

@@ -194,7 +194,21 @@ bool Sqlizable::syncProcess(SqlQuery& query)
 	}
 
 	VERIFY(query.next());
+	syncRecord(query);
+
+	return true;
+}
+
+
+
+void Sqlizable::syncRecord(SqlQuery& query)
+{
 	QSqlRecord record = query.record();
+	syncRecord(record);
+}
+
+void Sqlizable::syncRecord(QSqlRecord& record)
+{
 	for (int i = 0; i < record.count(); ++i)
 	{
 		QString propertyName = record.fieldName(i);
@@ -202,8 +216,6 @@ bool Sqlizable::syncProcess(SqlQuery& query)
 		setProperty(propertyName.toLatin1(), propertyValue);
 		qDebug() << "SYNCSQL" << propertyName << "=" << propertyValue.toString();
 	}
-
-	return true;
 }
 
 

@@ -14,9 +14,15 @@
 #define MYSQL_USER "novastory"
 #define MYSQL_PASSWORD "novapassworddb"
 
-#define AVATAR_LIMIT_BYTES 1 * 1024 * 1024
+#define UPLOAD_LIMIT_BYTES 1 * 1024 * 1024
 #define CONTENT_LIMIT_BYTES 5 * 1024 * 1024
 
 #define CACHE_SIZE 35 * 1024 * 1024
+
+#ifdef QT_DEBUG
+#define WORKERS_NUMBER 5
+#else
+#define WORKERS_NUMBER 10
+#endif
 
 #endif // RAWFILEHANDLER_H
