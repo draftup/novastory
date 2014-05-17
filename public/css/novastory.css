@@ -22,8 +22,8 @@
 /*нижняя панель*/
 
 footer {
-	position: absolute;
-	top: 100%;
+	position: fixed;
+	bottom: 0px;
 	background:#FFFFFF;
 	height:25px;
 	width:100%;
@@ -37,6 +37,7 @@ footer {
 #page-content {
 	position:absolute;
 	width: 1170px;
+	min-height: 100%;
 	padding-top: 45px;
 	z-index: 0;
 	left: 50%;
@@ -50,16 +51,16 @@ footer {
 	width:160px;
 	display:inline-block;
 	text-align:center;
-	cursor:pointer;
 }
 
 
 .left-button a
 {
-	text-decoration: none;
+	text-decoration:none;
+	cursor:pointer;
 }
 
-.left-button:hover a {
+.left-button a:hover {
 	color: #787878;
 }
 
@@ -71,7 +72,6 @@ footer {
 
 .searchout {
 	background:#FFFFFF;
-	outline:1px solid #DBDBDB;
 	display:inline-block;
 	height:25px;
 	width:300px;
