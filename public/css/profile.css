@@ -118,7 +118,7 @@
 	bottom: 0px;
 	right: 0px;
 	background: #FFF;
-	opacity: 0.8;
+	opacity: 0.9;
 }
 
 .pronavi .button {
@@ -303,6 +303,11 @@
 	-webkit-border-radius:50%;
 	-moz-border-radius:50%;
 	float:left;
+}
+
+.userava a {
+	height:inherit;
+	width:inherit;
 }
 
 .userava img {
