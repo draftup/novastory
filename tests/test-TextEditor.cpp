@@ -17,10 +17,16 @@ private slots:
 	void cleanupTestCase();
 
 	void testMain();
+private:
+	User buser;
 };
 
 void Test_TextEditor::initTestCase()
 {
+	buser.setEmail("doentcare@dsadasd.ds");
+	buser.setRawPassword("doentcare");
+	QVERIFY(buser.addUser());
+	QVERIFY(buser.login("doentcare@dsadasd.ds", sha1("doentcare")));
 }
 
 void Test_TextEditor::init()
@@ -35,10 +41,7 @@ void Test_TextEditor::cleanup()
 
 void Test_TextEditor::cleanupTestCase()
 {
-	User newuser;
-	newuser.setEmail("doentcare@dsadasd.ds");
-	newuser.setRawPassword("doentcare");
-	newuser.removeUser();
+	QVERIFY(buser.removeUser());
 }
 
 void Test_TextEditor::testMain()
@@ -49,35 +52,25 @@ void Test_TextEditor::testMain()
 	editor.jsonReset();
 	QVERIFY(!editor.isJsonError());
 
-	// Create test user
-	User newuser;
-	newuser.setEmail("doentcare@dsadasd.ds");
-	newuser.setRawPassword("doentcare");
-	QVERIFY(newuser.addUser());
-
-	qDebug() << "userid = " << newuser.userid();
-	editor.setUserID(newuser.userid());
+	editor.setUser(buser);
 	SqlQuery q;
-	q.exec(QString("SELECT * FROM texteditor WHERE userid = ") + QString::number(newuser.userid()));
+	q.exec(QString("SELECT * FROM texteditor WHERE userid = ") + QString::number(buser.userid()));
 	QCOMPARE(q.size(), 0);
 	QVERIFY(editor.update());
-	q.exec(QString("SELECT * FROM texteditor WHERE userid = ") + QString::number(newuser.userid()));
+	q.exec(QString("SELECT * FROM texteditor WHERE userid = ") + QString::number(buser.userid()));
 	QCOMPARE(q.size(), 0);
 	editor.setText("testtext");
 	QVERIFY(editor.update());
-	q.exec(QString("SELECT * FROM texteditor WHERE userid = ") + QString::number(newuser.userid()));
+	q.exec(QString("SELECT * FROM texteditor WHERE userid = ") + QString::number(buser.userid()));
 	QCOMPARE(q.size(), 1);
 	editor.setText("testtext2");
 	QVERIFY(editor.update());
-	q.exec(QString("SELECT * FROM texteditor WHERE userid = ") + QString::number(newuser.userid()));
+	q.exec(QString("SELECT * FROM texteditor WHERE userid = ") + QString::number(buser.userid()));
 	QCOMPARE(q.size(), 1);
 	editor.setText(QString());
 	QVERIFY(editor.update());
-	q.exec(QString("SELECT * FROM texteditor WHERE userid = ") + QString::number(newuser.userid()));
+	q.exec(QString("SELECT * FROM texteditor WHERE userid = ") + QString::number(buser.userid()));
 	QCOMPARE(q.size(), 0);
-
-	// Cleanup
-	QVERIFY(newuser.removeUser());
 }
 
 /********************** DECLARE_TEST LIST ****************************/
