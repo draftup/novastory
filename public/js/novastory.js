@@ -693,41 +693,129 @@ $(document).ready(function ()
 		}
 	}
 
+	
+	//backup timer
+	var saveTimerEditor = 0;
+	var saveTimerEditorInterval = 15000;
 	// Редактор
-
-	$('#editico').click(function ()
+	function openEditor()
 	{
+		// Main backup function
+		function backupEditor()
+		{
+			if ($("#editor").exists())
+			{
+				NovastoryApi.editorUpdate($("#editor").val());
+			}
+		}
+
+		function hideEditor()
+		{
+			$('#editor-panel').animate(
+			{
+				opacity : 0
+			}, 400, function ()
+			{
+				$(this).hide();
+			}
+			);
+
+			$('article').show();
+			$('footer').show();
+			$('article').animate(
+			{
+				opacity : 1
+			}, 400, function ()
+			{}
+
+			);
+
+			$('footer').animate(
+			{
+				opacity : 1
+			}, 400, function ()
+			{}
+
+			);
+
+			clearInterval(saveTimerEditor);
+			saveTimerEditor = 0;
+		}
+
+		function showEditor()
+		{
+			var editor_panel = $('#editor-panel');
+			editor_panel.css('opacity', '0');
+			editor_panel.show();
+			editor_panel.animate(
+			{
+				opacity : 1
+			}, 400, function ()
+			{}
+
+			);
+
+			$('article').animate(
+			{
+				opacity : 0
+			}, 400, function ()
+			{
+				$(this).hide();
+			}
+			);
+
+			$('footer').animate(
+			{
+				opacity : 0
+			}, 400, function ()
+			{
+				$(this).hide();
+			}
+			);
+
+			$('#editor').focus();
+			
+			if (!saveTimerEditor)
+				saveTimerEditor = setInterval(backupEditor, saveTimerEditorInterval);
+		}
+
+		function switchEditor()
+		{
+			if (!$('#editor-panel').is(":hidden"))
+			{
+				hideEditor()
+			}
+			else
+			{
+				showEditor();
+			}
+		}
+		
+		function isOpenedEditor()
+		{
+			return !$('#editor-panel').is(":hidden");
+		}
+
 		if (!$('#editor-panel').exists())
 		{
+			// скрываем кнопку от дальнейших нажатий и перезагрузок
+			$('#editico').hide();
+
 			$('#editor-space').load('/editor.html #editor-panel', null, function ()
 			{
+				// сразу же скрываем панель от наглых глаз
 				$('#editor-panel').hide();
-
-				$('article').animate(
-				{
-					opacity : 0
-				}, 400, function ()
-				{
-					$('article').hide();
-				}
-				);
-
-				$('article').animate(
-				{
-					opacity : 0
-				}, 400, function ()
-				{
-					$('footer').hide();
-				}
-				);
 
 				NovastoryApi.editorText(function (data)
 				{
+					$('#editico').show();
+
 					if (data.error != null && !data.error)
 					{
-						$('#editor-panel').css('opacity', '0');
-						$('#editor-panel').show();
-						$('#editor-panel').animate(
+						var editor_panel = $('#editor-panel');
+						editor_panel.css('opacity', '0');
+						editor_panel.show();
+						editor_panel.animate(
 						{
 							opacity : 1
 						}, 400, function ()
@@ -735,35 +823,44 @@ $(document).ready(function ()
 
 						);
 
-						$('#editor').val(data.text);
-					}
-
-					// Main backup function
-					function backupEditor()
-					{
-						if ($("#editor").exists())
+						$('article').animate(
 						{
-							NovastoryApi.editorUpdate($("#editor").val());
+							opacity : 0
+						}, 400, function ()
+						{
+							$(this).hide();
 						}
+						);
+
+						$('footer').animate(
+						{
+							opacity : 0
+						}, 400, function ()
+						{
+							$(this).hide();
+						}
+						);
+
+						$('#editor').val(data.text);
 					}
 
 					// Back up tab close
 					window.onbeforeunload = backupEditor;
 
-					// Back up every 15 sec
-					var saveTimer = setInterval(backupEditor, 5000);
+					// Back up every 15 or what sec
+					saveTimerEditor = setInterval(backupEditor, saveTimerEditorInterval);
 
 					$(window).focus(function ()
 					{
-						if (!saveTimer)
-							saveTimer = setInterval(backupEditor, 5000);
+						if (!saveTimerEditor && isOpenedEditor())
+							saveTimerEditor = setInterval(backupEditor, saveTimerEditorInterval);
 					}
 					);
 
 					$(window).blur(function ()
 					{
-						clearInterval(saveTimer);
-						saveTimer = 0;
+						clearInterval(saveTimerEditor);
+						saveTimerEditor = 0;
 					}
 					);
 				}
@@ -773,62 +870,30 @@ $(document).ready(function ()
 		}
 		else
 		{
-			if (!$('#editor-panel').is(":hidden"))
-			{
-				$('#editor-panel').animate(
-				{
-					opacity : 0
-				}, 400, function ()
-				{
-					$('#editor-panel').hide();
-				}
-				);
-				
-				$('article').show();
-				$('footer').show();
-				$('article').animate(
-				{
-					opacity : 1
-				}, 400, function ()
-				{}
-				);
-				
-				$('footer').animate(
-				{
-					opacity : 1
-				}, 400, function ()
-				{}
-				);
-			}
-			else
-			{
-				$('#editor-panel').css('opacity', '0');
-				$('#editor-panel').show();
-				$('#editor-panel').animate(
-				{
-					opacity : 1
-				}, 400, function ()
-				{}
-				);
+			switchEditor();
+		}
+	}
 
-				$('article').animate(
-				{
-					opacity : 0
-				}, 400, function ()
-				{
-					$('article').hide();
-				}
-				);
+	$('#editico').click(openEditor);
 
-				$('footer').animate(
-				{
-					opacity : 0
-				}, 400, function ()
-				{
-					$('footer').hide();
-				}
-				);
-			}
+	// открытие редактора по комбинации Ctrl+E
+	$(document).keydown(function (e)
+	{
+		if (e.ctrlKey && e.which === 69)
+		{
+			openEditor();
+			e.preventDefault();
+		}
+	}
+	);
+	
+	// открытие профиля на Ctrl+P
+	$(document).keydown(function (e)
+	{
+		if (e.ctrlKey && e.which === 80)
+		{
+			window.location.href = '/' + PROFILEID;
+			e.preventDefault();
 		}
 	}
 	);
