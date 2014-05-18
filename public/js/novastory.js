@@ -702,13 +702,39 @@ $(document).ready(function ()
 			$('#editor-space').load('/editor.html #editor-panel', null, function ()
 			{
 				$('#editor-panel').hide();
-				$('article').hide();
-				$('footer').hide();
+
+				$('article').animate(
+				{
+					opacity : 0
+				}, 400, function ()
+				{
+					$('article').hide();
+				}
+				);
+
+				$('article').animate(
+				{
+					opacity : 0
+				}, 400, function ()
+				{
+					$('footer').hide();
+				}
+				);
+
 				NovastoryApi.editorText(function (data)
 				{
 					if (data.error != null && !data.error)
 					{
+						$('#editor-panel').css('opacity', '0');
 						$('#editor-panel').show();
+						$('#editor-panel').animate(
+						{
+							opacity : 1
+						}, 400, function ()
+						{}
+
+						);
+
 						$('#editor').val(data.text);
 					}
 
@@ -749,15 +775,59 @@ $(document).ready(function ()
 		{
 			if (!$('#editor-panel').is(":hidden"))
 			{
-				$("#editor-panel").hide();
+				$('#editor-panel').animate(
+				{
+					opacity : 0
+				}, 400, function ()
+				{
+					$('#editor-panel').hide();
+				}
+				);
+				
 				$('article').show();
-				$('show').hide();
+				$('footer').show();
+				$('article').animate(
+				{
+					opacity : 1
+				}, 400, function ()
+				{}
+				);
+				
+				$('footer').animate(
+				{
+					opacity : 1
+				}, 400, function ()
+				{}
+				);
 			}
 			else
 			{
-				$("#editor-panel").show();
-				$('article').hide();
-				$('footer').hide();
+				$('#editor-panel').css('opacity', '0');
+				$('#editor-panel').show();
+				$('#editor-panel').animate(
+				{
+					opacity : 1
+				}, 400, function ()
+				{}
+				);
+
+				$('article').animate(
+				{
+					opacity : 0
+				}, 400, function ()
+				{
+					$('article').hide();
+				}
+				);
+
+				$('footer').animate(
+				{
+					opacity : 0
+				}, 400, function ()
+				{
+					$('footer').hide();
+				}
+				);
 			}
 		}
 	}
