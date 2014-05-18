@@ -1,15 +1,20 @@
-#editor-space
-{
+#editor-space{
 }
 
-#editor-panel
-{
+#editor-page {
 	padding-top: 40px;
 	width: 100%;
 }
 
-#editor
-{
+#editor {
+	position:absolute;
 	width: 60%;
 	margin: 0px auto 0px auto;
+}
+
+#projectlist {
+	position: absolute;
+	width: 300px;
+	height: 100%;
+	background:#EDEDED;
 }

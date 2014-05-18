@@ -242,6 +242,11 @@ input[type="search"] {
 	background-size:contain;
 }
 
+#helpico {
+	background:url(../images/help.svg);
+	background-size:contain;
+}
+
 /* Всплывающие подсказки */ 
 
 #popup-message
@@ -288,7 +293,7 @@ input[type="search"] {
 
 .rightpanel {
 	position: fixed;
-	width:280px;
+	width:315px;
 	height: 100%;
 	right:0px;
 	padding-top: 40px;
@@ -316,7 +321,7 @@ input[type="search"] {
 
 .dialogref {
 	position:relative;
-	width: 260px;
+	width: 290px;
 	height: 60px;
 	margin: 10px;
 	cursor: pointer;
@@ -365,7 +370,7 @@ input[type="search"] {
 	position:absolute;
 	width:190px;
 	height:inherit;
-	right:0px;
+	left:70px;
 }
 
 .dialoginfo .compname {
