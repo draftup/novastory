@@ -773,6 +773,8 @@ $(document).ready(function ()
 			}
 			);
 
+			$('#editor').focus();
+			
 			if (!saveTimerEditor)
 				saveTimerEditor = setInterval(backupEditor, saveTimerEditorInterval);
 		}
