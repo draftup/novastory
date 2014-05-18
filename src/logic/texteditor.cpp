@@ -59,7 +59,7 @@ bool TextEditor::update()
 	return updateQuery.exec();
 }
 
-void TextEditor::setUser( const User& user )
+void TextEditor::setUser(const User& user)
 {
 	m_user = user;
 }
@@ -79,7 +79,7 @@ bool TextEditor::sync()
 	selectQuery.bindValue(":userid", userid());
 
 	VERIFY(selectQuery.exec());
-	if(selectQuery.size() == 1)
+	if (selectQuery.size() == 1)
 	{
 		VERIFY(selectQuery.next());
 		QString text = selectQuery.value("text").toString();
