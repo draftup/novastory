@@ -697,6 +697,80 @@ $(document).ready(function ()
 
 	$('#editico').click(function ()
 	{
+		function closeEditor()
+		{
+			$('#editor-panel').animate(
+			{
+				opacity : 0
+			}, 400, function ()
+			{
+				$(this).hide();
+			}
+			);
+
+			$('article').show();
+			$('footer').show();
+			$('article').animate(
+			{
+				opacity : 1
+			}, 400, function ()
+			{}
+
+			);
+
+			$('footer').animate(
+			{
+				opacity : 1
+			}, 400, function ()
+			{}
+
+			);
+		}
+
+		function openEditor()
+		{
+			var editor_panel = $('#editor-panel');
+			editor_panel.css('opacity', '0');
+			editor_panel.show();
+			editor_panel.animate(
+			{
+				opacity : 1
+			}, 400, function ()
+			{}
+
+			);
+
+			$('article').animate(
+			{
+				opacity : 0
+			}, 400, function ()
+			{
+				$(this).hide();
+			}
+			);
+
+			$('footer').animate(
+			{
+				opacity : 0
+			}, 400, function ()
+			{
+				$(this).hide();
+			}
+			);
+		}
+
+		function switchEditor()
+		{
+			if (!$('#editor-panel').is(":hidden"))
+			{
+				closeEditor()
+			}
+			else
+			{
+				openEditor();
+			}
+		}
+
 		if (!$('#editor-panel').exists())
 		{
 			// скрываем кнопку от дальнейших нажатий и перезагрузок
@@ -745,6 +819,18 @@ $(document).ready(function ()
 						$('#editor').val(data.text);
 					}
 
+					// открытие редактора по комбинации Ctrl+E
+
+					$(document).keydown(function (e)
+					{
+						if (e.ctrlKey && e.which === 69)
+						{
+							switchEditor();
+							e.preventDefault();
+						}
+					}
+					);
+
 					// Main backup function
 					function backupEditor()
 					{
@@ -780,66 +866,7 @@ $(document).ready(function ()
 		}
 		else
 		{
-			if (!$('#editor-panel').is(":hidden"))
-			{
-				$('#editor-panel').animate(
-				{
-					opacity : 0
-				}, 400, function ()
-				{
-					$(this).hide();
-				}
-				);
-
-				$('article').show();
-				$('footer').show();
-				$('article').animate(
-				{
-					opacity : 1
-				}, 400, function ()
-				{}
-
-				);
-
-				$('footer').animate(
-				{
-					opacity : 1
-				}, 400, function ()
-				{}
-
-				);
-			}
-			else
-			{
-				var editor_panel = $('#editor-panel');
-				editor_panel.css('opacity', '0');
-				editor_panel.show();
-				editor_panel.animate(
-				{
-					opacity : 1
-				}, 400, function ()
-				{}
-
-				);
-
-				$('article').animate(
-				{
-					opacity : 0
-				}, 400, function ()
-				{
-					$(this).hide();
-				}
-				);
-
-				$('footer').animate(
-				{
-					opacity : 0
-				}, 400, function ()
-				{
-					$(this).hide();
-				}
-				);
-			}
+			switchEditor();
 		}
 	}
 	);
