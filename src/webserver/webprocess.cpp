@@ -41,7 +41,7 @@ void WebProcess::run()
 	VERIFY(connect(timeout.data(), SIGNAL(timeout()), this, SLOT(closedByInterval()), Qt::DirectConnection));
 
 	// Start event loop for this process worker (until disconnect of socket)
-	timeout->start(30000); // 30 second session limit
+	timeout->start(60000); // 60 second session limit
 	eventLoop->exec();
 
 	// Closing all db related to this thread
