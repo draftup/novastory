@@ -884,5 +884,16 @@ $(document).ready(function ()
 		}
 	}
 	);
+	
+	// открытие профиля на Ctrl+P
+	$(document).keydown(function (e)
+	{
+		if (e.ctrlKey && e.which === 80)
+		{
+			window.location.href = '/' + PROFILEID;
+			e.preventDefault();
+		}
+	}
+	);
 }
 );
