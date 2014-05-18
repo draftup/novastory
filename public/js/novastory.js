@@ -699,40 +699,47 @@ $(document).ready(function ()
 	{
 		if (!$('#editor-panel').exists())
 		{
+			// скрываем кнопку от дальнейших нажатий и перезагрузок
+			$('#editico').hide();
+
 			$('#editor-space').load('/editor.html #editor-panel', null, function ()
 			{
+				// сразу же скрываем панель от наглых глаз
 				$('#editor-panel').hide();
-
-				$('article').animate(
-				{
-					opacity : 0
-				}, 400, function ()
-				{
-					$('article').hide();
-				}
-				);
-
-				$('article').animate(
-				{
-					opacity : 0
-				}, 400, function ()
-				{
-					$('footer').hide();
-				}
-				);
 
 				NovastoryApi.editorText(function (data)
 				{
+					$('#editico').show();
+
 					if (data.error != null && !data.error)
 					{
-						$('#editor-panel').css('opacity', '0');
-						$('#editor-panel').show();
-						$('#editor-panel').animate(
+						var editor_panel = $('#editor-panel');
+						editor_panel.css('opacity', '0');
+						editor_panel.show();
+						editor_panel.animate(
 						{
 							opacity : 1
 						}, 400, function ()
 						{}
 
+						);
+
+						$('article').animate(
+						{
+							opacity : 0
+						}, 400, function ()
+						{
+							$(this).hide();
+						}
+						);
+
+						$('footer').animate(
+						{
+							opacity : 0
+						}, 400, function ()
+						{
+							$(this).hide();
+						}
 						);
 
 						$('#editor').val(data.text);
@@ -780,10 +787,10 @@ $(document).ready(function ()
 					opacity : 0
 				}, 400, function ()
 				{
-					$('#editor-panel').hide();
+					$(this).hide();
 				}
 				);
-				
+
 				$('article').show();
 				$('footer').show();
 				$('article').animate(
@@ -791,24 +798,28 @@ $(document).ready(function ()
 					opacity : 1
 				}, 400, function ()
 				{}
+
 				);
-				
+
 				$('footer').animate(
 				{
 					opacity : 1
 				}, 400, function ()
 				{}
+
 				);
 			}
 			else
 			{
-				$('#editor-panel').css('opacity', '0');
-				$('#editor-panel').show();
-				$('#editor-panel').animate(
+				var editor_panel = $('#editor-panel');
+				editor_panel.css('opacity', '0');
+				editor_panel.show();
+				editor_panel.animate(
 				{
 					opacity : 1
 				}, 400, function ()
 				{}
+
 				);
 
 				$('article').animate(
@@ -816,7 +827,7 @@ $(document).ready(function ()
 					opacity : 0
 				}, 400, function ()
 				{
-					$('article').hide();
+					$(this).hide();
 				}
 				);
 
@@ -825,7 +836,7 @@ $(document).ready(function ()
 					opacity : 0
 				}, 400, function ()
 				{
-					$('footer').hide();
+					$(this).hide();
 				}
 				);
 			}
