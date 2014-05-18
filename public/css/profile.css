@@ -1,21 +1,28 @@
-﻿/* блок с контентом */
+﻿#propage {
+	position:absolute;
+	width:100%;
+}
+
+/* блок с контентом */
 
 #procontent {
 	position:absolute;
-	min-height: 70%;
-	width: 900px;
+	width: 73%;
+	min-height: 230px;
 	background: #FFFFFF;
-	margin: 260px 0 0 0;
+	left: 0px;
+	top: 260px;
 }
 
 /* блок со статистикой */
 
 #proactivity {
 	position: absolute;
-	width: 250px;
-	height: 700px;
+	width: 25%;
+	min-height: 230px;
 	background: #FFFFFF;
-	margin: 20px 0 0 920px;
+	right: 0px;
+	top: 260px;
 }
 
 /* шапка профиля */
@@ -23,7 +30,7 @@
 #prohead {
 	position:absolute;
 	height: 220px;
-	width: 900px;
+	width: 100%;
 	background: #FFFFFF;
 	margin: 20px 0 0 0;
 }

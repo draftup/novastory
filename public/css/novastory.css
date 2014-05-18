@@ -36,12 +36,11 @@ footer {
 
 #page-content {
 	position:absolute;
-	width: 1170px;
-	min-height: 100%;
+	width: 900px;
 	padding-top: 45px;
 	z-index: 0;
 	left: 50%;
-	margin: 0 0 0 -585px;
+	margin: 0 0 0 -450px;
 }
 
 /*Верхняя панель: кнопки навигации*/
@@ -52,7 +51,6 @@ footer {
 	display:inline-block;
 	text-align:center;
 }
-
 
 .left-button a
 {
