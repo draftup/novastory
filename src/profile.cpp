@@ -31,6 +31,22 @@ QByteArray Profile::html() const
 	data = data.replace(QString("{their.users.subscriptions_count}"), QString::number(tragetUser->subscriptions().size()));
 	data = data.replace(QString("{their.users.subscribed_count}"), QString::number(tragetUser->subscribed().size()));
 
+	QString subscriptions;
+	for (User& subscription : tragetUser->subscriptions())
+	{
+		QString name = !subscription.firstName().isEmpty() ? subscription.firstName() + " " + subscription.lastName() : subscription.nickName();
+		subscriptions += QString("<div class=\"userava\"><a href=\"/%3\"><img src=\"/avatar/%1\" alt=\"%2\" /></a></div>\n").arg(subscription.userid()).arg(name).arg(subscription.profileId());
+	}
+	data = data.replace(QString("{their.users.subscriptions_block}"), subscriptions);
+
+	QString subscribed;
+	for (User& subscription : tragetUser->subscribed())
+	{
+		QString name = !subscription.firstName().isEmpty() ? subscription.firstName() + " " + subscription.lastName() : subscription.nickName();
+		subscribed += QString("<div class=\"userava\"><a href=\"/%3\"><img src=\"/avatar/%1\" alt=\"%2\" /></a></div>\n").arg(subscription.userid()).arg(name).arg(subscription.profileId());
+	}
+	data = data.replace(QString("{their.users.subscribed_block}"), subscribed);
+
 	return data.toUtf8();
 }
 

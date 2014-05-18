@@ -3,6 +3,7 @@
 
 #include "sql/sqlizable.h"
 #include "jsonthrower.h"
+#include "user.h"
 
 class Test_TextEditor;
 
@@ -13,22 +14,23 @@ class TextEditor : protected Sqlizable, public JsonThrower
 {
 	friend class ::Test_TextEditor;
 	Q_OBJECT
-	Q_PROPERTY(int userid READ userid WRITE setUserID RESET resetUserid)
+	Q_PROPERTY(int userid READ userid WRITE setUserID)
 	Q_PROPERTY(QString text READ text WRITE setText RESET resetText)
 public:
 	TextEditor();
 
 	int userid() const;
 	void setUserID(int userid);
-	void resetUserid();
+	void setUser(const User& user);
 
 	const QString& text() const;
 	void setText(const QString& text);
 	void resetText();
 
 	bool update();
+	bool sync();
 private:
-	int m_userid;
+	User m_user;
 	QString m_text;
 };
 

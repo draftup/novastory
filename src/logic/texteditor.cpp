@@ -13,17 +13,12 @@ TextEditor::TextEditor()
 
 int TextEditor::userid() const
 {
-	return m_userid;
+	return m_user.userid();
 }
 
 void TextEditor::setUserID(int userid)
 {
-	m_userid = userid;
-}
-
-void TextEditor::resetUserid()
-{
-	m_userid = -1;
+	m_user.setUserID(userid);
 }
 
 const QString& TextEditor::text() const
@@ -43,19 +38,9 @@ void TextEditor::resetText()
 
 bool TextEditor::update()
 {
-	if (m_userid < 1)
+	if (!m_user.isLogined())
 	{
-		JSON_ERROR("Email not valid", 1);
-		return false;
-	}
-
-	SqlQuery userExistCheck;
-	userExistCheck.prepare("SELECT userid FROM users WHERE userid = ?");
-	userExistCheck.bindValue(0, m_userid);
-	VERIFY(userExistCheck.exec());
-	if (userExistCheck.size() < 1)
-	{
-		JSON_ERROR("No such user", 2);
+		JSON_ERROR("Not loginned", 1);
 		return false;
 	}
 
@@ -63,15 +48,46 @@ bool TextEditor::update()
 	{
 		SqlQuery removeQuery;
 		removeQuery.prepare("DELETE FROM " + objectName() + " WHERE userid = ?");
-		removeQuery.bindValue(0, m_userid);
+		removeQuery.bindValue(0, userid());
 		return removeQuery.exec();
 	}
 
 	SqlQuery updateQuery;
 	updateQuery.prepare("INSERT INTO " + objectName() + "(userid, text) VALUES(:userid, :text) ON DUPLICATE KEY UPDATE text = :text");
-	updateQuery.bindValue(":userid", m_userid);
-	updateQuery.bindValue(":text", m_text);
+	updateQuery.bindValue(":userid", userid());
+	updateQuery.bindValue(":text", text());
 	return updateQuery.exec();
+}
+
+void TextEditor::setUser(const User& user)
+{
+	m_user = user;
+}
+
+bool TextEditor::sync()
+{
+	if (!m_user.isLogined())
+	{
+		JSON_ERROR("Not loginned", 1);
+		return false;
+	}
+
+	JSON_INSERT("text", QString());
+
+	SqlQuery selectQuery;
+	selectQuery.prepare("SELECT * FROM " + objectName() + " WHERE userid = :userid");
+	selectQuery.bindValue(":userid", userid());
+
+	VERIFY(selectQuery.exec());
+	if (selectQuery.size() == 1)
+	{
+		VERIFY(selectQuery.next());
+		QString text = selectQuery.value("text").toString();
+		setText(text);
+
+		JSON_INSERT("text", text);
+	}
+	return true;
 }
 
 }

@@ -25,7 +25,7 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/)
 	qDebug() << "Web server started at " << serverAddress() << ":" << serverPort();
 	QThreadPool::globalInstance()->setMaxThreadCount(WORKERS_NUMBER); // Maximum of working threads
 	qDebug() << "Maximum workers number: " << WORKERS_NUMBER;
-	QThreadPool::globalInstance()->setExpiryTimeout(30000);
+	QThreadPool::globalInstance()->setExpiryTimeout(WORKERS_MAX_TIME * 1000);
 }
 
 

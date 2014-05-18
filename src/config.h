@@ -24,5 +24,6 @@
 #else
 #define WORKERS_NUMBER 10
 #endif
+#define WORKERS_MAX_TIME 180
 
 #endif // RAWFILEHANDLER_H

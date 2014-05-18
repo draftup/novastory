@@ -692,5 +692,145 @@ $(document).ready(function ()
 			);
 		}
 	}
+
+	// Редактор
+
+	$('#editico').click(function ()
+	{
+		if (!$('#editor-panel').exists())
+		{
+			$('#editor-space').load('/editor.html #editor-panel', null, function ()
+			{
+				$('#editor-panel').hide();
+
+				$('article').animate(
+				{
+					opacity : 0
+				}, 400, function ()
+				{
+					$('article').hide();
+				}
+				);
+
+				$('article').animate(
+				{
+					opacity : 0
+				}, 400, function ()
+				{
+					$('footer').hide();
+				}
+				);
+
+				NovastoryApi.editorText(function (data)
+				{
+					if (data.error != null && !data.error)
+					{
+						$('#editor-panel').css('opacity', '0');
+						$('#editor-panel').show();
+						$('#editor-panel').animate(
+						{
+							opacity : 1
+						}, 400, function ()
+						{}
+
+						);
+
+						$('#editor').val(data.text);
+					}
+
+					// Main backup function
+					function backupEditor()
+					{
+						if ($("#editor").exists())
+						{
+							NovastoryApi.editorUpdate($("#editor").val());
+						}
+					}
+
+					// Back up tab close
+					window.onbeforeunload = backupEditor;
+
+					// Back up every 15 sec
+					var saveTimer = setInterval(backupEditor, 5000);
+
+					$(window).focus(function ()
+					{
+						if (!saveTimer)
+							saveTimer = setInterval(backupEditor, 5000);
+					}
+					);
+
+					$(window).blur(function ()
+					{
+						clearInterval(saveTimer);
+						saveTimer = 0;
+					}
+					);
+				}
+				);
+			}
+			);
+		}
+		else
+		{
+			if (!$('#editor-panel').is(":hidden"))
+			{
+				$('#editor-panel').animate(
+				{
+					opacity : 0
+				}, 400, function ()
+				{
+					$('#editor-panel').hide();
+				}
+				);
+				
+				$('article').show();
+				$('footer').show();
+				$('article').animate(
+				{
+					opacity : 1
+				}, 400, function ()
+				{}
+				);
+				
+				$('footer').animate(
+				{
+					opacity : 1
+				}, 400, function ()
+				{}
+				);
+			}
+			else
+			{
+				$('#editor-panel').css('opacity', '0');
+				$('#editor-panel').show();
+				$('#editor-panel').animate(
+				{
+					opacity : 1
+				}, 400, function ()
+				{}
+				);
+
+				$('article').animate(
+				{
+					opacity : 0
+				}, 400, function ()
+				{
+					$('article').hide();
+				}
+				);
+
+				$('footer').animate(
+				{
+					opacity : 0
+				}, 400, function ()
+				{
+					$('footer').hide();
+				}
+				);
+			}
+		}
+	}
+	);
 }
 );

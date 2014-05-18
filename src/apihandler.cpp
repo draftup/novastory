@@ -94,17 +94,21 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 	else if (hook == "editorupdate")
 	{
 		User user;
-		if (user.loginByToken(post["email"], stoken))
-		{
-			TextEditor editor;
-			editor.setUserID(user.userid());
-			editor.setText(post["text"]);
-			json = editor.jsonString().toUtf8();
-		}
-		else
-		{
-			json = user.jsonString().toUtf8();
-		}
+		user.loginByToken(userid, stoken);
+		TextEditor editor;
+		editor.setUser(user);
+		editor.setText(post["text"]);
+		editor.update();
+		json = editor.jsonString().toUtf8();
+	}
+	else if (hook == "editortext")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		TextEditor editor;
+		editor.setUser(user);
+		editor.sync();
+		json = editor.jsonString().toUtf8();
 	}
 	else if (hook == "subscribe")
 	{
