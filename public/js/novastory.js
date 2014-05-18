@@ -694,83 +694,82 @@ $(document).ready(function ()
 	}
 
 	// Редактор
-
-	$('#editico').click(function ()
+	function hideEditor()
 	{
-		function closeEditor()
+		$('#editor-panel').animate(
 		{
-			$('#editor-panel').animate(
-			{
-				opacity : 0
-			}, 400, function ()
-			{
-				$(this).hide();
-			}
-			);
-
-			$('article').show();
-			$('footer').show();
-			$('article').animate(
-			{
-				opacity : 1
-			}, 400, function ()
-			{}
-
-			);
-
-			$('footer').animate(
-			{
-				opacity : 1
-			}, 400, function ()
-			{}
-
-			);
-		}
-
-		function openEditor()
+			opacity : 0
+		}, 400, function ()
 		{
-			var editor_panel = $('#editor-panel');
-			editor_panel.css('opacity', '0');
-			editor_panel.show();
-			editor_panel.animate(
-			{
-				opacity : 1
-			}, 400, function ()
-			{}
-
-			);
-
-			$('article').animate(
-			{
-				opacity : 0
-			}, 400, function ()
-			{
-				$(this).hide();
-			}
-			);
-
-			$('footer').animate(
-			{
-				opacity : 0
-			}, 400, function ()
-			{
-				$(this).hide();
-			}
-			);
+			$(this).hide();
 		}
+		);
 
-		function switchEditor()
+		$('article').show();
+		$('footer').show();
+		$('article').animate(
 		{
-			if (!$('#editor-panel').is(":hidden"))
-			{
-				closeEditor()
-			}
-			else
-			{
-				openEditor();
-			}
-		}
+			opacity : 1
+		}, 400, function ()
+		{}
 
+		);
+
+		$('footer').animate(
+		{
+			opacity : 1
+		}, 400, function ()
+		{}
+
+		);
+	}
+
+	function showEditor()
+	{
+		var editor_panel = $('#editor-panel');
+		editor_panel.css('opacity', '0');
+		editor_panel.show();
+		editor_panel.animate(
+		{
+			opacity : 1
+		}, 400, function ()
+		{}
+
+		);
+
+		$('article').animate(
+		{
+			opacity : 0
+		}, 400, function ()
+		{
+			$(this).hide();
+		}
+		);
+
+		$('footer').animate(
+		{
+			opacity : 0
+		}, 400, function ()
+		{
+			$(this).hide();
+		}
+		);
+	}
+
+	function switchEditor()
+	{
+		if (!$('#editor-panel').is(":hidden"))
+		{
+			hideEditor()
+		}
+		else
+		{
+			showEditor();
+		}
+	}
+
+	function openEditor()
+	{
 		if (!$('#editor-panel').exists())
 		{
 			// скрываем кнопку от дальнейших нажатий и перезагрузок
@@ -819,18 +818,6 @@ $(document).ready(function ()
 						$('#editor').val(data.text);
 					}
 
-					// открытие редактора по комбинации Ctrl+E
-
-					$(document).keydown(function (e)
-					{
-						if (e.ctrlKey && e.which === 69)
-						{
-							switchEditor();
-							e.preventDefault();
-						}
-					}
-					);
-
 					// Main backup function
 					function backupEditor()
 					{
@@ -867,6 +854,18 @@ $(document).ready(function ()
 		else
 		{
 			switchEditor();
+		}
+	}
+
+	$('#editico').click(openEditor);
+
+	// открытие редактора по комбинации Ctrl+E
+	$(document).keydown(function (e)
+	{
+		if (e.ctrlKey && e.which === 69)
+		{
+			openEditor();
+			e.preventDefault();
 		}
 	}
 	);
