@@ -35,7 +35,7 @@ NovastoryApi.restorepassword = function (email, callback)
 	},
 		callback,
 		'json');
-}
+};
 
 NovastoryApi.updateAvatar = function (avatar, callback)
 {
@@ -46,7 +46,7 @@ NovastoryApi.updateAvatar = function (avatar, callback)
 	},
 		callback,
 		'json');
-}
+};
 
 NovastoryApi.updateUserPic = function (userpic, callback)
 {
@@ -57,7 +57,7 @@ NovastoryApi.updateUserPic = function (userpic, callback)
 	},
 		callback,
 		'json');
-}
+};
 
 NovastoryApi.updateProfile = function (firstname, lastname, nickname, profileid, callback)
 {
@@ -71,7 +71,7 @@ NovastoryApi.updateProfile = function (firstname, lastname, nickname, profileid,
 	},
 		callback,
 		'json');
-}
+};
 
 NovastoryApi.myProfile = function (callback)
 {
@@ -80,7 +80,7 @@ NovastoryApi.myProfile = function (callback)
 	{},
 		callback,
 		'json');
-}
+};
 
 NovastoryApi.subscribe = function (targetuser, callback)
 {
@@ -91,7 +91,7 @@ NovastoryApi.subscribe = function (targetuser, callback)
 	},
 		callback,
 		'json');
-}
+};
 
 NovastoryApi.unsubscribe = function (targetuser, callback)
 {
@@ -102,7 +102,7 @@ NovastoryApi.unsubscribe = function (targetuser, callback)
 	},
 		callback,
 		'json');
-}
+};
 
 NovastoryApi.isSubscribed = function (targetuser, callback)
 {
@@ -113,4 +113,24 @@ NovastoryApi.isSubscribed = function (targetuser, callback)
 	},
 		callback,
 		'json');
-}
+};
+
+NovastoryApi.editorUpdate = function (text, callback)
+{
+	$.post(
+		'/api/editorupdate',
+	{
+		text : text,
+	},
+		callback,
+		'json');
+};
+
+NovastoryApi.editorText = function (callback)
+{
+	$.post(
+		'/api/editortext',
+	{},
+		callback,
+		'json');
+};
