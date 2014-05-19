@@ -711,7 +711,7 @@ $(document).ready(function ()
 
 		function hideEditor()
 		{
-			$('#editor-panel').animate(
+			$('#editor-page').animate(
 			{
 				opacity : 0
 			}, 400, function ()
@@ -744,7 +744,7 @@ $(document).ready(function ()
 
 		function showEditor()
 		{
-			var editor_panel = $('#editor-panel');
+			var editor_panel = $('#editor-page');
 			editor_panel.css('opacity', '0');
 			editor_panel.show();
 			editor_panel.animate(
@@ -781,7 +781,7 @@ $(document).ready(function ()
 
 		function switchEditor()
 		{
-			if (!$('#editor-panel').is(":hidden"))
+			if (!$('#editor-page').is(":hidden"))
 			{
 				hideEditor()
 			}
@@ -793,18 +793,18 @@ $(document).ready(function ()
 		
 		function isOpenedEditor()
 		{
-			return !$('#editor-panel').is(":hidden");
+			return !$('#editor-page').is(":hidden");
 		}
 
-		if (!$('#editor-panel').exists())
+		if (!$('#editor-page').exists())
 		{
 			// скрываем кнопку от дальнейших нажатий и перезагрузок
 			$('#editico').hide();
 
-			$('#editor-space').load('/editor.html #editor-panel', null, function ()
+			$('#editor-space').load('/editor.html #editor-page', null, function ()
 			{
 				// сразу же скрываем панель от наглых глаз
-				$('#editor-panel').hide();
+				$('#editor-page').hide();
 
 				NovastoryApi.editorText(function (data)
 				{
@@ -812,7 +812,7 @@ $(document).ready(function ()
 
 					if (data.error != null && !data.error)
 					{
-						var editor_panel = $('#editor-panel');
+						var editor_panel = $('#editor-page');
 						editor_panel.css('opacity', '0');
 						editor_panel.show();
 						editor_panel.animate(
