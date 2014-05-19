@@ -398,3 +398,15 @@ input[type="search"] {
 	color: #787878;
 }
 	
+	
+/* помощник */
+#helpme-dialog
+{
+	display: none;
+	position: fixed;
+	right: 0px;
+	background: #EDEDED;
+	z-index: 9;
+	padding: 15px;
+	top: -200px;
+}

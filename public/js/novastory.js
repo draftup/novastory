@@ -897,5 +897,31 @@ $(document).ready(function ()
 		}
 	}
 	);
+	
+	$('#helpico').click(function()
+	{
+		if ($('#helpme-dialog').is(":hidden"))
+		{
+			$('#helpme-dialog').show();
+			$('#helpme-dialog').animate(
+						{
+							top : 40
+						}, 400, function ()
+						{
+						}
+						);
+		}
+		else
+		{
+			$('#helpme-dialog').animate(
+						{
+							top : -200
+						}, 400, function ()
+						{
+							$(this).hide();
+						}
+						);
+		}
+	});
 }
 );
