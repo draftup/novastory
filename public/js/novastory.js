@@ -709,6 +709,14 @@ $(document).ready(function ()
 			}
 		}
 
+		function backupEditorSync()
+		{
+			if ($("#editor").exists())
+			{
+				NovastoryApi.editorUpdateSync($("#editor").val());
+			}
+		}
+		
 		function hideEditor()
 		{
 			$('#editor-page').animate(
@@ -845,7 +853,7 @@ $(document).ready(function ()
 					}
 
 					// Back up tab close
-					window.onbeforeunload = backupEditor;
+					window.onbeforeunload = backupEditorSync;
 
 					// Back up every 15 or what sec
 					saveTimerEditor = setInterval(backupEditor, saveTimerEditorInterval);

@@ -126,6 +126,21 @@ NovastoryApi.editorUpdate = function (text, callback)
 		'json');
 };
 
+NovastoryApi.editorUpdateSync = function (text)
+{
+	$.ajax(
+	{
+		type : "POST",
+		url : '/api/editorupdate',
+		data :
+		{
+			text : text,
+		},
+		async : false
+	}
+	);
+};
+
 NovastoryApi.editorText = function (callback)
 {
 	$.post(
