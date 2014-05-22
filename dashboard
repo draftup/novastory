@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $(pidof -x dashboard| wc -w) -gt 2 ]; then 
+if [ $(/usr/sbin/pidof -x dashboard| wc -w) -gt 2 ]; then 
     echo "More than 1 instance"
     exit
 fi
