@@ -27,7 +27,6 @@ void Test_TextEditor::initTestCase()
 	buser.setRawPassword("doentcare");
 	QVERIFY(buser.addUser());
 	QVERIFY(buser.login("doentcare@dsadasd.ds", sha1("doentcare")));
-	QVERIFY(false);
 }
 
 void Test_TextEditor::init()
