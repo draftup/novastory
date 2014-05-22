@@ -9,4 +9,4 @@ SOURCE_PATH="`dirname \"$0\"`"
 export CCACHE_DIR="/home/builder/.ccache"
 
 cd "$SOURCE_PATH/testing"
-xvfb-run -a -n 11 ctest -D Continuous
+xvfb-run -a -n 11 ctest -D Continuous && make install
