@@ -9,4 +9,4 @@ SOURCE_PATH="`dirname \"$0\"`"
 export CCACHE_DIR="/home/builder/.ccache"
 
 cd "$SOURCE_PATH/build"
-xvfb-run -a -n 11 ctest -D Continuous && (kill `cat $LIVE_DIRECTORY/bin/novastory.pid`; make install; "$LIVE_DIRECTORY/bin/novastory_server" -d)
+xvfb-run -a -n 11 ctest -D Continuous && (kill `cat $SOURCE_PATH/bin/novastory.pid`; make install; "$SOURCE_PATH/bin/novastory_server" -d)
