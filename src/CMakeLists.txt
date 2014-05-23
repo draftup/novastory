@@ -30,6 +30,7 @@ set(HEADERS_TOMOC
 	logic/user.h
 	logic/captcha.h
 	logic/texteditor.h
+	logic/textrevision.h
 	logic/avatar.h
 	logic/webdata.h
 	logic/userpic.h
@@ -38,6 +39,8 @@ set(HEADERS_TOMOC
 set(HEADERS
 	sql/sqlquery.h
 	sql/sqldatabase.h
+	
+	logic/textrevisioncontainer.h
 	
 	utils/globals.h
 	utils/lrucache.hpp
@@ -69,6 +72,8 @@ set(SOURCES
 	logic/user.cpp
 	logic/captcha.cpp
 	logic/texteditor.cpp
+	logic/textrevision.cpp
+	logic/textrevisioncontainer.cpp
 	logic/avatar.cpp
 	logic/webdata.cpp
 	logic/userpic.cpp
