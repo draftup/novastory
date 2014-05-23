@@ -635,7 +635,7 @@ $(document).ready(function ()
 			// свой профиль
 			$('#wallref').addClass('myown');
 		}
-		else
+		else if(USERID > 0)
 		{
 			$("#myprocount").hide();
 			NovastoryApi.isSubscribed(profileid, function (data)
