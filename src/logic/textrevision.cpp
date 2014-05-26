@@ -36,16 +36,6 @@ void TextRevision::setUser(const User& user)
 	m_user = user;
 }
 
-const int& TextRevision::revision() const
-{
-	return m_revision;
-}
-
-void TextRevision::setRevision(int revision)
-{
-	m_revision = revision;
-}
-
 const int& TextRevision::revisionId() const
 {
 	return m_revisionId;
@@ -54,6 +44,13 @@ const int& TextRevision::revisionId() const
 void TextRevision::setRevisionID(int revision)
 {
 	m_revisionId = revision;
+}
+
+TextRevision::TextRevision()
+{
+	setObjectName("textrevisions");
+	setProperty("auto_increment", QVariant("revisionid"));
+	setProperty("primary_key", QVariant("revisionid"));
 }
 
 }

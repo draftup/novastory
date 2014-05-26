@@ -10,13 +10,15 @@ class Test_TextRevision;
 namespace novastory
 {
 
+class TextRevisionContainer;
+
 class TextRevision : protected Sqlizable, public JsonThrower
 {
 	friend class ::Test_TextRevision;
+	friend class TextRevisionContainer;
 	Q_OBJECT
 	Q_PROPERTY(int revisionid READ revisionId WRITE setRevisionID)
 	Q_PROPERTY(int userid READ userid WRITE setUserID)
-	Q_PROPERTY(int revision READ revision WRITE setRevision)
 	Q_PROPERTY(QString text READ text WRITE setText RESET resetText)
 public:
 	TextRevision();
@@ -29,15 +31,11 @@ public:
 	void setText(const QString& text);
 	void resetText();
 
-	const int& revision() const;
-	void setRevision(int revision);
-
 	const int& revisionId() const;
 	void setRevisionID(int revision);
 private:
 	User m_user;
 	QString m_text;
-	int m_revision;
 	int m_revisionId;
 };
 
