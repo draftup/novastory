@@ -782,7 +782,7 @@ bool novastory::User::operator==(const User& l) const
 	return false;
 }
 
-bool novastory::User::operator!=( const User& l ) const
+bool novastory::User::operator!=(const User& l) const
 {
 	return !operator==(l);
 }
