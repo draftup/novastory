@@ -129,36 +129,37 @@ $(document).ready(function ()
 		);
 	}
 
-	function login()
+	function login(event)
 	{
 		var login = $('#loginmail').val();
 		var pass = $('#loginpass').val();
-		NovastoryApi.login(login, pass, function (data)
+
+		var data = NovastoryApi.loginSync(login, pass);
+		if (data.logined != null && data.logined)
 		{
-			if (data.logined != null && data.logined)
+			USERID = data.userid;
+			STOKEN = data.token;
+			$.cookie("userid", data.userid,
 			{
-				USERID = data.userid;
-				STOKEN = data.token;
-				$.cookie("userid", data.userid,
-				{
-					path : '/',
-					expires : 7
-				}
-				);
-				$.cookie("stoken", data.token,
-				{
-					path : '/',
-					expires : 7
-				}
-				);
-				window.location.href = window.location.href;
+				path : '/',
+				expires : 7
 			}
-			else
+			);
+			$.cookie("stoken", data.token,
 			{
-				Novastory.error("Login failed. Check your login and password");
+				path : '/',
+				expires : 7
 			}
+			);
+			// Does not reload page because work will do this
+			//window.location.href = window.location.href;
 		}
-		);
+		else
+		{
+			Novastory.error("Login failed. Check your login and password");
+			if (event)
+				event.preventDefault();
+		}
 	}
 
 	function logout()
@@ -256,11 +257,18 @@ $(document).ready(function ()
 		{
 			$('#login-space').load('/modal-login.html #login-panel', null, function ()
 			{
+				var loginForm = document.getElementById("login-form");
+				loginForm.onsubmit = function (event)
+				{
+					login(event);
+				};
+				$('#login-form').attr('action', window.location.href);
+
 				$('#loginmail').keyup(function (e)
 				{
 					if (e.keyCode == 13)
 					{
-						login();
+						$('#login-form').submit();
 					}
 				}
 				);
@@ -269,14 +277,14 @@ $(document).ready(function ()
 				{
 					if (e.keyCode == 13)
 					{
-						login();
+						$('#login-form').submit();
 					}
 				}
 				);
 
 				$('#loginbutt').click(function ()
 				{
-					login();
+					$('#login-form').submit();
 				}
 				);
 
@@ -635,7 +643,7 @@ $(document).ready(function ()
 			// свой профиль
 			$('#wallref').addClass('myown');
 		}
-		else if(USERID > 0)
+		else if (USERID > 0)
 		{
 			$("#myprocount").hide();
 			NovastoryApi.isSubscribed(profileid, function (data)
@@ -693,7 +701,6 @@ $(document).ready(function ()
 		}
 	}
 
-	
 	//backup timer
 	var saveTimerEditor = 0;
 	var saveTimerEditorInterval = 15000;
@@ -716,7 +723,7 @@ $(document).ready(function ()
 				NovastoryApi.editorUpdateSync($("#editor").val());
 			}
 		}
-		
+
 		function hideEditor()
 		{
 			$('#editor-page').animate(
@@ -782,7 +789,7 @@ $(document).ready(function ()
 			);
 
 			$('#editor').focus();
-			
+
 			if (!saveTimerEditor)
 				saveTimerEditor = setInterval(backupEditor, saveTimerEditorInterval);
 		}
@@ -798,7 +805,7 @@ $(document).ready(function ()
 				showEditor();
 			}
 		}
-		
+
 		function isOpenedEditor()
 		{
 			return !$('#editor-page').is(":hidden");
@@ -894,7 +901,7 @@ $(document).ready(function ()
 		}
 	}
 	);
-	
+
 	// открытие профиля на Ctrl+P
 	$(document).keydown(function (e)
 	{
@@ -905,31 +912,32 @@ $(document).ready(function ()
 		}
 	}
 	);
-	
-	$('#helpico').click(function()
+
+	$('#helpico').click(function ()
 	{
 		if ($('#helpme-dialog').is(":hidden"))
 		{
 			$('#helpme-dialog').show();
 			$('#helpme-dialog').animate(
-						{
-							top : 40
-						}, 400, function ()
-						{
-						}
-						);
+			{
+				top : 40
+			}, 400, function ()
+			{}
+
+			);
 		}
 		else
 		{
 			$('#helpme-dialog').animate(
-						{
-							top : -200
-						}, 400, function ()
-						{
-							$(this).hide();
-						}
-						);
+			{
+				top : -200
+			}, 400, function ()
+			{
+				$(this).hide();
+			}
+			);
 		}
-	});
+	}
+	);
 }
 );
