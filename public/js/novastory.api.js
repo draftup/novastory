@@ -12,6 +12,28 @@ NovastoryApi.login = function (email, rawpassword, callback)
 		'json');
 };
 
+NovastoryApi.loginSync = function (email, rawpassword)
+{
+	var data;
+	$.ajax(
+	{
+		type : "POST",
+		url : '/api/login',
+		data :
+		{
+			email : email,
+			password : $.sha1(rawpassword)
+		},
+		async : false,
+		success : function (apidata)
+		{
+			data = apidata;
+		}
+	}
+	);
+	return data;
+};
+
 NovastoryApi.register = function (email, rawpassword, challenge, response, callback)
 {
 	$.post(
