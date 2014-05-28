@@ -20,8 +20,39 @@ Sqlizable::Sqlizable() : QObject()
 Sqlizable::Sqlizable(const novastory::Sqlizable& obj)  : QObject()
 {
 	setObjectName(obj.objectName());
+
+	QVariant auto_increment = obj.property("auto_increment");
+	if(auto_increment.isValid())
+		setProperty("auto_increment", auto_increment);
+
+	QVariant primary_key = obj.property("primary_key");
+	if(primary_key.isValid())
+		setProperty("primary_key", primary_key);
+
+	QVariant hidden = obj.property("hidden");
+	if(hidden.isValid())
+		setProperty("hidden", hidden);
 }
 
+// Nothing is copying
+Sqlizable& Sqlizable::operator=(const Sqlizable& obj)
+{
+	setObjectName(obj.objectName());
+	
+	QVariant auto_increment = obj.property("auto_increment");
+	if(auto_increment.isValid())
+		setProperty("auto_increment", auto_increment);
+
+	QVariant primary_key = obj.property("primary_key");
+	if(primary_key.isValid())
+		setProperty("primary_key", primary_key);
+
+	QVariant hidden = obj.property("hidden");
+	if(hidden.isValid())
+		setProperty("hidden", hidden);
+
+	return *this;
+}
 
 
 /*
@@ -80,7 +111,12 @@ bool Sqlizable::insertSQL()
 
 			values.append(propValue);
 
-			sql += (i == propCount - 1) ? "`" + propName + "`" : "`" + propName + "`, ";
+			sql += "`" + propName + "`, ";
+		}
+
+		if(values.size() > 0)
+		{
+			sql = sql.left(sql.length() - 2);
 		}
 
 		int valuesCout = values.count();
@@ -275,13 +311,6 @@ bool Sqlizable::removeSQL(const QString& basis)
 	return removeSQL(QList<QString>() << basis);
 }
 
-// Nothing is copying
-Sqlizable& Sqlizable::operator=(const Sqlizable& obj)
-{
-	setObjectName(obj.objectName());
-	return *this;
-}
-
 bool Sqlizable::updateSQL(const QList<QString>& basis, const QList<QString>& ignoreVariables /* = QList<QString>() */)
 {
 	QString objName = objectName();
@@ -341,7 +370,12 @@ bool Sqlizable::updateSQL(const QList<QString>& basis, const QList<QString>& ign
 
 		values.append(propValue);
 
-		sql += (i == propCount - 1) ? "`" + propName + "` = ? WHERE " : "`" + propName + "` = ?, ";
+		sql += "`" + propName + "` = ?, ";
+	}
+
+	if(values.size() > 0)
+	{
+		sql = sql.left(sql.length() - 2) + " WHERE ";
 	}
 
 	// Founding keys
