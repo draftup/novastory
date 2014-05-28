@@ -19,6 +19,7 @@ class TextRevision : protected Sqlizable, public JsonThrower
 	Q_OBJECT
 	Q_PROPERTY(int revisionid READ revisionId WRITE setRevisionID)
 	Q_PROPERTY(int userid READ userid WRITE setUserID)
+	Q_PROPERTY(bool release READ isRelease WRITE setRelease RESET resetRelease);
 	Q_PROPERTY(QString text READ text WRITE setText RESET resetText)
 public:
 	TextRevision();
@@ -31,12 +32,19 @@ public:
 	void setText(const QString& text);
 	void resetText();
 
+	bool isRelease() const;
+	void setRelease(bool rel);
+	void resetRelease();
+
 	const int& revisionId() const;
 	void setRevisionID(int revision);
+
+	bool operator==(const TextRevision& rv) const;
 private:
 	User m_user;
 	QString m_text;
 	int m_revisionId;
+	bool m_release;
 };
 
 }

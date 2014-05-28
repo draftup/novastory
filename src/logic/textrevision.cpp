@@ -46,11 +46,31 @@ void TextRevision::setRevisionID(int revision)
 	m_revisionId = revision;
 }
 
-TextRevision::TextRevision()
+TextRevision::TextRevision() : m_release(false)
 {
 	setObjectName("textrevisions");
 	setProperty("auto_increment", QVariant("revisionid"));
 	setProperty("primary_key", QVariant("revisionid"));
+}
+
+bool TextRevision::isRelease() const
+{
+	return m_release;
+}
+
+void TextRevision::setRelease(bool rel)
+{
+	m_release = rel;
+}
+
+void TextRevision::resetRelease()
+{
+	m_release = false;
+}
+
+bool TextRevision::operator==(const TextRevision& rv) const
+{
+	return revisionId() == rv.revisionId();
 }
 
 }

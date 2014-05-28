@@ -21,6 +21,7 @@ public:
 	bool save();
 	bool save(const QString& text);
 	void clear();
+	bool release(int targetRevision);
 
 	void setText(const QString& text);
 	void setUser(const User& user);
@@ -29,6 +30,7 @@ public:
 private:
 	User m_user;
 	QString m_text;
+	bool m_synchronized;
 };
 
 }

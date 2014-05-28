@@ -6,7 +6,7 @@
 namespace novastory
 {
 
-TextRevisionContainer::TextRevisionContainer()
+TextRevisionContainer::TextRevisionContainer() : m_synchronized(false)
 {
 }
 
@@ -33,7 +33,7 @@ bool TextRevisionContainer::sync()
 		revision.syncRecord(selectQuery);
 		insert(revision.revisionId(), revision);
 	}
-
+	m_synchronized = true;
 	return true;
 }
 
@@ -95,6 +95,49 @@ void TextRevisionContainer::clear()
 	query.bindValue(0, userid());
 	VERIFY(query.exec());
 	QMap::clear();
+}
+
+bool TextRevisionContainer::release(int targetRevision)
+{
+	if (!m_user.isLogined())
+	{
+		JSON_ERROR("Not loginned", 1);
+		return false;
+	}
+
+	if (!m_synchronized)
+	{
+		sync();
+		Q_ASSERT(m_synchronized);
+	}
+
+	TextRevision* lastRevision = &last();
+	// If last revision promote it to release
+	if (lastRevision->revisionId() == targetRevision)
+	{
+		if (lastRevision->isRelease())
+		{
+			return true;
+		}
+		lastRevision->setRelease(true);
+		return lastRevision->updateSQL("revisionid", QList<QString>() << "text");
+	}
+	else
+	{
+		if (!contains(targetRevision))
+		{
+			JSON_ERROR("Revision not founded", 2);
+			return false;
+		}
+		TextRevision newRevision = value(targetRevision); // copy of old revision
+		newRevision.setRelease(true);
+		newRevision.setRevisionID(-1);
+		VERIFY(newRevision.insertSQL());
+		Q_ASSERT(newRevision.revisionId() > 0);
+		insert(newRevision.revisionId(), newRevision);
+	}
+
+	return true;
 }
 
 }

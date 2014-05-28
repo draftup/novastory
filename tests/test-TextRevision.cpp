@@ -18,6 +18,9 @@ private slots:
 
 	void createRevision();
 	void syncRevision();
+
+	void releaseMiddle();
+	void releaseLast();
 private:
 	User buser;
 	TextRevisionContainer container;
@@ -46,7 +49,7 @@ void Test_TextRevision::cleanupTestCase()
 {
 	SqlQuery q;
 	q.exec(QString("SELECT * FROM textrevisions WHERE userid = ") + QString::number(buser.userid()));
-	QCOMPARE(q.size(), 2);
+	QCOMPARE(q.size(), 4);
 	container.clear();
 	q.exec(QString("SELECT * FROM textrevisions WHERE userid = ") + QString::number(buser.userid()));
 	QCOMPARE(q.size(), 0);
@@ -69,6 +72,29 @@ void Test_TextRevision::syncRevision()
 	QCOMPARE(containerSync.size(), 0);
 	QVERIFY(containerSync.sync());
 	QCOMPARE(containerSync.size(), 2);
+}
+
+void Test_TextRevision::releaseMiddle()
+{
+	QVERIFY(!container.release(0));
+	QVERIFY(container.release(container.firstKey()));
+	QCOMPARE(container.size(), 3);
+	TextRevision& rv = container.last();
+	QCOMPARE(rv.isRelease(), true);
+	container.release(rv.revisionId());
+	QCOMPARE(container.size(), 3);
+	QCOMPARE(rv, container.last());
+}
+
+void Test_TextRevision::releaseLast()
+{
+	QVERIFY(container.save("privet4"));
+	QCOMPARE(container.size(), 4);
+	TextRevision& rv = container.last();
+	QCOMPARE(rv.text(), QString("privet4"));
+	QVERIFY(container.release(rv.revisionId()));
+	QCOMPARE(rv.isRelease(), true);
+	QCOMPARE(container.size(), 4);
 }
 
 /********************** DECLARE_TEST LIST ****************************/
