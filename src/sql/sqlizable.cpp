@@ -22,34 +22,46 @@ Sqlizable::Sqlizable(const novastory::Sqlizable& obj)  : QObject()
 	setObjectName(obj.objectName());
 
 	QVariant auto_increment = obj.property("auto_increment");
-	if(auto_increment.isValid())
+	if (auto_increment.isValid())
+	{
 		setProperty("auto_increment", auto_increment);
+	}
 
 	QVariant primary_key = obj.property("primary_key");
-	if(primary_key.isValid())
+	if (primary_key.isValid())
+	{
 		setProperty("primary_key", primary_key);
+	}
 
 	QVariant hidden = obj.property("hidden");
-	if(hidden.isValid())
+	if (hidden.isValid())
+	{
 		setProperty("hidden", hidden);
+	}
 }
 
 // Nothing is copying
 Sqlizable& Sqlizable::operator=(const Sqlizable& obj)
 {
 	setObjectName(obj.objectName());
-	
+
 	QVariant auto_increment = obj.property("auto_increment");
-	if(auto_increment.isValid())
+	if (auto_increment.isValid())
+	{
 		setProperty("auto_increment", auto_increment);
+	}
 
 	QVariant primary_key = obj.property("primary_key");
-	if(primary_key.isValid())
+	if (primary_key.isValid())
+	{
 		setProperty("primary_key", primary_key);
+	}
 
 	QVariant hidden = obj.property("hidden");
-	if(hidden.isValid())
+	if (hidden.isValid())
+	{
 		setProperty("hidden", hidden);
+	}
 
 	return *this;
 }
@@ -114,7 +126,7 @@ bool Sqlizable::insertSQL()
 			sql += "`" + propName + "`, ";
 		}
 
-		if(values.size() > 0)
+		if (values.size() > 0)
 		{
 			sql = sql.left(sql.length() - 2);
 		}
@@ -373,7 +385,7 @@ bool Sqlizable::updateSQL(const QList<QString>& basis, const QList<QString>& ign
 		sql += "`" + propName + "` = ?, ";
 	}
 
-	if(values.size() > 0)
+	if (values.size() > 0)
 	{
 		sql = sql.left(sql.length() - 2) + " WHERE ";
 	}
