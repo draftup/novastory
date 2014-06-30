@@ -2,6 +2,7 @@
 #include <QDebug>
 #include "utils/globals.h"
 #include "sql/sqlquery.h"
+#include <QJsonArray>
 
 namespace novastory
 {
@@ -138,6 +139,20 @@ bool TextRevisionContainer::release(int targetRevision)
 	}
 
 	return true;
+}
+
+QString TextRevisionContainer::json()
+{
+	QJsonArray array;
+	for(TextRevision& rev : *this)
+	{
+		QJsonObject revision;
+		revision.insert("revisionid", rev.revisionId());
+		//revision("c", rev.)
+		//array.append()
+	}
+
+	return QString();
 }
 
 }

@@ -12,6 +12,7 @@
 #include "logic/texteditor.h"
 #include "logic/avatar.h"
 #include "logic/userpic.h"
+#include "logic/textrevisioncontainer.h"
 
 namespace novastory
 {
@@ -109,6 +110,14 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		editor.setUser(user);
 		editor.sync();
 		json = editor.jsonString().toUtf8();
+	}
+	else if(hook == "revisions")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		TextRevisionContainer container;
+		container.setUser(user);
+		container.sync();
 	}
 	else if (hook == "subscribe")
 	{

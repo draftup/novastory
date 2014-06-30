@@ -27,6 +27,8 @@ public:
 	void setUser(const User& user);
 
 	int userid() const;
+
+	QString json();
 private:
 	User m_user;
 	QString m_text;
