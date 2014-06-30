@@ -111,7 +111,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		editor.sync();
 		json = editor.jsonString().toUtf8();
 	}
-	else if(hook == "revisions")
+	else if (hook == "revisions")
 	{
 		User user;
 		user.loginByToken(userid, stoken);

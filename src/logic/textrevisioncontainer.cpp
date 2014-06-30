@@ -144,7 +144,7 @@ bool TextRevisionContainer::release(int targetRevision)
 QString TextRevisionContainer::json()
 {
 	QJsonArray array;
-	for(TextRevision& rev : *this)
+	for (TextRevision& rev : *this)
 	{
 		QJsonObject revision;
 		revision.insert("revisionid", rev.revisionId());
