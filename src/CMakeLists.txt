@@ -38,6 +38,7 @@ set(HEADERS_TOMOC
 set(HEADERS
 	sql/sqlquery.h
 	sql/sqldatabase.h
+	sql/dbpatcher.h
 	
 	utils/globals.h
 	utils/lrucache.hpp
@@ -65,6 +66,7 @@ set(SOURCES
 	sql/sqlquery.cpp
 	sql/sqldatabase.cpp
 	sql/sqlizable.cpp
+	sql/dbpatcher.cpp
 	
 	logic/user.cpp
 	logic/captcha.cpp

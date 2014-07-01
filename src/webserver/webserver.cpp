@@ -3,6 +3,7 @@
 #include "webrouter.h"
 #include "utils/globals.h"
 #include "sql/sqldatabase.h"
+#include "sql/dbpatcher.h"
 #include <QThreadPool>
 #include <QDir>
 #include "config.h"
@@ -26,6 +27,10 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/)
 	QThreadPool::globalInstance()->setMaxThreadCount(WORKERS_NUMBER); // Maximum of working threads
 	qDebug() << "Maximum workers number: " << WORKERS_NUMBER;
 	QThreadPool::globalInstance()->setExpiryTimeout(WORKERS_MAX_TIME * 1000);
+
+	// Update db to last version
+	DBPatcher patcher;
+	patcher.patch();
 }
 
 
