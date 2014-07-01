@@ -43,7 +43,7 @@ private:
 
 }
 
-inline uint qHash(const novastory::DBPatcher::Table &key)
+inline uint qHash(const novastory::DBPatcher::Table& key)
 {
 	return qHash(key.table);
 }

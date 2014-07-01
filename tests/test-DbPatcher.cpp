@@ -22,9 +22,10 @@ void Test_DBPatcher::initTestCase()
 	// clear db struct
 	patcher.m_database.clear();
 
-	patcher.m_database << novastory::DBPatcher::Table{ 
-		"test_table", 
-		QList<novastory::DBPatcher::Column>({ 
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table",
+		QList<novastory::DBPatcher::Column>({
 			novastory::DBPatcher::Column{
 				"testid",
 				"unsigned int",
@@ -32,11 +33,11 @@ void Test_DBPatcher::initTestCase()
 				"PRI"
 			},
 			novastory::DBPatcher::Column{
-					"testfield",
-					"text",
-					true
-				}
-		}) 
+				"testfield",
+				"text",
+				true
+			}
+		})
 	};
 }
 
