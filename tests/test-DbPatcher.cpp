@@ -54,10 +54,10 @@ void Test_DBPatcher::create()
 				"PRI"
 			},
 			novastory::DBPatcher::Column{
-					"testfield",
-					"text",
-					true
-				}
+				"testfield",
+				"text",
+				true
+			}
 		})
 	};
 
@@ -78,10 +78,10 @@ void Test_DBPatcher::modify()
 				"PRI"
 			},
 			novastory::DBPatcher::Column{
-					"testfield",
-					"mediumtext",
-					true
-				}
+				"testfield",
+				"mediumtext",
+				true
+			}
 		})
 	};
 

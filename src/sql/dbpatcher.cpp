@@ -96,9 +96,13 @@ bool DBPatcher::Table::modify(const Table& old)
 		SqlQuery query;
 		status &= query.exec(QString("ALTER TABLE ADD `%1`").arg(column.serialize()));
 		if (status)
+		{
 			qDebug() << "Add new column '" << column.field << "'";
+		}
 		else
+		{
 			qCritical() << "Failed add new column '" << column.field << "'";
+		}
 	}
 
 	QSet<Column> removeColumns = old.columns.toSet() - columns.toSet();
@@ -107,9 +111,13 @@ bool DBPatcher::Table::modify(const Table& old)
 		SqlQuery query;
 		status &= query.exec(QString("ALTER TABLE DROP `%1`").arg(column.field));
 		if (status)
+		{
 			qDebug() << "Add new column '" << column.field << "'";
+		}
 		else
+		{
 			qCritical() << "Failed add new column '" << column.field << "'";
+		}
 	}
 
 	return status;
@@ -128,10 +136,10 @@ QString DBPatcher::Column::serialize() const
 	{
 		sql += " NOT NULL";
 	}
-	if (default != "NULL" && !default.isEmpty())
-	{
-		sql += " DEFAULT " + default;
-	}
+if (default != "NULL" && !default.isEmpty())
+		{
+			sql += " DEFAULT " + default;
+		}
 	if (!extra.isEmpty())
 	{
 		sql += " " + extra;
