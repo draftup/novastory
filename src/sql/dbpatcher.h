@@ -12,6 +12,7 @@ namespace novastory
 class DBPatcher
 {
 	friend class ::Test_DBPatcher;
+public:
 	struct Column
 	{
 		QString field;
@@ -20,14 +21,18 @@ class DBPatcher
 		QString key;
 		QString default;
 		QString extra;
+
+		bool operator==(const Column& table) const;
+		QString serialize() const;
 	};
-public:
+
 	struct Table
 	{
 		QString table;
 		QList<Column> columns;
 
 		bool create();
+		bool modify(const Table& old);
 
 		bool operator==(const Table& table) const;
 	};
@@ -46,6 +51,11 @@ private:
 inline uint qHash(const novastory::DBPatcher::Table& key)
 {
 	return qHash(key.table);
+}
+
+inline uint qHash(const novastory::DBPatcher::Column& key)
+{
+	return qHash(key.field);
 }
 
 #endif
