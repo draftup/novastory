@@ -85,10 +85,10 @@ void Test_DBPatcher::addtable()
 				"PRI"
 			},
 			novastory::DBPatcher::Column{
-					"testfield",
-					"text",
-					true
-				}
+				"testfield",
+				"text",
+				true
+			}
 		})
 	};
 	patcher.m_database << novastory::DBPatcher::Table
@@ -96,10 +96,10 @@ void Test_DBPatcher::addtable()
 		"test_table2",
 		QList<novastory::DBPatcher::Column>({
 			novastory::DBPatcher::Column{
-					"testfield",
-					"text",
-					true
-				}
+				"testfield",
+				"text",
+				true
+			}
 		})
 	};
 
@@ -123,15 +123,15 @@ void Test_DBPatcher::addcolumn()
 				"PRI"
 			},
 			novastory::DBPatcher::Column{
-					"testfield",
-					"text",
-					true
-				},
-				novastory::DBPatcher::Column{
-						"testfield2",
-						"text",
-						true
-					},
+				"testfield",
+				"text",
+				true
+			},
+			novastory::DBPatcher::Column{
+				"testfield2",
+				"text",
+				true
+			},
 		})
 	};
 	patcher.m_database << novastory::DBPatcher::Table
@@ -166,10 +166,10 @@ void Test_DBPatcher::removecolumn()
 				"PRI"
 			},
 			novastory::DBPatcher::Column{
-					"testfield",
-					"text",
-					true
-				}
+				"testfield",
+				"text",
+				true
+			}
 		})
 	};
 	patcher.m_database << novastory::DBPatcher::Table
