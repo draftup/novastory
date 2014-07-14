@@ -30,16 +30,45 @@ bool DBPatcher::patch()
 		status &= newTable.create();
 	}
 
+
+	// we don't need to delete extension tables
+
 	SqlQuery fields("select * from  information_schema.columns where table_schema = '" MYSQL_DATABASE "'");
-	/*
-	QSet<Column> columnList;
-	while (tables.next())
+	QHash<QString, Table> columnList;
+	while (fields.next())
 	{
-		Table table;
-		table.table = tables.value("TABLE_NAME").toString();
-		tablesList.insert(table);
+		QString name = fields.value("TABLE_NAME").toString();
+		if (!columnList.contains(name))
+		{
+			Table tb;
+			tb.table = name;
+			columnList[name] = tb;
+		}
+
+		Table& table = columnList[name];
+
+		Column newColumn;
+		newColumn.field = fields.value("COLUMN_NAME").toString();
+		newColumn.type = fields.value("DATA_TYPE").toString();
+		newColumn.isnull = fields.value("IS_NULLABLE").toString() == "YES";
+		newColumn.default = fields.value("COLUMN_DEFAULT").toString();
+		newColumn.key = fields.value("COLUMN_KEY").toString();
+		newColumn.extra = fields.value("EXTRA").toString();
+
+		table.columns.append(newColumn);
 	}
-	*/
+
+	// Modify all tables
+	for (Table table : m_database - newTables)
+	{
+		if (!columnList.contains(table.table))
+		{
+			qCritical() << "No table after first part? Lol! Something wrong.";
+			continue;
+		}
+
+		status &= table.modify(columnList[table.table]);
+	}
 
 	SqlDatabase::close();
 	return status;
@@ -94,7 +123,7 @@ bool DBPatcher::Table::modify(const Table& old)
 	for (const Column& column : newColumns)
 	{
 		SqlQuery query;
-		status &= query.exec(QString("ALTER TABLE ADD `%1`").arg(column.serialize()));
+		status &= query.exec(QString("ALTER TABLE `%1` ADD %2").arg(this->table).arg(column.serialize()));
 		if (status)
 		{
 			qDebug() << "Add new column '" << column.field << "'";
@@ -109,14 +138,14 @@ bool DBPatcher::Table::modify(const Table& old)
 	for (const Column& column : removeColumns)
 	{
 		SqlQuery query;
-		status &= query.exec(QString("ALTER TABLE DROP `%1`").arg(column.field));
+		status &= query.exec(QString("ALTER TABLE `%1` DROP `%2`").arg(this->table).arg(column.field));
 		if (status)
 		{
-			qDebug() << "Add new column '" << column.field << "'";
+			qDebug() << "Remove column '" << column.field << "'";
 		}
 		else
 		{
-			qCritical() << "Failed add new column '" << column.field << "'";
+			qCritical() << "Failed remove column '" << column.field << "'";
 		}
 	}
 

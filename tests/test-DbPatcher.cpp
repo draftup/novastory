@@ -1,4 +1,5 @@
 #include <QtTest>
+#include <QSqlError>
 #include "sql/dbpatcher.h"
 #include "sql/sqlquery.h"
 
@@ -14,7 +15,9 @@ private slots:
 	void cleanupTestCase();
 
 	void create();
-	void modify();
+	void addtable();
+	void addcolumn();
+	void removecolumn();
 private:
 	DBPatcher patcher;
 };
@@ -37,7 +40,8 @@ void Test_DBPatcher::cleanup()
 
 void Test_DBPatcher::cleanupTestCase()
 {
-	SqlQuery q("DROP TABLE test_table");
+	SqlQuery("DROP TABLE test_table");
+	SqlQuery("DROP TABLE test_table2");
 }
 
 void Test_DBPatcher::create()
@@ -62,9 +66,12 @@ void Test_DBPatcher::create()
 	};
 
 	QVERIFY(patcher.patch());
+
+	SqlQuery q("SELECT * FROM test_table");
+	QCOMPARE(q.lastError().type(), QSqlError::NoError);
 }
 
-void Test_DBPatcher::modify()
+void Test_DBPatcher::addtable()
 {
 	patcher.m_database.clear();
 	patcher.m_database << novastory::DBPatcher::Table
@@ -78,14 +85,109 @@ void Test_DBPatcher::modify()
 				"PRI"
 			},
 			novastory::DBPatcher::Column{
+					"testfield",
+					"text",
+					true
+				}
+		})
+	};
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table2",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
+					"testfield",
+					"text",
+					true
+				}
+		})
+	};
+
+	QVERIFY(patcher.patch());
+
+	SqlQuery q("SELECT * FROM test_table2");
+	QCOMPARE(q.lastError().type(), QSqlError::NoError);
+}
+
+void Test_DBPatcher::addcolumn()
+{
+	patcher.m_database.clear();
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
+				"testid",
+				"int unsigned",
+				false,
+				"PRI"
+			},
+			novastory::DBPatcher::Column{
+					"testfield",
+					"text",
+					true
+				},
+				novastory::DBPatcher::Column{
+						"testfield2",
+						"text",
+						true
+					},
+		})
+	};
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table2",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
 				"testfield",
-				"mediumtext",
+				"text",
 				true
 			}
 		})
 	};
 
 	QVERIFY(patcher.patch());
+
+	SqlQuery q("SELECT testfield2 FROM test_table");
+	QCOMPARE(q.lastError().type(), QSqlError::NoError);
+}
+
+void Test_DBPatcher::removecolumn()
+{
+	patcher.m_database.clear();
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
+				"testid",
+				"int unsigned",
+				false,
+				"PRI"
+			},
+			novastory::DBPatcher::Column{
+					"testfield",
+					"text",
+					true
+				}
+		})
+	};
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table2",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
+				"testfield",
+				"text",
+				true
+			}
+		})
+	};
+
+	QVERIFY(patcher.patch());
+
+	SqlQuery q("SELECT testfield2 FROM test_table");
+	QVERIFY(q.lastError().type() != QSqlError::NoError);
 }
 
 /********************** DECLARE_TEST LIST ****************************/
