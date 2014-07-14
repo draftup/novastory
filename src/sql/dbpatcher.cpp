@@ -49,7 +49,7 @@ bool DBPatcher::patch()
 
 		Column newColumn;
 		newColumn.field = fields.value("COLUMN_NAME").toString();
-		newColumn.type = fields.value("DATA_TYPE").toString();
+		newColumn.type = fields.value("COLUMN_TYPE").toString();
 		newColumn.isnull = fields.value("IS_NULLABLE").toString() == "YES";
 		newColumn.default = fields.value("COLUMN_DEFAULT").toString();
 		newColumn.key = fields.value("COLUMN_KEY").toString();
@@ -119,7 +119,11 @@ bool DBPatcher::Table::operator==(const Table& t) const
 bool DBPatcher::Table::modify(const Table& old)
 {
 	bool status = true;
-	QSet<Column> newColumns = columns.toSet() - old.columns.toSet();
+
+	QSet<Column> columnsSet = columns.toSet();
+	QSet<Column> oldColumnsSet = old.columns.toSet();
+
+	QSet<Column> newColumns = columnsSet - oldColumnsSet;
 	for (const Column& column : newColumns)
 	{
 		SqlQuery query;
@@ -134,7 +138,7 @@ bool DBPatcher::Table::modify(const Table& old)
 		}
 	}
 
-	QSet<Column> removeColumns = old.columns.toSet() - columns.toSet();
+	QSet<Column> removeColumns = oldColumnsSet - columnsSet;
 	for (const Column& column : removeColumns)
 	{
 		SqlQuery query;
@@ -146,6 +150,28 @@ bool DBPatcher::Table::modify(const Table& old)
 		else
 		{
 			qCritical() << "Failed remove column '" << column.field << "'";
+		}
+	}
+
+	// Finally check and modify all columns
+	for (const Column& column : columnsSet.intersect(oldColumnsSet))
+	{
+		Column findC;
+		findC.field = column.field;
+		Column oldColumn = *oldColumnsSet.find(findC);
+
+		if (column.type != oldColumn.type)
+		{
+			SqlQuery query;
+			status &= query.exec(QString("ALTER TABLE `%1` MODIFY %2").arg(this->table).arg(column.serialize()));
+			if (status)
+			{
+				qDebug() << "Modify column '" << column.field << "'";
+			}
+			else
+			{
+				qCritical() << "Failed modify column '" << column.field << "'";
+			}
 		}
 	}
 

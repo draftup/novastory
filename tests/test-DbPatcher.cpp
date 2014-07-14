@@ -55,7 +55,7 @@ void Test_DBPatcher::create()
 		QList<novastory::DBPatcher::Column>({
 			novastory::DBPatcher::Column{
 				"testid",
-				"int unsigned",
+				"int(10) unsigned",
 				false,
 				"PRI"
 			},
@@ -82,7 +82,7 @@ void Test_DBPatcher::addtable()
 		QList<novastory::DBPatcher::Column>({
 			novastory::DBPatcher::Column{
 				"testid",
-				"int unsigned",
+				"int(10) unsigned",
 				false,
 				"PRI"
 			},
@@ -120,7 +120,7 @@ void Test_DBPatcher::addcolumn()
 		QList<novastory::DBPatcher::Column>({
 			novastory::DBPatcher::Column{
 				"testid",
-				"int unsigned",
+				"int(10) unsigned",
 				false,
 				"PRI"
 			},
@@ -163,7 +163,7 @@ void Test_DBPatcher::removecolumn()
 		QList<novastory::DBPatcher::Column>({
 			novastory::DBPatcher::Column{
 				"testid",
-				"int unsigned",
+				"int(10) unsigned",
 				false,
 				"PRI"
 			},
@@ -201,15 +201,15 @@ void Test_DBPatcher::modifycolumn()
 		QList<novastory::DBPatcher::Column>({
 			novastory::DBPatcher::Column{
 				"testid",
-				"int unsigned",
+				"int(10) unsigned",
 				false,
 				"PRI"
 			},
 			novastory::DBPatcher::Column{
-					"testfield",
-					"mediumtext",
-					true
-				}
+				"testfield",
+				"mediumtext",
+				true
+			}
 		})
 	};
 	patcher.m_database << novastory::DBPatcher::Table
@@ -226,7 +226,7 @@ void Test_DBPatcher::modifycolumn()
 
 	QVERIFY(patcher.patch());
 
-	SqlQuery q("select DATA_TYPE from information_schema.columns where table_schema = '" MYSQL_DATABASE "' AND COLUMN_NAME = 'testfield'");
+	SqlQuery q("select DATA_TYPE from information_schema.columns where table_schema = '" MYSQL_DATABASE "' AND TABLE_NAME = 'test_table' AND COLUMN_NAME = 'testfield'");
 	QVERIFY(q.next());
 	QCOMPARE(q.value("DATA_TYPE").toString(), QString("mediumtext"));
 }
