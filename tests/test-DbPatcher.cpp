@@ -2,6 +2,7 @@
 #include <QSqlError>
 #include "sql/dbpatcher.h"
 #include "sql/sqlquery.h"
+#include "config.h"
 
 using namespace novastory;
 
@@ -18,6 +19,7 @@ private slots:
 	void addtable();
 	void addcolumn();
 	void removecolumn();
+	void modifycolumn();
 private:
 	DBPatcher patcher;
 };
@@ -188,6 +190,45 @@ void Test_DBPatcher::removecolumn()
 
 	SqlQuery q("SELECT testfield2 FROM test_table");
 	QVERIFY(q.lastError().type() != QSqlError::NoError);
+}
+
+void Test_DBPatcher::modifycolumn()
+{
+	patcher.m_database.clear();
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
+				"testid",
+				"int unsigned",
+				false,
+				"PRI"
+			},
+			novastory::DBPatcher::Column{
+					"testfield",
+					"mediumtext",
+					true
+				}
+		})
+	};
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table2",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
+				"testfield",
+				"text",
+				true
+			}
+		})
+	};
+
+	QVERIFY(patcher.patch());
+
+	SqlQuery q("select DATA_TYPE from information_schema.columns where table_schema = '" MYSQL_DATABASE "' AND COLUMN_NAME = 'testfield'");
+	QVERIFY(q.next());
+	QCOMPARE(q.value("DATA_TYPE").toString(), QString("mediumtext"));
 }
 
 /********************** DECLARE_TEST LIST ****************************/
