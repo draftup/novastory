@@ -254,9 +254,9 @@ QString DBPatcher::Column::serialize() const
 		sql += " NOT NULL";
 	}
 	if (default_data != "NULL" && !default_data.isEmpty())
-		{
+	{
 		sql += " DEFAULT " + default_data;
-		}
+	}
 	if (!extra.isEmpty())
 	{
 		sql += " " + extra;
