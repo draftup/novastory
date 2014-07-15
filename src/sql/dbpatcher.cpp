@@ -73,7 +73,7 @@ QString DBPatcher::cppSerialize()
 			cpp += QString("    \"%1\",\n").arg(column.type);
 			cpp += column.isnull ? "    true,\n" : "    false,\n";
 			cpp += QString("    \"%1\",\n").arg(column.key);
-			cpp += QString("    \"%1\",\n").arg(column.default);
+			cpp += QString("    \"%1\",\n").arg(column.default_data);
 			cpp += QString("    \"%1\"\n").arg(column.extra);
 
 			cpp += "   },\n";
@@ -107,7 +107,7 @@ QHash<QString, DBPatcher::Table> DBPatcher::columnListDB()
 		newColumn.field = fields.value("COLUMN_NAME").toString();
 		newColumn.type = fields.value("COLUMN_TYPE").toString();
 		newColumn.isnull = fields.value("IS_NULLABLE").toString() == "YES";
-		newColumn.default = fields.value("COLUMN_DEFAULT").toString();
+		newColumn.default_data = fields.value("COLUMN_DEFAULT").toString();
 		newColumn.key = fields.value("COLUMN_KEY").toString();
 		newColumn.extra = fields.value("EXTRA").toString();
 
@@ -221,7 +221,7 @@ bool DBPatcher::Table::modify(const Table& old)
 		if (
 			column.type != oldColumn.type ||
 			column.isnull != oldColumn.isnull ||
-			column.default != oldColumn.default ||
+			column.default_data != oldColumn.default_data ||
 			column.extra != oldColumn.extra)
 		{
 			SqlQuery query;
@@ -253,9 +253,9 @@ QString DBPatcher::Column::serialize() const
 	{
 		sql += " NOT NULL";
 	}
-if (default != "NULL" && !default.isEmpty())
+	if (default_data != "NULL" && !default_data.isEmpty())
 		{
-			sql += " DEFAULT " + default;
+		sql += " DEFAULT " + default_data;
 		}
 	if (!extra.isEmpty())
 	{

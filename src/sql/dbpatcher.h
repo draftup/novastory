@@ -20,7 +20,7 @@ public:
 		QString type;
 		bool isnull;
 		QString key;
-		QString default;
+		QString default_data;
 		QString extra;
 
 		bool operator==(const Column& table) const;
