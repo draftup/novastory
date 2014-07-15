@@ -52,8 +52,6 @@ private:
 	QSet<Table> m_database;
 };
 
-}
-
 inline uint qHash(const novastory::DBPatcher::Table& key)
 {
 	return qHash(key.table);
@@ -62,6 +60,8 @@ inline uint qHash(const novastory::DBPatcher::Table& key)
 inline uint qHash(const novastory::DBPatcher::Column& key)
 {
 	return qHash(key.field);
+}
+
 }
 
 #endif
