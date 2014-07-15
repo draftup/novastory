@@ -1,6 +1,7 @@
 #include "sqldatabase.h"
 #include "utils/globals.h"
 #include "config.h"
+#include <QThread>
 
 namespace novastory
 {
@@ -39,6 +40,11 @@ SqlDatabase SqlDatabase::open(Qt::HANDLE threadId)
 	return newdb;
 }
 
+novastory::SqlDatabase SqlDatabase::open()
+{
+	return SqlDatabase::open(QThread::currentThreadId());
+}
+
 void SqlDatabase::close(Qt::HANDLE threadId)
 {
 	QString id = QString::number((unsigned long long) threadId);
@@ -47,6 +53,11 @@ void SqlDatabase::close(Qt::HANDLE threadId)
 		removeDatabase(id);
 		qDebug() << "Database connection closed (current connections:" << connectionNames().size() << ")";
 	}
+}
+
+void SqlDatabase::close()
+{
+	SqlDatabase::close(QThread::currentThreadId());
 }
 
 }

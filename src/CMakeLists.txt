@@ -39,6 +39,9 @@ set(HEADERS_TOMOC
 set(HEADERS
 	sql/sqlquery.h
 	sql/sqldatabase.h
+	sql/dbpatcher.h
+
+	database/novastory_db.h
 	
 	logic/textrevisioncontainer.h
 	
@@ -68,6 +71,7 @@ set(SOURCES
 	sql/sqlquery.cpp
 	sql/sqldatabase.cpp
 	sql/sqlizable.cpp
+	sql/dbpatcher.cpp
 	
 	logic/user.cpp
 	logic/captcha.cpp

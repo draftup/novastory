@@ -16,7 +16,9 @@ public:
 	SqlDatabase(const QSqlDatabase& olddb);
 	virtual ~SqlDatabase();
 	static SqlDatabase open(Qt::HANDLE threadId);
+	static SqlDatabase open();
 	static void close(Qt::HANDLE threadId);
+	static void close();
 };
 
 }
