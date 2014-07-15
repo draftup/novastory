@@ -207,7 +207,9 @@ bool DBPatcher::Table::modify(const Table& old)
 	{
 		const Column& cl = it.next();
 		if (!oldColumnsSet.contains(cl))
+		{
 			it.remove();
+		}
 	}
 
 	for (const Column& column : columnsSet)
@@ -217,9 +219,9 @@ bool DBPatcher::Table::modify(const Table& old)
 		Column oldColumn = *oldColumnsSet.find(findC);
 
 		if (
-			column.type != oldColumn.type || 
-			column.isnull != oldColumn.isnull || 
-			column.default != oldColumn.default || 
+			column.type != oldColumn.type ||
+			column.isnull != oldColumn.isnull ||
+			column.default != oldColumn.default ||
 			column.extra != oldColumn.extra)
 		{
 			SqlQuery query;

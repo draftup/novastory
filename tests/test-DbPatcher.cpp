@@ -215,10 +215,10 @@ void Test_DBPatcher::modifycolumn()
 			},
 			// add new extra field
 			DBPatcher::Column{
-					"somedate",
-					"timestamp",
-					true
-				},
+				"somedate",
+				"timestamp",
+				true
+			},
 		})
 	};
 	patcher.m_database << novastory::DBPatcher::Table
@@ -258,19 +258,19 @@ void Test_DBPatcher::modifyExtraColumn()
 				"PRI"
 			},
 			novastory::DBPatcher::Column{
-					"testfield",
-					"mediumtext", // modify data
-					true
-				},
-				// add new extra field
-				DBPatcher::Column{
-						"somedate",
-						"timestamp",
-						false,
-						"",
-						"CURRENT_TIMESTAMP",
-						"on update CURRENT_TIMESTAMP"
-					},
+				"testfield",
+				"mediumtext", // modify data
+				true
+			},
+			// add new extra field
+			DBPatcher::Column{
+				"somedate",
+				"timestamp",
+				false,
+				"",
+				"CURRENT_TIMESTAMP",
+				"on update CURRENT_TIMESTAMP"
+			},
 		})
 	};
 	patcher.m_database << novastory::DBPatcher::Table
@@ -309,16 +309,16 @@ void Test_DBPatcher::someWrongCases()
 				"PRI"
 			},
 			novastory::DBPatcher::Column{
-					"testfield",
-					"lolololol",
-					true
-				},
-				// add new extra field
-				DBPatcher::Column{
-						"somedate",
-						"timestamp",
-						true
-					},
+				"testfield",
+				"lolololol",
+				true
+			},
+			// add new extra field
+			DBPatcher::Column{
+				"somedate",
+				"timestamp",
+				true
+			},
 		})
 	};
 	patcher.m_database << novastory::DBPatcher::Table
