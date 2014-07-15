@@ -53,10 +53,10 @@ bool DBPatcher::patch()
 QString DBPatcher::cppSerialize()
 {
 	QString cpp = ""
-		"#include \"sql/dbpatcher.h\"\n\n"
-		"namespace novastory {\n\n"
-		"static QSet<DBPatcher::Table> DB_TABLE_STRUCT;\n\n"
-		;
+				  "#include \"sql/dbpatcher.h\"\n\n"
+				  "namespace novastory {\n\n"
+				  "static QSet<DBPatcher::Table> DB_TABLE_STRUCT;\n\n"
+				  ;
 
 	QHash<QString, Table> columnList = columnListDB();
 
@@ -80,7 +80,7 @@ QString DBPatcher::cppSerialize()
 
 		cpp += " })\n};\n";
 	}
-	
+
 	return cpp;
 }
 
