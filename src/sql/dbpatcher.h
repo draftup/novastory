@@ -15,6 +15,7 @@ class DBPatcher
 public:
 	struct Column
 	{
+		// be careful changing this struct, change dbpather same way
 		QString field;
 		QString type;
 		bool isnull;
@@ -41,7 +42,12 @@ public:
 	~DBPatcher() {};
 
 	bool patch();
+
+	static QString cppSerialize();
+
+	void setDatabaseStructure(const QSet<Table>& structure);
 private:
+	static QHash<QString, Table> columnListDB();
 
 	QSet<Table> m_database;
 };

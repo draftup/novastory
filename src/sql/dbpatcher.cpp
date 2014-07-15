@@ -32,7 +32,60 @@ bool DBPatcher::patch()
 
 
 	// we don't need to delete extension tables
+	QHash<QString, Table> columnList = columnListDB();
 
+	// Modify all tables
+	for (Table table : m_database - newTables)
+	{
+		if (!columnList.contains(table.table))
+		{
+			qCritical() << "No table after first part? Lol! Something wrong.";
+			continue;
+		}
+
+		status &= table.modify(columnList[table.table]);
+	}
+
+	SqlDatabase::close();
+	return status;
+}
+
+QString DBPatcher::cppSerialize()
+{
+	QString cpp = ""
+		"#include \"sql/dbpatcher.h\"\n\n"
+		"namespace novastory {\n\n"
+		"static QSet<DBPatcher::Table> DB_TABLE_STRUCT;\n\n"
+		;
+
+	QHash<QString, Table> columnList = columnListDB();
+
+	for (const Table& table : columnList)
+	{
+		cpp += "DB_TABLE_STRUCT << DBPatcher::Table{\n";
+		cpp += QString(" \"%1\",\n QList<DBPatcher::Column>({\n").arg(table.table);
+		for (const Column& column : table.columns)
+		{
+			cpp += "  DBPatcher::Column{\n";
+
+			cpp += QString("   \"%1\",\n").arg(column.field);
+			cpp += QString("   \"%1\",\n").arg(column.type);
+			cpp += column.isnull ? "   true,\n" : "   false,\n";
+			cpp += QString("   \"%1\",\n").arg(column.key);
+			cpp += QString("   \"%1\",\n").arg(column.default);
+			cpp += QString("   \"%1\"\n").arg(column.extra);
+
+			cpp += "  },\n";
+		}
+
+		cpp += " })\n};\n";
+	}
+	
+	return cpp;
+}
+
+QHash<QString, DBPatcher::Table> DBPatcher::columnListDB()
+{
 	SqlQuery fields("select * from  information_schema.columns where table_schema = '" MYSQL_DATABASE "'");
 	QHash<QString, Table> columnList;
 	while (fields.next())
@@ -58,20 +111,12 @@ bool DBPatcher::patch()
 		table.columns.append(newColumn);
 	}
 
-	// Modify all tables
-	for (Table table : m_database - newTables)
-	{
-		if (!columnList.contains(table.table))
-		{
-			qCritical() << "No table after first part? Lol! Something wrong.";
-			continue;
-		}
+	return columnList;
+}
 
-		status &= table.modify(columnList[table.table]);
-	}
-
-	SqlDatabase::close();
-	return status;
+void DBPatcher::setDatabaseStructure(const QSet<Table>& structure)
+{
+	m_database = structure;
 }
 
 
