@@ -3,6 +3,7 @@
 #include "sqlquery.h"
 #include "config.h"
 #include <QSet>
+#include <QMutableSetIterator>
 
 namespace novastory
 {
@@ -200,24 +201,36 @@ bool DBPatcher::Table::modify(const Table& old)
 		}
 	}
 
-	// Finally check and modify all columns
-	for (const Column& column : columnsSet.intersect(oldColumnsSet))
+	// QSet intersection can reverse target and base qset. To overcome this we will do set intersection manually
+	QMutableSetIterator<Column> it(columnsSet);
+	while (it.hasNext())
+	{
+		const Column& cl = it.next();
+		if (!oldColumnsSet.contains(cl))
+			it.remove();
+	}
+
+	for (const Column& column : columnsSet)
 	{
 		Column findC;
 		findC.field = column.field;
 		Column oldColumn = *oldColumnsSet.find(findC);
 
-		if (column.type != oldColumn.type)
+		if (
+			column.type != oldColumn.type || 
+			column.isnull != oldColumn.isnull || 
+			column.default != oldColumn.default || 
+			column.extra != oldColumn.extra)
 		{
 			SqlQuery query;
 			status &= query.exec(QString("ALTER TABLE `%1` MODIFY %2").arg(this->table).arg(column.serialize()));
 			if (status)
 			{
-				qDebug() << "Modify column '" << column.field << "'";
+				qDebug() << "Modify column type '" << column.field << "' from " << oldColumn.type << " to " << column.type;
 			}
 			else
 			{
-				qCritical() << "Failed modify column '" << column.field << "'";
+				qCritical() << "Failed modify column type '" << column.field << "' from " << oldColumn.type << " to " << column.type;
 			}
 		}
 	}

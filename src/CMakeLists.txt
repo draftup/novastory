@@ -39,6 +39,8 @@ set(HEADERS
 	sql/sqlquery.h
 	sql/sqldatabase.h
 	sql/dbpatcher.h
+
+	database/novastory_db.h
 	
 	utils/globals.h
 	utils/lrucache.hpp
