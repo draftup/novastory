@@ -52,34 +52,36 @@ bool DBPatcher::patch()
 
 QString DBPatcher::cppSerialize()
 {
-	QString cpp = ""
+	QString cpp = "#ifndef NOVASTORY_DB_H\n#define NOVASTORY_DB_H\n\n"
 				  "#include \"sql/dbpatcher.h\"\n\n"
 				  "namespace novastory {\n\n"
-				  "static QSet<DBPatcher::Table> DB_TABLE_STRUCT;\n\n"
+				  "QSet<DBPatcher::Table> DB_TABLE_STRUCT()\n{\n QSet<DBPatcher::Table> TABLE_STRUCT;\n"
 				  ;
 
 	QHash<QString, Table> columnList = columnListDB();
 
 	for (const Table& table : columnList)
 	{
-		cpp += "DB_TABLE_STRUCT << DBPatcher::Table{\n";
-		cpp += QString(" \"%1\",\n QList<DBPatcher::Column>({\n").arg(table.table);
+		cpp += " TABLE_STRUCT << DBPatcher::Table{\n";
+		cpp += QString("  \"%1\",\n QList<DBPatcher::Column>({\n").arg(table.table);
 		for (const Column& column : table.columns)
 		{
-			cpp += "  DBPatcher::Column{\n";
+			cpp += "   DBPatcher::Column{\n";
 
-			cpp += QString("   \"%1\",\n").arg(column.field);
-			cpp += QString("   \"%1\",\n").arg(column.type);
-			cpp += column.isnull ? "   true,\n" : "   false,\n";
-			cpp += QString("   \"%1\",\n").arg(column.key);
-			cpp += QString("   \"%1\",\n").arg(column.default);
-			cpp += QString("   \"%1\"\n").arg(column.extra);
+			cpp += QString("    \"%1\",\n").arg(column.field);
+			cpp += QString("    \"%1\",\n").arg(column.type);
+			cpp += column.isnull ? "    true,\n" : "    false,\n";
+			cpp += QString("    \"%1\",\n").arg(column.key);
+			cpp += QString("    \"%1\",\n").arg(column.default);
+			cpp += QString("    \"%1\"\n").arg(column.extra);
 
-			cpp += "  },\n";
+			cpp += "   },\n";
 		}
 
-		cpp += " })\n};\n";
+		cpp += "  })\n};\n";
 	}
+
+	cpp += " return TABLE_STRUCT;\n}\n\n}\n\n#endif // NOVASTORY_DB_H"; // close namespace
 
 	return cpp;
 }
