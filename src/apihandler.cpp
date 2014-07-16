@@ -111,6 +111,15 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		editor.sync();
 		json = editor.jsonString().toUtf8();
 	}
+	else if (hook == "revisionslist")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		TextRevisionContainer container;
+		container.setUser(user);
+		container.sync();
+		json = container.json(true).toUtf8();
+	}
 	else if (hook == "revisions")
 	{
 		User user;
@@ -118,6 +127,22 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		TextRevisionContainer container;
 		container.setUser(user);
 		container.sync();
+		json = container.json(false).toUtf8();
+	}
+	else if (hook == "revision")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		TextRevisionContainer container;
+		container.setUser(user);
+		container.sync();
+		TextRevision rev = container.revision(post["revision"].toInt());
+		if (rev.isValid())
+		{
+			QJsonDocument doc;
+			doc.setObject(rev.json(false));
+			json = doc.toJson();
+		}
 	}
 	else if (hook == "subscribe")
 	{

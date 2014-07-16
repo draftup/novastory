@@ -24,12 +24,14 @@ public:
 	bool release(int targetRevision);
 	bool release(const TextRevision& targetRevision);
 
+	TextRevision revision(int rev);
+
 	void setText(const QString& text);
 	void setUser(const User& user);
 
 	int userid() const;
 
-	QString json();
+	QString json(bool withoutText = false);
 private:
 	User m_user;
 	QString m_text;

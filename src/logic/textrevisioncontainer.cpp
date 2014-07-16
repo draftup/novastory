@@ -146,18 +146,22 @@ bool TextRevisionContainer::release(const TextRevision& targetRevision)
 	return release(targetRevision.revisionId());
 }
 
-QString TextRevisionContainer::json()
+QString TextRevisionContainer::json(bool withoutText /* = false */)
 {
+	QJsonDocument doc;
 	QJsonArray array;
 	for (TextRevision& rev : *this)
 	{
-		QJsonObject revision;
-		revision.insert("revisionid", rev.revisionId());
-		//revision("c", rev.)
-		//array.append()
+		array.append(rev.json(withoutText));
 	}
+	doc.setArray(array);
 
-	return QString();
+	return doc.toJson();
+}
+
+novastory::TextRevision TextRevisionContainer::revision(int rev)
+{
+	return value(rev);
 }
 
 }

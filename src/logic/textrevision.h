@@ -40,6 +40,10 @@ public:
 	void setRevisionID(int revision);
 
 	bool operator==(const TextRevision& rv) const;
+
+	bool isValid() const;
+
+	QJsonObject json(bool withoutText = false) const;
 private:
 	User m_user;
 	QString m_text;
