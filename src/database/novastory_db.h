@@ -79,6 +79,37 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 	};
 	TABLE_STRUCT << DBPatcher::Table
 	{
+		"textrevisions",
+		QList<DBPatcher::Column>({
+			DBPatcher::Column{
+				"revisionid",
+				"int(10) unsigned",
+				false,
+				"PRI",
+				"",
+				"auto_increment"
+			},
+			DBPatcher::Column{
+					"userid",
+					"int(10) unsigned",
+					false
+			},
+			DBPatcher::Column{
+						"release",
+						"tinyint(1)",
+						false,
+						"",
+						"0"
+					},
+			DBPatcher::Column{
+					"text",
+					"mediumtext",
+					true
+				},
+		})
+	};
+	TABLE_STRUCT << DBPatcher::Table
+	{
 		"userspassforgot",
 		QList<DBPatcher::Column>({
 			DBPatcher::Column{
