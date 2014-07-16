@@ -90,22 +90,22 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 				"auto_increment"
 			},
 			DBPatcher::Column{
-					"userid",
-					"int(10) unsigned",
-					false
+				"userid",
+				"int(10) unsigned",
+				false
 			},
 			DBPatcher::Column{
-						"release",
-						"tinyint(1)",
-						false,
-						"",
-						"0"
-					},
+				"release",
+				"tinyint(1)",
+				false,
+				"",
+				"0"
+			},
 			DBPatcher::Column{
-					"text",
-					"mediumtext",
-					true
-				},
+				"text",
+				"mediumtext",
+				true
+			},
 		})
 	};
 	TABLE_STRUCT << DBPatcher::Table
