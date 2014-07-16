@@ -91,7 +91,7 @@ void Test_TextRevision::releaseLast()
 	QVERIFY(container.save("privet4"));
 	QCOMPARE(container.size(), 4);
 	TextRevision& rv = container.last();
-	
+
 	QCOMPARE(rv, container.revision(rv.revisionId()));
 
 	QCOMPARE(rv.isRelease(), false);

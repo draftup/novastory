@@ -80,7 +80,9 @@ QJsonObject TextRevision::json(bool withoutText /* = false */) const
 	revision.insert("userid", userid());
 	revision.insert("isRelease", isRelease());
 	if (!withoutText)
+	{
 		revision.insert("text", text());
+	}
 
 	return revision;
 }
