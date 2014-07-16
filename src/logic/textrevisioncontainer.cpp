@@ -141,6 +141,11 @@ bool TextRevisionContainer::release(int targetRevision)
 	return true;
 }
 
+bool TextRevisionContainer::release(const TextRevision& targetRevision)
+{
+	return release(targetRevision.revisionId());
+}
+
 QString TextRevisionContainer::json()
 {
 	QJsonArray array;

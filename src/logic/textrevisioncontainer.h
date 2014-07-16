@@ -22,6 +22,7 @@ public:
 	bool save(const QString& text);
 	void clear();
 	bool release(int targetRevision);
+	bool release(const TextRevision& targetRevision);
 
 	void setText(const QString& text);
 	void setUser(const User& user);
