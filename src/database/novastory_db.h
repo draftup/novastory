@@ -92,7 +92,8 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 			DBPatcher::Column{
 				"userid",
 				"int(10) unsigned",
-				false
+				false,
+				"MUL"
 			},
 			DBPatcher::Column{
 				"release",
