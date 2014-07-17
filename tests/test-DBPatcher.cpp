@@ -21,6 +21,7 @@ private slots:
 	void removecolumn();
 	void modifycolumn();
 	void modifyExtraColumn();
+	void modifyKeys();
 
 	void someWrongCases();
 private:
@@ -293,6 +294,110 @@ void Test_DBPatcher::modifyExtraColumn()
 	QCOMPARE(q.value("EXTRA").toString(), QString("on update CURRENT_TIMESTAMP"));
 }
 
+void Test_DBPatcher::modifyKeys()
+{
+	patcher.m_database.clear();
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
+				"testid",
+				"int(10) unsigned",
+				false,
+				""
+			},
+			novastory::DBPatcher::Column{
+				"testfield",
+				"int(10) unsigned", // modify data
+				true,
+				"MUL"
+			},
+			// add new extra field
+			DBPatcher::Column{
+				"somedate",
+				"timestamp",
+				false,
+				"",
+				"CURRENT_TIMESTAMP",
+				"on update CURRENT_TIMESTAMP"
+			},
+		})
+	};
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table2",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
+				"testfield",
+				"int(10) unsigned",
+				true,
+				"MUL"
+			}
+		})
+	};
+	SqlQuery("DROP TABLE test_table2");
+	QVERIFY(patcher.patch());
+
+	SqlQuery q("select COLUMN_KEY from information_schema.columns where table_schema = '" MYSQL_DATABASE "' AND TABLE_NAME = 'test_table' AND COLUMN_NAME = 'testfield'");
+	QVERIFY(q.next());
+	QCOMPARE(q.value("COLUMN_KEY").toString(), QString("MUL"));
+	SqlQuery q2("select COLUMN_KEY from information_schema.columns where table_schema = '" MYSQL_DATABASE "' AND TABLE_NAME = 'test_table' AND COLUMN_NAME = 'testid'");
+	QVERIFY(q2.next());
+	QCOMPARE(q2.value("COLUMN_KEY").toString(), QString(""));
+	SqlQuery q3("select COLUMN_KEY from information_schema.columns where table_schema = '" MYSQL_DATABASE "' AND TABLE_NAME = 'test_table2' AND COLUMN_NAME = 'testfield'");
+	QVERIFY(q3.next());
+	QCOMPARE(q3.value("COLUMN_KEY").toString(), QString("MUL"));
+
+	// Возвращаем обратно
+	patcher.m_database.clear();
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
+				"testid",
+				"int(10) unsigned",
+				false,
+				"PRI"
+			},
+			novastory::DBPatcher::Column{
+				"testfield",
+				"int(10) unsigned", // modify data
+				true
+			},
+			// add new extra field
+			DBPatcher::Column{
+				"somedate",
+				"timestamp",
+				false,
+				"",
+				"CURRENT_TIMESTAMP",
+				"on update CURRENT_TIMESTAMP"
+			},
+		})
+	};
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table2",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
+				"testfield",
+				"int(10) unsigned",
+				true
+			}
+		})
+	};
+
+	QVERIFY(patcher.patch());
+
+	SqlQuery q4("select COLUMN_KEY from information_schema.columns where table_schema = '" MYSQL_DATABASE "' AND TABLE_NAME = 'test_table' AND COLUMN_NAME = 'testid'");
+	QVERIFY(q4.next());
+	QCOMPARE(q4.value("COLUMN_KEY").toString(), QString("PRI"));
+	SqlQuery q5("select COLUMN_KEY from information_schema.columns where table_schema = '" MYSQL_DATABASE "' AND TABLE_NAME = 'test_table' AND COLUMN_NAME = 'testfield'");
+	QVERIFY(q5.next());
+	QCOMPARE(q5.value("COLUMN_KEY").toString(), QString(""));
+}
 
 void Test_DBPatcher::someWrongCases()
 {
