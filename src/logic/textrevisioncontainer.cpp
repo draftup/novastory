@@ -3,6 +3,7 @@
 #include "utils/globals.h"
 #include "sql/sqlquery.h"
 #include <QJsonArray>
+#include <QSqlError>
 
 namespace novastory
 {
@@ -43,27 +44,43 @@ int TextRevisionContainer::userid() const
 	return m_user.userid();
 }
 
-bool TextRevisionContainer::save()
+TextRevision TextRevisionContainer::save()
 {
 	if (!m_user.isLogined())
 	{
 		JSON_ERROR("Not loginned", 1);
-		return false;
+		return TextRevision();
+	}
+
+	// Check last revision, may be text the save
+	SqlQuery dublicateCheck("SELECT text FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + " ORDER BY revisionid DESC LIMIT 1");
+	Q_ASSERT(dublicateCheck.lastError().type() == QSqlError::NoError);
+	if (dublicateCheck.size() == 1)
+	{
+		VERIFY(dublicateCheck.next());
+		if (dublicateCheck.value("text").toString() == m_text) // Dublicate, skip this
+		{
+			JSON_ERROR("Dublicate of last revision", 3);
+			return TextRevision();
+		}
 	}
 
 	TextRevision revision;
 	revision.setUser(m_user);
 	revision.setText(m_text);
-	bool status = revision.insertSQL();
-	if (status)
+	if (revision.insertSQL())
 	{
 		Q_ASSERT(revision.revisionId() > 0);
 		insert(revision.revisionId(), revision);
 	}
-	return status;
+	else
+	{
+		JSON_ERROR("Something wrong on revision save", 2);
+	}
+	return revision;
 }
 
-bool TextRevisionContainer::save(const QString& text)
+TextRevision TextRevisionContainer::save(const QString& text)
 {
 	setText(text);
 	return save();

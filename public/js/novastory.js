@@ -878,6 +878,30 @@ $(document).ready(function ()
 						saveTimerEditor = 0;
 					}
 					);
+
+					// revision control
+					$("#editor").keydown(function (e)
+					{
+						if (e.ctrlKey && e.which === 83)
+						{
+							e.preventDefault();
+							NovastoryApi.revisionSave($("#editor").val(), function(data){
+								if (data.error != null && !data.error)
+								{
+									Novastory.ok("Text saved in revision history");
+								}
+								else if(data.error != null && data.error && data.errorType == 3)
+								{
+									Novastory.warning("Same text was saved slightly before");
+								}
+								else
+								{
+									Novastory.error("Something wrong on text save");
+								}
+							});
+						}
+					}
+					);
 				}
 				);
 			}

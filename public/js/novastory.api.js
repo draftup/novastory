@@ -171,3 +171,14 @@ NovastoryApi.editorText = function (callback)
 		callback,
 		'json');
 };
+
+NovastoryApi.revisionSave = function (text, callback)
+{
+	$.post(
+		'/api/revisionsave',
+	{
+		text: text
+	},
+		callback,
+		'json');
+};

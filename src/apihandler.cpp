@@ -144,6 +144,16 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 			json = doc.toJson();
 		}
 	}
+	else if (hook == "revisionsave")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		TextRevisionContainer container;
+		container.setUser(user);
+		container.setText(post["text"]);
+		container.save();
+		json = container.jsonString().toUtf8();
+	}
 	else if (hook == "subscribe")
 	{
 		User user;

@@ -18,8 +18,8 @@ public:
 	TextRevisionContainer();
 
 	bool sync();
-	bool save();
-	bool save(const QString& text);
+	TextRevision save();
+	TextRevision save(const QString& text);
 	void clear();
 	bool release(int targetRevision);
 	bool release(const TextRevision& targetRevision);
