@@ -151,7 +151,7 @@ bool Sqlizable::insertSQL()
 		bool result = query.exec();
 
 		// Auto increment update proprerty
-		if (isAutoIncrement)
+		if (result && isAutoIncrement)
 		{
 			setProperty(auto_increment.toString().toUtf8().data(), query.lastInsertId());
 		}
