@@ -137,6 +137,10 @@ bool DBPatcher::Table::create()
 		{
 			sql += QString(",\nPRIMARY KEY(`%1`)").arg(column.field);
 		}
+		else if (column.key == "MUL")
+		{
+			sql += QString(",\nKEY(`%1`)").arg(column.field);
+		}
 
 		if (it.hasNext())
 		{
@@ -233,6 +237,56 @@ bool DBPatcher::Table::modify(const Table& old)
 			else
 			{
 				qCritical() << "Failed modify column type '" << column.field << "' from " << oldColumn.type << " to " << column.type;
+			}
+		}
+
+		if (column.key != oldColumn.key)
+		{
+			if (!oldColumn.key.isEmpty())
+			{
+				SqlQuery query;
+				if (oldColumn.key == "PRI")
+				{
+					status &= query.exec(QString("ALTER TABLE `%1` DROP PRIMARY KEY").arg(this->table));
+				}
+				else
+				{
+					status &= query.exec(QString("ALTER TABLE `%1` DROP KEY `%2`").arg(this->table).arg(column.field));
+				}
+				if (status)
+				{
+					qDebug() << "Drop key '" << column.field;
+				}
+				else
+				{
+					qCritical() << "Failed drop key '" << column.field;;
+				}
+			}
+
+			if (!column.key.isEmpty())
+			{
+				SqlQuery query;
+				if (column.key == "PRI")
+				{
+					status &= query.exec(QString("ALTER TABLE `%1` ADD PRIMARY KEY(`%2`)").arg(this->table).arg(column.field));
+				}
+				else if (column.key == "MUL")
+				{
+					status &= query.exec(QString("ALTER TABLE `%1` ADD KEY(`%2`)").arg(this->table).arg(column.field));
+				}
+				else
+				{
+					qWarning() << "Unsupported key type " << column.key << "for patching";
+					continue;
+				}
+				if (status)
+				{
+					qDebug() << "Create key '" << column.field;
+				}
+				else
+				{
+					qCritical() << "Create drop key '" << column.field;;
+				}
 			}
 		}
 	}
