@@ -83,6 +83,8 @@ QJsonObject TextRevision::json(bool withoutText /* = false */) const
 	{
 		revision.insert("text", text());
 	}
+	revision.insert("textLength", text().length());
+	revision.insert("date", date().toMSecsSinceEpoch());
 
 	return revision;
 }
@@ -90,6 +92,21 @@ QJsonObject TextRevision::json(bool withoutText /* = false */) const
 bool TextRevision::isValid() const
 {
 	return m_revisionId > 0;
+}
+
+const QDateTime& TextRevision::date() const
+{
+	return m_date;
+}
+
+void TextRevision::setDate(const QDateTime& date)
+{
+	m_date = date;
+}
+
+void TextRevision::resetDate()
+{
+	m_date = QDateTime();
 }
 
 }
