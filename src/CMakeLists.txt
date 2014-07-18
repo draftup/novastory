@@ -53,6 +53,7 @@ set(HEADERS
 	rawfilehandler.h
 	avatarshandler.h
 	userspicshandler.h
+	registrationhandler.h
 	indexhandler.h
 	profilehandler.h
 	profile.h
@@ -84,6 +85,7 @@ set(SOURCES
 	rawfilehandler.cpp
 	avatarshandler.cpp
 	userspicshandler.cpp
+	registrationhandler.cpp
 	indexhandler.cpp
 	profilehandler.cpp
 	profile.cpp

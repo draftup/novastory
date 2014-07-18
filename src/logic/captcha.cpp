@@ -147,6 +147,6 @@ void novastory::Captcha::sendVerificaionMail()
 	sendAsyncMail(
 		m_email,
 		"Welcome to Novastory (novastory.org)",
-		"To validate your new account follow the link below:\nhttp://novastory.org/api/validate/" + m_token + "\n\nGood luck with novastory!"
+		"To validate your new account follow the link below:\nhttp://novastory.org/validate/" + m_token + "\n\nGood luck with novastory!"
 	);
 }
