@@ -103,12 +103,12 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 				"0"
 			},
 			DBPatcher::Column{
-					"date",
-					"timestamp",
-					false,
-					"",
-					"CURRENT_TIMESTAMP"
-				},
+				"date",
+				"timestamp",
+				false,
+				"",
+				"CURRENT_TIMESTAMP"
+			},
 			DBPatcher::Column{
 				"text",
 				"mediumtext",
