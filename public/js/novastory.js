@@ -6,8 +6,8 @@ jQuery.fn.exists = function ()
 	return jQuery(this).length > 0;
 }
 
-includeJS("js/jquery.sha1.js");
-includeJS("js/jquery.cookie.js");
+includeJS("/js/jquery.sha1.js");
+includeJS("/js/jquery.cookie.js");
 var USERID;
 var STOKEN;
 
