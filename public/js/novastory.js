@@ -887,6 +887,8 @@ $(document).ready(function ()
 							list.empty();
 							for (var i = 0; i < revisions.length; i++)
 							{
+								var currentTextElement;
+								var changesMade = false;
 								(function (i)
 								{
 									var element = $("<li class='" + ((revisions[i].release) ? "release" : "regular") + "'>"
@@ -899,6 +901,28 @@ $(document).ready(function ()
 									{
 										NovastoryApi.revision(revision, function (data)
 										{
+											var currentText = $('#editor').val();
+											if (currentTextElement == null)
+											{
+												currentTextElement = $("<li class='current'>"
+														 + '<div class="date">Current Text</div>'
+														 + '<div class="size">' + currentText.length + '</div>'
+														 + "</li>");
+												list.prepend(currentTextElement);
+												currentTextElement.click(function ()
+												{
+													$('#editor').val(currentText);
+													currentTextElement.remove();
+													currentTextElement = null;
+												}
+												);
+												
+												$('#editor').on('input', function() {
+													currentTextElement.remove();
+													currentTextElement = null;
+													$(this).off('input');
+												});
+											}
 											$('#editor').val(data.text);
 										}
 										);
