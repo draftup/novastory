@@ -19,3 +19,37 @@
 	height: 100%;
 	background:#EDEDED;
 }
+
+
+#editor-revisions
+{
+	list-style: none;
+	padding: 10px;
+	position: absolute;
+	margin-top: 200px;
+}
+
+#editor-revisions li
+{
+
+}
+
+#editor-revisions li.release
+{
+	background-color: purple;
+}
+
+#editor-revisions li.regular
+{
+	background-color: green;
+}
+
+#editor-revisions li.current
+{
+	background-color: yellow;
+}
+
+#editor-revisions li div
+{
+
+}

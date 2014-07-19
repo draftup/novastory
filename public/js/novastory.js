@@ -879,18 +879,53 @@ $(document).ready(function ()
 					}
 					);
 
+					function updateRevisionList()
+					{
+						NovastoryApi.revisionsList(function (revisions)
+						{
+							var list = $('#editor-revisions');
+							list.empty();
+							for (var i = 0; i < revisions.length; i++)
+							{
+								(function (i)
+								{
+									var element = $("<li class='" + ((revisions[i].release) ? "release" : "regular") + "'>"
+											 + '<div class="date">' + revisions[i].date + "</div>"
+											 + '<div class="size">' + revisions[i].textLength + " bytes</div>"
+											 + "</li>");
+									list.prepend(element);
+									var revision = revisions[i].revisionid;
+									element.click(function ()
+									{
+										NovastoryApi.revision(revision, function (data)
+										{
+											$('#editor').val(data.text);
+										}
+										);
+									}
+									);
+								}
+								)(i);
+							}
+						}
+						);
+					}
+					updateRevisionList();
+
 					// revision control
 					$("#editor").keydown(function (e)
 					{
 						if (e.ctrlKey && e.which === 83)
 						{
 							e.preventDefault();
-							NovastoryApi.revisionSave($("#editor").val(), function(data){
+							NovastoryApi.revisionSave($("#editor").val(), function (data)
+							{
 								if (data.error != null && !data.error)
 								{
 									Novastory.ok("Text saved in revision history");
+									updateRevisionList();
 								}
-								else if(data.error != null && data.error && data.errorType == 3)
+								else if (data.error != null && data.error && data.errorType == 3)
 								{
 									Novastory.warning("Same text was saved slightly before");
 								}
@@ -898,7 +933,8 @@ $(document).ready(function ()
 								{
 									Novastory.error("Something wrong on text save");
 								}
-							});
+							}
+							);
 						}
 					}
 					);

@@ -182,3 +182,24 @@ NovastoryApi.revisionSave = function (text, callback)
 		callback,
 		'json');
 };
+
+NovastoryApi.revisionsList = function (callback)
+{
+	$.post(
+		'/api/revisionslist',
+	{
+	},
+		callback,
+		'json');
+};
+
+NovastoryApi.revision = function (revision, callback)
+{
+	$.post(
+		'/api/revision',
+	{
+		revision: revision
+	},
+		callback,
+		'json');
+};
