@@ -1,8 +1,11 @@
 #include "logger.h"
 #include <QDebug>
 #include <QFile>
+#include <QFileInfo>
 #include <QDateTime>
 #include <QThread>
+#include "utils/globals.h"
+#include "config.h"
 
 namespace novastory
 {
@@ -20,7 +23,8 @@ Logger::Logger() :
 	logStream(nullptr),
 	errorFile(nullptr),
 	errorStream(nullptr),
-	isWriteToFile(false)
+	isWriteToFile(false),
+	failReports(false)
 {
 
 }
@@ -147,6 +151,16 @@ void Logger::log(const QString& text, QtMsgType type)
 			{
 				*errorStream << record;
 				errorStream->flush();
+
+				if (failReports && logFile)
+				{
+					QFile* file = new QFile(QFileInfo(*logFile).absoluteFilePath());
+					// In Fatal way we must wait until app sending message will finished than crash
+					if (type == QtCriticalMsg)
+						sendAsyncMail(REPORTS_MAIL, "Novastory failure", record, QList<QFile*>({ file }));
+					else
+						sendMail(REPORTS_MAIL, "Novastory failure", record, QList<QFile*>({ file }));
+				}
 			}
 			default:
 				break;
@@ -162,6 +176,11 @@ void Logger::setWriteToLogFile(bool writToFile)
 	{
 		initializeFileLog();
 	}
+}
+
+void Logger::setFailReports(bool enable)
+{
+	failReports = enable;
 }
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))

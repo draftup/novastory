@@ -26,4 +26,6 @@
 #endif
 #define WORKERS_MAX_TIME 180
 
+#define REPORTS_MAIL "degitx@gmail.com"
+
 #endif // RAWFILEHANDLER_H

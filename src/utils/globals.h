@@ -7,6 +7,8 @@
 #include "webdatacontainer.h"
 #include <QLocale>
 
+class QFile;
+
 #ifdef QT_NO_DEBUG
 #define VERIFY(x) (x)
 #else //QT_NO_DEBUG
@@ -63,7 +65,7 @@ qint64 unixtime();
  *
  * @note This method work synchronously. Use @ref sendAsyncMail() for async calls.
  */
-void sendMail(const QString& to, const QString& subject, const QString& message);
+void sendMail(const QString& to, const QString& subject, const QString& message, const QList<QFile*>& attachments = QList<QFile*>());
 
 /**
  * @brief	Sends a mail to given email address
@@ -80,7 +82,7 @@ void sendMail(const QString& to, const QString& subject, const QString& message)
  * @note This method work asynchronously. Use @ref sendMail() for sync calls.
  *
  */
-void sendAsyncMail(const QString& to, const QString& subject, const QString& message);
+void sendAsyncMail(const QString& to, const QString& subject, const QString& message, const QList<QFile*>& attachments = QList<QFile*>());
 
 inline QString RFC822Date(const QDateTime& time)
 {
