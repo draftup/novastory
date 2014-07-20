@@ -10,6 +10,8 @@ using namespace novastory;
 class Test_TextRevision: public QObject
 {
 	Q_OBJECT
+public:
+	Test_TextRevision() : releaseID(-1) {};
 private slots:
 	void initTestCase();
 	void init();
@@ -23,10 +25,13 @@ private slots:
 	void releaseMiddle();
 	void releaseLast();
 
+	void unrelease();
+
 	void dublicateCheck();
 private:
 	User buser;
 	TextRevisionContainer container;
+	int releaseID;
 };
 
 void Test_TextRevision::initTestCase()
@@ -86,10 +91,12 @@ void Test_TextRevision::syncRevision()
 void Test_TextRevision::releaseMiddle()
 {
 	QVERIFY(!container.release(0));
+	QCOMPARE(container.first().isRelease(), false);
 	QVERIFY(container.release(container.firstKey()));
 	QCOMPARE(container.size(), 3);
 	TextRevision& rv = container.last();
 	QCOMPARE(rv.isRelease(), true);
+	releaseID = rv.revisionId();
 	container.release(rv.revisionId());
 	QCOMPARE(container.size(), 3);
 	QCOMPARE(rv, container.last());
@@ -108,6 +115,16 @@ void Test_TextRevision::releaseLast()
 	QVERIFY(container.release(rv));
 	QCOMPARE(rv.isRelease(), true);
 	QCOMPARE(container.size(), 4);
+}
+
+
+void Test_TextRevision::unrelease()
+{
+	QVERIFY(releaseID > 0);
+	TextRevision rev = container.revision(releaseID);
+	QCOMPARE(rev.isRelease(), true);
+	QVERIFY(container.unrelease(rev));
+	QCOMPARE(container.revision(releaseID).isRelease(), false);
 }
 
 void Test_TextRevision::dublicateCheck()

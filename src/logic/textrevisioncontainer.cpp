@@ -44,7 +44,7 @@ int TextRevisionContainer::userid() const
 	return m_user.userid();
 }
 
-TextRevision TextRevisionContainer::save()
+TextRevision TextRevisionContainer::save(bool isRelease)
 {
 	if (!m_user.isLogined())
 	{
@@ -68,6 +68,7 @@ TextRevision TextRevisionContainer::save()
 	TextRevision revision;
 	revision.setUser(m_user);
 	revision.setText(m_text);
+	revision.setRelease(isRelease);
 	if (revision.insertSQL())
 	{
 		Q_ASSERT(revision.revisionId() > 0);
@@ -80,10 +81,15 @@ TextRevision TextRevisionContainer::save()
 	return revision;
 }
 
-TextRevision TextRevisionContainer::save(const QString& text)
+TextRevision TextRevisionContainer::save(const QString& text, bool isRelease)
 {
 	setText(text);
-	return save();
+	return save(isRelease);
+}
+
+novastory::TextRevision TextRevisionContainer::save(char* text, bool isRelease /*= false*/)
+{
+	return save(QString(text), isRelease);
 }
 
 void TextRevisionContainer::setText(const QString& text)
@@ -157,6 +163,38 @@ bool TextRevisionContainer::release(int targetRevision)
 
 	return true;
 }
+
+
+bool TextRevisionContainer::unrelease(int targetRevision)
+{
+	if (!m_user.isLogined())
+	{
+		JSON_ERROR("Not loginned", 1);
+		return false;
+	}
+
+	if (!m_synchronized)
+	{
+		sync();
+		Q_ASSERT(m_synchronized);
+	}
+
+	if (!contains(targetRevision))
+	{
+		JSON_ERROR("Revision not founded", 2);
+		return false;
+	}
+
+	iterator Revision = find(targetRevision); // copy of old revision
+	Revision->setRelease(false);
+	return Revision->updateSQL("revisionid", QList<QString>() << "text");
+}
+
+bool TextRevisionContainer::unrelease(const TextRevision& targetRevision)
+{
+	return unrelease(targetRevision.revisionId());
+}
+
 
 bool TextRevisionContainer::release(const TextRevision& targetRevision)
 {
