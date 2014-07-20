@@ -23,7 +23,6 @@
 #include <typeinfo>
 
 /* [1] Constructors and Destructors */
-
 MimeMessage::MimeMessage(bool createAutoMimeContent) :
 	hEncoding(MimePart::_8Bit)
 {
@@ -31,10 +30,17 @@ MimeMessage::MimeMessage(bool createAutoMimeContent) :
 	{
 		this->content = new MimeMultiPart();
 	}
+
+	autoMimeContentCreated = createAutoMimeContent;
 }
 
 MimeMessage::~MimeMessage()
 {
+	if (this->autoMimeContentCreated)
+	{
+		this->autoMimeContentCreated = false;
+		delete(this->content);
+	}
 }
 
 /* [1] --- */
@@ -48,6 +54,11 @@ MimePart& MimeMessage::getContent()
 
 void MimeMessage::setContent(MimePart* content)
 {
+	if (this->autoMimeContentCreated)
+	{
+		this->autoMimeContentCreated = false;
+		delete(this->content);
+	}
 	this->content = content;
 }
 
