@@ -29,6 +29,7 @@ public:
 	void log(const QString& text, QtMsgType type = QtMsgType::QtDebugMsg);
 
 	void setWriteToLogFile(bool writToFile);
+	void setFailReports(bool enable);
 private:
 	void initializeFileLog();
 
@@ -38,6 +39,7 @@ private:
 	QTextStream* errorStream;
 	bool isWriteToFile;
 	QMutex m_mutex;
+	bool failReports;
 };
 
 }

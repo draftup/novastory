@@ -18,7 +18,9 @@ int main(int argc, char* argv[])
 	qDebug() << "-----------------------------------------\n";
 
 	Logger::Instance().setWriteToLogFile(true); // Log all to file output
-
+#ifndef QT_DEBUG
+	Logger::Instance().setFailReports(true);
+#endif
 	// Now we can start our application
 
 	for (QString arg : a.arguments())
