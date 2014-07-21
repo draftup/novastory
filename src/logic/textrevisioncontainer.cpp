@@ -36,6 +36,7 @@ bool TextRevisionContainer::sync()
 		insert(revision.revisionId(), revision);
 	}
 	m_synchronized = true;
+	qDebug() << "Revisions syncronized for user" << userid();
 	return true;
 }
 
@@ -144,7 +145,12 @@ bool TextRevisionContainer::release(int targetRevision)
 			return true;
 		}
 		lastRevision->setRelease(true);
-		return lastRevision->updateSQL("revisionid", QList<QString>() << "text");
+		bool status = lastRevision->updateSQL("revisionid", QList<QString>() << "text");
+		if (status)
+		{
+			qDebug() << "Last revision updated to release for user" << userid();
+		}
+		return status;
 	}
 	else
 	{
@@ -159,6 +165,7 @@ bool TextRevisionContainer::release(int targetRevision)
 		VERIFY(newRevision.insertSQL());
 		Q_ASSERT(newRevision.revisionId() > 0);
 		insert(newRevision.revisionId(), newRevision);
+		qDebug() << "Revision" << targetRevision << "was copy to new release" << newRevision.revisionId() << "revision for user" << userid();
 	}
 
 	return true;
@@ -185,9 +192,14 @@ bool TextRevisionContainer::unrelease(int targetRevision)
 		return false;
 	}
 
-	iterator Revision = find(targetRevision); // copy of old revision
-	Revision->setRelease(false);
-	return Revision->updateSQL("revisionid", QList<QString>() << "text");
+	iterator revisionPoint = find(targetRevision); // copy of old revision
+	revisionPoint->setRelease(false);
+	bool status = revisionPoint->updateSQL("revisionid", QList<QString>() << "text");
+	if (status)
+	{
+		qDebug() << "Revision" << targetRevision << "was made unreleased now for user" << userid();
+	}
+	return status;
 }
 
 bool TextRevisionContainer::unrelease(const TextRevision& targetRevision)

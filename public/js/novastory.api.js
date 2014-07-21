@@ -203,3 +203,25 @@ NovastoryApi.revision = function (revision, callback)
 		callback,
 		'json');
 };
+
+NovastoryApi.release = function (revision, callback)
+{
+	$.post(
+		'/api/release',
+	{
+		revision: revision
+	},
+		callback,
+		'json');
+};
+
+NovastoryApi.unrelease = function (revision, callback)
+{
+	$.post(
+		'/api/unrelease',
+	{
+		revision: revision
+	},
+		callback,
+		'json');
+};

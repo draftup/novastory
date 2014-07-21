@@ -891,9 +891,10 @@ $(document).ready(function ()
 								var changesMade = false;
 								(function (i)
 								{
-									var element = $("<li class='" + ((revisions[i].release) ? "release" : "regular") + "'>"
+									var element = $("<li class='" + ((revisions[i].isRelease) ? "release" : "regular") + "'>"
 											 + '<div class="date">' + revisions[i].date + "</div>"
 											 + '<div class="size">' + revisions[i].textLength + " bytes</div>"
+											 + '<div class="to-release">' + ((revisions[i].isRelease) ? "✗" : "✓") + '</div>'
 											 + "</li>");
 									list.prepend(element);
 									var revision = revisions[i].revisionid;
@@ -928,6 +929,25 @@ $(document).ready(function ()
 										);
 									}
 									);
+									var isRelease = revisions[i].isRelease;
+									element.children('.to-release').click(function(e){
+										e.stopPropagation();
+										function helper(data)
+										{
+											if(data.error != null && !data.error)
+											{
+												updateRevisionList();
+											}
+											else
+											{
+												Novastory.error("Something wrong on release revision");
+											}
+										}
+										if(!isRelease)
+											NovastoryApi.release(revision, helper);
+										else
+											NovastoryApi.unrelease(revision, helper);
+									});
 								}
 								)(i);
 							}

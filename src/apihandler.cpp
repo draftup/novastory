@@ -154,6 +154,24 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		container.save();
 		json = container.jsonString().toUtf8();
 	}
+	else if (hook == "release")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		TextRevisionContainer container;
+		container.setUser(user);
+		VERIFY(container.release(post["revision"].toInt()));
+		json = container.jsonString().toUtf8();
+	}
+	else if (hook == "unrelease")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		TextRevisionContainer container;
+		container.setUser(user);
+		VERIFY(container.unrelease(post["revision"].toInt()));
+		json = container.jsonString().toUtf8();
+	}
 	else if (hook == "subscribe")
 	{
 		User user;
