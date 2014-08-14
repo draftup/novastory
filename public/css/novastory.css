@@ -1,4 +1,4 @@
-﻿html, body {
+﻿body {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 11pt;
 	background: #FFF;
@@ -134,6 +134,7 @@ input[type="search"] {
 #logout {
 	width: 280px;
 	right:-140px;
+
 	-moz-transition:all 0.5s;
 	-o-transition:all 0.5s;
 	-webkit-transition:all 0.5s;
