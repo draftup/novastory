@@ -13,7 +13,7 @@ public:
 	NestedSet();
 
 	bool insert(int parent_right_key, const QVariant& value);
-private:
+protected:
 	QString m_left_name;
 	QString m_right_name;
 	QString m_table_name;

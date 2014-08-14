@@ -2,8 +2,18 @@
 #include "sql/sqldatabase.h"
 #include "sql/sqlquery.h"
 #include "utils/globals.h"
+#include "utils/nestedset.h"
 
 using namespace novastory;
+
+class NestedSetTest : public NestedSet
+{
+public:
+	NestedSetTest()
+	{
+		m_table_name = ""
+	};
+};
 
 class Test_NestedSet: public QObject
 {
