@@ -122,6 +122,7 @@ input[type="search"] {
 	display: inline-block;
 	position:absolute;
 	color: #FFFFFF;
+	top: 0px;
 }
 
 #login {
