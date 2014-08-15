@@ -45,7 +45,7 @@ int TextRevisionContainer::userid() const
 	return m_user.userid();
 }
 
-TextRevision TextRevisionContainer::insert(bool isRelease)
+TextRevision TextRevisionContainer::insert()
 {
 	if (!m_user.isLogined())
 	{
@@ -69,7 +69,6 @@ TextRevision TextRevisionContainer::insert(bool isRelease)
 	TextRevision revision;
 	revision.setUser(m_user);
 	revision.setText(m_text);
-	revision.setRelease(isRelease);
 	revision.setMark(m_mark);
 	if (revision.insertSQL())
 	{
@@ -83,15 +82,15 @@ TextRevision TextRevisionContainer::insert(bool isRelease)
 	return revision;
 }
 
-TextRevision TextRevisionContainer::insert(const QString& text, bool isRelease)
+TextRevision TextRevisionContainer::insert(const QString& text)
 {
 	setText(text);
-	return insert(isRelease);
+	return insert();
 }
 
-novastory::TextRevision TextRevisionContainer::insert(char* text, bool isRelease /*= false*/)
+novastory::TextRevision TextRevisionContainer::insert(char* text)
 {
-	return insert(QString(text), isRelease);
+	return insert(QString(text));
 }
 
 
@@ -128,18 +127,40 @@ novastory::TextRevision TextRevisionContainer::update()
 
 		Q_ASSERT(rev.isValid());
 
-		SqlQuery updateQ;
-		updateQ.prepare("UPDATE textrevisions SET text = :text, mark = :mark WHERE revisionid = " + dublicateCheck.value("revisionid").toString());
-		updateQ.bindValue(":text", rev.text());
-		updateQ.bindValue(":mark", rev.mark());
-
-		if (updateQ.exec())
+		if (!rev.isRelease())
 		{
-			QMap::insert(rev.revisionId(), rev);
-			return rev;
+			SqlQuery updateQ;
+			updateQ.prepare("UPDATE textrevisions SET text = :text, mark = :mark WHERE revisionid = " + dublicateCheck.value("revisionid").toString());
+			updateQ.bindValue(":text", rev.text());
+			updateQ.bindValue(":mark", rev.mark());
+
+			if (updateQ.exec())
+			{
+				QMap::insert(rev.revisionId(), rev);
+			}
+			else
+			{
+				JSON_ERROR("Something wrong on revision save", 2);
+				return TextRevision();
+			}
+		}
+		else
+		{
+			rev.setRelease(false);
+			rev.setRevisionID(-1);
+			if (rev.insertSQL())
+			{
+				Q_ASSERT(rev.revisionId() > 0);
+				QMap::insert(rev.revisionId(), rev);
+			}
+			else
+			{
+				JSON_ERROR("Something wrong on revision save", 2);
+				return TextRevision();
+			}
 		}
 
-		return TextRevision();
+		return rev;
 	}
 	else
 	{
@@ -155,6 +176,7 @@ novastory::TextRevision TextRevisionContainer::update()
 		else
 		{
 			JSON_ERROR("Something wrong on revision save", 2);
+			return TextRevision();
 		}
 		return revision;
 	}

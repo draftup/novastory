@@ -18,9 +18,9 @@ public:
 	TextRevisionContainer();
 
 	bool sync();
-	TextRevision insert(bool isRelease = false);
-	TextRevision insert(const QString& text, bool isRelease = false);
-	TextRevision insert(char* text, bool isRelease = false);
+	TextRevision insert();
+	TextRevision insert(const QString& text);
+	TextRevision insert(char* text);
 	TextRevision update();
 	TextRevision update(const QString& text);
 	TextRevision update(char* text);
