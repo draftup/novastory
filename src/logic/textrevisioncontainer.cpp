@@ -70,6 +70,7 @@ TextRevision TextRevisionContainer::insert(bool isRelease)
 	revision.setUser(m_user);
 	revision.setText(m_text);
 	revision.setRelease(isRelease);
+	revision.setMark(m_mark);
 	if (revision.insertSQL())
 	{
 		Q_ASSERT(revision.revisionId() > 0);
@@ -120,12 +121,17 @@ novastory::TextRevision TextRevisionContainer::update()
 			rev.syncRecord(dublicateCheck);
 		}
 		rev.setText(m_text);
+		if (!m_mark.isEmpty())
+		{
+			rev.setMark(m_mark);
+		}
 
 		Q_ASSERT(rev.isValid());
 
 		SqlQuery updateQ;
-		updateQ.prepare("UPDATE textrevisions SET text = :text WHERE revisionid = " + dublicateCheck.value("revisionid").toString());
+		updateQ.prepare("UPDATE textrevisions SET text = :text, mark = :mark WHERE revisionid = " + dublicateCheck.value("revisionid").toString());
 		updateQ.bindValue(":text", rev.text());
+		updateQ.bindValue(":mark", rev.mark());
 
 		if (updateQ.exec())
 		{
@@ -140,6 +146,7 @@ novastory::TextRevision TextRevisionContainer::update()
 		TextRevision revision;
 		revision.setUser(m_user);
 		revision.setText(m_text);
+		revision.setMark(m_mark);
 		if (revision.insertSQL())
 		{
 			Q_ASSERT(revision.revisionId() > 0);
@@ -303,6 +310,11 @@ QString TextRevisionContainer::json(bool withoutText /* = false */)
 novastory::TextRevision TextRevisionContainer::revision(int rev)
 {
 	return value(rev);
+}
+
+void TextRevisionContainer::setMark(const QString& text)
+{
+	m_mark = text;
 }
 
 }

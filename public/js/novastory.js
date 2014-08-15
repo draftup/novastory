@@ -962,7 +962,7 @@ $(document).ready(function ()
 						if (e.ctrlKey && e.which === 83)
 						{
 							e.preventDefault();
-							NovastoryApi.updateRevision($("#editor").val(), function (data)
+							NovastoryApi.updateRevision($("#editor").val(), $("#revision-mark").val(), function (data)
 							{
 								if (data.error != null && !data.error)
 								{
@@ -988,7 +988,7 @@ $(document).ready(function ()
 						if (e.ctrlKey && e.which === 82)
 						{
 							e.preventDefault();
-							NovastoryApi.insertRevision($("#editor").val(), function (data)
+							NovastoryApi.insertRevision($("#editor").val(), $("#revision-mark").val(), function (data)
 							{
 								if (data.error != null && !data.error)
 								{

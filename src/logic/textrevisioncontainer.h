@@ -33,6 +33,7 @@ public:
 	TextRevision revision(int rev);
 
 	void setText(const QString& text);
+	void setMark(const QString& text);
 	void setUser(const User& user);
 
 	int userid() const;
@@ -41,6 +42,7 @@ public:
 private:
 	User m_user;
 	QString m_text;
+	QString m_mark;
 	bool m_synchronized;
 };
 

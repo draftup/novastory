@@ -151,6 +151,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		TextRevisionContainer container;
 		container.setUser(user);
 		container.setText(post["text"]);
+		container.setMark(post["mark"]);
 		container.insert();
 		json = container.jsonString().toUtf8();
 	}
@@ -161,6 +162,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		TextRevisionContainer container;
 		container.setUser(user);
 		container.setText(post["text"]);
+		container.setMark(post["mark"]);
 		container.update();
 		json = container.jsonString().toUtf8();
 	}
