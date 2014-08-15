@@ -103,31 +103,66 @@ ul#projectlist {
 	position: absolute;
 }
 
-#editor-revisions div{
+#editor-revisions > div{
 	display: inline-block;
 	padding: 5px 10px;
 	font-size: 0.7em;
-	color: white;
-	background: #535353;
+	color: #535353;
+	border: 1px solid #DEDEDE;
 	cursor: pointer;
 }
 
-#editor-revisions div.new-rev {
-	background: white;
+#editor-revisions > div.new-rev {
+	border: 1px solid #FFAD40;
+	cursor: default;
 }
 
-#editor-revisions div.new-rev input{
-	width: 80px;
+#editor-revisions > div.new-rev input{
+	color: red;
+	border: none;
+	width: 90px;
 	font-size: 1.1em;
 	}
+	
+#editor-revisions svg {
+	float: right;
+	width: 20px;
+	padding: 3px;
+	fill: white;
+	background: #FFAD40;
+	cursor: pointer;
+}
+	
+#editor-revisions > div.new-rev input:focus {
+	outline: none;
+	}
 
-#editor-revisions div.text {
-	background: white;
+#editor-revisions > div.text {
+	border: none;
 	color: #535353;
 	font-size: 0.8em;
 	cursor: default;
 }
 
-#editor-revisions div.current {
+#editor-revisions > div.current {
 	background: #FFAD40;
+	border-color: #FFAD40;
 }
+
+.rev-info {
+	position: absolute; 
+	margin-top: 10px;
+	padding: 10px;
+	width: 100px;
+	height: 50px;
+	background: #535353;
+	display: none;
+	opacity: 0;
+	transition: 0.2s;
+	color: white;
+	}
+	
+#editor-revisions > div:hover .rev-info {
+	display: block;
+	opacity: 0.7;
+	}
