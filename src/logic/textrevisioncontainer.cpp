@@ -33,7 +33,7 @@ bool TextRevisionContainer::sync()
 	{
 		TextRevision revision;
 		revision.syncRecord(selectQuery);
-		insert(revision.revisionId(), revision);
+		QMap::insert(revision.revisionId(), revision);
 	}
 	m_synchronized = true;
 	qDebug() << "Revisions syncronized for user" << userid();
@@ -45,7 +45,7 @@ int TextRevisionContainer::userid() const
 	return m_user.userid();
 }
 
-TextRevision TextRevisionContainer::save(bool isRelease)
+TextRevision TextRevisionContainer::insert()
 {
 	if (!m_user.isLogined())
 	{
@@ -69,11 +69,11 @@ TextRevision TextRevisionContainer::save(bool isRelease)
 	TextRevision revision;
 	revision.setUser(m_user);
 	revision.setText(m_text);
-	revision.setRelease(isRelease);
+	revision.setMark(m_mark);
 	if (revision.insertSQL())
 	{
 		Q_ASSERT(revision.revisionId() > 0);
-		insert(revision.revisionId(), revision);
+		QMap::insert(revision.revisionId(), revision);
 	}
 	else
 	{
@@ -82,16 +82,119 @@ TextRevision TextRevisionContainer::save(bool isRelease)
 	return revision;
 }
 
-TextRevision TextRevisionContainer::save(const QString& text, bool isRelease)
+TextRevision TextRevisionContainer::insert(const QString& text)
 {
 	setText(text);
-	return save(isRelease);
+	return insert();
 }
 
-novastory::TextRevision TextRevisionContainer::save(char* text, bool isRelease /*= false*/)
+novastory::TextRevision TextRevisionContainer::insert(char* text)
 {
-	return save(QString(text), isRelease);
+	return insert(QString(text));
 }
+
+
+novastory::TextRevision TextRevisionContainer::update()
+{
+	if (!m_user.isLogined())
+	{
+		JSON_ERROR("Not loginned", 1);
+		return TextRevision();
+	}
+
+	// Check last revision, may be text the save
+	SqlQuery dublicateCheck("SELECT * FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + " ORDER BY revisionid DESC LIMIT 1");
+	Q_ASSERT(dublicateCheck.lastError().type() == QSqlError::NoError);
+	if (dublicateCheck.size() == 1)
+	{
+		VERIFY(dublicateCheck.next());
+		if (dublicateCheck.value("text").toString() == m_text) // Dublicate, skip this
+		{
+			JSON_ERROR("Dublicate of last revision", 3);
+			return TextRevision();
+		}
+
+		TextRevision rev = value(dublicateCheck.value("revisionid").toInt());
+		if (!rev.isValid())
+		{
+			rev.syncRecord(dublicateCheck);
+		}
+		rev.setText(m_text);
+		if (!m_mark.isEmpty())
+		{
+			rev.setMark(m_mark);
+		}
+
+		Q_ASSERT(rev.isValid());
+
+		if (!rev.isRelease())
+		{
+			SqlQuery updateQ;
+			updateQ.prepare("UPDATE textrevisions SET text = :text, mark = :mark WHERE revisionid = " + dublicateCheck.value("revisionid").toString());
+			updateQ.bindValue(":text", rev.text());
+			updateQ.bindValue(":mark", rev.mark());
+
+			if (updateQ.exec())
+			{
+				QMap::insert(rev.revisionId(), rev);
+			}
+			else
+			{
+				JSON_ERROR("Something wrong on revision save", 2);
+				return TextRevision();
+			}
+		}
+		else
+		{
+			rev.setRelease(false);
+			rev.setRevisionID(-1);
+			if (rev.insertSQL())
+			{
+				Q_ASSERT(rev.revisionId() > 0);
+				QMap::insert(rev.revisionId(), rev);
+			}
+			else
+			{
+				JSON_ERROR("Something wrong on revision save", 2);
+				return TextRevision();
+			}
+		}
+
+		return rev;
+	}
+	else
+	{
+		TextRevision revision;
+		revision.setUser(m_user);
+		revision.setText(m_text);
+		revision.setMark(m_mark);
+		if (revision.insertSQL())
+		{
+			Q_ASSERT(revision.revisionId() > 0);
+			QMap::insert(revision.revisionId(), revision);
+		}
+		else
+		{
+			JSON_ERROR("Something wrong on revision save", 2);
+			return TextRevision();
+		}
+		return revision;
+	}
+
+	return TextRevision();
+}
+
+novastory::TextRevision TextRevisionContainer::update(const QString& text)
+{
+	setText(text);
+	return update();
+}
+
+novastory::TextRevision TextRevisionContainer::update(char* text)
+{
+	return update(QString(text));
+}
+
 
 void TextRevisionContainer::setText(const QString& text)
 {
@@ -164,7 +267,7 @@ bool TextRevisionContainer::release(int targetRevision)
 		newRevision.setRevisionID(-1);
 		VERIFY(newRevision.insertSQL());
 		Q_ASSERT(newRevision.revisionId() > 0);
-		insert(newRevision.revisionId(), newRevision);
+		QMap::insert(newRevision.revisionId(), newRevision);
 		qDebug() << "Revision" << targetRevision << "was copy to new release" << newRevision.revisionId() << "revision for user" << userid();
 	}
 
@@ -229,6 +332,11 @@ QString TextRevisionContainer::json(bool withoutText /* = false */)
 novastory::TextRevision TextRevisionContainer::revision(int rev)
 {
 	return value(rev);
+}
+
+void TextRevisionContainer::setMark(const QString& text)
+{
+	m_mark = text;
 }
 
 }

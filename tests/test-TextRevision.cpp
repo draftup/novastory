@@ -20,6 +20,7 @@ private slots:
 
 	void unloginedTest();
 	void createRevision();
+	void updateRevision();
 	void syncRevision();
 
 	void releaseMiddle();
@@ -57,7 +58,7 @@ void Test_TextRevision::cleanupTestCase()
 {
 	SqlQuery q;
 	q.exec(QString("SELECT * FROM textrevisions WHERE userid = ") + QString::number(buser.userid()));
-	QCOMPARE(q.size(), 4);
+	QCOMPARE(q.size(), 5);
 	container.clear();
 	q.exec(QString("SELECT * FROM textrevisions WHERE userid = ") + QString::number(buser.userid()));
 	QCOMPARE(q.size(), 0);
@@ -68,15 +69,27 @@ void Test_TextRevision::cleanupTestCase()
 void Test_TextRevision::unloginedTest()
 {
 	TextRevisionContainer c;
-	QVERIFY(!c.save("lol").isValid());
+	QVERIFY(!c.insert("lol").isValid());
 }
 
 void Test_TextRevision::createRevision()
 {
-	QVERIFY(container.save("privet").isValid());
+	QCOMPARE(container.size(), 0);
+	QVERIFY(container.update("privet").isValid());
 	QCOMPARE(container.size(), 1);
-	QVERIFY(container.save("privet2").isValid());
+	QVERIFY(container.insert("privet2").isValid());
 	QCOMPARE(container.size(), 2);
+}
+
+
+void Test_TextRevision::updateRevision()
+{
+	QVERIFY(container.update("privet22").isValid());
+	QCOMPARE(container.size(), 2);
+	TextRevision f = container.first();
+	TextRevision l = container.last();
+	QCOMPARE(f.text(), QString("privet"));
+	QCOMPARE(l.text(), QString("privet22"));
 }
 
 void Test_TextRevision::syncRevision()
@@ -104,7 +117,7 @@ void Test_TextRevision::releaseMiddle()
 
 void Test_TextRevision::releaseLast()
 {
-	QVERIFY(container.save("privet4").isValid());
+	QVERIFY(container.insert("privet4").isValid());
 	QCOMPARE(container.size(), 4);
 	TextRevision& rv = container.last();
 
@@ -115,6 +128,10 @@ void Test_TextRevision::releaseLast()
 	QVERIFY(container.release(rv));
 	QCOMPARE(rv.isRelease(), true);
 	QCOMPARE(container.size(), 4);
+
+	// try to update based on new revision
+	QVERIFY(container.update("privet5").isValid());
+	QCOMPARE(container.size(), 5);
 }
 
 
@@ -129,8 +146,11 @@ void Test_TextRevision::unrelease()
 
 void Test_TextRevision::dublicateCheck()
 {
-	QCOMPARE(container.size(), 4);
-	QVERIFY(!container.save("privet4").isValid());
+	QCOMPARE(container.size(), 5);
+	QVERIFY(!container.insert("privet5").isValid());
+	QCOMPARE(container.jsonErrorType(), 3);
+	QCOMPARE(container.size(), 5);
+	QVERIFY(!container.update("privet5").isValid());
 	QCOMPARE(container.jsonErrorType(), 3);
 }
 

@@ -87,15 +87,7 @@ p#rev-message span {
 	outline: none;
 }
 
-/*Список ревизий*/
-
-ul#projectlist {
-	position: absolute;
-	width: 300px;
-	height: 100%;
-	background:#EDEDED;
-}
-
+/*Панель ревизий*/
 
 #editor-revisions {
 	list-style: none;
@@ -103,31 +95,73 @@ ul#projectlist {
 	position: absolute;
 }
 
-#editor-revisions div{
-	display: inline-block;
-	padding: 5px 10px;
-	font-size: 0.7em;
-	color: white;
-	background: #535353;
-	cursor: pointer;
-}
-
-#editor-revisions div.new-rev {
-	background: white;
-}
-
-#editor-revisions div.new-rev input{
-	width: 80px;
-	font-size: 1.1em;
+#editor-revisions::before {
+	content: "Revisions";
+	padding: 0px 10px;
 	}
 
-#editor-revisions div.text {
-	background: white;
-	color: #535353;
-	font-size: 0.8em;
+#editor-revisions > div {
+	display: inline-block;
+	}
+
+#editor-revisions > div.new-rev {
+	border: 1px solid #FFAD40;
 	cursor: default;
 }
 
-#editor-revisions div.current {
+#editor-revisions > div.new-rev input{
+	color: red;
+	border: none;
+	width: 90px;
+	margin-top: 1px;
+	font-size: 1.1em;
+	}
+
+#editor-revisions .new-rev input:focus {
+	outline: none;
+	}
+
+#editor-revisions svg {
+	float: right;
+	width: 20px;
+	padding: 3px;
+	fill: white;
 	background: #FFAD40;
+	cursor: pointer;
 }
+
+/*Панель ревизий: список ревизий*/	
+
+#revisions-list > div, .new-rev {
+	display: inline-block;
+	padding: 5px 10px;
+	font-size: 0.75em;
+	color: #535353;
+	border: 1px solid #DEDEDE;
+	cursor: pointer;
+}
+
+
+#revisions-list > div.current {
+	background: #FFAD40;
+	border-color: #FFAD40;
+}
+
+/*Панель ревизий: список ревизий: инфа по ревизии*/
+
+.rev-info {
+	position: absolute; 
+	margin-top: 10px;
+	padding: 10px;
+	width: 100px;
+	background: #535353;
+	display: none;
+	opacity: 0;
+	transition: 0.2s;
+	color: white;
+	}
+	
+#revisions-list > div:hover .rev-info {
+	display: block;
+	opacity: 0.7;
+	}

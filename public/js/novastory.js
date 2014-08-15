@@ -11,6 +11,12 @@ includeJS("/js/jquery.cookie.js");
 var USERID;
 var STOKEN;
 
+function prettyDate(date)
+{
+	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+	return date.getDate() + ' ' + months[date.getMonth() - 1] + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+}
+
 $(document).ready(function ()
 {
 	Novastory = {}
@@ -883,7 +889,7 @@ $(document).ready(function ()
 					{
 						NovastoryApi.revisionsList(function (revisions)
 						{
-							var list = $('#editor-revisions');
+							var list = $('#revisions-list');
 							list.empty();
 							for (var i = 0; i < revisions.length; i++)
 							{
@@ -891,38 +897,50 @@ $(document).ready(function ()
 								var changesMade = false;
 								(function (i)
 								{
-									var element = $("<li class='" + ((revisions[i].isRelease) ? "release" : "regular") + "'>"
-											 + '<div class="date">' + revisions[i].date + "</div>"
-											 + '<div class="size">' + revisions[i].textLength + " bytes</div>"
-											 + '<div class="to-release">' + ((revisions[i].isRelease) ? "✗" : "✓") + '</div>'
-											 + "</li>");
+									var dateModify = new Date(revisions[i].modifyDate);
+									var element = $('<div>'
+											 + '<div class="rev-name">' + ((revisions[i].mark.length > 0) ? revisions[i].mark : prettyDate(dateModify)) + '</div>'
+											 + '<div class="rev-info">'
+											 + '<div class="data-lenght">' + revisions[i].textLength + ' bytes</div>'
+											 + '<div class="rev-date">' + prettyDate(dateModify)  + '</div>'
+											 + '</div>'
+											 + '</div>');
 									list.prepend(element);
 									var revision = revisions[i].revisionid;
 									element.click(function ()
 									{
 										NovastoryApi.revision(revision, function (data)
 										{
+											$('#revisions-list > div').attr('class', '');
+											element.attr('class', 'current');
 											var currentText = $('#editor').val();
 											if (currentTextElement == null)
 											{
-												currentTextElement = $("<li class='current'>"
-														 + '<div class="date">Current Text</div>'
-														 + '<div class="size">' + currentText.length + '</div>'
-														 + "</li>");
+												currentTextElement = $(
+														'<div>'
+														 + '<div class="rev-name">Editor Save Text</div>'
+														 + '<div class="rev-info">'
+														 + '<div class="data-lenght">' + currentText.length + ' bytes</div>'
+														 + '<div class="rev-date">Current</div>'
+														 + '</div>'
+														 + '</div>');
 												list.prepend(currentTextElement);
 												currentTextElement.click(function ()
 												{
+													$('#revisions-list > div').attr('class', '');
 													$('#editor').val(currentText);
 													currentTextElement.remove();
 													currentTextElement = null;
 												}
 												);
-												
-												$('#editor').on('input', function() {
+
+												$('#editor').on('input', function ()
+												{
 													currentTextElement.remove();
 													currentTextElement = null;
 													$(this).off('input');
-												});
+												}
+												);
 											}
 											$('#editor').val(data.text);
 										}
@@ -930,11 +948,12 @@ $(document).ready(function ()
 									}
 									);
 									var isRelease = revisions[i].isRelease;
-									element.children('.to-release').click(function(e){
+									element.children('.to-release').click(function (e)
+									{
 										e.stopPropagation();
 										function helper(data)
 										{
-											if(data.error != null && !data.error)
+											if (data.error != null && !data.error)
 											{
 												updateRevisionList();
 											}
@@ -943,11 +962,12 @@ $(document).ready(function ()
 												Novastory.error("Something wrong on release revision");
 											}
 										}
-										if(!isRelease)
+										if (!isRelease)
 											NovastoryApi.release(revision, helper);
 										else
 											NovastoryApi.unrelease(revision, helper);
-									});
+									}
+									);
 								}
 								)(i);
 							}
@@ -957,16 +977,42 @@ $(document).ready(function ()
 					updateRevisionList();
 
 					// revision control
-					$("#editor").keydown(function (e)
+					$("#editor, #revision-mark").keydown(function (e)
 					{
 						if (e.ctrlKey && e.which === 83)
 						{
 							e.preventDefault();
-							NovastoryApi.revisionSave($("#editor").val(), function (data)
+							NovastoryApi.updateRevision($("#editor").val(), $("#revision-mark").val(), function (data)
 							{
 								if (data.error != null && !data.error)
 								{
-									Novastory.ok("Text saved in revision history");
+									Novastory.ok("Text updated in last revision");
+									updateRevisionList();
+								}
+								else if (data.error != null && data.error && data.errorType == 3)
+								{
+									Novastory.warning("Same text was saved slightly before");
+								}
+								else
+								{
+									Novastory.error("Something wrong on text save");
+								}
+							}
+							);
+						}
+					}
+					);
+
+					$("#editor, #revision-mark").keydown(function (e)
+					{
+						if (e.ctrlKey && e.which === 82)
+						{
+							e.preventDefault();
+							NovastoryApi.insertRevision($("#editor").val(), $("#revision-mark").val(), function (data)
+							{
+								if (data.error != null && !data.error)
+								{
+									Novastory.ok("Text inserted in revision list");
 									updateRevisionList();
 								}
 								else if (data.error != null && data.error && data.errorType == 3)
