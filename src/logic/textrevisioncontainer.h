@@ -21,6 +21,9 @@ public:
 	TextRevision insert(bool isRelease = false);
 	TextRevision insert(const QString& text, bool isRelease = false);
 	TextRevision insert(char* text, bool isRelease = false);
+	TextRevision update();
+	TextRevision update(const QString& text);
+	TextRevision update(char* text);
 	void clear();
 	bool release(int targetRevision);
 	bool release(const TextRevision& targetRevision);

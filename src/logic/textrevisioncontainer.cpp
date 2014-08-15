@@ -93,6 +93,80 @@ novastory::TextRevision TextRevisionContainer::insert(char* text, bool isRelease
 	return insert(QString(text), isRelease);
 }
 
+
+novastory::TextRevision TextRevisionContainer::update()
+{
+	if (!m_user.isLogined())
+	{
+		JSON_ERROR("Not loginned", 1);
+		return TextRevision();
+	}
+
+	// Check last revision, may be text the save
+	SqlQuery dublicateCheck("SELECT * FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + " ORDER BY revisionid DESC LIMIT 1");
+	Q_ASSERT(dublicateCheck.lastError().type() == QSqlError::NoError);
+	if (dublicateCheck.size() == 1)
+	{
+		VERIFY(dublicateCheck.next());
+		if (dublicateCheck.value("text").toString() == m_text) // Dublicate, skip this
+		{
+			JSON_ERROR("Dublicate of last revision", 3);
+			return TextRevision();
+		}
+
+		TextRevision rev = value(dublicateCheck.value("revisionid").toInt());
+		if (!rev.isValid())
+		{
+			rev.syncRecord(dublicateCheck);
+		}
+		rev.setText(m_text);
+
+		Q_ASSERT(rev.isValid());
+
+		SqlQuery updateQ;
+		updateQ.prepare("UPDATE textrevisions SET text = :text WHERE revisionid = " + dublicateCheck.value("revisionid").toString());
+		updateQ.bindValue(":text", rev.text());
+
+		if (updateQ.exec())
+		{
+			QMap::insert(rev.revisionId(), rev);
+			return rev;
+		}
+
+		return TextRevision();
+	}
+	else
+	{
+		TextRevision revision;
+		revision.setUser(m_user);
+		revision.setText(m_text);
+		if (revision.insertSQL())
+		{
+			Q_ASSERT(revision.revisionId() > 0);
+			QMap::insert(revision.revisionId(), revision);
+		}
+		else
+		{
+			JSON_ERROR("Something wrong on revision save", 2);
+		}
+		return revision;
+	}
+
+	return TextRevision();
+}
+
+novastory::TextRevision TextRevisionContainer::update(const QString& text)
+{
+	setText(text);
+	return update();
+}
+
+novastory::TextRevision TextRevisionContainer::update(char* text)
+{
+	return update(QString(text));
+}
+
+
 void TextRevisionContainer::setText(const QString& text)
 {
 	m_text = text;

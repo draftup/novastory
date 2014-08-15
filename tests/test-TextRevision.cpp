@@ -20,6 +20,7 @@ private slots:
 
 	void unloginedTest();
 	void createRevision();
+	void updateRevision();
 	void syncRevision();
 
 	void releaseMiddle();
@@ -73,10 +74,22 @@ void Test_TextRevision::unloginedTest()
 
 void Test_TextRevision::createRevision()
 {
-	QVERIFY(container.insert("privet").isValid());
+	QCOMPARE(container.size(), 0);
+	QVERIFY(container.update("privet").isValid());
 	QCOMPARE(container.size(), 1);
 	QVERIFY(container.insert("privet2").isValid());
 	QCOMPARE(container.size(), 2);
+}
+
+
+void Test_TextRevision::updateRevision()
+{
+	QVERIFY(container.update("privet22").isValid());
+	QCOMPARE(container.size(), 2);
+	TextRevision f = container.first();
+	TextRevision l = container.last();
+	QCOMPARE(f.text(), QString("privet"));
+	QCOMPARE(l.text(), QString("privet22"));
 }
 
 void Test_TextRevision::syncRevision()
