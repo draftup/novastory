@@ -144,7 +144,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 			json = doc.toJson();
 		}
 	}
-	else if (hook == "revisionsave")
+	else if (hook == "revisioninsert")
 	{
 		User user;
 		user.loginByToken(userid, stoken);
@@ -152,6 +152,16 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		container.setUser(user);
 		container.setText(post["text"]);
 		container.insert();
+		json = container.jsonString().toUtf8();
+	}
+	else if (hook == "revisionupdate")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		TextRevisionContainer container;
+		container.setUser(user);
+		container.setText(post["text"]);
+		container.update();
 		json = container.jsonString().toUtf8();
 	}
 	else if (hook == "release")

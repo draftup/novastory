@@ -962,11 +962,37 @@ $(document).ready(function ()
 						if (e.ctrlKey && e.which === 83)
 						{
 							e.preventDefault();
-							NovastoryApi.revisionSave($("#editor").val(), function (data)
+							NovastoryApi.updateRevision($("#editor").val(), function (data)
 							{
 								if (data.error != null && !data.error)
 								{
-									Novastory.ok("Text saved in revision history");
+									Novastory.ok("Text updated in last revision");
+									updateRevisionList();
+								}
+								else if (data.error != null && data.error && data.errorType == 3)
+								{
+									Novastory.warning("Same text was saved slightly before");
+								}
+								else
+								{
+									Novastory.error("Something wrong on text save");
+								}
+							}
+							);
+						}
+					}
+					);
+					
+					$("#editor").keydown(function (e)
+					{
+						if (e.ctrlKey && e.which === 82)
+						{
+							e.preventDefault();
+							NovastoryApi.insertRevision($("#editor").val(), function (data)
+							{
+								if (data.error != null && !data.error)
+								{
+									Novastory.ok("Text inserted in revision list");
 									updateRevisionList();
 								}
 								else if (data.error != null && data.error && data.errorType == 3)
