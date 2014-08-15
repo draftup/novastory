@@ -95,6 +95,12 @@ p#rev-message span {
 	position: absolute;
 }
 
+@-moz-document url-prefix() {
+	#editor-revisions {
+		margin-top: 5px;
+		}
+	}
+
 #editor-revisions::before {
 	content: "Revisions";
 	padding: 0px 10px;
@@ -109,13 +115,19 @@ p#rev-message span {
 	cursor: default;
 }
 
-#editor-revisions > div.new-rev input{
+#editor-revisions > div.new-rev input {
 	color: red;
 	border: none;
 	width: 90px;
 	margin-top: 1px;
 	font-size: 1.1em;
 	}
+
+@-moz-document url-prefix() {
+	#editor-revisions > div.new-rev input {
+		margin-top: -2px;
+	}
+}	
 
 #editor-revisions .new-rev input:focus {
 	outline: none;
