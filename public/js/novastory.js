@@ -892,7 +892,7 @@ $(document).ready(function ()
 								(function (i)
 								{
 									var element = $("<li class='" + ((revisions[i].isRelease) ? "release" : "regular") + "'>"
-											 + '<div class="date">' + revisions[i].date + "</div>"
+											 + '<div class="date">' + revisions[i].createDate + "</div>"
 											 + '<div class="size">' + revisions[i].textLength + " bytes</div>"
 											 + '<div class="to-release">' + ((revisions[i].isRelease) ? "✗" : "✓") + '</div>'
 											 + "</li>");

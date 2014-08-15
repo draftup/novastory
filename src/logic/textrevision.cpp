@@ -99,8 +99,8 @@ QJsonObject TextRevision::json(bool withoutText /* = false */) const
 		revision.insert("text", text());
 	}
 	revision.insert("textLength", text().length());
-	revision.insert("createdate", createDate().toMSecsSinceEpoch());
-	revision.insert("modifydate", modifyDate().toMSecsSinceEpoch());
+	revision.insert("createDate", createDate().toMSecsSinceEpoch());
+	revision.insert("modifyDate", modifyDate().toMSecsSinceEpoch());
 	revision.insert("mark", mark());
 
 	return revision;
