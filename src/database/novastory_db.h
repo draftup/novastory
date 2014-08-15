@@ -103,11 +103,27 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 				"0"
 			},
 			DBPatcher::Column{
-				"date",
+				"createdate",
 				"timestamp",
 				false,
 				"",
 				"CURRENT_TIMESTAMP"
+			},
+			DBPatcher::Column{
+				"modifydate",
+				"timestamp",
+				false,
+				"",
+				"CURRENT_TIMESTAMP",
+				"on update CURRENT_TIMESTAMP"
+			},
+			DBPatcher::Column{
+				"mark",
+				"varchar(64)",
+				true,
+				"",
+				"",
+				""
 			},
 			DBPatcher::Column{
 				"text",

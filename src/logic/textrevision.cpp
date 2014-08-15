@@ -31,6 +31,21 @@ void TextRevision::resetText()
 	m_text = QString();
 }
 
+const QString& TextRevision::mark() const
+{
+	return m_mark;
+}
+
+void TextRevision::setMark(const QString& mark)
+{
+	m_mark = mark;
+}
+
+void TextRevision::resetMark()
+{
+	m_mark = QString();
+}
+
 void TextRevision::setUser(const User& user)
 {
 	m_user = user;
@@ -84,7 +99,9 @@ QJsonObject TextRevision::json(bool withoutText /* = false */) const
 		revision.insert("text", text());
 	}
 	revision.insert("textLength", text().length());
-	revision.insert("date", date().toMSecsSinceEpoch());
+	revision.insert("createdate", createDate().toMSecsSinceEpoch());
+	revision.insert("modifydate", modifyDate().toMSecsSinceEpoch());
+	revision.insert("mark", mark());
 
 	return revision;
 }
@@ -94,19 +111,34 @@ bool TextRevision::isValid() const
 	return m_revisionId > 0;
 }
 
-const QDateTime& TextRevision::date() const
+const QDateTime& TextRevision::createDate() const
 {
-	return m_date;
+	return m_create_date;
 }
 
-void TextRevision::setDate(const QDateTime& date)
+void TextRevision::setCreateDate(const QDateTime& date)
 {
-	m_date = date;
+	m_create_date = date;
 }
 
-void TextRevision::resetDate()
+void TextRevision::resetCreateDate()
 {
-	m_date = QDateTime();
+	m_create_date = QDateTime();
+}
+
+const QDateTime& TextRevision::modifyDate() const
+{
+	return m_modify_date;
+}
+
+void TextRevision::setModifyDate(const QDateTime& date)
+{
+	m_modify_date = date;
+}
+
+void TextRevision::resetModifyDate()
+{
+	m_modify_date = QDateTime();
 }
 
 }

@@ -33,7 +33,7 @@ bool TextRevisionContainer::sync()
 	{
 		TextRevision revision;
 		revision.syncRecord(selectQuery);
-		insert(revision.revisionId(), revision);
+		QMap::insert(revision.revisionId(), revision);
 	}
 	m_synchronized = true;
 	qDebug() << "Revisions syncronized for user" << userid();
@@ -45,7 +45,7 @@ int TextRevisionContainer::userid() const
 	return m_user.userid();
 }
 
-TextRevision TextRevisionContainer::save(bool isRelease)
+TextRevision TextRevisionContainer::insert(bool isRelease)
 {
 	if (!m_user.isLogined())
 	{
@@ -73,7 +73,7 @@ TextRevision TextRevisionContainer::save(bool isRelease)
 	if (revision.insertSQL())
 	{
 		Q_ASSERT(revision.revisionId() > 0);
-		insert(revision.revisionId(), revision);
+		QMap::insert(revision.revisionId(), revision);
 	}
 	else
 	{
@@ -82,15 +82,15 @@ TextRevision TextRevisionContainer::save(bool isRelease)
 	return revision;
 }
 
-TextRevision TextRevisionContainer::save(const QString& text, bool isRelease)
+TextRevision TextRevisionContainer::insert(const QString& text, bool isRelease)
 {
 	setText(text);
-	return save(isRelease);
+	return insert(isRelease);
 }
 
-novastory::TextRevision TextRevisionContainer::save(char* text, bool isRelease /*= false*/)
+novastory::TextRevision TextRevisionContainer::insert(char* text, bool isRelease /*= false*/)
 {
-	return save(QString(text), isRelease);
+	return insert(QString(text), isRelease);
 }
 
 void TextRevisionContainer::setText(const QString& text)
@@ -164,7 +164,7 @@ bool TextRevisionContainer::release(int targetRevision)
 		newRevision.setRevisionID(-1);
 		VERIFY(newRevision.insertSQL());
 		Q_ASSERT(newRevision.revisionId() > 0);
-		insert(newRevision.revisionId(), newRevision);
+		QMap::insert(newRevision.revisionId(), newRevision);
 		qDebug() << "Revision" << targetRevision << "was copy to new release" << newRevision.revisionId() << "revision for user" << userid();
 	}
 

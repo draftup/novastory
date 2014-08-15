@@ -151,7 +151,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		TextRevisionContainer container;
 		container.setUser(user);
 		container.setText(post["text"]);
-		container.save();
+		container.insert();
 		json = container.jsonString().toUtf8();
 	}
 	else if (hook == "release")
