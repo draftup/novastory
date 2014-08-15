@@ -18,9 +18,12 @@ public:
 	TextRevisionContainer();
 
 	bool sync();
-	TextRevision save(bool isRelease = false);
-	TextRevision save(const QString& text, bool isRelease = false);
-	TextRevision save(char* text, bool isRelease = false);
+	TextRevision insert(bool isRelease = false);
+	TextRevision insert(const QString& text, bool isRelease = false);
+	TextRevision insert(char* text, bool isRelease = false);
+	TextRevision update();
+	TextRevision update(const QString& text);
+	TextRevision update(char* text);
 	void clear();
 	bool release(int targetRevision);
 	bool release(const TextRevision& targetRevision);
@@ -30,6 +33,7 @@ public:
 	TextRevision revision(int rev);
 
 	void setText(const QString& text);
+	void setMark(const QString& text);
 	void setUser(const User& user);
 
 	int userid() const;
@@ -38,6 +42,7 @@ public:
 private:
 	User m_user;
 	QString m_text;
+	QString m_mark;
 	bool m_synchronized;
 };
 

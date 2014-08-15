@@ -20,8 +20,10 @@ class TextRevision : protected Sqlizable, public JsonThrower
 	Q_OBJECT
 	Q_PROPERTY(int revisionid READ revisionId WRITE setRevisionID)
 	Q_PROPERTY(int userid READ userid WRITE setUserID)
-	Q_PROPERTY(bool release READ isRelease WRITE setRelease RESET resetRelease);
-	Q_PROPERTY(QDateTime date READ date WRITE setDate RESET resetDate);
+	Q_PROPERTY(bool release READ isRelease WRITE setRelease RESET resetRelease)
+	Q_PROPERTY(QDateTime createdate READ createDate WRITE setCreateDate RESET resetCreateDate)
+	Q_PROPERTY(QDateTime modifydate READ modifyDate WRITE setModifyDate RESET resetModifyDate)
+	Q_PROPERTY(QString mark READ mark WRITE setMark RESET resetMark)
 	Q_PROPERTY(QString text READ text WRITE setText RESET resetText)
 public:
 	TextRevision();
@@ -34,13 +36,21 @@ public:
 	void setText(const QString& text);
 	void resetText();
 
+	const QString& mark() const;
+	void setMark(const QString& mark);
+	void resetMark();
+
 	bool isRelease() const;
 	void setRelease(bool rel);
 	void resetRelease();
 
-	const QDateTime& date() const;
-	void setDate(const QDateTime& date);
-	void resetDate();
+	const QDateTime& createDate() const;
+	void setCreateDate(const QDateTime& date);
+	void resetCreateDate();
+
+	const QDateTime& modifyDate() const;
+	void setModifyDate(const QDateTime& date);
+	void resetModifyDate();
 
 	const int& revisionId() const;
 	void setRevisionID(int revision);
@@ -53,9 +63,11 @@ public:
 private:
 	User m_user;
 	QString m_text;
+	QString m_mark;
 	int m_revisionId;
 	bool m_release;
-	QDateTime m_date;
+	QDateTime m_create_date;
+	QDateTime m_modify_date;
 };
 
 }

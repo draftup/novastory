@@ -172,12 +172,25 @@ NovastoryApi.editorText = function (callback)
 		'json');
 };
 
-NovastoryApi.revisionSave = function (text, callback)
+NovastoryApi.insertRevision = function (text, mark, callback)
 {
 	$.post(
-		'/api/revisionsave',
+		'/api/revisioninsert',
 	{
-		text: text
+		text: text,
+		mark: mark
+	},
+		callback,
+		'json');
+};
+
+NovastoryApi.updateRevision = function (text, mark, callback)
+{
+	$.post(
+		'/api/revisionupdate',
+	{
+		text: text,
+		mark: mark
 	},
 		callback,
 		'json');
