@@ -87,77 +87,83 @@ p#rev-message span {
 	outline: none;
 }
 
-/*Панель ревизий*/
+/*Список ревизий*/
 
 #editor-revisions {
 	list-style: none;
-	width: 100%;
-	position: absolute;
 }
 
 @-moz-document url-prefix() {
 	#editor-revisions {
 		margin-top: 5px;
-		}
 	}
+}
 
 #editor-revisions::before {
 	content: "Revisions";
 	padding: 0px 10px;
 	}
 
+/*Список ревизий: сами ревизии*/	
+
 #editor-revisions > div {
+	height: 26px;
+	line-height: 26px;
 	display: inline-block;
-	}
-
-#editor-revisions > div.new-rev {
-	border: 1px solid #FFAD40;
-	cursor: default;
-}
-
-#editor-revisions > div.new-rev input {
-	color: red;
-	border: none;
-	width: 90px;
-	margin-top: 1px;
-	font-size: 1.1em;
-	}
-
-@-moz-document url-prefix() {
-	#editor-revisions > div.new-rev input {
-		margin-top: -2px;
-	}
-}	
-
-#editor-revisions .new-rev input:focus {
-	outline: none;
-	}
-
-#editor-revisions svg {
-	float: right;
-	width: 20px;
-	padding: 3px;
-	fill: white;
-	background: #FFAD40;
-	cursor: pointer;
-}
-
-/*Панель ревизий: список ревизий*/	
-
-#revisions-list > div, .new-rev {
-	display: inline-block;
-	padding: 5px 10px;
 	font-size: 0.75em;
 	color: #535353;
 	border: 1px solid #DEDEDE;
 	cursor: pointer;
 }
 
-
-#revisions-list > div.current {
+#editor-revisions > div.current {
 	background: #FFAD40;
 	border-color: #FFAD40;
 }
+
+#editor-revisions > div input {
+	display: none;
+	border: none;
+	width: 90px;
+	margin: 4px;
+	font-size: 1.1em;
+	}
+
+#editor-revisions > div.current input:focus {
+	outline: none;
+	}
+	
+#editor-revisions > div.current.edited input {
+	display: inline-block;
+}
+
+#editor-revisions .rev-name {
+	display: inline-block;
+	margin: 0px 10px;
+}
+
+#editor-revisions > div.current.edited .rev-name {
+	display: none;
+}
+
+#editor-revisions svg {
+	display: none;
+	position: relative;
+	top: 3px;
+	margin-right: 5px;
+	width: 15px;
+	fill: #BC7B26;
+	cursor: pointer;
+	transition: 0.1s;
+}
+
+#editor-revisions .current svg {
+	display: inline;
+	}
+
+#editor-revisions svg:hover {
+	fill: #6D4003;
+	}
 
 /*Панель ревизий: список ревизий: инфа по ревизии*/
 
@@ -173,7 +179,7 @@ p#rev-message span {
 	color: white;
 	}
 	
-#revisions-list > div:hover .rev-info {
+#editor-revisions > div:hover .rev-info {
 	display: block;
 	opacity: 0.7;
 	}
