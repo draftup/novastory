@@ -99,15 +99,13 @@ p#rev-message span {
 	}
 }
 
-#editor-revisions::before {
-	content: "Revisions";
-	padding: 0px 10px;
-	}
+
 
 /*Список ревизий: сами ревизии*/	
 
 #editor-revisions > div {
 	height: 26px;
+	min-width: 40px;
 	line-height: 26px;
 	display: inline-block;
 	font-size: 0.75em;
@@ -138,8 +136,10 @@ p#rev-message span {
 }
 
 #editor-revisions .rev-name {
+	min-width: 20px;
 	display: inline-block;
 	margin: 0px 10px;
+	text-align: center;
 }
 
 #editor-revisions > div.current.edited .rev-name {
@@ -165,6 +165,32 @@ p#rev-message span {
 	fill: #6D4003;
 	}
 
+#editor-revisions .pointer {
+	display: none;
+	position: absolute;
+	margin-top: -8px;
+	margin-left: 10px;
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 11px solid #C9C9C9; 
+	}
+
+#editor-revisions .current .pointer {
+	display: block;
+	}
+	
+#editor-revisions .pointer div {
+	width: 0;
+	height: 0;
+	border-left: 9px solid transparent;
+	border-right: 9px solid transparent;
+	border-top: 10px solid white; 
+	margin: -11px 0px 0px -9px;
+	}
+	
+	
 /*Панель ревизий: список ревизий: инфа по ревизии*/
 
 .rev-info {
