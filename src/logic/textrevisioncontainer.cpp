@@ -339,4 +339,27 @@ void TextRevisionContainer::setMark(const QString& text)
 	m_mark = text;
 }
 
+bool TextRevisionContainer::removeRevision(const TextRevision& targetRevision)
+{
+	return removeRevision(targetRevision.revisionId());
+}
+
+bool TextRevisionContainer::removeRevision(int revision)
+{
+	if (!m_user.isLogined())
+	{
+		JSON_ERROR("Not loginned", 1);
+		return false;
+	}
+
+	SqlQuery removeQ("DELETE FROM textrevisions WHERE revisionid = " + QString::number(revision));
+	if (removeQ.lastError().type() == QSqlError::NoError)
+	{
+		QMap::remove(revision);
+		return true;
+	}
+
+	return false;
+}
+
 }

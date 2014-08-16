@@ -24,6 +24,8 @@ public:
 	TextRevision update();
 	TextRevision update(const QString& text);
 	TextRevision update(char* text);
+	bool removeRevision(const TextRevision& targetRevision);
+	bool removeRevision(int revision);
 	void clear();
 	bool release(int targetRevision);
 	bool release(const TextRevision& targetRevision);
