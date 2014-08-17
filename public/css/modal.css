@@ -3,7 +3,7 @@
 	width:420px;
 	background:#EDEDED;
 	position:fixed;
-	z-index: 0;
+	z-index: 5;
 	font-size:10pt;
 	margin: -130px 0 0 -210px;
 	top: 50%;
