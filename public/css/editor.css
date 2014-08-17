@@ -2,7 +2,7 @@
 	position: relative;
 	padding-top: 50px;
 	font-size: 1em;
-	z-index: 0;
+	z-index: -1;
 	width: 50%;
 	left: 25%;
 }
