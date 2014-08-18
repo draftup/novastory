@@ -911,6 +911,11 @@ $(document).ready(function ()
 											 + '</div>');
 									list.prepend(element);
 									var revision = revisions[i].revisionid;
+									
+									// мы не хотим чтобы при нажатии на инпут обновляло элемент
+									element.children('input[name=new-rev-name]').click(function(e){
+										e.stopPropagation();
+									});
 									element.click(function ()
 									{
 										lastClickedRevision = revision;
@@ -992,19 +997,24 @@ $(document).ready(function ()
 									}
 									);
 
-									element.children('.edit-rev-name').click(function (e)
+									function editMark(e)
 									{
 										e.stopPropagation();
 										element.addClass('edited');
-										$(this).unbind('click');
-										$(this).click(function (e)
+										var markButton = $(this);
+										markButton.unbind('click');
+										markButton.click(function (e)
 										{
 											e.stopPropagation();
-											NovastoryApi.updateRevisionMark(revision, element.children('input[name=new-rev-name]').val(), function (data)
+											var markText = element.children('input[name=new-rev-name]').val();
+											NovastoryApi.updateRevisionMark(revision, markText, function (data)
 											{
 												if (data.error != null && !data.error)
 												{
 													element.removeClass('edited')
+													element.children('.rev-name').text(markText);
+													markButton.unbind('click');
+													markButton.click(editMark);
 												}
 												else
 												{
@@ -1015,7 +1025,7 @@ $(document).ready(function ()
 										}
 										);
 									}
-									);
+									element.children('.edit-rev-name').click(editMark);
 								}
 								)(i);
 							}
