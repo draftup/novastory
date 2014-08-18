@@ -196,6 +196,17 @@ NovastoryApi.updateRevision = function (text, mark, callback)
 		'json');
 };
 
+NovastoryApi.removeRevision = function (revision, callback)
+{
+	$.post(
+		'/api/revisionremove',
+	{
+		revision: revision
+	},
+		callback,
+		'json');
+};
+
 NovastoryApi.revisionsList = function (callback)
 {
 	$.post(
@@ -216,6 +227,7 @@ NovastoryApi.revision = function (revision, callback)
 		callback,
 		'json');
 };
+
 
 NovastoryApi.release = function (revision, callback)
 {
