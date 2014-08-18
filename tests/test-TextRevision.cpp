@@ -27,6 +27,7 @@ private slots:
 	void releaseLast();
 
 	void unrelease();
+	void updateMark();
 
 	void dublicateCheck();
 	void removeCheck();
@@ -147,6 +148,14 @@ void Test_TextRevision::unrelease()
 	QCOMPARE(rev.isRelease(), true);
 	QVERIFY(container.unrelease(rev));
 	QCOMPARE(container.revision(releaseID).isRelease(), false);
+}
+
+
+void Test_TextRevision::updateMark()
+{
+	container.setMark("Lola");
+	QVERIFY(container.updateMark(container.last()));
+	QCOMPARE(container.last().mark(), QString("Lola"));
 }
 
 void Test_TextRevision::dublicateCheck()

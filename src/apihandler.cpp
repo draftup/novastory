@@ -167,6 +167,17 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		container.update(rev);
 		json = container.jsonString().toUtf8();
 	}
+	else if (hook == "revisionupdatemark")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		TextRevisionContainer container;
+		container.setUser(user);
+		container.setMark(post["mark"]);
+		int rev = post["revision"].toInt();
+		container.updateMark(rev);
+		json = container.jsonString().toUtf8();
+	}
 	else if (hook == "revisionremove")
 	{
 		User user;

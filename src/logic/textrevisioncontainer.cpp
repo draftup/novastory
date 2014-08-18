@@ -367,4 +367,38 @@ bool TextRevisionContainer::removeRevision(int revision)
 	return false;
 }
 
+bool TextRevisionContainer::updateMark(int revision)
+{
+	if (!m_user.isLogined())
+	{
+		JSON_ERROR("Not loginned", 1);
+		return false;
+	}
+
+	SqlQuery updateQ;
+	updateQ.prepare("UPDATE textrevisions SET mark = :mark WHERE revisionid = " + QString::number(revision));
+	updateQ.bindValue(":mark", m_mark);
+	if (updateQ.exec())
+	{
+		QMap<int, TextRevision>::iterator it = QMap::find(revision);
+		if (it != end())
+		{
+			it->setMark(m_mark);
+		}
+		return true;
+	}
+	else
+	{
+		JSON_ERROR("Error", 2);
+		return false;
+	}
+
+	return false;
+}
+
+bool TextRevisionContainer::updateMark(const TextRevision& targetRevision)
+{
+	return updateMark(targetRevision.revisionId());
+}
+
 }
