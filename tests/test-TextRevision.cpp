@@ -91,6 +91,10 @@ void Test_TextRevision::updateRevision()
 	TextRevision l = container.last();
 	QCOMPARE(f.text(), QString("privet"));
 	QCOMPARE(l.text(), QString("privet22"));
+	QVERIFY(container.update(f, "privet33").isValid());
+	f = container.first();
+	QCOMPARE(f.text(), QString("privet33"));
+	QCOMPARE(l.text(), QString("privet22"));
 }
 
 void Test_TextRevision::syncRevision()

@@ -94,7 +94,7 @@ novastory::TextRevision TextRevisionContainer::insert(char* text)
 }
 
 
-novastory::TextRevision TextRevisionContainer::update()
+novastory::TextRevision TextRevisionContainer::update(int revision /* = 0 */)
 {
 	if (!m_user.isLogined())
 	{
@@ -103,7 +103,7 @@ novastory::TextRevision TextRevisionContainer::update()
 	}
 
 	// Check last revision, may be text the save
-	SqlQuery dublicateCheck("SELECT * FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + " ORDER BY revisionid DESC LIMIT 1");
+	SqlQuery dublicateCheck("SELECT * FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + ((revision > 0) ? " AND revisionid = " + QString::number(revision) : "") + " ORDER BY revisionid DESC LIMIT 1");
 	Q_ASSERT(dublicateCheck.lastError().type() == QSqlError::NoError);
 	if (dublicateCheck.size() == 1)
 	{
@@ -195,6 +195,11 @@ novastory::TextRevision TextRevisionContainer::update(char* text)
 	return update(QString(text));
 }
 
+novastory::TextRevision TextRevisionContainer::update(const TextRevision& revision, const QString& text /* = QString()*/)
+{
+	setText(text);
+	return update(revision.revisionId());
+}
 
 void TextRevisionContainer::setText(const QString& text)
 {
