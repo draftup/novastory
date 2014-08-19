@@ -1003,10 +1003,11 @@ $(document).ready(function ()
 										element.addClass('edited');
 										var markButton = $(this);
 										markButton.unbind('click');
-										markButton.click(function (e)
+										var markTextElement = element.children('input[name=new-rev-name]');
+										function updateMark(e)
 										{
-											e.stopPropagation();
-											var markText = element.children('input[name=new-rev-name]').val();
+										    e.stopPropagation();
+											var markText = markTextElement.val();
 											NovastoryApi.updateRevisionMark(revision, markText, function (data)
 											{
 												if (data.error != null && !data.error)
@@ -1022,6 +1023,15 @@ $(document).ready(function ()
 												}
 											}
 											);
+										}
+										markButton.click(updateMark);
+										markTextElement.unbind('keyup');
+										markTextElement.keyup(function (e)
+										{
+											if (e.keyCode == 13)
+											{
+												updateMark(e);
+											}
 										}
 										);
 									}
