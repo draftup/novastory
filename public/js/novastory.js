@@ -894,12 +894,13 @@ $(document).ready(function ()
 							list.empty();
 							for (var i = 0; i < revisions.length; i++)
 							{
-								var currentTextElement;
-								var changesMade = false;
+								var backupedText = {};
+								var originalText = {};
 								(function (i)
 								{
 									var dateModify = new Date(revisions[i].modifyDate);
 									var element = $('<div><div class="pointer"><div></div></div>'
+											 + '<div class="revision-id" style="display: none;">' + revisions[i].revisionid + '</div>'
 											 + '<div class="rev-name">' + ((revisions[i].mark.length > 0) ? revisions[i].mark : prettyDate(dateModify)) + '</div>'
 											 + '<input size="" name="new-rev-name" value="' + ((revisions[i].mark.length > 0) ? revisions[i].mark : '') + '" autofocus>'
 											 + '<svg viewBox="0 0 512 512" class="edit-rev-name" ><path id="pencil-10-icon" d="M172.782,438.836L172.782,438.836L50.417,461.42l24.686-120.264l0.001-0.001L172.782,438.836zM364.735,51.523l-43.829,43.829l97.682,97.68l43.829-43.829L364.735,51.523z M96.996,319.263l97.681,97.679l202.017-202.015l-97.68-97.682L96.996,319.263z"></path></svg>'
@@ -911,48 +912,49 @@ $(document).ready(function ()
 											 + '</div>');
 									list.prepend(element);
 									var revision = revisions[i].revisionid;
-									
+
 									// мы не хотим чтобы при нажатии на инпут обновляло элемент
-									element.children('input[name=new-rev-name]').click(function(e){
+									element.children('input[name=new-rev-name]').click(function (e)
+									{
 										e.stopPropagation();
-									});
+									}
+									);
 									element.click(function ()
 									{
 										lastClickedRevision = revision;
 										NovastoryApi.revision(revision, function (data)
 										{
+											var currentText = $('#editor').val();
+											$('#editor-revisions > div.current').each(function ()
+											{
+												var revisionid = parseInt($(this).children('.revision-id').text());
+												if (this != element.get(0) && originalText[revisionid] != currentText)
+												{
+													backupedText[revisionid] = currentText;
+												}
+											}
+											);
+
 											$('#editor-revisions > div').attr('class', '');
 											element.attr('class', 'current');
-											var currentText = $('#editor').val();
-											if (currentTextElement == null)
-											{
-												currentTextElement = $(
-														'<div>'
-														 + '<div class="rev-name">Editor Save Text</div>'
-														 + '<div class="rev-info">'
-														 + '<div class="data-lenght">' + currentText.length + ' bytes</div>'
-														 + '<div class="rev-date">Current</div>'
-														 + '</div>'
-														 + '</div>');
-												list.prepend(currentTextElement);
-												currentTextElement.click(function ()
-												{
-													$('#editor-revisions > div').attr('class', '');
-													$('#editor').val(currentText);
-													currentTextElement.remove();
-													currentTextElement = null;
-												}
-												);
-
-												$('#editor').on('input', function ()
-												{
-													currentTextElement.remove();
-													currentTextElement = null;
-													$(this).off('input');
-												}
-												);
+											/*
+											$('#editor').on('input', function ()
+										{
+											currentTextElement.remove();
+											currentTextElement = null;
+											$(this).off('input');
 											}
-											$('#editor').val(data.text);
+											);
+											 */
+											if (backupedText[revision] != null)
+											{
+												$('#editor').val(backupedText[revision]);
+												delete backupedText[revision];
+											}
+											else
+												$('#editor').val(data.text);
+
+											originalText[data.revisionid] = data.text;
 										}
 										);
 									}
@@ -1006,7 +1008,7 @@ $(document).ready(function ()
 										var markTextElement = element.children('input[name=new-rev-name]');
 										function updateMark(e)
 										{
-										    e.stopPropagation();
+											e.stopPropagation();
 											var markText = markTextElement.val();
 											NovastoryApi.updateRevisionMark(revision, markText, function (data)
 											{
