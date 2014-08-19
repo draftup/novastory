@@ -27,8 +27,10 @@ private slots:
 	void releaseLast();
 
 	void unrelease();
+	void updateMark();
 
 	void dublicateCheck();
+	void removeCheck();
 private:
 	User buser;
 	TextRevisionContainer container;
@@ -58,7 +60,7 @@ void Test_TextRevision::cleanupTestCase()
 {
 	SqlQuery q;
 	q.exec(QString("SELECT * FROM textrevisions WHERE userid = ") + QString::number(buser.userid()));
-	QCOMPARE(q.size(), 5);
+	QCOMPARE(q.size(), 4);
 	container.clear();
 	q.exec(QString("SELECT * FROM textrevisions WHERE userid = ") + QString::number(buser.userid()));
 	QCOMPARE(q.size(), 0);
@@ -89,6 +91,10 @@ void Test_TextRevision::updateRevision()
 	TextRevision f = container.first();
 	TextRevision l = container.last();
 	QCOMPARE(f.text(), QString("privet"));
+	QCOMPARE(l.text(), QString("privet22"));
+	QVERIFY(container.update(f, "privet33").isValid());
+	f = container.first();
+	QCOMPARE(f.text(), QString("privet33"));
 	QCOMPARE(l.text(), QString("privet22"));
 }
 
@@ -144,6 +150,14 @@ void Test_TextRevision::unrelease()
 	QCOMPARE(container.revision(releaseID).isRelease(), false);
 }
 
+
+void Test_TextRevision::updateMark()
+{
+	container.setMark("Lola");
+	QVERIFY(container.updateMark(container.last()));
+	QCOMPARE(container.last().mark(), QString("Lola"));
+}
+
 void Test_TextRevision::dublicateCheck()
 {
 	QCOMPARE(container.size(), 5);
@@ -152,6 +166,13 @@ void Test_TextRevision::dublicateCheck()
 	QCOMPARE(container.size(), 5);
 	QVERIFY(!container.update("privet5").isValid());
 	QCOMPARE(container.jsonErrorType(), 3);
+}
+
+void Test_TextRevision::removeCheck()
+{
+	QCOMPARE(container.size(), 5);
+	QVERIFY(container.removeRevision(container.last()));
+	QCOMPARE(container.size(), 4);
 }
 
 

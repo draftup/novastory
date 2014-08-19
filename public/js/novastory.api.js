@@ -184,13 +184,39 @@ NovastoryApi.insertRevision = function (text, mark, callback)
 		'json');
 };
 
-NovastoryApi.updateRevision = function (text, mark, callback)
+NovastoryApi.updateRevision = function (text, mark, revision, callback)
 {
+	revision = revision || 0;
 	$.post(
 		'/api/revisionupdate',
 	{
 		text: text,
-		mark: mark
+		mark: mark,
+		revision: revision
+	},
+		callback,
+		'json');
+};
+
+NovastoryApi.updateRevisionMark = function (revision, mark, callback)
+{
+	revision = revision || 0;
+	$.post(
+		'/api/revisionupdatemark',
+	{
+		mark: mark,
+		revision: revision
+	},
+		callback,
+		'json');
+};
+
+NovastoryApi.removeRevision = function (revision, callback)
+{
+	$.post(
+		'/api/revisionremove',
+	{
+		revision: revision
 	},
 		callback,
 		'json');
@@ -216,6 +242,7 @@ NovastoryApi.revision = function (revision, callback)
 		callback,
 		'json');
 };
+
 
 NovastoryApi.release = function (revision, callback)
 {

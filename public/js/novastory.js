@@ -13,7 +13,7 @@ var STOKEN;
 
 function prettyDate(date)
 {
-	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+	var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 	return date.getDate() + ' ' + months[date.getMonth() - 1] + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
 }
 
@@ -885,64 +885,76 @@ $(document).ready(function ()
 					}
 					);
 
+					var lastClickedRevision = 0;
 					function updateRevisionList()
 					{
 						NovastoryApi.revisionsList(function (revisions)
 						{
-							var list = $('#revisions-list');
+							var list = $('#editor-revisions');
 							list.empty();
 							for (var i = 0; i < revisions.length; i++)
 							{
-								var currentTextElement;
-								var changesMade = false;
+								var backupedText = {};
+								var originalText = {};
 								(function (i)
 								{
 									var dateModify = new Date(revisions[i].modifyDate);
-									var element = $('<div>'
+									var element = $('<div><div class="pointer"><div></div></div>'
+											 + '<div class="revision-id" style="display: none;">' + revisions[i].revisionid + '</div>'
 											 + '<div class="rev-name">' + ((revisions[i].mark.length > 0) ? revisions[i].mark : prettyDate(dateModify)) + '</div>'
+											 + '<input size="" name="new-rev-name" value="' + ((revisions[i].mark.length > 0) ? revisions[i].mark : '') + '" autofocus>'
+											 + '<svg viewBox="0 0 512 512" class="edit-rev-name" ><path id="pencil-10-icon" d="M172.782,438.836L172.782,438.836L50.417,461.42l24.686-120.264l0.001-0.001L172.782,438.836zM364.735,51.523l-43.829,43.829l97.682,97.68l43.829-43.829L364.735,51.523z M96.996,319.263l97.681,97.679l202.017-202.015l-97.68-97.682L96.996,319.263z"></path></svg>'
+											 + '<svg viewBox="0 0 512 512" class="delete-rev"><path d="M424.562,78.022v40.032H87.438V78.022h94.938c15.464,0,28-12.546,28-28.022h91.25c0,15.477,12.536,28.022,28,28.022H424.562z M406.334,148.079V462H105.666V148.079H406.334z M197.333,210.462c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012s15-6.721,15-15.012V210.462zM271,210.462c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012s15-6.721,15-15.012V210.462z M344.667,210.462c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012s15-6.721,15-15.012V210.462z"></path></svg>'
 											 + '<div class="rev-info">'
 											 + '<div class="data-lenght">' + revisions[i].textLength + ' bytes</div>'
-											 + '<div class="rev-date">' + prettyDate(dateModify)  + '</div>'
+											 + '<div class="rev-date">' + prettyDate(dateModify) + '</div>'
 											 + '</div>'
 											 + '</div>');
 									list.prepend(element);
 									var revision = revisions[i].revisionid;
+
+									// мы не хотим чтобы при нажатии на инпут обновляло элемент
+									element.children('input[name=new-rev-name]').click(function (e)
+									{
+										e.stopPropagation();
+									}
+									);
 									element.click(function ()
 									{
+										lastClickedRevision = revision;
 										NovastoryApi.revision(revision, function (data)
 										{
-											$('#revisions-list > div').attr('class', '');
-											element.attr('class', 'current');
 											var currentText = $('#editor').val();
-											if (currentTextElement == null)
+											$('#editor-revisions > div.current').each(function ()
 											{
-												currentTextElement = $(
-														'<div>'
-														 + '<div class="rev-name">Editor Save Text</div>'
-														 + '<div class="rev-info">'
-														 + '<div class="data-lenght">' + currentText.length + ' bytes</div>'
-														 + '<div class="rev-date">Current</div>'
-														 + '</div>'
-														 + '</div>');
-												list.prepend(currentTextElement);
-												currentTextElement.click(function ()
+												var revisionid = parseInt($(this).children('.revision-id').text());
+												if (this != element.get(0) && originalText[revisionid] != currentText)
 												{
-													$('#revisions-list > div').attr('class', '');
-													$('#editor').val(currentText);
-													currentTextElement.remove();
-													currentTextElement = null;
+													backupedText[revisionid] = currentText;
 												}
-												);
-
-												$('#editor').on('input', function ()
-												{
-													currentTextElement.remove();
-													currentTextElement = null;
-													$(this).off('input');
-												}
-												);
 											}
-											$('#editor').val(data.text);
+											);
+
+											$('#editor-revisions > div').attr('class', '');
+											element.attr('class', 'current');
+											/*
+											$('#editor').on('input', function ()
+										{
+											currentTextElement.remove();
+											currentTextElement = null;
+											$(this).off('input');
+											}
+											);
+											 */
+											if (backupedText[revision] != null)
+											{
+												$('#editor').val(backupedText[revision]);
+												delete backupedText[revision];
+											}
+											else
+												$('#editor').val(data.text);
+
+											originalText[data.revisionid] = data.text;
 										}
 										);
 									}
@@ -968,6 +980,64 @@ $(document).ready(function ()
 											NovastoryApi.unrelease(revision, helper);
 									}
 									);
+
+									element.children('.delete-rev').click(function (e)
+									{
+										e.stopPropagation();
+										NovastoryApi.removeRevision(revision, function (data)
+										{
+											if (data.error != null && !data.error)
+											{
+												element.remove();
+											}
+											else
+											{
+												Novastory.error("Something wrong on revision delete");
+											}
+										}
+										);
+									}
+									);
+
+									function editMark(e)
+									{
+										e.stopPropagation();
+										element.addClass('edited');
+										var markButton = $(this);
+										markButton.unbind('click');
+										var markTextElement = element.children('input[name=new-rev-name]');
+										function updateMark(e)
+										{
+											e.stopPropagation();
+											var markText = markTextElement.val();
+											NovastoryApi.updateRevisionMark(revision, markText, function (data)
+											{
+												if (data.error != null && !data.error)
+												{
+													element.removeClass('edited')
+													element.children('.rev-name').text(markText);
+													markButton.unbind('click');
+													markButton.click(editMark);
+												}
+												else
+												{
+													Novastory.error("Something wrong on revision delete");
+												}
+											}
+											);
+										}
+										markButton.click(updateMark);
+										markTextElement.unbind('keyup');
+										markTextElement.keyup(function (e)
+										{
+											if (e.keyCode == 13)
+											{
+												updateMark(e);
+											}
+										}
+										);
+									}
+									element.children('.edit-rev-name').click(editMark);
 								}
 								)(i);
 							}
@@ -982,7 +1052,7 @@ $(document).ready(function ()
 						if (e.ctrlKey && e.which === 83)
 						{
 							e.preventDefault();
-							NovastoryApi.updateRevision($("#editor").val(), $("#revision-mark").val(), function (data)
+							NovastoryApi.updateRevision($("#editor").val(), $("#revision-mark").val(), lastClickedRevision, function (data)
 							{
 								if (data.error != null && !data.error)
 								{

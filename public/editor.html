@@ -38,28 +38,53 @@ c0,32.605,14.799,54.938,36.268,71.972H50v40h412v-40H293.264z"></path>
 <p id="rev-message">Чтобы сохранить изменения в новую ревизию, используйте сочетание клавиш<span>Ctrl + R</span></p>
 </div>
 
+<div id="publish">Publish</div>
+
 <textarea id="editor" rows="30"></textarea>
 
+<!--Список ревизий. Упростил код, оставил два вида отображения ревизий: неактивная, текущая, текущая с инпутом (<div>, <div class="current">, <div class="current edited"> соотв.). Edited вариант для редакирования названия ревизии и при создании новой. -->
+
 <div id="editor-revisions">
-	<div class="new-rev">
-		<input size='' value="" name="new-rev-name" id="revision-mark" autofocus>
-	</div>
-	<div id="revisions-list">
-		<div class="current">
-			<div class="rev-name">21.04.2014</div>
+		<div>
+			<div class="pointer"><div></div></div>
+			<div class="rev-name">alter ending</div>
+			<input size='' value="alter ending" name="new-rev-name" id="revision-mark" autofocus>
+			<svg viewBox="0 0 512 512" id="edit-rev-name" ><path id="pencil-10-icon" d="M172.782,438.836L172.782,438.836L50.417,461.42l24.686-120.264l0.001-0.001L172.782,438.836z
+M364.735,51.523l-43.829,43.829l97.682,97.68l43.829-43.829L364.735,51.523z M96.996,319.263l97.681,97.679l202.017-202.015
+l-97.68-97.682L96.996,319.263z"></path>
+			</svg>
+			<svg viewBox="0 0 512 512" id="delete-rev"><path d="M424.562,78.022v40.032H87.438V78.022h94.938c15.464,0,28-12.546,28-28.022h91.25
+c0,15.477,12.536,28.022,28,28.022H424.562z M406.334,148.079V462H105.666V148.079H406.334z M197.333,210.462
+c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012s15-6.721,15-15.012V210.462z
+M271,210.462c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012s15-6.721,15-15.012
+V210.462z M344.667,210.462c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012
+s15-6.721,15-15.012V210.462z"></path>
+			</svg>
 			<div class="rev-info">
 				<div class="data-lenght">245 bytes</div>
 				<div class="rev-date">13.10.12</div>
 			</div>
 		</div>
-		<div>
-			<div class="rev-name">alter ending</div>
+		<div class="current">
+			<div class="pointer"><div></div></div>
+			<div class="rev-name">1</div>
+			<input size='' value="crap" name="new-rev-name" id="revision-mark" autofocus>
+			<svg viewBox="0 0 512 512" id="edit-rev-name" ><path id="pencil-10-icon" d="M172.782,438.836L172.782,438.836L50.417,461.42l24.686-120.264l0.001-0.001L172.782,438.836z
+M364.735,51.523l-43.829,43.829l97.682,97.68l43.829-43.829L364.735,51.523z M96.996,319.263l97.681,97.679l202.017-202.015
+l-97.68-97.682L96.996,319.263z"></path>
+			</svg>
+			<svg viewBox="0 0 512 512" id="delete-rev"><path d="M424.562,78.022v40.032H87.438V78.022h94.938c15.464,0,28-12.546,28-28.022h91.25
+c0,15.477,12.536,28.022,28,28.022H424.562z M406.334,148.079V462H105.666V148.079H406.334z M197.333,210.462
+c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012s15-6.721,15-15.012V210.462z
+M271,210.462c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012s15-6.721,15-15.012
+V210.462z M344.667,210.462c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012
+s15-6.721,15-15.012V210.462z"></path>
+			</svg>
 			<div class="rev-info">
-				<div class="data-lenght">223 bytes</div>
-				<div class="rev-date">13.02.21</div>
+				<div class="data-lenght">245 bytes</div>
+				<div class="rev-date">13.10.12</div>
 			</div>
 		</div>
-	</div>
 		
 </div>
 

@@ -21,9 +21,14 @@ public:
 	TextRevision insert();
 	TextRevision insert(const QString& text);
 	TextRevision insert(char* text);
-	TextRevision update();
+	TextRevision update(int revision = 0);
+	TextRevision update(const TextRevision& revision, const QString& text = QString());
 	TextRevision update(const QString& text);
 	TextRevision update(char* text);
+	bool updateMark(int revision);
+	bool updateMark(const TextRevision& targetRevision);
+	bool removeRevision(const TextRevision& targetRevision);
+	bool removeRevision(int revision);
 	void clear();
 	bool release(int targetRevision);
 	bool release(const TextRevision& targetRevision);

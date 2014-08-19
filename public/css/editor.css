@@ -2,7 +2,6 @@
 	position: relative;
 	padding-top: 50px;
 	font-size: 1em;
-	z-index: 0;
 	width: 50%;
 	left: 25%;
 }
@@ -87,66 +86,110 @@ p#rev-message span {
 	outline: none;
 }
 
-/*Панель ревизий*/
+/*Список ревизий*/
 
 #editor-revisions {
 	list-style: none;
-	width: 100%;
-	position: absolute;
 }
 
-#editor-revisions::before {
-	content: "Revisions";
-	padding: 0px 10px;
+@-moz-document url-prefix() {
+	#editor-revisions {
+		margin-top: 5px;
 	}
+}
+
+
+
+/*Список ревизий: сами ревизии*/	
 
 #editor-revisions > div {
+	height: 26px;
+	min-width: 40px;
+	line-height: 26px;
 	display: inline-block;
-	}
-
-#editor-revisions > div.new-rev {
-	border: 1px solid #FFAD40;
-	cursor: default;
-}
-
-#editor-revisions > div.new-rev input{
-	color: red;
-	border: none;
-	width: 90px;
-	margin-top: 1px;
-	font-size: 1.1em;
-	}
-
-#editor-revisions .new-rev input:focus {
-	outline: none;
-	}
-
-#editor-revisions svg {
-	float: right;
-	width: 20px;
-	padding: 3px;
-	fill: white;
-	background: #FFAD40;
-	cursor: pointer;
-}
-
-/*Панель ревизий: список ревизий*/	
-
-#revisions-list > div, .new-rev {
-	display: inline-block;
-	padding: 5px 10px;
 	font-size: 0.75em;
 	color: #535353;
 	border: 1px solid #DEDEDE;
 	cursor: pointer;
 }
 
-
-#revisions-list > div.current {
+#editor-revisions > div.current {
 	background: #FFAD40;
 	border-color: #FFAD40;
 }
 
+#editor-revisions > div input {
+	display: none;
+	border: none;
+	width: 90px;
+	margin: 4px;
+	font-size: 1.1em;
+	}
+
+#editor-revisions > div.current input:focus {
+	outline: none;
+	}
+	
+#editor-revisions > div.current.edited input {
+	display: inline-block;
+}
+
+#editor-revisions .rev-name {
+	min-width: 20px;
+	display: inline-block;
+	margin: 0px 10px;
+	text-align: center;
+}
+
+#editor-revisions > div.current.edited .rev-name {
+	display: none;
+}
+
+#editor-revisions svg {
+	display: none;
+	position: relative;
+	top: 3px;
+	margin-right: 5px;
+	width: 15px;
+	fill: #BC7B26;
+	cursor: pointer;
+	transition: 0.1s;
+}
+
+#editor-revisions .current svg {
+	display: inline;
+	}
+
+#editor-revisions svg:hover {
+	fill: #6D4003;
+	}
+
+#editor-revisions .pointer {
+	display: none;
+	position: absolute;
+	margin-top: -8px;
+	margin-left: 10px;
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 11px solid #C9C9C9; 
+	}
+
+#editor-revisions .current .pointer {
+	display: block;
+	}
+	
+#editor-revisions .pointer div {
+	width: 0;
+	height: 0;
+	border-left: 9px solid transparent;
+	border-right: 9px solid transparent;
+	border-top: 10px solid white; 
+	margin: -11px 0px 0px -9px;
+	}
+	
+	
 /*Панель ревизий: список ревизий: инфа по ревизии*/
 
 .rev-info {
@@ -161,7 +204,20 @@ p#rev-message span {
 	color: white;
 	}
 	
-#revisions-list > div:hover .rev-info {
+#editor-revisions > div:hover .rev-info {
 	display: block;
 	opacity: 0.7;
+	}
+
+#publish {
+	position: absolute;
+	width: 120px;
+	height: 30px;
+	line-height:  30px;
+	border: 1px solid #F1F1F1;
+	color: #535353;
+	bottom: 35px;
+	left: -170px;
+	text-align: center;
+	cursor: pointer;
 	}
