@@ -98,8 +98,6 @@ p#rev-message span {
 	}
 }
 
-
-
 /*Список ревизий: сами ревизии*/	
 
 #editor-revisions > div {
@@ -108,9 +106,9 @@ p#rev-message span {
 	line-height: 26px;
 	display: inline-block;
 	font-size: 0.75em;
-	color: #535353;
 	border: 1px solid #DEDEDE;
 	cursor: pointer;
+	margin-right: 5px;
 }
 
 #editor-revisions > div.current {
@@ -196,7 +194,6 @@ p#rev-message span {
 	position: absolute; 
 	margin-top: 10px;
 	padding: 10px;
-	width: 100px;
 	background: #535353;
 	display: none;
 	opacity: 0;
@@ -220,4 +217,16 @@ p#rev-message span {
 	left: -170px;
 	text-align: center;
 	cursor: pointer;
+	}
+
+.data-lenght.unsaved {
+	display: none;
+	}
+	
+.unsaved .data-lenght.unsaved {
+	display: block;
+	}	
+
+.unsaved {
+	color: #A6F16C;
 	}
