@@ -45,7 +45,7 @@ private:
 
 void Test_NestedSet::initTestCase()
 {
-	//SqlQuery("CREATE TABLE nested_table(id int unsigned auto_increment, primary key(id), leftkey int unsigned, rightkey int unsigned, data int)");
+	SqlQuery("CREATE TABLE nested_table(id int unsigned auto_increment, primary key(id), leftkey int unsigned, rightkey int unsigned, data int)");
 }
 
 void Test_NestedSet::init()
@@ -60,7 +60,7 @@ void Test_NestedSet::cleanup()
 
 void Test_NestedSet::cleanupTestCase()
 {
-	//SqlQuery("DROP TABLE nested_table");
+	SqlQuery("DROP TABLE nested_table");
 }
 
 void Test_NestedSet::insert()
