@@ -153,4 +153,36 @@ novastory::SqlQuery NestedSet::subtree(int id) const
 	return SqlQuery(QString("SELECT * FROM %1 WHERE %2 >= " + leftKey + " AND %3 <= " + rightKey + " ORDER BY %2").arg(m_table_name).arg(m_left_name).arg(m_right_name));
 }
 
+novastory::SqlQuery NestedSet::parentTree(int id) const
+{
+	SqlQuery idFind(QString("SELECT %2,%5 FROM %1 WHERE %3 = %4").arg(m_table_name).arg(m_right_name).arg(m_id_name).arg(id).arg(m_left_name));
+	if (idFind.size() != 1)
+	{
+		return SqlQuery();
+	}
+
+	VERIFY(idFind.next());
+
+	QString leftKey = idFind.value(m_left_name).toString();
+	QString rightKey = idFind.value(m_right_name).toString();
+
+	return SqlQuery(QString("SELECT * FROM %1 WHERE %2 <= " + leftKey + " AND %3 >= " + rightKey + " ORDER BY %2").arg(m_table_name).arg(m_left_name).arg(m_right_name));
+}
+
+novastory::SqlQuery NestedSet::contaisTree(int id) const
+{
+	SqlQuery idFind(QString("SELECT %2,%5 FROM %1 WHERE %3 = %4").arg(m_table_name).arg(m_right_name).arg(m_id_name).arg(id).arg(m_left_name));
+	if (idFind.size() != 1)
+	{
+		return SqlQuery();
+	}
+
+	VERIFY(idFind.next());
+
+	QString leftKey = idFind.value(m_left_name).toString();
+	QString rightKey = idFind.value(m_right_name).toString();
+
+	return SqlQuery(QString("SELECT * FROM %1 WHERE %3 > " + leftKey + " AND %2 < " + rightKey + " ORDER BY %2").arg(m_table_name).arg(m_left_name).arg(m_right_name));
+}
+
 }
