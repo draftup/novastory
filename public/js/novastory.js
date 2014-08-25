@@ -931,12 +931,14 @@ $(document).ready(function ()
 												if (this != element.get(0) && originalText[revisionid] != currentText)
 												{
 													backupedText[revisionid] = currentText;
+													// указываем что текст в бэкапе
+													$(this).addClass('unsaved');
 												}
 											}
 											);
 
-											$('#editor-revisions > div').attr('class', '');
-											element.attr('class', 'current');
+											$('#editor-revisions > div').removeClass('current');
+											element.addClass('current');
 											/*
 											$('#editor').on('input', function ()
 										{
@@ -952,7 +954,10 @@ $(document).ready(function ()
 												delete backupedText[revision];
 											}
 											else
+											{
 												$('#editor').val(data.text);
+												element.removeClass('unsaved');
+											}
 
 											originalText[data.revisionid] = data.text;
 										}

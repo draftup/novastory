@@ -42,10 +42,10 @@ c0,32.605,14.799,54.938,36.268,71.972H50v40h412v-40H293.264z"></path>
 
 <textarea id="editor" rows="30"></textarea>
 
-<!--Список ревизий. Упростил код, оставил два вида отображения ревизий: неактивная, текущая, текущая с инпутом (<div>, <div class="current">, <div class="current edited"> соотв.). Edited вариант для редакирования названия ревизии и при создании новой. -->
+<!--Список ревизий-->
 
 <div id="editor-revisions">
-		<div>
+		<div class="unsaved">
 			<div class="pointer"><div></div></div>
 			<div class="rev-name">alter ending</div>
 			<input size='' value="alter ending" name="new-rev-name" id="revision-mark" autofocus>
@@ -62,6 +62,7 @@ s15-6.721,15-15.012V210.462z"></path>
 			</svg>
 			<div class="rev-info">
 				<div class="data-lenght">245 bytes</div>
+				<div class="data-lenght unsaved">45 bytes</div>
 				<div class="rev-date">13.10.12</div>
 			</div>
 		</div>
