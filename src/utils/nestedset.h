@@ -16,6 +16,7 @@ public:
 	NestedSet();
 
 	int insert(int id, const QVariant& value);
+	bool remove(int id);
 private:
 	int leftKey(int id) const;
 	int rightKey(int id) const;

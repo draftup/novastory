@@ -31,8 +31,12 @@ private slots:
 	void cleanupTestCase();
 
 	void insert();
+	void remove();
 private:
 	NestedSetTest m_set;
+	int root;
+	int root_leef1;
+	int root_leef2;
 };
 
 void Test_NestedSet::initTestCase()
@@ -57,7 +61,7 @@ void Test_NestedSet::cleanupTestCase()
 
 void Test_NestedSet::insert()
 {
-	int root = m_set.insert(0, 2);
+	root = m_set.insert(0, 2);
 	qDebug() << "Root id = " << root;
 
 	QVERIFY(root > 0);
@@ -67,7 +71,7 @@ void Test_NestedSet::insert()
 
 	// вставляем лист
 	QVERIFY(m_set.insert(root + 1, 2) < 0);
-	int root_leef1 = m_set.insert(root, 3);
+	root_leef1 = m_set.insert(root, 3);
 	QVERIFY(root_leef1 > 0);
 	QCOMPARE(m_set.leftKey(root), 1);
 	QCOMPARE(m_set.rightKey(root), 4);
@@ -75,7 +79,7 @@ void Test_NestedSet::insert()
 	QCOMPARE(m_set.rightKey(root_leef1), 3);
 
 	// вставляем соседний лист
-	int root_leef2 = m_set.insert(root, 4);
+	root_leef2 = m_set.insert(root, 4);
 	QVERIFY(root_leef2 > 0);
 	QCOMPARE(m_set.leftKey(root), 1);
 	QCOMPARE(m_set.rightKey(root), 6);
@@ -83,6 +87,32 @@ void Test_NestedSet::insert()
 	QCOMPARE(m_set.rightKey(root_leef1), 3);
 	QCOMPARE(m_set.leftKey(root_leef2), 4);
 	QCOMPARE(m_set.rightKey(root_leef2), 5);
+
+	// вставляем 3 уровень
+	int root_leef1_leef1 = m_set.insert(root_leef1, 5);
+	QVERIFY(root_leef1_leef1 > 0);
+	QCOMPARE(m_set.leftKey(root), 1);
+	QCOMPARE(m_set.rightKey(root), 8);
+	QCOMPARE(m_set.leftKey(root_leef1), 2);
+	QCOMPARE(m_set.rightKey(root_leef1), 5);
+	QCOMPARE(m_set.leftKey(root_leef1_leef1), 3);
+	QCOMPARE(m_set.rightKey(root_leef1_leef1), 4);
+	QCOMPARE(m_set.leftKey(root_leef2), 6);
+	QCOMPARE(m_set.rightKey(root_leef2), 7);
+}
+
+void Test_NestedSet::remove()
+{
+	QVERIFY(m_set.remove(root_leef1));
+	root_leef1 = -1;
+	QCOMPARE(m_set.leftKey(root), 1);
+	QCOMPARE(m_set.rightKey(root), 4);
+	QCOMPARE(m_set.leftKey(root_leef2), 2);
+	QCOMPARE(m_set.rightKey(root_leef2), 3);
+	QVERIFY(m_set.remove(root_leef2));
+	QCOMPARE(m_set.leftKey(root), 1);
+	QCOMPARE(m_set.rightKey(root), 2);
+	QCOMPARE(SqlQuery("SELECT * FROM nested_table").size(), 1);
 }
 
 

@@ -68,6 +68,39 @@ int NestedSet::insert(int id, const QVariant& value)
 	return -1;
 }
 
+
+bool NestedSet::remove(int id)
+{
+	// Find id of right key
+	SqlQuery idFind(QString("SELECT %2,%5 FROM %1 WHERE %3 = %4").arg(m_table_name).arg(m_right_name).arg(m_id_name).arg(id).arg(m_left_name));
+	if (idFind.size() != 1)
+	{
+		return false;
+	}
+
+	VERIFY(idFind.next());
+
+	QString leftKey = idFind.value(m_left_name).toString();
+	QString rightKey = idFind.value(m_right_name).toString();
+
+	// DELETE FROM my_tree WHERE left_key >= $left_key AND right_ key <= $right_key
+	SqlQuery deleteQ(QString("DELETE FROM %1 WHERE %2 >= " + leftKey + " AND %3 <= " + rightKey).arg(m_table_name).arg(m_left_name).arg(m_right_name));
+
+	if (deleteQ.lastError().type() != QSqlError::NoError)
+	{
+		return false;
+	}
+
+	// 1. UPDATE my_tree SET right_key = right_key – ($right_key - $left_key + 1)*** WHERE right_key > $right_key AND left_key < $left_key
+	// 2. UPDATE my_tree SET left_key = left_key – ($right_key - $left_key + 1), right_key = right_key – ($right_key - $left_key + 1) WHERE left_key > $right_key
+	// Complex:
+	// UPDATE my_tree SET left_key = IF(left_key > $left_key, left_key – ($right_key - $left_key + 1), left_key), right_key = right_key – ($right_key - $left_key + 1) WHERE right_key > $right_key
+	SqlQuery updateLeefs(QString("UPDATE %1 SET %2 = IF(%2 > " + leftKey + ", %2 - (" + rightKey + " - " + leftKey + " + 1), %2), %3 = %3 - (" + rightKey + " - " + leftKey + " + 1) WHERE %3 > " + rightKey).arg(m_table_name).arg(m_left_name).arg(m_right_name));
+
+	return (updateLeefs.lastError().type() == QSqlError::NoError);
+}
+
+
 int NestedSet::leftKey(int id) const
 {
 	SqlQuery q(QString("SELECT * FROM %1 WHERE %2 = %3").arg(m_table_name).arg(m_id_name).arg(id));
