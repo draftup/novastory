@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QVariant>
+#include "sql/sqlquery.h"
 
 class Test_NestedSet;
 
@@ -17,6 +18,9 @@ public:
 
 	int insert(int id, const QVariant& value);
 	bool remove(int id);
+
+	SqlQuery tree() const;
+	SqlQuery subtree(int id) const;
 private:
 	int leftKey(int id) const;
 	int rightKey(int id) const;

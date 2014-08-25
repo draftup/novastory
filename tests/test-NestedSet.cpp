@@ -32,11 +32,15 @@ private slots:
 
 	void insert();
 	void remove();
+	void tree();
+	void subtree();
 private:
 	NestedSetTest m_set;
 	int root;
 	int root_leef1;
 	int root_leef2;
+	int root_leef1_leef1;
+	int root_leef1_leef2;
 };
 
 void Test_NestedSet::initTestCase()
@@ -89,7 +93,7 @@ void Test_NestedSet::insert()
 	QCOMPARE(m_set.rightKey(root_leef2), 5);
 
 	// вставляем 3 уровень
-	int root_leef1_leef1 = m_set.insert(root_leef1, 5);
+	root_leef1_leef1 = m_set.insert(root_leef1, 5);
 	QVERIFY(root_leef1_leef1 > 0);
 	QCOMPARE(m_set.leftKey(root), 1);
 	QCOMPARE(m_set.rightKey(root), 8);
@@ -113,6 +117,32 @@ void Test_NestedSet::remove()
 	QCOMPARE(m_set.leftKey(root), 1);
 	QCOMPARE(m_set.rightKey(root), 2);
 	QCOMPARE(SqlQuery("SELECT * FROM nested_table").size(), 1);
+}
+
+void Test_NestedSet::tree()
+{
+	root_leef1 = m_set.insert(root, 3);
+	QVERIFY(root_leef1 > 0);
+	root_leef2 = m_set.insert(root, 4);
+	QVERIFY(root_leef2 > 0);
+	root_leef1_leef1 = m_set.insert(root_leef1, 5);
+	QVERIFY(root_leef1_leef1 > 0);
+	root_leef1_leef2 = m_set.insert(root_leef1, 5);
+	QVERIFY(root_leef1_leef2 > 0);
+
+	QCOMPARE(m_set.tree().size(), 5);
+}
+
+void Test_NestedSet::subtree()
+{
+	SqlQuery q = m_set.subtree(root_leef1);
+	QCOMPARE(q.size(), 3);
+	QVERIFY(q.next());
+	QCOMPARE(q.value("id").toInt(), root_leef1);
+	QVERIFY(q.next());
+	QCOMPARE(q.value("id").toInt(), root_leef1_leef1);
+	QVERIFY(q.next());
+	QCOMPARE(q.value("id").toInt(), root_leef1_leef2);
 }
 
 
