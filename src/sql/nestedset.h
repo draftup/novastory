@@ -17,6 +17,7 @@ public:
 	NestedSet();
 
 	int insert(int id, const QVariant& value);
+	int insert(const QVariant& value);
 	bool remove(int id);
 
 	SqlQuery tree() const;

@@ -48,7 +48,7 @@ set(HEADERS
 	utils/globals.h
 	utils/lrucache.hpp
 	utils/bytecache.hpp
-	utils/nestedset.h
+	sql/nestedset.h
 	webdatacontainer.h
 
 	jsonthrower.h
@@ -85,7 +85,7 @@ set(SOURCES
 	logic/userpic.cpp
 	
 	utils/globals.cpp
-	utils/nestedset.cpp
+	sql/nestedset.cpp
 	webdatacontainer.cpp
 	
 	recaptcha.cpp

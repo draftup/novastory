@@ -2,7 +2,7 @@
 #include "sql/sqldatabase.h"
 #include "sql/sqlquery.h"
 #include "utils/globals.h"
-#include "utils/nestedset.h"
+#include "sql/nestedset.h"
 
 using namespace novastory;
 

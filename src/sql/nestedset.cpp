@@ -68,6 +68,11 @@ int NestedSet::insert(int id, const QVariant& value)
 	return -1;
 }
 
+int NestedSet::insert(const QVariant& value)
+{
+	return insert(0, value);
+}
+
 
 bool NestedSet::remove(int id)
 {
