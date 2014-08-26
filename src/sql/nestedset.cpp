@@ -12,7 +12,7 @@ NestedSet::NestedSet()
 
 }
 
-int NestedSet::insert(int id, const QVariant& value)
+int NestedSet::insert(int id, const QHash<QString, QVariant>& values)
 {
 	QString rightKey;
 
@@ -55,8 +55,20 @@ int NestedSet::insert(int id, const QVariant& value)
 	bool status = updateRequest.lastError().type() == QSqlError::NoError;
 
 	SqlQuery insertRequest;
-	insertRequest.prepare(QString("INSERT INTO `%1` SET `%2` = " + rightKey + ", `%3` = " + rightKey + " + 1, %4 = :data").arg(m_table_name).arg(m_left_name).arg(m_right_name).arg(m_data_name));
-	insertRequest.bindValue(":data", value);
+	QString insertSql = QString("INSERT INTO `%1` SET `%2` = " + rightKey + ", `%3` = " + rightKey + " + 1").arg(m_table_name).arg(m_left_name).arg(m_right_name);
+	QHashIterator<QString, QVariant> it(values);
+	while (it.hasNext())
+	{
+		it.next();
+		insertSql += ", `" + it.key() + "` = :" + it.key();
+	}
+	insertRequest.prepare(insertSql);
+	it.toFront();
+	while (it.hasNext())
+	{
+		it.next();
+		insertRequest.bindValue(":" + it.key(), it.value());
+	}
 
 	status &= insertRequest.exec();
 
@@ -66,6 +78,14 @@ int NestedSet::insert(int id, const QVariant& value)
 	}
 
 	return -1;
+}
+
+
+int NestedSet::insert(int id, const QVariant& value)
+{
+	QHash<QString, QVariant> values;
+	values.insert(m_data_name, value);
+	return insert(id, values);
 }
 
 int NestedSet::insert(const QVariant& value)

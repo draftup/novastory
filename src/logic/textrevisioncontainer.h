@@ -5,13 +5,14 @@
 #include <QMap>
 #include "user.h"
 #include "jsonthrower.h"
+#include "sql/nestedset.h"
 
 class Test_TextRevision;
 
 namespace novastory
 {
 
-class TextRevisionContainer : public QMap<int, TextRevision>, public JsonThrower
+class TextRevisionContainer : public QMap<int, TextRevision>, public JsonThrower, public NestedSet
 {
 	friend class ::Test_TextRevision;
 public:

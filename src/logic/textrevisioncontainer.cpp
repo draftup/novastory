@@ -10,6 +10,11 @@ namespace novastory
 
 TextRevisionContainer::TextRevisionContainer() : m_synchronized(false)
 {
+	m_table_name = "textrevisions";
+	m_left_name = "left_key";
+	m_right_name = "right_key";
+	m_data_name = "text";
+	m_id_name = "revisionid";
 }
 
 bool TextRevisionContainer::sync()
@@ -67,11 +72,17 @@ TextRevision TextRevisionContainer::insert()
 	}
 
 	TextRevision revision;
+	QHash<QString, QVariant> valuesToDB;
 	revision.setUser(m_user);
+	valuesToDB.insert("userid", m_user.userid());
 	revision.setText(m_text);
+	valuesToDB.insert("text", m_text);
 	revision.setMark(m_mark);
-	if (revision.insertSQL())
+	valuesToDB.insert("mark", m_mark);
+	int revisionid = NestedSet::insert(0, valuesToDB);
+	if (revisionid > 0)
 	{
+		revision.setRevisionID(revisionid);
 		Q_ASSERT(revision.revisionId() > 0);
 		QMap::insert(revision.revisionId(), revision);
 	}
@@ -147,9 +158,16 @@ novastory::TextRevision TextRevisionContainer::update(int revision /* = 0 */)
 		else
 		{
 			rev.setRelease(false);
-			rev.setRevisionID(-1);
-			if (rev.insertSQL())
+
+			QHash<QString, QVariant> valuesToDB;
+			valuesToDB.insert("userid", rev.userid());
+			valuesToDB.insert("text", rev.text());
+			valuesToDB.insert("mark", rev.mark());
+			valuesToDB.insert("release", rev.isRelease());
+			int revisionid = NestedSet::insert(0, valuesToDB);
+			if (revisionid > 0)
 			{
+				rev.setRevisionID(revisionid);
 				Q_ASSERT(rev.revisionId() > 0);
 				QMap::insert(rev.revisionId(), rev);
 			}
@@ -168,8 +186,14 @@ novastory::TextRevision TextRevisionContainer::update(int revision /* = 0 */)
 		revision.setUser(m_user);
 		revision.setText(m_text);
 		revision.setMark(m_mark);
-		if (revision.insertSQL())
+		QHash<QString, QVariant> valuesToDB;
+		valuesToDB.insert("userid", m_user.userid());
+		valuesToDB.insert("text", m_text);
+		valuesToDB.insert("mark", m_mark);
+		int revisionid = NestedSet::insert(0, valuesToDB);
+		if (revisionid > 0)
 		{
+			revision.setRevisionID(revisionid);
 			Q_ASSERT(revision.revisionId() > 0);
 			QMap::insert(revision.revisionId(), revision);
 		}
@@ -270,7 +294,14 @@ bool TextRevisionContainer::release(int targetRevision)
 		TextRevision newRevision = value(targetRevision); // copy of old revision
 		newRevision.setRelease(true);
 		newRevision.setRevisionID(-1);
-		VERIFY(newRevision.insertSQL());
+		QHash<QString, QVariant> valuesToDB;
+		valuesToDB.insert("userid", newRevision.userid());
+		valuesToDB.insert("text", newRevision.text());
+		valuesToDB.insert("mark", newRevision.mark());
+		valuesToDB.insert("release", newRevision.isRelease());
+		int revisionid = NestedSet::insert(0, valuesToDB);
+		Q_ASSERT(revisionid > 0);
+		newRevision.setRevisionID(revisionid);
 		Q_ASSERT(newRevision.revisionId() > 0);
 		QMap::insert(newRevision.revisionId(), newRevision);
 		qDebug() << "Revision" << targetRevision << "was copy to new release" << newRevision.revisionId() << "revision for user" << userid();
@@ -357,8 +388,7 @@ bool TextRevisionContainer::removeRevision(int revision)
 		return false;
 	}
 
-	SqlQuery removeQ("DELETE FROM textrevisions WHERE revisionid = " + QString::number(revision));
-	if (removeQ.lastError().type() == QSqlError::NoError)
+	if (NestedSet::remove(revision))
 	{
 		QMap::remove(revision);
 		return true;
