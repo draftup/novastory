@@ -16,6 +16,7 @@ public:
 		m_right_name = "rightkey";
 		m_data_name = "data";
 		m_id_name = "id";
+		m_parent_name = "parent_id";
 	};
 };
 
@@ -47,7 +48,7 @@ private:
 
 void Test_NestedSet::initTestCase()
 {
-	SqlQuery("CREATE TABLE nested_table(id int unsigned auto_increment, primary key(id), leftkey int unsigned, rightkey int unsigned, unique key(leftkey, rightkey), data int)");
+	SqlQuery("CREATE TABLE nested_table(id int unsigned auto_increment, primary key(id), leftkey int unsigned, rightkey int unsigned, parent_id int unsigned, unique key(leftkey, rightkey), data int)");
 }
 
 void Test_NestedSet::init()
@@ -79,6 +80,12 @@ void Test_NestedSet::insert()
 	QVERIFY(m_set.insert(root + 1, 2) < 0);
 	root_leef1 = m_set.insert(root, 3);
 	QVERIFY(root_leef1 > 0);
+
+	// check parent
+	SqlQuery checkp("SELECT parent_id FROM nested_table WHERE `id` = " + QString::number(root_leef1));
+	QVERIFY(checkp.next());
+	QCOMPARE(checkp.value("parent_id").toInt(), root);
+
 	QCOMPARE(m_set.leftKey(root), 1);
 	QCOMPARE(m_set.rightKey(root), 4);
 	QCOMPARE(m_set.leftKey(root_leef1), 2);

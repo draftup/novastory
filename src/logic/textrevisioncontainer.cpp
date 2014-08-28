@@ -15,6 +15,7 @@ TextRevisionContainer::TextRevisionContainer() : m_synchronized(false)
 	m_right_name = "right_key";
 	m_data_name = "text";
 	m_id_name = "revisionid";
+	m_parent_name = "parent_id";
 }
 
 bool TextRevisionContainer::sync()

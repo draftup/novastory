@@ -34,6 +34,8 @@ protected:
 	QString m_table_name;
 	QString m_data_name;
 	QString m_id_name;
+	QString m_where_coincidence;
+	QString m_parent_name;
 };
 
 }

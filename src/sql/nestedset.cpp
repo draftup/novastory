@@ -62,12 +62,20 @@ int NestedSet::insert(int id, const QHash<QString, QVariant>& values)
 		it.next();
 		insertSql += ", `" + it.key() + "` = :" + it.key();
 	}
+	if (!m_parent_name.isEmpty() && id > 0)
+	{
+		insertSql += ", `" + m_parent_name + "` = :" + m_parent_name;
+	}
 	insertRequest.prepare(insertSql);
 	it.toFront();
 	while (it.hasNext())
 	{
 		it.next();
 		insertRequest.bindValue(":" + it.key(), it.value());
+	}
+	if (!m_parent_name.isEmpty() && id > 0)
+	{
+		insertRequest.bindValue(":" + m_parent_name, id);
 	}
 
 	status &= insertRequest.exec();
