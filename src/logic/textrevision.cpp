@@ -61,7 +61,7 @@ void TextRevision::setRevisionID(int revision)
 	m_revisionId = revision;
 }
 
-TextRevision::TextRevision() : m_release(false), m_revisionId(-1), m_parentId(-1)
+TextRevision::TextRevision() : m_release(false), m_revisionId(-1), m_parentId(0)
 {
 	setObjectName("textrevisions");
 	setProperty("auto_increment", QVariant("revisionid"));

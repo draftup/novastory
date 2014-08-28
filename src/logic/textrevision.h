@@ -25,7 +25,7 @@ class TextRevision : protected Sqlizable, public JsonThrower
 	Q_PROPERTY(QDateTime modifydate READ modifyDate WRITE setModifyDate RESET resetModifyDate)
 	Q_PROPERTY(QString mark READ mark WRITE setMark RESET resetMark)
 	Q_PROPERTY(QString text READ text WRITE setText RESET resetText)
-	Q_PROPERTY(int parent READ parent WRITE setParent RESET resetParent)
+	Q_PROPERTY(int parent_id READ parent WRITE setParent RESET resetParent)
 public:
 	TextRevision();
 

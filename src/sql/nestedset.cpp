@@ -19,7 +19,12 @@ int NestedSet::insert(int id, const QHash<QString, QVariant>& values)
 	if (id != 0)
 	{
 		// Find id of right key
-		SqlQuery idFind(QString("SELECT %2 FROM %1 WHERE %3 = %4").arg(m_table_name).arg(m_right_name).arg(m_id_name).arg(id));
+		QString coincidenceString;
+		if (!m_where_coincidence.isEmpty())
+		{
+			coincidenceString = " AND " + m_where_coincidence;
+		}
+		SqlQuery idFind(QString("SELECT %2 FROM %1 WHERE %3 = %4%5").arg(m_table_name).arg(m_right_name).arg(m_id_name).arg(id).arg(coincidenceString));
 		if (idFind.size() != 1)
 		{
 			return -2;
@@ -31,7 +36,12 @@ int NestedSet::insert(int id, const QHash<QString, QVariant>& values)
 	}
 	else
 	{
-		SqlQuery maxFind(QString("SELECT MAX(%2) as maxkey FROM %1 LIMIT 1").arg(m_table_name).arg(m_right_name));
+		QString coincidenceString;
+		if (!m_where_coincidence.isEmpty())
+		{
+			coincidenceString = " WHERE " + m_where_coincidence;
+		}
+		SqlQuery maxFind(QString("SELECT MAX(%2) as maxkey FROM %1%3 LIMIT 1").arg(m_table_name).arg(m_right_name).arg(coincidenceString));
 		if (maxFind.size() == 1)
 		{
 			VERIFY(maxFind.next());
@@ -46,11 +56,17 @@ int NestedSet::insert(int id, const QHash<QString, QVariant>& values)
 	}
 	VERIFY(rightKey.size() > 0);
 
+	QString coincidenceString;
+	if (!m_where_coincidence.isEmpty())
+	{
+		coincidenceString = " AND " + m_where_coincidence;
+	}
+
 	// First: UPDATE my_tree SET left_key = left_key + 2, right_ key = right_ key + 2 WHERE left_key > $right_ key
 	// Second: UPDATE my_tree SET right_key = right_key + 2 WHERE right_key >= $right_key AND left_key < $right_key
 	// Complex:
 	// UPDATE my_tree SET right_key = right_key + 2, left_key = IF(left_key > $right_key, left_key + 2, left_key) WHERE right_key >= $right_key
-	SqlQuery updateRequest(QString("UPDATE `%1` SET %3 = %3 + 2, %2 = IF(%2 > " + rightKey + ", %2 + 2, %2) WHERE %3 >= " + rightKey).arg(m_table_name).arg(m_left_name).arg(m_right_name));
+	SqlQuery updateRequest(QString("UPDATE `%1` SET %3 = %3 + 2, %2 = IF(%2 > " + rightKey + ", %2 + 2, %2) WHERE %3 >= " + rightKey + "%4").arg(m_table_name).arg(m_left_name).arg(m_right_name).arg(coincidenceString));
 
 	bool status = updateRequest.lastError().type() == QSqlError::NoError;
 
@@ -104,8 +120,14 @@ int NestedSet::insert(const QVariant& value)
 
 bool NestedSet::remove(int id)
 {
+	QString coincidenceString;
+	if (!m_where_coincidence.isEmpty())
+	{
+		coincidenceString = " AND " + m_where_coincidence;
+	}
+
 	// Find id of right key
-	SqlQuery idFind(QString("SELECT %2,%5 FROM %1 WHERE %3 = %4").arg(m_table_name).arg(m_right_name).arg(m_id_name).arg(id).arg(m_left_name));
+	SqlQuery idFind(QString("SELECT %2,%5 FROM %1 WHERE %3 = %4%6").arg(m_table_name).arg(m_right_name).arg(m_id_name).arg(id).arg(m_left_name).arg(coincidenceString));
 	if (idFind.size() != 1)
 	{
 		return false;
@@ -117,7 +139,7 @@ bool NestedSet::remove(int id)
 	QString rightKey = idFind.value(m_right_name).toString();
 
 	// DELETE FROM my_tree WHERE left_key >= $left_key AND right_ key <= $right_key
-	SqlQuery deleteQ(QString("DELETE FROM %1 WHERE %2 >= " + leftKey + " AND %3 <= " + rightKey).arg(m_table_name).arg(m_left_name).arg(m_right_name));
+	SqlQuery deleteQ(QString("DELETE FROM %1 WHERE %2 >= " + leftKey + " AND %3 <= " + rightKey + "%4").arg(m_table_name).arg(m_left_name).arg(m_right_name).arg(coincidenceString));
 
 	if (deleteQ.lastError().type() != QSqlError::NoError)
 	{
@@ -128,7 +150,7 @@ bool NestedSet::remove(int id)
 	// 2. UPDATE my_tree SET left_key = left_key – ($right_key - $left_key + 1), right_key = right_key – ($right_key - $left_key + 1) WHERE left_key > $right_key
 	// Complex:
 	// UPDATE my_tree SET left_key = IF(left_key > $left_key, left_key – ($right_key - $left_key + 1), left_key), right_key = right_key – ($right_key - $left_key + 1) WHERE right_key > $right_key
-	SqlQuery updateLeefs(QString("UPDATE %1 SET %2 = IF(%2 > " + leftKey + ", %2 - (" + rightKey + " - " + leftKey + " + 1), %2), %3 = %3 - (" + rightKey + " - " + leftKey + " + 1) WHERE %3 > " + rightKey).arg(m_table_name).arg(m_left_name).arg(m_right_name));
+	SqlQuery updateLeefs(QString("UPDATE %1 SET %2 = IF(%2 > " + leftKey + ", %2 - (" + rightKey + " - " + leftKey + " + 1), %2), %3 = %3 - (" + rightKey + " - " + leftKey + " + 1) WHERE %3 > " + rightKey + "%4").arg(m_table_name).arg(m_left_name).arg(m_right_name).arg(coincidenceString));
 
 	return (updateLeefs.lastError().type() == QSqlError::NoError);
 }
@@ -136,7 +158,12 @@ bool NestedSet::remove(int id)
 
 int NestedSet::leftKey(int id) const
 {
-	SqlQuery q(QString("SELECT * FROM %1 WHERE %2 = %3").arg(m_table_name).arg(m_id_name).arg(id));
+	QString coincidenceString;
+	if (!m_where_coincidence.isEmpty())
+	{
+		coincidenceString = " AND " + m_where_coincidence;
+	}
+	SqlQuery q(QString("SELECT * FROM %1 WHERE %2 = %3%4").arg(m_table_name).arg(m_id_name).arg(id).arg(coincidenceString));
 	if (q.size() != 1)
 	{
 		return -1;
@@ -149,7 +176,12 @@ int NestedSet::leftKey(int id) const
 
 int NestedSet::rightKey(int id) const
 {
-	SqlQuery q(QString("SELECT * FROM %1 WHERE %2 = %3").arg(m_table_name).arg(m_id_name).arg(id));
+	QString coincidenceString;
+	if (!m_where_coincidence.isEmpty())
+	{
+		coincidenceString = " AND " + m_where_coincidence;
+	}
+	SqlQuery q(QString("SELECT * FROM %1 WHERE %2 = %3%4").arg(m_table_name).arg(m_id_name).arg(id).arg(coincidenceString));
 	if (q.size() != 1)
 	{
 		return -1;
@@ -162,12 +194,22 @@ int NestedSet::rightKey(int id) const
 
 SqlQuery NestedSet::tree() const
 {
-	return SqlQuery(QString("SELECT * FROM %1 ORDER BY %2").arg(m_table_name).arg(m_left_name));
+	QString coincidenceString;
+	if (!m_where_coincidence.isEmpty())
+	{
+		coincidenceString = " WHERE " + m_where_coincidence;
+	}
+	return SqlQuery(QString("SELECT * FROM %1%3 ORDER BY %2").arg(m_table_name).arg(m_left_name).arg(coincidenceString));
 }
 
 novastory::SqlQuery NestedSet::subtree(int id) const
 {
-	SqlQuery idFind(QString("SELECT %2,%5 FROM %1 WHERE %3 = %4").arg(m_table_name).arg(m_right_name).arg(m_id_name).arg(id).arg(m_left_name));
+	QString coincidenceString;
+	if (!m_where_coincidence.isEmpty())
+	{
+		coincidenceString = " AND " + m_where_coincidence;
+	}
+	SqlQuery idFind(QString("SELECT %2,%5 FROM %1 WHERE %3 = %4%6").arg(m_table_name).arg(m_right_name).arg(m_id_name).arg(id).arg(m_left_name).arg(coincidenceString));
 	if (idFind.size() != 1)
 	{
 		return SqlQuery();
@@ -178,12 +220,17 @@ novastory::SqlQuery NestedSet::subtree(int id) const
 	QString leftKey = idFind.value(m_left_name).toString();
 	QString rightKey = idFind.value(m_right_name).toString();
 
-	return SqlQuery(QString("SELECT * FROM %1 WHERE %2 >= " + leftKey + " AND %3 <= " + rightKey + " ORDER BY %2").arg(m_table_name).arg(m_left_name).arg(m_right_name));
+	return SqlQuery(QString("SELECT * FROM %1 WHERE %2 >= " + leftKey + " AND %3 <= " + rightKey + "%4 ORDER BY %2").arg(m_table_name).arg(m_left_name).arg(m_right_name).arg(coincidenceString));
 }
 
 novastory::SqlQuery NestedSet::parentTree(int id) const
 {
-	SqlQuery idFind(QString("SELECT %2,%5 FROM %1 WHERE %3 = %4").arg(m_table_name).arg(m_right_name).arg(m_id_name).arg(id).arg(m_left_name));
+	QString coincidenceString;
+	if (!m_where_coincidence.isEmpty())
+	{
+		coincidenceString = " AND " + m_where_coincidence;
+	}
+	SqlQuery idFind(QString("SELECT %2,%5 FROM %1 WHERE %3 = %4%6").arg(m_table_name).arg(m_right_name).arg(m_id_name).arg(id).arg(m_left_name).arg(coincidenceString));
 	if (idFind.size() != 1)
 	{
 		return SqlQuery();
@@ -194,12 +241,17 @@ novastory::SqlQuery NestedSet::parentTree(int id) const
 	QString leftKey = idFind.value(m_left_name).toString();
 	QString rightKey = idFind.value(m_right_name).toString();
 
-	return SqlQuery(QString("SELECT * FROM %1 WHERE %2 <= " + leftKey + " AND %3 >= " + rightKey + " ORDER BY %2").arg(m_table_name).arg(m_left_name).arg(m_right_name));
+	return SqlQuery(QString("SELECT * FROM %1 WHERE %2 <= " + leftKey + " AND %3 >= " + rightKey + "%4 ORDER BY %2").arg(m_table_name).arg(m_left_name).arg(m_right_name).arg(coincidenceString));
 }
 
 novastory::SqlQuery NestedSet::contaisTree(int id) const
 {
-	SqlQuery idFind(QString("SELECT %2,%5 FROM %1 WHERE %3 = %4").arg(m_table_name).arg(m_right_name).arg(m_id_name).arg(id).arg(m_left_name));
+	QString coincidenceString;
+	if (!m_where_coincidence.isEmpty())
+	{
+		coincidenceString = " AND " + m_where_coincidence;
+	}
+	SqlQuery idFind(QString("SELECT %2,%5 FROM %1 WHERE %3 = %4%6").arg(m_table_name).arg(m_right_name).arg(m_id_name).arg(id).arg(m_left_name).arg(coincidenceString));
 	if (idFind.size() != 1)
 	{
 		return SqlQuery();
@@ -210,7 +262,7 @@ novastory::SqlQuery NestedSet::contaisTree(int id) const
 	QString leftKey = idFind.value(m_left_name).toString();
 	QString rightKey = idFind.value(m_right_name).toString();
 
-	return SqlQuery(QString("SELECT * FROM %1 WHERE %3 > " + leftKey + " AND %2 < " + rightKey + " ORDER BY %2").arg(m_table_name).arg(m_left_name).arg(m_right_name));
+	return SqlQuery(QString("SELECT * FROM %1 WHERE %3 > " + leftKey + " AND %2 < " + rightKey + "%4 ORDER BY %2").arg(m_table_name).arg(m_left_name).arg(m_right_name).arg(coincidenceString));
 }
 
 }

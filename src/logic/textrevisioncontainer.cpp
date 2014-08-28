@@ -80,6 +80,7 @@ TextRevision TextRevisionContainer::insert()
 	valuesToDB.insert("text", m_text);
 	revision.setMark(m_mark);
 	valuesToDB.insert("mark", m_mark);
+	m_where_coincidence = "userid = " + QString::number(m_user.userid());
 	int revisionid = NestedSet::insert(0, valuesToDB);
 	if (revisionid > 0)
 	{
@@ -165,6 +166,7 @@ novastory::TextRevision TextRevisionContainer::update(int revision /* = 0 */)
 			valuesToDB.insert("text", rev.text());
 			valuesToDB.insert("mark", rev.mark());
 			valuesToDB.insert("release", rev.isRelease());
+			m_where_coincidence = "userid = " + QString::number(rev.userid());
 			int revisionid = NestedSet::insert(rev.parent(), valuesToDB);
 			if (revisionid > 0)
 			{
@@ -191,6 +193,7 @@ novastory::TextRevision TextRevisionContainer::update(int revision /* = 0 */)
 		valuesToDB.insert("userid", m_user.userid());
 		valuesToDB.insert("text", m_text);
 		valuesToDB.insert("mark", m_mark);
+		m_where_coincidence = "userid = " + QString::number(m_user.userid());
 		int revisionid = NestedSet::insert(0, valuesToDB);
 		if (revisionid > 0)
 		{
@@ -300,6 +303,7 @@ bool TextRevisionContainer::release(int targetRevision)
 		valuesToDB.insert("text", newRevision.text());
 		valuesToDB.insert("mark", newRevision.mark());
 		valuesToDB.insert("release", newRevision.isRelease());
+		m_where_coincidence = "userid = " + QString::number(newRevision.userid());
 		int revisionid = NestedSet::insert(0, valuesToDB);
 		Q_ASSERT(revisionid > 0);
 		newRevision.setRevisionID(revisionid);
@@ -389,6 +393,7 @@ bool TextRevisionContainer::removeRevision(int revision)
 		return false;
 	}
 
+	m_where_coincidence = "userid = " + QString::number(m_user.userid());
 	if (NestedSet::remove(revision))
 	{
 		QMap::remove(revision);

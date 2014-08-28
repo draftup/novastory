@@ -17,6 +17,8 @@ public:
 		m_data_name = "data";
 		m_id_name = "id";
 		m_parent_name = "parent_id";
+		//заглушка
+		m_where_coincidence = "id = id";
 	};
 };
 
