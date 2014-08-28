@@ -61,7 +61,7 @@ void TextRevision::setRevisionID(int revision)
 	m_revisionId = revision;
 }
 
-TextRevision::TextRevision() : m_release(false), m_revisionId(-1)
+TextRevision::TextRevision() : m_release(false), m_revisionId(-1), m_parentId(-1)
 {
 	setObjectName("textrevisions");
 	setProperty("auto_increment", QVariant("revisionid"));
@@ -139,6 +139,21 @@ void TextRevision::setModifyDate(const QDateTime& date)
 void TextRevision::resetModifyDate()
 {
 	m_modify_date = QDateTime();
+}
+
+const int& TextRevision::parent() const
+{
+	return m_parentId;
+}
+
+void TextRevision::setParent(int id)
+{
+	m_parentId = id;
+}
+
+void TextRevision::resetParent()
+{
+	m_parentId = -1;
 }
 
 }

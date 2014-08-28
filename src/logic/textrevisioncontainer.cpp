@@ -165,7 +165,7 @@ novastory::TextRevision TextRevisionContainer::update(int revision /* = 0 */)
 			valuesToDB.insert("text", rev.text());
 			valuesToDB.insert("mark", rev.mark());
 			valuesToDB.insert("release", rev.isRelease());
-			int revisionid = NestedSet::insert(0, valuesToDB);
+			int revisionid = NestedSet::insert(rev.parent(), valuesToDB);
 			if (revisionid > 0)
 			{
 				rev.setRevisionID(revisionid);
