@@ -1,0 +1,149 @@
+﻿
+
+#label{ margin-top: 10px;
+background: 
+  #EDEDED;
+
+
+	height:200px;
+	width:100%;
+	min-width:1300px;
+	
+font-family: Arial, Verdana,  sans-serif;
+	font-size: 48pt;
+ }
+#total{ margin-top: 10px;
+background: 
+  #EDEDED;
+float:left;
+	
+         
+	height:1000px;
+	width:100%;
+	min-width:1300px;
+
+ }
+
+
+#news{ 
+display: inline-block;
+margin-top: 10px;
+margin-left: 10px;
+background: 
+  #CCCCFF;
+float:left;
+	
+         
+	height:400px;
+	width:80%;
+	min-width:700px;
+
+ }
+
+#best_users{
+display: inline-block;
+ margin-top: 10px;
+margin-left: 9px;
+background: 
+  #CCCCFF;
+float:left;
+         
+	height:400px;
+	width:18%;
+	min-width:200px;
+
+ }
+
+
+.face{ margin-top: 10px;
+margin-left: 9px;
+background: 
+  #EDEDED;
+        height:50px;
+	width:50px;
+border-radius: 25px;
+	float:left;
+	
+}
+.name{ margin-top: 35px;
+margin-left: 9px;
+background: 
+  #EDEDED;
+        height:25px;
+	width:150px;
+	float:left;
+
+}
+#button {margin-top:150px;margin-right:15px;
+        height:25px;
+	width:100px;
+	float:right;}
+button {
+margin-bottom:10px;
+
+padding: 7px 30px;
+font-size: 12px;
+font-weight: bold;
+color: #FFFFFF;
+text-align: center;
+border: none;
+cursor: pointer;
+
+
+background: #CC3399;
+
+
+
+}
+	
+button:hover { 
+background: #990066; 
+
+}
+
+button:active {
+background: #660033; 
+
+padding: 8px 29px 6px 31px;
+}
+#best_books_of_all_the_motherfucking_times
+{margin-top: 10px;
+
+background: 
+  #EDEDED;
+
+	float:left;
+         
+	height:500px;
+	width:100%;
+	min-width:1300px;}
+
+.book{margin-top: 10px;
+margin-left: 10px;
+border-style:solid;
+border-color:#000033;
+border-width:thin;
+background: 
+  #9999FF;
+
+	float:left;
+         
+	height:200px;
+	width:32%;
+	min-width:200px;}
+.cover{margin-top: 10px;
+margin-left: 9px;
+background: 
+  #EDEDED;
+
+	float:left;
+         
+	height:75px;
+	width:50px;
+	
+
+ }
+#button2 {margin-top:50px;margin-right:24px;
+        height:25px;
+	width:100px;
+	float:right;}
