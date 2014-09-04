@@ -27,7 +27,7 @@ $(document).ready(function ()
 	{
 		var pw = $('#popup-message');
 		pw.text(message);
-		pw.show();
+		pw.attr('open','');
 
 		if (!this.animationLocker)
 		{
@@ -43,7 +43,7 @@ $(document).ready(function ()
 			}, 500, function ()
 			{
 				pw.css('top', '0px');
-				pw.hide();
+				pw.removeAttr('open');
 				Novastory.animationLocker = false;
 			}
 			);
