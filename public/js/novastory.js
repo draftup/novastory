@@ -1140,9 +1140,9 @@ $(document).ready(function ()
 
 	$('#helpico').click(function ()
 	{
-		if ($('#helpme-dialog').is(":hidden"))
+		if ($('#helpme-dialog').is(":not([open])"))
 		{
-			$('#helpme-dialog').show();
+			$('#helpme-dialog').attr('open','');;
 			$('#helpme-dialog').animate(
 			{
 				top : 40
@@ -1158,7 +1158,7 @@ $(document).ready(function ()
 				top : -200
 			}, 400, function ()
 			{
-				$(this).hide();
+				$(this).removeAttr('open');
 			}
 			);
 		}

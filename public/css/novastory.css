@@ -7,6 +7,15 @@
 	min-height: 100%;
 }
 
+/* Настройки для всех диалогов */
+dialog {
+	border: 0px;
+	margin: inherit;
+	left: inherit;
+	right: inherit;
+	position: inherit;
+}
+
 /*Верхняя панель*/
 
 .page-header {
@@ -406,7 +415,6 @@ input[type="search"] {
 /* помощник */
 #helpme-dialog
 {
-	display: none;
 	position: fixed;
 	right: 0px;
 	background: #EDEDED;
