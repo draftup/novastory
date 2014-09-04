@@ -262,7 +262,6 @@ input[type="search"] {
 
 #popup-message
 {
-	display: none;
 	position: fixed;
 	width: 60%;
 	width: 700px;
