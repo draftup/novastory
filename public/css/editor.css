@@ -219,14 +219,6 @@ p#rev-message span {
 	cursor: pointer;
 	}
 
-.data-lenght.unsaved {
-	display: none;
-	}
-	
-.unsaved .data-lenght.unsaved {
-	display: block;
-	}	
-
 .unsaved {
 	color: #A6F16C;
 	}
