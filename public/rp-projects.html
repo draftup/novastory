@@ -4,6 +4,7 @@
 <head>
 	<link rel="stylesheet" href="css/novastory.css">
 	<link rel="stylesheet" href="css/rpanel.css">
+	<link rel="stylesheet" href="css/tree.css">
 </head>
 
 <body>
@@ -60,12 +61,25 @@
 			</div>
 		</div>
 		<div class="rpblock" id="text-block">
-			<div class="branch-path">
-				<div class="project">/</div>
-				<div class="project">Lord of the Rings</div>
-				<div class="project">Two Towers</div>
-				<div class="project">Part II: Mordor</div>
-				<div class="text current">Chapter 12</div>
+			<div class="branch-pathh">
+				<ol class="tree">
+		<li>
+			<label for="folder2" class="current">Песнь льна и поленьев</label> <input checked type="checkbox" id="folder2" /> 
+			<ol>
+				<li>
+					<label for="subfolder2" class="current">Игра при столяре</label> <input checked type="checkbox" id="subfolder2" /> 
+					<ol>
+						<li class="file"><a>Глава 1 (Топор)</a></li>
+						<li class="file current"><a>Глава 2 (Последствия)</a></li>
+						<li class="file"><a>Глава 3 (Наказание)</a></li>
+						<li class="file"><a>Глава 4 (Тюряга)</a></li>
+						<li class="file"><a>Глава 5 (После отсидки)</a></li>
+						<li class="file"><a>Глава 6 (Коля, Вова и дела)</a></li>
+					</ol>
+				</li>
+			</ol>
+		</li>
+	</ol>
 			</div>
 			<div class="block-head">
 				<div class="help-card">Текст - самодостаточное по содержанию произведение: повесть, глава, сцена. Размещайте большие произведения (романы, сборники, пьесы) по частям и объединяйте в проектах</div>
