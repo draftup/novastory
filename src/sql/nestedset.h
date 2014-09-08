@@ -25,6 +25,8 @@ public:
 	SqlQuery subtree(int id) const;
 	SqlQuery parentTree(int id) const;
 	SqlQuery contaisTree(int id) const;
+	SqlQuery leefs() const;
+	SqlQuery notLeefs() const;
 private:
 	int leftKey(int id) const;
 	int rightKey(int id) const;

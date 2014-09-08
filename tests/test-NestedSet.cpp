@@ -39,6 +39,8 @@ private slots:
 	void subtree();
 	void parentTree();
 	void contaisTree();
+	void leefs();
+	void notLeefs();
 private:
 	NestedSetTest m_set;
 	int root;
@@ -180,6 +182,18 @@ void Test_NestedSet::contaisTree()
 	QCOMPARE(q.value("id").toInt(), root_leef1_leef1);
 	QVERIFY(q.next());
 	QCOMPARE(q.value("id").toInt(), root_leef1_leef2);
+}
+
+void Test_NestedSet::leefs()
+{
+	SqlQuery q = m_set.leefs();
+	QCOMPARE(q.size(), 3);
+}
+
+void Test_NestedSet::notLeefs()
+{
+	SqlQuery q = m_set.notLeefs();
+	QCOMPARE(q.size(), 2);
 }
 
 

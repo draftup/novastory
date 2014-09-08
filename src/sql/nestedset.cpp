@@ -265,4 +265,27 @@ novastory::SqlQuery NestedSet::contaisTree(int id) const
 	return SqlQuery(QString("SELECT * FROM %1 WHERE %3 > " + leftKey + " AND %2 < " + rightKey + "%4 ORDER BY %2").arg(m_table_name).arg(m_left_name).arg(m_right_name).arg(coincidenceString));
 }
 
+novastory::SqlQuery NestedSet::leefs() const
+{
+	QString coincidenceString;
+	if (!m_where_coincidence.isEmpty())
+	{
+		coincidenceString = " AND " + m_where_coincidence;
+	}
+
+	return SqlQuery(QString("SELECT * FROM %1 WHERE %3 - %2 = 1%4 ORDER BY %2").arg(m_table_name).arg(m_left_name).arg(m_right_name).arg(coincidenceString));
+
+}
+
+novastory::SqlQuery NestedSet::notLeefs() const
+{
+	QString coincidenceString;
+	if (!m_where_coincidence.isEmpty())
+	{
+		coincidenceString = " AND " + m_where_coincidence;
+	}
+
+	return SqlQuery(QString("SELECT * FROM %1 WHERE %3 - %2 > 1%4 ORDER BY %2").arg(m_table_name).arg(m_left_name).arg(m_right_name).arg(coincidenceString));
+}
+
 }
