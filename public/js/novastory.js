@@ -1105,14 +1105,19 @@ $(document).ready(function ()
 					);
 				}
 				);
-			}
+				
+				$('#editor-books-controls').load('/rp-projects.html #projects-panel', null, function ()
+				{
+					
+				});
+			} // подгрузка редактора
 			);
 		}
 		else
 		{
 			switchEditor();
 		}
-	}
+	} // загрузка редактора
 
 	$('#editico').click(openEditor);
 
