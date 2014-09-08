@@ -40,48 +40,46 @@
 				</div>
 
 			</div>
-			<div class="text-button project">
-				<svg class="folder-icon" viewBox="0 0 512 512">
-					<path d="M225.087,138.265c-12.762,0-25.004-5.055-34.048-14.059L158.35,91.66H50v328.68h412V138.265H225.087z"></path>
-				</svg>
-				<div class="info">
-					<div class="name"></div>
-					<input size="" name="new-proj-name" value="New project" autofocus="">
-				</div>
-			</div>	
-			<div class="text-button">
-				<svg class="text-file-icon" viewBox="0 0 512 512">
-					<path d="M287.818,185.781V50H88.317v412h335.365V185.781H287.818z M256,391.312h-97.495v-30H256V391.312zM353.495,335.896h-194.99v-30h194.99V335.896z M353.495,280.562h-194.99v-30h194.99V280.562z M423.298,150.795H322.805V50.302L423.298,150.795z">
-					</path>
-				</svg>
-				<div class="info">
-					<div class="name"></div>
-					<input size="" name="new-text-name" value="New text" autofocus="">
-				</div>
+			<div class="branch-path">
+				<ol class="tree">
+					<li>
+						<label for="folder2" class="cheked">
+							<div>
+								<svg  id="new-project-icon" viewBox="0 0 512 512">
+											<path id="full-folder-icon" d="M430,122.265v77.303h-63.119l-75.04-57.707l-25.129,32.676l32.62,25.031h-33.843l-75.041-57.707l-44.379,57.707H81V89.66h100.35l22.979,22.834c6.298,6.258,14.814,9.771,23.693,9.771H430z M462,234.528H50L74,422.34h358.583L462,234.528z"></path>
+								</svg>
+							</div>
+							<a>Песнь льна и поленьев</a>
+						</label>
+						<input checked type="checkbox" id="folder2" /> 
+						<ol>
+							<li>
+								<label class="current" for="subfolder2">
+									<div>
+										<svg  id="new-project-icon" viewBox="0 0 512 512">
+											<path id="full-folder-icon" d="M430,122.265v77.303h-63.119l-75.04-57.707l-25.129,32.676l32.62,25.031h-33.843l-75.041-57.707l-44.379,57.707H81V89.66h100.35l22.979,22.834c6.298,6.258,14.814,9.771,23.693,9.771H430z M462,234.528H50L74,422.34h358.583L462,234.528z"></path>
+										</svg>
+									</div>
+									<a>Игра при столяре</a>
+								</label>
+								<input checked type="checkbox" id="subfolder2" /> 
+								<ol>
+									<li class="file">
+										<div></div>
+										<a>Глава 1 (Топор)</a>
+									</li>
+									<li class="file current">
+										<div></div>
+										<a>Глава 2 (Последствия)</a>
+									</li>
+								</ol>
+							</li>
+						</ol>
+					</li>
+				</ol>
 			</div>
 		</div>
 		<div class="rpblock" id="text-block">
-			<div>Current project</div>
-			<div class="branch-pathh">
-				<ol class="tree">
-		<li>
-			<label for="folder2" class="current">Песнь льна и поленьев</label> <input checked type="checkbox" id="folder2" /> 
-			<ol>
-				<li>
-					<label for="subfolder2" class="current">Игра при столяре</label> <input checked type="checkbox" id="subfolder2" /> 
-					<ol>
-						<li class="file"><a>Глава 1 (Топор)</a></li>
-						<li class="file current"><a>Глава 2 (Последствия)</a></li>
-						<li class="file"><a>Глава 3 (Наказание)</a></li>
-						<li class="file"><a>Глава 4 (Тюряга)</a></li>
-						<li class="file"><a>Глава 5 (После отсидки)</a></li>
-						<li class="file"><a>Глава 6 (Коля, Вова и дела)</a></li>
-					</ol>
-				</li>
-			</ol>
-		</li>
-	</ol>
-			</div>
 			<div class="block-head">
 				<div class="help-card">Publish current text to project?</div>
 				<div class="text-button create" id="publish-butt">
@@ -107,10 +105,14 @@ M220.953,366.959l-97.326-97.352l41.44-41.448l55.884,55.899l129.018-129.018l41.45
 					</div>
 				</div>
 			</div>
+			<div class="info-block">
+				<input placeholder="#" value="" name="text-number-input">
+				<input placeholder="Text name" value="New text" name="text-name-input">
+			</div>
 		</div>
 		<div class="rpblock" id="project-block">
 			<div class="block-head">
-				<div class="help-card">Проекты объединяют отдельные тексты, объединённые авторским замыслом. Например, объединяет главы в книгу</div>
+				<div class="help-card">Projects aimed to unite different texts with common idea or storyline</div>
 				<div class="text-button create" id="publish-butt">
 					<svg viewBox="0 0 512 512">
 <path id="check-mark-3-icon" d="M256,50C142.229,50,50,142.229,50,256s92.229,206,206,206s206-92.229,206-206S369.771,50,256,50z
@@ -129,43 +131,10 @@ M220.953,366.959l-97.326-97.352l41.44-41.448l55.884,55.899l129.018-129.018l41.45
 					</svg>
 					<div>Delete</div>
 				</div>
-				<div class="text-button create" id="new-project-butt">
-					<svg viewBox="0 0 512 512">
-						<path d="M377.814,251.511c-46.756,0-84.66,37.902-84.66,84.658c0,46.758,37.904,84.66,84.66,84.66
-			s84.658-37.902,84.658-84.66C462.473,289.413,424.57,251.511,377.814,251.511z M429.844,351.554h-36.645v36.645h-28.303v-36.645
-			h-36.645v-28.301h36.645v-36.645h28.303v36.645h36.645V351.554z M292.293,419.851H50.473V91.171h108.35l32.688,32.545
-			c9.045,9.006,21.287,14.061,34.049,14.061h236.913v113.829c-0.016-0.016-0.031-0.032-0.047-0.048
-			c-46.77-46.77-122.463-46.759-169.224,0C246.344,298.414,246.858,373.443,292.293,419.851z"></path>
-					</svg>
-					<div>New project</div>
-				</div>
-				<div class="text-button create" id="new-text-butt">
-					<svg viewBox="0 0 512 512">
-						<path id="add-file-icon" d="M364.391,292.233c-46.756,0-84.66,37.902-84.66,84.658c0,46.757,37.904,84.659,84.66,84.659
-		s84.658-37.902,84.658-84.659C449.049,330.136,411.146,292.233,364.391,292.233z M416.42,392.275h-36.645v36.645h-28.303v-36.645
-		h-36.645v-28.301h36.645V327.33h28.303v36.645h36.645V392.275z M397.932,150.795H297.438V50.302L397.932,150.795z M280.249,462
-		H62.951V50h199.501v135.781h135.864v76.329c-10.755-3.169-22.138-4.877-33.926-4.877c-66.132,0-119.66,53.518-119.66,119.658
-		C244.73,410.204,258.315,440.314,280.249,462z"></path> 
-					</svg>
-					<div>New text</div>
-				</div>
 			</div>
-			<div class="text-button project">
-				<svg class="folder-icon" viewBox="0 0 512 512">
-					<path d="M225.087,138.265c-12.762,0-25.004-5.055-34.048-14.059L158.35,91.66H50v328.68h412V138.265H225.087z"></path>
-				</svg>
-				<div class="info">
-					<div class="name">Мой первый приход</div>
-				</div>
-			</div>	
-			<div class="text-button">
-				<svg class="text-file-icon" viewBox="0 0 512 512">
-					<path d="M287.818,185.781V50H88.317v412h335.365V185.781H287.818z M256,391.312h-97.495v-30H256V391.312zM353.495,335.896h-194.99v-30h194.99V335.896z M353.495,280.562h-194.99v-30h194.99V280.562z M423.298,150.795H322.805V50.302L423.298,150.795z">
-					</path>
-				</svg>
-				<div class="info">
-					<div class="name">Как я провёл лето</div>
-				</div>
+			<div class="info-block">
+				<input placeholder="#" value="" name="text-number-input">
+				<input placeholder="Text name" value="New text" name="text-name-input">
 			</div>
 		</div>
 	</div>
