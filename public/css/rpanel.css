@@ -1,0 +1,281 @@
+/* Боковая панель */
+
+.rightpanel {
+	position: fixed;
+	width:315px;
+	height: 100%;
+	right: 0px;
+	padding: 40px 0px 0 0px;
+	background: #FFFFFF;
+	border-left: 1px solid #EDEDED;
+	z-index:5;
+}
+
+/* Боковая панель: функциональный блок */
+
+.rpblock {
+	border-bottom: 1px solid #EDEDED;
+	padding: 10px;
+}
+
+#text-block, #project-block {
+
+	}
+
+/* Боковая панель: функциональный блок: последние тексты */
+
+.rpblock::before {
+	display: block;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	}
+	
+/* Боковая панель: функциональный блок: ссылки: тексты */
+
+
+	
+/* Боковая панель: функциональный блок: шапка блока */
+
+.block-head {
+	margin-bottom: 15px;
+	}
+	
+/* Боковая панель: функциональный блок: шапка текста */
+
+#text-block .help-card {
+	background: #66A3D2;
+}
+
+/* Боковая панель: функциональный блок: шапка текста */
+
+#project-block .help-card {
+	background: #FFAD40;
+}
+	
+/* Боковая панель: функциональный блок: публикация-удаление текста-проекта */
+
+#publish-butt, #delete-butt {
+	color: #66A3D2;
+	}
+	
+#publish-butt svg, #delete-butt svg{
+	fill: #66A3D2;
+	}
+
+	
+
+.text-button.create#publish-butt:hover{
+	color: #269926;
+	}
+
+.text-button.create#publish-butt:hover svg{
+	fill: #269926;
+	}
+	
+
+	
+.text-button.create#delete-butt:hover {
+	color: #FF4040;
+	}
+	
+.text-button.create#delete-butt:hover svg{
+	fill: #FF4040;
+	}
+
+	
+#project-block .text-button.create svg {
+	fill: #FFAD40;
+	}
+	
+#project-block .text-button.create {
+	color: #FFAD40;
+	}
+	
+/* Боковая панель: функциональный блок: тексты: кнопки создания файлов/проектов */
+.text-button {
+	display: inline-block;
+	height: 50px;
+	width: 145px;
+	cursor: pointer;
+	white-space: nowrap;
+	overflow: hidden;
+	}
+
+.text-button svg {
+	float: left;
+	height: 50px;
+	width: 50px;
+	fill: #66A3D2;
+	}
+	
+.text-button.create {
+	margin: 3px 0 0 0;
+	padding: 5px;
+	height: auto;
+	width: auto;
+	font-size: 0.9em;
+	cursor: pointer;
+	color: #99146F;
+}
+
+.text-button.create svg {
+	margin-right: 5px;
+	height: 20px;
+	width: 20px;
+	fill: #99146F;
+	}
+	
+.text-button.create div {
+	margin: 0 15px;
+	}
+	
+.text-button.create#new-text-butt:hover {
+	color: #66A3D2;
+	}
+	
+.text-button.create#new-project-butt:hover {
+	color: #FFAD40;
+	}
+	
+.text-button.create#new-text-butt:hover svg{
+	fill: #66A3D2;
+	}
+	
+.text-button.create#new-project-butt:hover svg{
+	fill: #FFAD40;
+	}
+	
+/* Боковая панель: функциональный блок: карточки-помошника */
+
+.help-card {
+	padding: 15px;
+	background: #99146F;
+	color: white;
+	}
+	
+/* Боковая панель: функциональный блок: инфо-блок */
+
+.rpblock .info-block {
+	position: relative;
+	margin: 0 0 10px 50px;
+	padding: 10px;
+	}
+	
+#text-block .info-block {
+	border-left: 1px solid #66A3D2;
+}
+
+#project-block .info-block {
+	border-left: 1px solid #FFAD40;
+}
+
+.rpblock .info-block input {
+	display: inline-block;
+	border: none;
+	height: 20px;
+	cursor: pointer;
+	}
+	
+.rpblock .info-block input[name=text-number-input] {
+	width: 15px;
+	margin: 0 5px;
+}
+	
+.rpblock .info-block input:focus {
+
+	color: red;
+	outline: none;
+	}
+	
+/* CSS Tree menu styles */
+
+ol.tree
+{
+	padding-left: 5px;
+	font-size: 0.9em;
+}
+
+ol.tree li {
+	list-style: none;
+}
+
+ol.tree li .file {
+	cursor: pointer;
+}
+
+ol.tree li .file:hover a , ol.tree li .file.current a{
+	color: #66A3D2;
+}
+
+ol.tree label:hover, ol.tree label.current {
+	color: #FFAD40;
+}
+
+ol.tree li.file a {
+	color: #000;
+	display: block;
+}
+
+ol.tree li input {
+	position: absolute;
+	opacity: 0;
+	z-index: 2;
+	cursor: pointer;
+	height: 1em;
+	width: 1em;
+	top: 0;
+}
+
+ol.tree li input + ol > li {
+	display: none;
+	margin-left: -14px !important;
+	padding-left: 1px;
+}
+
+ol.tree li label {
+	cursor: pointer;
+	display: block;
+	height: 25px;
+}
+
+ol.tree li label div, .file div {
+	float: left;
+	height: 20px;
+	width: 20px;
+}
+
+				.file div {
+					background: #66A3D2;
+					border-radius: 50%;
+					width: 5px;
+					height: 5px;
+					margin: 7.5px;
+				}
+
+
+ol.tree li label div svg {
+	fill: #FFAD40;
+	}
+	
+		.file svg {
+			fill: #66A3D2;
+			}
+
+a {
+	height: 20px;
+	line-height: 20px;
+	padding: 0 5px;
+}
+
+.file a {
+	font-size: 0.8em;
+}
+
+ol.tree li input:checked + ol {
+
+}
+
+ol.tree li input:checked + ol > li {
+	display: block;
+}
