@@ -158,36 +158,65 @@
 
 .rpblock .info-block {
 	position: relative;
-	margin: 0 0 10px 50px;
 	padding: 10px;
 	}
 	
+.rpblock .info-field {
+	display: inline-block;
+	height: 25px;
+	}
+	
+.rpblock .info-field div {
+	display: inline-block;
+	height: 25px;
+	font-size: 0.8em;
+	padding: 0 5px 0 0;
+	}
+	
 #text-block .info-block {
-	border-left: 1px solid #66A3D2;
+	border: 1px solid #66A3D2;
 }
 
 #project-block .info-block {
-	border-left: 1px solid #FFAD40;
+	border: 1px solid #FFAD40;
 }
 
 .rpblock .info-block input {
 	display: inline-block;
-	border: none;
-	height: 20px;
+	float: right;
+	max-width: 130px;
+	border: 1px solid white;
+	padding: 0 5px;
+	height: 23px;
+	font-size: 1em;
 	cursor: pointer;
 	}
 	
-.rpblock .info-block input[name=text-number-input] {
-	width: 15px;
-	margin: 0 5px;
+.rpblock .info-block input[name=number-input] {
+	width: 25px;
 }
 	
 .rpblock .info-block input:focus {
-
-	color: red;
 	outline: none;
+	color: red;
+	border-color: red;
 	}
 	
+.rpblock .info-block textarea {
+	display: inline-block;
+	font-size: 1em;
+	font-family: 'Open Sans', sans-serif;
+	border: 1px solid white;
+	width: 265px;
+	resize:none;
+	cursor: pointer;
+	}
+	
+.rpblock .info-block textarea:focus {
+	outline: none;
+	border: 1px solid red;
+	}
+
 /* CSS Tree menu styles */
 
 ol.tree
