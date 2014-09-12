@@ -217,6 +217,47 @@
 	border: 1px solid red;
 	}
 
+.info-block .add-field {
+	position: absolute;
+	margin: -10px 0 0 200px;
+	width: 70px;
+	cursor: pointer;
+	color: #434343;
+	font-size: 0.8em;
+	text-align: center;
+	
+	}
+	
+.info-block .add-field div {
+	padding: 2.5px 5px;
+	}
+	
+	#text-block .add-field .disable {
+		background: #66A3D2;
+		color: white;
+		}
+	
+	#project-block .add-field .disable {
+		background: #FFAD40;
+		color: white;
+		}
+	
+.add-field .disable:hover {
+	color: white;
+	}
+
+.add-field .disable ~ div {
+	display: none;
+	}	
+
+.add-field:hover .field-opt {
+	display: block;
+	}
+	
+.add-field .field-opt:hover  {
+	color: red;
+	}
+
 /* CSS Tree menu styles */
 
 ol.tree
