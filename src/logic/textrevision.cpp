@@ -1,5 +1,6 @@
 #include "textrevision.h"
 #include <QDebug>
+#include <QJsonArray>
 #include "utils/globals.h"
 #include "sql/sqlquery.h"
 
@@ -103,6 +104,13 @@ QJsonObject TextRevision::json(bool withoutText /* = false */) const
 	revision.insert("modifyDate", modifyDate().toMSecsSinceEpoch());
 	revision.insert("mark", mark());
 
+	QJsonArray childs;
+	for (const TextRevision& rev : m_childs)
+	{
+		childs.append(rev.json());
+	}
+	revision.insert("childs", childs);
+
 	return revision;
 }
 
@@ -154,6 +162,16 @@ void TextRevision::setParent(int id)
 void TextRevision::resetParent()
 {
 	m_parentId = -1;
+}
+
+void TextRevision::appendChild(const TextRevision& rev)
+{
+	m_childs.append(rev);
+}
+
+void TextRevision::clearChilds()
+{
+	m_childs.clear();
 }
 
 }

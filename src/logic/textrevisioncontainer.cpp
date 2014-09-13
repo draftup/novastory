@@ -18,7 +18,7 @@ TextRevisionContainer::TextRevisionContainer() : m_synchronized(false)
 	m_parent_name = "parent_id";
 }
 
-bool TextRevisionContainer::sync()
+bool TextRevisionContainer::sync(int parentId /* = 0 */)
 {
 	if (!m_user.isLogined())
 	{
@@ -29,8 +29,12 @@ bool TextRevisionContainer::sync()
 	JSON_INSERT("text", QString());
 
 	SqlQuery selectQuery;
-	selectQuery.prepare("SELECT * FROM textrevisions WHERE userid = :userid");
+	selectQuery.prepare("SELECT * FROM textrevisions WHERE right_key - left_key = 1 AND userid = :userid" + ((parentId > 0) ? " AND " + m_parent_name + " = :parentid" : ""));
 	selectQuery.bindValue(":userid", userid());
+	if (parentId > 0)
+	{
+		selectQuery.bindValue(":parentid", parentId);
+	}
 
 	VERIFY(selectQuery.exec());
 
@@ -51,7 +55,7 @@ int TextRevisionContainer::userid() const
 	return m_user.userid();
 }
 
-TextRevision TextRevisionContainer::insert()
+TextRevision TextRevisionContainer::insert(int parentId /* = 0 */)
 {
 	if (!m_user.isLogined())
 	{
@@ -81,7 +85,24 @@ TextRevision TextRevisionContainer::insert()
 	revision.setMark(m_mark);
 	valuesToDB.insert("mark", m_mark);
 	m_where_coincidence = "userid = " + QString::number(m_user.userid());
-	int revisionid = NestedSet::insert(0, valuesToDB);
+	Q_ASSERT(parentId >= 0);
+	int revisionid = -1;
+	// If no parent we must create some folder
+	if (parentId > 0)
+	{
+		revisionid = NestedSet::insert(parentId, valuesToDB);
+	}
+	else
+	{
+		// no parent create folder then add text to this folder
+		QHash<QString, QVariant> folderInfo;
+		folderInfo.insert("userid", m_user.userid());
+		folderInfo.insert("mark", "New Text");
+		int folderid = NestedSet::insert(0, folderInfo);
+		Q_ASSERT(folderid > 0);
+		revisionid = NestedSet::insert(folderid, valuesToDB);
+	}
+
 	if (revisionid > 0)
 	{
 		revision.setRevisionID(revisionid);
@@ -95,15 +116,15 @@ TextRevision TextRevisionContainer::insert()
 	return revision;
 }
 
-TextRevision TextRevisionContainer::insert(const QString& text)
+TextRevision TextRevisionContainer::insert(const QString& text, int parentId /* = 0 */)
 {
 	setText(text);
-	return insert();
+	return insert(parentId);
 }
 
-novastory::TextRevision TextRevisionContainer::insert(char* text)
+novastory::TextRevision TextRevisionContainer::insert(char* text, int parentId /* = 0 */)
 {
-	return insert(QString(text));
+	return insert(QString(text), parentId);
 }
 
 
@@ -194,7 +215,15 @@ novastory::TextRevision TextRevisionContainer::update(int revision /* = 0 */)
 		valuesToDB.insert("text", m_text);
 		valuesToDB.insert("mark", m_mark);
 		m_where_coincidence = "userid = " + QString::number(m_user.userid());
-		int revisionid = NestedSet::insert(0, valuesToDB);
+
+		// we also need to create folder
+		QHash<QString, QVariant> folderInfo;
+		folderInfo.insert("userid", m_user.userid());
+		folderInfo.insert("mark", "New Text");
+		int folderid = NestedSet::insert(0, folderInfo);
+		Q_ASSERT(folderid > 0);
+
+		int revisionid = NestedSet::insert(folderid, valuesToDB);
 		if (revisionid > 0)
 		{
 			revision.setRevisionID(revisionid);
@@ -364,6 +393,45 @@ QString TextRevisionContainer::json(bool withoutText /* = false */)
 	for (TextRevision& rev : *this)
 	{
 		array.append(rev.json(withoutText));
+	}
+	doc.setArray(array);
+
+	return doc.toJson();
+}
+
+QString TextRevisionContainer::treeFolders()
+{
+	QJsonDocument doc;
+	m_where_coincidence = "userid = " + QString::number(m_user.userid());
+	SqlQuery tree = NestedSet::notLeefs();
+
+	QJsonArray array;
+	QList<TextRevision> revisions;
+	int lastid = -1;
+	while (tree.next())
+	{
+		TextRevision revision;
+		revision.syncRecord(tree);
+		if (lastid > 0 && lastid == revision.parent())
+		{
+			TextRevision& rev = revisions.last();
+			if (rev.revisionId() != lastid)
+			{
+				qCritical() << "Wrong treefolder structure";
+			}
+			Q_ASSERT(rev.revisionId() == lastid);
+			rev.appendChild(revision);
+		}
+		else
+		{
+			revisions.append(revision);
+		}
+
+		lastid = revision.revisionId();
+	}
+	for (const TextRevision& rev : revisions)
+	{
+		array.append(rev.json());
 	}
 	doc.setArray(array);
 

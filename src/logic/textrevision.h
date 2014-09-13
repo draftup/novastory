@@ -65,6 +65,9 @@ public:
 	bool isValid() const;
 
 	QJsonObject json(bool withoutText = false) const;
+
+	void appendChild(const TextRevision& rev);
+	void clearChilds();
 private:
 	User m_user;
 	QString m_text;
@@ -74,6 +77,7 @@ private:
 	QDateTime m_create_date;
 	QDateTime m_modify_date;
 	int m_parentId;
+	QList<TextRevision> m_childs;
 };
 
 }
