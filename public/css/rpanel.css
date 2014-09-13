@@ -30,11 +30,7 @@
 	line-height: 40px;
 	text-align: center;
 	}
-	
-/* Боковая панель: функциональный блок: ссылки: тексты */
 
-
-	
 /* Боковая панель: функциональный блок: шапка блока */
 
 .block-head {
@@ -154,23 +150,15 @@
 	color: white;
 	}
 	
+.help-card.edited {
+	background: #FF7373 !important;
+	}
+	
 /* Боковая панель: функциональный блок: инфо-блок */
 
 .rpblock .info-block {
 	position: relative;
 	padding: 10px;
-	}
-	
-.rpblock .info-field {
-	display: inline-block;
-	height: 25px;
-	}
-	
-.rpblock .info-field div {
-	display: inline-block;
-	height: 25px;
-	font-size: 0.8em;
-	padding: 0 5px 0 0;
 	}
 	
 #text-block .info-block {
@@ -179,34 +167,42 @@
 
 #project-block .info-block {
 	border: 1px solid #FFAD40;
+}	
+
+/* Боковая панель: функциональный блок: инфо-блок: инфо-поле */
+
+.rpblock .info-field {
+	line-height: 25px;
+	}
+	
+.info-block.edited {
+	border: 1px solid #FF7373 !important; 
 }
+	
+.rpblock .info-field > div {
+	display: inline-block;
+	font-size: 0.8em;
+	}
 
 .rpblock .info-block input {
 	display: inline-block;
-	float: right;
+	color: #434343;
 	max-width: 130px;
-	border: 1px solid white;
-	padding: 0 5px;
-	height: 23px;
-	font-size: 1em;
+	border: 1px solid #DEDEDE;
+	padding: 2px 5px;
 	cursor: pointer;
+	font-size: 1em;
 	}
-	
-.rpblock .info-block input[name=number-input] {
-	width: 25px;
-}
 	
 .rpblock .info-block input:focus {
 	outline: none;
-	color: red;
-	border-color: red;
+	border-color: #FF7373;
 	}
 	
 .rpblock .info-block textarea {
-	display: inline-block;
 	font-size: 1em;
 	font-family: 'Open Sans', sans-serif;
-	border: 1px solid white;
+	border: 1px solid #DEDEDE;
 	width: 265px;
 	resize:none;
 	cursor: pointer;
@@ -214,50 +210,54 @@
 	
 .rpblock .info-block textarea:focus {
 	outline: none;
-	border: 1px solid red;
+	border: 1px solid #FF7373;
 	}
 
-.info-block .add-field {
+.info-block .edit-save-butt {
 	position: absolute;
-	margin: -10px 0 0 200px;
-	width: 70px;
+	margin: -10px 0 0 250px;
+	width: 25px;
+	height: 20px;
 	cursor: pointer;
-	color: #434343;
-	font-size: 0.8em;
-	text-align: center;
-	
 	}
 	
-.info-block .add-field div {
-	padding: 2.5px 5px;
+#text-block .edit-save-butt {
+	background: #66A3D2;
 	}
 	
-	#text-block .add-field .disable {
-		background: #66A3D2;
-		color: white;
-		}
+#project-block .edit-save-butt {
+	background: #FFAD40;
+	}
 	
-	#project-block .add-field .disable {
-		background: #FFAD40;
-		color: white;
-		}
+.info-block.edited .edit-save-butt {
+	background: #FF7373 !important;
+	}
 	
-.add-field .disable:hover {
-	color: white;
+.info-block .edit-save-butt svg {
+	fill: white;
+	width: 15px;
+	height: 15px;
+	margin: 2px 5px;
 	}
 
-.add-field .disable ~ div {
+.block-head .edited {
 	display: none;
-	}	
-
-.add-field:hover .field-opt {
+	}
+	
+.head-switch:checked ~ .edited{
 	display: block;
 	}
-	
-.add-field .field-opt:hover  {
-	color: red;
-	}
 
+.head-switch:checked ~ .current, .head-switch:checked ~ .text-button {
+	display: none;
+	}
+	
+.current .info-field .value {
+	padding: 0 5px;
+	font-size: 1em;
+	color: black;
+	}
+	
 /* CSS Tree menu styles */
 
 ol.tree

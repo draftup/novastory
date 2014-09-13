@@ -81,25 +81,40 @@
 		</div>
 		<div class="rpblock" id="text-block">
 			<div class="block-head">
-				<div class="help-card">Use text to create complete pieces, such as chapters, novels, short stories</div>
-				<div class="info-block">
-					<div class="add-field">
-						<div class="field-opt disable">add field</div>
-						<div class="field-opt">number</div>
-						<div class="field-opt">discription</div>
-						<div class="field-opt">poster</div>
-					</div>
-					<div class="info-field name-field to-edit">
+				<input type="checkbox" style="display:none;" class="head-switch" id="text-block-head-event">
+				<div class="help-card current">Use text to create complete pieces, such as chapters, novels, short stories</div>
+				<div class="help-card edited">Fill in only the fields that are typical for this type of text or project</div>
+				<div class="info-block edited">
+					<label for="text-block-head-event" class="edit-save-butt">
+						<svg id="pencil-10-icon" viewBox="0 0 512 512"><path id="check-mark-6-icon" d="M49.431,258l35.334-32.666c41.332,20,67.545,35.217,114,68.333
+c87.334-99.109,145.041-149.39,252.307-216.128l11.498,26.447c-88.457,77.195-153.244,163.178-246.533,330.475
+C158.499,366.696,120.097,323.5,49.431,258z"></path>
+						</svg>
+					</label>
+					<div class="info-field name-field">
 						<div>Name:</div>
 						<input value="New text" name="name-input">
-					</div>
-					<div class="info-field number-field">
-						<div>Number:</div>
-						<input value="" name="number-input">
 					</div>
 					<div class="info-field descript-field">
 						<div>Description:</div>
 						<textarea maxlength="400" rows="7" name="discript-input"></textarea>
+					</div>
+				</div>
+				<div class="info-block current">
+					<label for="text-block-head-event" class="edit-save-butt">
+						<svg id="pencil-10-icon" viewBox="0 0 512 512">
+							 <path d="M172.782,438.836L172.782,438.836L50.417,461.42l24.686-120.264l0.001-0.001L172.782,438.836z
+	M364.735,51.523l-43.829,43.829l97.682,97.68l43.829-43.829L364.735,51.523z M96.996,319.263l97.681,97.679l202.017-202.015
+	l-97.68-97.682L96.996,319.263z"></path>
+						</svg>						
+					</label>
+					<div class="info-field name-field">
+						<div>Name:</div>
+						<div class="value">New text</div>
+					</div>
+					<div class="info-field descript-field">
+						<div>Description:</div>
+						<div class="value">A new order arise!!!!</div>						
 					</div>
 				</div>
 				<div class="text-button create" id="publish-butt">
@@ -128,34 +143,50 @@ M220.953,366.959l-97.326-97.352l41.44-41.448l55.884,55.899l129.018-129.018l41.45
 		</div>
 		<div class="rpblock" id="project-block">
 			<div class="block-head">
-				<div class="help-card">Projects aimed to unite different texts with common idea or storyline</div>
-				<div class="info-block">
-					<div class="add-field">
-						<div class="field-opt disable">add field</div>
-						<div class="field-opt">number</div>
-						<div class="field-opt">discription</div>
-						<div class="field-opt">poster</div>
-					</div>
-					<div class="info-field name-field to-edit">
+				<input type="checkbox" style="display:none;" class="head-switch" id="project-block-head-event">
+				<div class="help-card current">Use text to create complete pieces, such as chapters, novels, short stories</div>
+				<div class="help-card edited">Fill in only the fields that are typical for this type of text or project</div>
+				<div class="info-block edited">
+					<label for="project-block-head-event" class="edit-save-butt">
+						<svg id="pencil-10-icon" viewBox="0 0 512 512"><path id="check-mark-6-icon" d="M49.431,258l35.334-32.666c41.332,20,67.545,35.217,114,68.333
+c87.334-99.109,145.041-149.39,252.307-216.128l11.498,26.447c-88.457,77.195-153.244,163.178-246.533,330.475
+C158.499,366.696,120.097,323.5,49.431,258z"></path>
+						</svg>
+					</label>
+					<div class="info-field name-field">
 						<div>Name:</div>
 						<input value="New text" name="name-input">
-					</div>
-					<div class="info-field number-field">
-						<div>Number:</div>
-						<input value="" name="number-input">
 					</div>
 					<div class="info-field descript-field">
 						<div>Description:</div>
 						<textarea maxlength="400" rows="7" name="discript-input"></textarea>
 					</div>
 				</div>
+				<div class="info-block current">
+					<label for="project-block-head-event" class="edit-save-butt">
+						<svg id="pencil-10-icon" viewBox="0 0 512 512">
+							 <path d="M172.782,438.836L172.782,438.836L50.417,461.42l24.686-120.264l0.001-0.001L172.782,438.836z
+	M364.735,51.523l-43.829,43.829l97.682,97.68l43.829-43.829L364.735,51.523z M96.996,319.263l97.681,97.679l202.017-202.015
+	l-97.68-97.682L96.996,319.263z"></path>
+						</svg>						
+					</label>
+					<div class="info-field name-field">
+						<div>Name:</div>
+						<div class="value">New project</div>
+					</div>
+					<div class="info-field descript-field">
+						<div>Description:</div>
+						<div class="value">A new order arise!!!!</div>						
+					</div>
 				</div>
 				<div class="text-button create" id="publish-butt">
 					<svg viewBox="0 0 512 512">
 <path id="check-mark-3-icon" d="M256,50C142.229,50,50,142.229,50,256s92.229,206,206,206s206-92.229,206-206S369.771,50,256,50z
 M220.953,366.959l-97.326-97.352l41.44-41.448l55.884,55.899l129.018-129.018l41.459,41.431L220.953,366.959z"></path>
 					</svg>
-					<div>Publish</div>
+					<div>
+						Publish
+					</div>
 				</div>
 				<div class="text-button create" id="delete-butt">
 					<svg viewBox="0 0 512 512">
@@ -166,7 +197,9 @@ M220.953,366.959l-97.326-97.352l41.44-41.448l55.884,55.899l129.018-129.018l41.45
 						V210.462z M344.667,210.462c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012
 						s15-6.721,15-15.012V210.462z"></path>
 					</svg>
-					<div>Delete</div>
+					<div>
+						Delete
+					</div>
 				</div>
 			</div>
 		</div>
