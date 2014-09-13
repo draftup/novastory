@@ -1,14 +1,14 @@
 .modal-window {
-	height:260px;
-	width:420px;
-	background:#EDEDED;
 	position:fixed;
-	z-index: 5;
-	font-size:10pt;
 	margin: -130px 0 0 -210px;
 	top: 50%;
 	left: 50%;
-	/*overflow:hidden;*/
+	height:260px;
+	width:420px;
+	background:#EDEDED;
+	z-index: 5;
+	font-size: 0.9em;
+	overflow:hidden;
 	-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 	-moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 	box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
@@ -20,38 +20,60 @@
 /*Кнопки навигации*/
 
 .navi {
-	height:40px;
+	padding: 10px 0;
 	width:50%;
 	float:left;
 	color:#A7A7A7;
+	cursor: pointer;
 }
 
 .naviico {
 	height:25px;
-	margin-left:50px;
-	margin-top:12px;
-	float:left;
-	cursor:pointer;
+	float: left;
+	margin-left: 50px;
+	fill: #A7A7A7;
 }
 
-.naviico a {
-	margin-top:3px;
-	margin-left:30px;
-	display:block;
+.navi a {
+	height: 25px;
+	line-height: 25px;
+	padding-left: 10px;
+}
+
+/*Кнопки навигации: переход от логина к регистрации*/
+
+.navi.login {
+	border-top: 2px solid #99146F;
+	cursor: default;
+	color: #99146F;
+	}
+	
+.navi.login svg {
+	fill:#99146F;
+}
+
+#log-reg-switch:checked ~ .navi.login {
+	border-top: none;
+	cursor: pointer;
+	color:#A7A7A7;
+}
+
+#log-reg-switch:checked ~ .navi.login svg {
+	fill: #A7A7A7;
+}
+
+#log-reg-switch:checked ~ .navi.reg {
+	border-top: 2px solid #99146F;
+	cursor: default;
+	color: #99146F;
+}
+
+#log-reg-switch:checked ~ .navi.reg svg {
+	fill:#99146F;
 }
 
 #modal-sett .naviico {
 	margin-left:30%;
-}
-
-#myacc {
-	background:url(../images/modal-login/login.svg) no-repeat;
-	background-size:contain;
-}
-
-#newacc {
-	background:url(../images/modal-login/regi.svg) no-repeat;
-	background-size:contain;
 }
 
 #profsett {
@@ -64,51 +86,19 @@
 	background-size:contain;
 }
 
-.navi.current {
-	color:#99146F;
-	border-top: 2px solid #99146F;
-}
-
-.navi.current #myacc {
-	background:url(../images/modal-login/logincurr.svg) no-repeat;
-	background-size:contain;
-}
-
-.navi.current #newacc {
-	background:url(../images/modal-login/regicurr.svg) no-repeat;
-	background-size:contain;
-}
-
-.navi.current #profsett {
-	background:url(../images/modal-settings/profile-curr.svg) no-repeat;
-	background-size:contain;
-}
-
-.navi.current #editsett {
-	background:url(../images/modal-settings/editor-curr.svg) no-repeat;
-	background-size:contain;
-}
-
 /*Страницы логина, регистрации и восстановления*/
 
 .modal-body {
 	height:220px;
 	width:700px;
 	position:absolute;
+	font-size: 0.9em;
 	top:40px;
 	left:58px;
-	-moz-transition: 0.5s;
-    -webkit-transition: 0.5s;
-    -o-transition: 0.5s;
-    transition: 0.5s;
-}
-
-.modal-body#regtab {
-	margin-left: -420px;
-}
-
-#register-tab {
-	margin-left: 420px;
+	-moz-transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
 }
 
 .restore-win {
@@ -124,7 +114,15 @@
     transition: 0.5s;
 }
 
-.restore-win#up {
+#register-tab {
+	margin-left: 420px;
+}
+
+#log-reg-switch:checked ~ .modal-body {
+	margin-left: -420px;
+}
+
+#restore-switch:checked ~ .restore-win {
 	margin-top: -40px;
 }
 
@@ -149,7 +147,7 @@ input[type="email"], [type="password"], [type="text"] {
 }
 
 #loginpass {
-	width:264px;
+	width:260px;
 }
 
 #restorepass {
@@ -158,8 +156,7 @@ input[type="email"], [type="password"], [type="text"] {
 	margin:8px;
 	cursor:pointer;
 	float:right;
-	background:url(../images/question.svg);
-	background-size:contain;
+	fill: #99146F;
 }
 
 /*Cтраница логина: кнопки*/
@@ -185,7 +182,6 @@ input[type="email"], [type="password"], [type="text"] {
 	width:100px;
 	height:30px;
 	color:white;
-	font-size:11pt;
 	cursor:pointer;
 	text-align:center;
 	background:#99146F;
@@ -211,14 +207,7 @@ input[type="email"], [type="password"], [type="text"] {
 }
 
 #fbooklogin {
-	background:url(../images/fbook.svg);
-	background-size:contain;
 	margin-left:8px;
-}
-
-#gpluslogin {
-	background:url(../images/gplus.svg);
-	background-size:contain;
 }
 
 /*Cтраница регистрации: галочка, текст соглашения, кнопка перехода к капче*/
@@ -229,7 +218,7 @@ input[type="checkbox"] {
 
 .iagree {
 	position:absolute;
-	width:295px;
+	width:300px;
 	top:160px;
 	color:#474747;
 }
@@ -240,14 +229,21 @@ input[type="checkbox"] {
 }
 
 #tocapcha {
-	height:23px;
-	width:23px;
+	height:30px;
+	width:80px;
+	margin-top: -5px;
+	border: 1px solid #D9D9D9;
 	cursor:pointer;
 	float:right;
+	text-align: center;
+	color: #D9D9D9;
+	line-height: 30px;
 }
 
-#tocapcha.enabled #forward {
-	fill:#99146F;
+#checkterms:checked ~ #tocapcha {
+	border-color: #99146F;
+	background: #99146F;
+	color: white;
 }
 
 /*Страница восставновления пароля: кнопка возврата на страницу логина*/
@@ -258,21 +254,21 @@ input[type="checkbox"] {
 	transform:rotate(90deg);
 	-webkit-transform:rotate(90deg);
 	position:absolute;
-	top:10px;
+	top:200px;
 	left:195px;
 	cursor:pointer;
 }
 
-#forward {
-	fill:#A7A7A7;
+#backtologin svg {
+	fill: #A7A7A7;
 	-moz-transition:all 0.2s;
 	-o-transition:all 0.2s;
 	-webkit-transition:all 0.2s;
 	transition:all 0.2s;
 }
 
-#backtologin:hover #forward {
-	fill:#99146F;
+#backtologin:hover svg {
+	fill: #99146F;
 }
 
 /*Страница восставновления пароля: форма ввода пароля, кнопка поддтверждения и текст*/
