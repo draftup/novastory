@@ -265,3 +265,12 @@ NovastoryApi.unrelease = function (revision, callback)
 		callback,
 		'json');
 };
+
+NovastoryApi.revisionDirectories = function (callback)
+{
+	$.post(
+		'/api/revdirs',
+	{},
+		callback,
+		'json');
+};

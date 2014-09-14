@@ -20,6 +20,7 @@ private slots:
 
 	void unloginedTest();
 	void createRevision();
+	void treeFolders();
 	void updateRevision();
 	void syncRevision();
 
@@ -86,6 +87,12 @@ void Test_TextRevision::createRevision()
 	QCOMPARE(container.size(), 2); // only text
 	// also must created 2 folders for each revisions
 	QCOMPARE(container.notLeefs().size(), 2);
+}
+
+
+void Test_TextRevision::treeFolders()
+{
+	QVERIFY(container.treeFolders().contains("New Text"));
 }
 
 

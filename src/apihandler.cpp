@@ -205,6 +205,14 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		VERIFY(container.unrelease(post["revision"].toInt()));
 		json = container.jsonString().toUtf8();
 	}
+	else if (hook == "revdirs")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		TextRevisionContainer container;
+		container.setUser(user);
+		json = container.treeFolders().toUtf8();
+	}
 	else if (hook == "subscribe")
 	{
 		User user;

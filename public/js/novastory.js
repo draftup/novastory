@@ -27,7 +27,7 @@ $(document).ready(function ()
 	{
 		var pw = $('#popup-message');
 		pw.text(message);
-		pw.attr('open','');
+		pw.attr('open', '');
 
 		if (!this.animationLocker)
 		{
@@ -291,13 +291,13 @@ $(document).ready(function ()
 					$('#login-form').submit();
 				}
 				);
-				
+
 				$('#restore-tab #restorepassword').click(function ()
 				{
 					doRestorePassword();
 				}
 				);
-				
+
 				$('#restore-tab #restoremail').keyup(function (e)
 				{
 					if (e.keyCode == 13)
@@ -306,7 +306,7 @@ $(document).ready(function ()
 					}
 				}
 				);
-				
+
 				function checkReady()
 				{
 					var email_adress = $('#register-tab #regmail').val();
@@ -333,7 +333,7 @@ $(document).ready(function ()
 
 					$("#register-tab #tocapcha").attr('class', 'enabled');
 				}
-				
+
 				$('#register-tab #regmail').keyup(function (e)
 				{
 					checkReady();
@@ -344,7 +344,7 @@ $(document).ready(function ()
 					}
 				}
 				);
-				
+
 				$('#register-tab #regpass').keyup(function (e)
 				{
 					checkReady();
@@ -355,7 +355,7 @@ $(document).ready(function ()
 					}
 				}
 				);
-				
+
 				$('#register-tab #confregpass').keyup(function (e)
 				{
 					checkReady();
@@ -998,6 +998,57 @@ $(document).ready(function ()
 							}
 						}
 						);
+
+						//also update directories
+						NovastoryApi.revisionDirectories(function(data)
+						{
+							var list = $('#revisions-directory');
+							list.empty();
+							function parseDirectory(dir)
+							{
+								if (dir.length == 0)
+									return;
+
+								for (var i = 0; i < dir.length; i++)
+								{
+									if (dir[i].childs.length > 0)
+									{
+										// This is directory
+										list.append(
+											'<li>'
+											 + '<label for="folder' + dir[i].revisionid + '" class="cheked">'
+											 + '<div>'
+											 + '<svg  id="new-project-icon" viewBox="0 0 512 512">'
+											 + '<path id="full-folder-icon" d="M430,122.265v77.303h-63.119l-75.04-57.707l-25.129,32.676l32.62,25.031h-33.843l-75.041-57.707l-44.379,57.707H81V89.66h100.35l22.979,22.834c6.298,6.258,14.814,9.771,23.693,9.771H430z M462,234.528H50L74,422.34h358.583L462,234.528z"></path>'
+											 + '</svg>'
+											 + '</div>'
+											 + '<a>' + dir[i].mark + '</a>'
+											 + '</label>'
+											 + '<input checked type="checkbox" id="folder' + dir[i].revisionid + '" />'
+											 + '<ol>');
+										parseDirectory(dir[i].childs);
+										list.append('</ol></li>');
+									}
+									else
+									{
+										// This is final leef
+										list.append(
+											'<li class="file" id="file' + dir[i].revisionid + '">'
+											 + '<div></div>'
+											 + '<a>' + dir[i].mark + '</a>'
+											 + '</li>');
+									}
+								}
+							}
+
+							parseDirectory(data);
+							
+							$('#revisions-directory li').click(function(){
+								$('#revisions-directory li').removeClass('current');
+								$(this).addClass('current');
+							});
+						}
+						);
 					}
 					updateRevisionList();
 
@@ -1055,11 +1106,11 @@ $(document).ready(function ()
 					);
 				}
 				);
-				
+
 				$('#editor-books-controls').load('/rp-projects.html #projects-panel', null, function ()
-				{
-					
-				});
+				{}
+
+				);
 			} // подгрузка редактора
 			);
 		}
@@ -1097,7 +1148,7 @@ $(document).ready(function ()
 	{
 		if ($('#helpme-dialog').is(":not([open])"))
 		{
-			$('#helpme-dialog').attr('open','');;
+			$('#helpme-dialog').attr('open', ''); ;
 			$('#helpme-dialog').animate(
 			{
 				top : 40
