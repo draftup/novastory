@@ -18,10 +18,6 @@
 	padding: 10px;
 }
 
-#text-block, #project-block {
-
-	}
-
 /* Боковая панель: функциональный блок: последние тексты */
 
 .rpblock::before {
@@ -30,11 +26,7 @@
 	line-height: 40px;
 	text-align: center;
 	}
-	
-/* Боковая панель: функциональный блок: ссылки: тексты */
 
-
-	
 /* Боковая панель: функциональный блок: шапка блока */
 
 .block-head {
@@ -154,38 +146,114 @@
 	color: white;
 	}
 	
+.help-card.edited {
+	background: #FF7373 !important;
+	}
+	
 /* Боковая панель: функциональный блок: инфо-блок */
 
 .rpblock .info-block {
 	position: relative;
-	margin: 0 0 10px 50px;
 	padding: 10px;
 	}
 	
 #text-block .info-block {
-	border-left: 1px solid #66A3D2;
+	border: 1px solid #66A3D2;
 }
 
 #project-block .info-block {
-	border-left: 1px solid #FFAD40;
+	border: 1px solid #FFAD40;
+}	
+
+/* Боковая панель: функциональный блок: инфо-блок: инфо-поле */
+
+.rpblock .info-field {
+	line-height: 25px;
+	font-size: 0.9em;
+	}
+	
+.info-block.edited {
+	border: 1px solid #FF7373 !important; 
 }
+	
+.rpblock .info-field > div {
+	font-size: 0.8em;
+	display: inline-block;
+	}
 
 .rpblock .info-block input {
 	display: inline-block;
-	border: none;
+	color: #434343;
+	max-width: 130px;
+	border: 1px solid #DEDEDE;
+	padding: 0 5px;
+	height: 23px;
+	cursor: pointer;
+	font-size: 1em;
+	}
+	
+.rpblock .info-block input:focus {
+	outline: none;
+	border-color: #FF7373;
+	}
+	
+.rpblock .info-block textarea {
+	font-size: 1em;
+	font-family: 'Open Sans', sans-serif;
+	border: 1px solid #DEDEDE;
+	width: 265px;
+	resize:none;
+	cursor: pointer;
+	}
+	
+.rpblock .info-block textarea:focus {
+	outline: none;
+	border: 1px solid #FF7373;
+	}
+
+.info-block .edit-save-butt {
+	position: absolute;
+	margin: -10px 0 0 250px;
+	width: 25px;
 	height: 20px;
 	cursor: pointer;
 	}
 	
-.rpblock .info-block input[name=text-number-input] {
-	width: 15px;
-	margin: 0 5px;
-}
+#text-block .edit-save-butt {
+	background: #66A3D2;
+	}
 	
-.rpblock .info-block input:focus {
+#project-block .edit-save-butt {
+	background: #FFAD40;
+	}
+	
+.info-block.edited .edit-save-butt {
+	background: #FF7373 !important;
+	}
+	
+.info-block .edit-save-butt svg {
+	fill: white;
+	width: 15px;
+	height: 15px;
+	margin: 2px 5px;
+	}
 
-	color: red;
-	outline: none;
+.block-head .edited {
+	display: none;
+	}
+	
+.head-switch:checked ~ .edited{
+	display: block;
+	}
+
+.head-switch:checked ~ .current, .head-switch:checked ~ .text-button {
+	display: none;
+	}
+	
+.current .info-field .value {
+	padding: 0 5px;
+	font-size: 1em;
+	color: black;
 	}
 	
 /* CSS Tree menu styles */
