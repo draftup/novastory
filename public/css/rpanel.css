@@ -268,8 +268,18 @@ ol.tree {
 	list-style: none;
 }
 
+ol.tree a {
+	height: 20px;
+	line-height: 20px;
+	padding: 0 5px;
+}
+
 ol.tree .file {
 	cursor: pointer;
+}
+
+ol.tree .file a {
+	font-size: 0.8em;
 }
 
 ol.tree .file.current a {
@@ -318,20 +328,6 @@ ol.tree label div svg {
 		.file svg {
 			fill: #66A3D2;
 			}
-
-a {
-	height: 20px;
-	line-height: 20px;
-	padding: 0 5px;
-}
-
-.file a {
-	font-size: 0.8em;
-}
-
-ol.tree input:checked + ol {
-
-}
 
 ol.tree input:checked + ol > li {
 	display: block;
