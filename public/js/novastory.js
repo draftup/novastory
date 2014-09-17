@@ -838,141 +838,116 @@ $(document).ready(function ()
 					var lastClickedRevision = 0;
 					function updateRevisionList()
 					{
-						NovastoryApi.revisionsList(function (revisions)
+						function updateFolderContent()
 						{
-							var list = $('#editor-revisions');
-							list.empty();
-							for (var i = 0; i < revisions.length; i++)
+							if(typeof clickedRevisionInTree == 'undefined')
+								clickedRevisionInTree = 0;
+							NovastoryApi.revisionsList(clickedRevisionInTree, function (revisions)
 							{
-								var backupedText = {};
-								var originalText = {};
-								(function (i)
+								var list = $('#editor-revisions');
+								list.empty();
+								for (var i = 0; i < revisions.length; i++)
 								{
-									var dateModify = new Date(revisions[i].modifyDate);
-									var element = $('<div><div class="pointer"><div></div></div>'
-											 + '<div class="revision-id" style="display: none;">' + revisions[i].revisionid + '</div>'
-											 + '<div class="rev-name">' + ((revisions[i].mark.length > 0) ? revisions[i].mark : prettyDate(dateModify)) + '</div>'
-											 + '<input size="" name="new-rev-name" value="' + ((revisions[i].mark.length > 0) ? revisions[i].mark : '') + '" autofocus>'
-											 + '<svg viewBox="0 0 512 512" class="edit-rev-name" ><path id="pencil-10-icon" d="M172.782,438.836L172.782,438.836L50.417,461.42l24.686-120.264l0.001-0.001L172.782,438.836zM364.735,51.523l-43.829,43.829l97.682,97.68l43.829-43.829L364.735,51.523z M96.996,319.263l97.681,97.679l202.017-202.015l-97.68-97.682L96.996,319.263z"></path></svg>'
-											 + '<svg viewBox="0 0 512 512" class="delete-rev"><path d="M424.562,78.022v40.032H87.438V78.022h94.938c15.464,0,28-12.546,28-28.022h91.25c0,15.477,12.536,28.022,28,28.022H424.562z M406.334,148.079V462H105.666V148.079H406.334z M197.333,210.462c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012s15-6.721,15-15.012V210.462zM271,210.462c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012s15-6.721,15-15.012V210.462z M344.667,210.462c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012s15-6.721,15-15.012V210.462z"></path></svg>'
-											 + '<div class="rev-info">'
-											 + '<div class="data-lenght">' + revisions[i].textLength + ' bytes</div>'
-											 + '<div class="rev-date">' + prettyDate(dateModify) + '</div>'
-											 + '</div>'
-											 + '</div>');
-									list.prepend(element);
-									var revision = revisions[i].revisionid;
-
-									// мы не хотим чтобы при нажатии на инпут обновляло элемент
-									element.children('input[name=new-rev-name]').click(function (e)
+									var backupedText = {};
+									var originalText = {};
+									(function (i)
 									{
-										e.stopPropagation();
-									}
-									);
-									element.click(function ()
-									{
-										lastClickedRevision = revision;
-										NovastoryApi.revision(revision, function (data)
-										{
-											var currentText = $('#editor').val();
-											$('#editor-revisions > div.current').each(function ()
-											{
-												var revisionid = parseInt($(this).children('.revision-id').text());
-												if (this != element.get(0) && originalText[revisionid] != currentText)
-												{
-													backupedText[revisionid] = currentText;
-													// указываем что текст в бэкапе
-													$(this).addClass('unsaved');
-												}
-											}
-											);
+										var dateModify = new Date(revisions[i].modifyDate);
+										var element = $('<div><div class="pointer"><div></div></div>'
+												 + '<div class="revision-id" style="display: none;">' + revisions[i].revisionid + '</div>'
+												 + '<div class="rev-name">' + ((revisions[i].mark.length > 0) ? revisions[i].mark : prettyDate(dateModify)) + '</div>'
+												 + '<input size="" name="new-rev-name" value="' + ((revisions[i].mark.length > 0) ? revisions[i].mark : '') + '" autofocus>'
+												 + '<svg viewBox="0 0 512 512" class="edit-rev-name" ><path id="pencil-10-icon" d="M172.782,438.836L172.782,438.836L50.417,461.42l24.686-120.264l0.001-0.001L172.782,438.836zM364.735,51.523l-43.829,43.829l97.682,97.68l43.829-43.829L364.735,51.523z M96.996,319.263l97.681,97.679l202.017-202.015l-97.68-97.682L96.996,319.263z"></path></svg>'
+												 + '<svg viewBox="0 0 512 512" class="delete-rev"><path d="M424.562,78.022v40.032H87.438V78.022h94.938c15.464,0,28-12.546,28-28.022h91.25c0,15.477,12.536,28.022,28,28.022H424.562z M406.334,148.079V462H105.666V148.079H406.334z M197.333,210.462c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012s15-6.721,15-15.012V210.462zM271,210.462c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012s15-6.721,15-15.012V210.462z M344.667,210.462c0-8.291-6.716-15.012-15-15.012s-15,6.721-15,15.012v190.153c0,8.291,6.716,15.012,15,15.012s15-6.721,15-15.012V210.462z"></path></svg>'
+												 + '<div class="rev-info">'
+												 + '<div class="data-lenght">' + revisions[i].textLength + ' bytes</div>'
+												 + '<div class="rev-date">' + prettyDate(dateModify) + '</div>'
+												 + '</div>'
+												 + '</div>');
+										list.prepend(element);
+										var revision = revisions[i].revisionid;
 
-											$('#editor-revisions > div').removeClass('current');
-											element.addClass('current');
-											/*
-											$('#editor').on('input', function ()
-										{
-											currentTextElement.remove();
-											currentTextElement = null;
-											$(this).off('input');
-											}
-											);
-											 */
-											if (backupedText[revision] != null)
-											{
-												$('#editor').val(backupedText[revision]);
-												delete backupedText[revision];
-											}
-											else
-											{
-												$('#editor').val(data.text);
-												element.removeClass('unsaved');
-											}
-
-											originalText[data.revisionid] = data.text;
-										}
-										);
-									}
-									);
-									var isRelease = revisions[i].isRelease;
-									element.children('.to-release').click(function (e)
-									{
-										e.stopPropagation();
-										function helper(data)
-										{
-											if (data.error != null && !data.error)
-											{
-												updateRevisionList();
-											}
-											else
-											{
-												Novastory.error("Something wrong on release revision");
-											}
-										}
-										if (!isRelease)
-											NovastoryApi.release(revision, helper);
-										else
-											NovastoryApi.unrelease(revision, helper);
-									}
-									);
-
-									element.children('.delete-rev').click(function (e)
-									{
-										e.stopPropagation();
-										NovastoryApi.removeRevision(revision, function (data)
-										{
-											if (data.error != null && !data.error)
-											{
-												element.remove();
-											}
-											else
-											{
-												Novastory.error("Something wrong on revision delete");
-											}
-										}
-										);
-									}
-									);
-
-									function editMark(e)
-									{
-										e.stopPropagation();
-										element.addClass('edited');
-										var markButton = $(this);
-										markButton.unbind('click');
-										var markTextElement = element.children('input[name=new-rev-name]');
-										function updateMark(e)
+										// мы не хотим чтобы при нажатии на инпут обновляло элемент
+										element.children('input[name=new-rev-name]').click(function (e)
 										{
 											e.stopPropagation();
-											var markText = markTextElement.val();
-											NovastoryApi.updateRevisionMark(revision, markText, function (data)
+										}
+										);
+										element.click(function ()
+										{
+											lastClickedRevision = revision;
+											NovastoryApi.revision(revision, function (data)
+											{
+												var currentText = $('#editor').val();
+												$('#editor-revisions > div.current').each(function ()
+												{
+													var revisionid = parseInt($(this).children('.revision-id').text());
+													if (this != element.get(0) && originalText[revisionid] != currentText)
+													{
+														backupedText[revisionid] = currentText;
+														// указываем что текст в бэкапе
+														$(this).addClass('unsaved');
+													}
+												}
+												);
+
+												$('#editor-revisions > div').removeClass('current');
+												element.addClass('current');
+												/*
+												$('#editor').on('input', function ()
+											{
+												currentTextElement.remove();
+												currentTextElement = null;
+												$(this).off('input');
+												}
+												);
+												 */
+												if (backupedText[revision] != null)
+												{
+													$('#editor').val(backupedText[revision]);
+													delete backupedText[revision];
+												}
+												else
+												{
+													$('#editor').val(data.text);
+													element.removeClass('unsaved');
+												}
+
+												originalText[data.revisionid] = data.text;
+											}
+											);
+										}
+										);
+										var isRelease = revisions[i].isRelease;
+										element.children('.to-release').click(function (e)
+										{
+											e.stopPropagation();
+											function helper(data)
 											{
 												if (data.error != null && !data.error)
 												{
-													element.removeClass('edited')
-													element.children('.rev-name').text(markText);
-													markButton.unbind('click');
-													markButton.click(editMark);
+													updateRevisionList();
+												}
+												else
+												{
+													Novastory.error("Something wrong on release revision");
+												}
+											}
+											if (!isRelease)
+												NovastoryApi.release(revision, helper);
+											else
+												NovastoryApi.unrelease(revision, helper);
+										}
+										);
+
+										element.children('.delete-rev').click(function (e)
+										{
+											e.stopPropagation();
+											NovastoryApi.removeRevision(revision, function (data)
+											{
+												if (data.error != null && !data.error)
+												{
+													element.remove();
 												}
 												else
 												{
@@ -981,92 +956,128 @@ $(document).ready(function ()
 											}
 											);
 										}
-										markButton.click(updateMark);
-										markTextElement.unbind('keyup');
-										markTextElement.keyup(function (e)
-										{
-											if (e.keyCode == 13)
-											{
-												updateMark(e);
-											}
-										}
 										);
+
+										function editMark(e)
+										{
+											e.stopPropagation();
+											element.addClass('edited');
+											var markButton = $(this);
+											markButton.unbind('click');
+											var markTextElement = element.children('input[name=new-rev-name]');
+											function updateMark(e)
+											{
+												e.stopPropagation();
+												var markText = markTextElement.val();
+												NovastoryApi.updateRevisionMark(revision, markText, function (data)
+												{
+													if (data.error != null && !data.error)
+													{
+														element.removeClass('edited')
+														element.children('.rev-name').text(markText);
+														markButton.unbind('click');
+														markButton.click(editMark);
+													}
+													else
+													{
+														Novastory.error("Something wrong on revision delete");
+													}
+												}
+												);
+											}
+											markButton.click(updateMark);
+											markTextElement.unbind('keyup');
+											markTextElement.keyup(function (e)
+											{
+												if (e.keyCode == 13)
+												{
+													updateMark(e);
+												}
+											}
+											);
+										}
+										element.children('.edit-rev-name').click(editMark);
 									}
-									element.children('.edit-rev-name').click(editMark);
+									)(i);
 								}
-								)(i);
 							}
+							);
 						}
-						);
+						updateFolderContent();
 
 						//also update directories
-						NovastoryApi.revisionDirectories(function (data)
+						function updateFolders()
 						{
-							var list = $('#revisions-directory');
-							list.empty();
-							function parseDirectory(dir)
+							NovastoryApi.revisionDirectories(function (data)
 							{
-								if (dir.length == 0)
-									return;
-
-								for (var i = 0; i < dir.length; i++)
+								var list = $('#revisions-directory');
+								list.empty();
+								function parseDirectory(dir)
 								{
-									if (dir[i].childs.length > 0)
+									if (dir.length == 0)
+										return;
+
+									for (var i = 0; i < dir.length; i++)
 									{
-										// This is directory
-										list.append(
-											'<li>'
-											 + '<label for="folder' + dir[i].revisionid + '" class="cheked">'
-											 + '<div>'
-											 + '<svg  id="new-project-icon" viewBox="0 0 512 512">'
-											 + '<path id="full-folder-icon" d="M430,122.265v77.303h-63.119l-75.04-57.707l-25.129,32.676l32.62,25.031h-33.843l-75.041-57.707l-44.379,57.707H81V89.66h100.35l22.979,22.834c6.298,6.258,14.814,9.771,23.693,9.771H430z M462,234.528H50L74,422.34h358.583L462,234.528z"></path>'
-											 + '</svg>'
-											 + '</div>'
-											 + '<a>' + dir[i].mark + '</a>'
-											 + '</label>'
-											 + '<input checked type="checkbox" id="folder' + dir[i].revisionid + '" />'
-											 + '<ol>');
-										parseDirectory(dir[i].childs);
-										list.append('</ol></li>');
-									}
-									else
-									{
-										// This is final leef
-										list.append(
-											'<li class="file" id="file' + dir[i].revisionid + '">'
-											 + '<div class="revisionid" style="display: none;">' + dir[i].revisionid + '</div>'
-											 + '<div></div>'
-											 + '<a>' + dir[i].mark + '</a>'
-											 + '</li>');
+										if (dir[i].childs.length > 0)
+										{
+											// This is directory
+											list.append(
+												'<li>'
+												 + '<label for="folder' + dir[i].revisionid + '" class="cheked">'
+												 + '<div>'
+												 + '<svg  id="new-project-icon" viewBox="0 0 512 512">'
+												 + '<path id="full-folder-icon" d="M430,122.265v77.303h-63.119l-75.04-57.707l-25.129,32.676l32.62,25.031h-33.843l-75.041-57.707l-44.379,57.707H81V89.66h100.35l22.979,22.834c6.298,6.258,14.814,9.771,23.693,9.771H430z M462,234.528H50L74,422.34h358.583L462,234.528z"></path>'
+												 + '</svg>'
+												 + '</div>'
+												 + '<a>' + dir[i].mark + '</a>'
+												 + '</label>'
+												 + '<input checked type="checkbox" id="folder' + dir[i].revisionid + '" />'
+												 + '<ol>');
+											parseDirectory(dir[i].childs);
+											list.append('</ol></li>');
+										}
+										else
+										{
+											// This is final leef
+											list.append(
+												'<li class="file" id="file' + dir[i].revisionid + '">'
+												 + '<div class="revisionid" style="display: none;">' + dir[i].revisionid + '</div>'
+												 + '<div></div>'
+												 + '<a>' + dir[i].mark + '</a>'
+												 + '</li>');
+										}
 									}
 								}
-							}
 
-							parseDirectory(data);
+								parseDirectory(data);
 
-							$('#revisions-directory li').click(function ()
-							{
-								$('#revisions-directory li').removeClass('current');
-								var clickedItem = $(this);
-								clickedItem.addClass('current');
-								clickedRevisionInTree = parseInt(clickedItem.children('.revisionid').text());
-								if (clickedRevisionInTree <= 0)
+								$('#revisions-directory li').click(function ()
 								{
-									Novastory.error("Something wrong on revision click. Contact us.");
-								}
-								$('#text-block').show();
-								NovastoryApi.revision(clickedRevisionInTree, function (revdata)
-								{
-									$('#text-block-name-edit').val(revdata.mark);
-									$('#text-block-name').text(revdata.mark);
-									$('#text-block-description-edit').val('');
-									$('#text-block-description').text('');
+									$('#revisions-directory li').removeClass('current');
+									var clickedItem = $(this);
+									clickedItem.addClass('current');
+									clickedRevisionInTree = parseInt(clickedItem.children('.revisionid').text());
+									if (clickedRevisionInTree <= 0)
+									{
+										Novastory.error("Something wrong on revision click. Contact us.");
+									}
+									$('#text-block').show();
+									NovastoryApi.revision(clickedRevisionInTree, function (revdata)
+									{
+										$('#text-block-name-edit').val(revdata.mark);
+										$('#text-block-name').text(revdata.mark);
+										$('#text-block-description-edit').val('');
+										$('#text-block-description').text('');
+									}
+									);
+									updateFolderContent();
 								}
 								);
 							}
 							);
 						}
-						);
+						updateFolders();
 					}
 					updateRevisionList();
 

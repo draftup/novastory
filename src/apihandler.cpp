@@ -117,7 +117,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		user.loginByToken(userid, stoken);
 		TextRevisionContainer container;
 		container.setUser(user);
-		container.sync();
+		container.sync(post["folder"].toInt());
 		json = container.json(true).toUtf8();
 	}
 	else if (hook == "revisions")
