@@ -268,15 +268,15 @@ ol.tree li {
 	list-style: none;
 }
 
-ol.tree li .file {
+ol.tree .file {
 	cursor: pointer;
 }
 
-ol.tree li .file:hover a , ol.tree li .file.current a{
+ol.tree li .file.current a {
 	color: #66A3D2;
 }
 
-ol.tree label:hover, ol.tree label.current {
+ol.tree label.current {
 	color: #FFAD40;
 }
 
@@ -286,13 +286,7 @@ ol.tree li.file a {
 }
 
 ol.tree li input {
-	position: absolute;
-	opacity: 0;
-	z-index: 2;
-	cursor: pointer;
-	height: 1em;
-	width: 1em;
-	top: 0;
+	display: none;
 }
 
 ol.tree li input + ol > li {
