@@ -26,6 +26,7 @@ private slots:
 
 	void releaseMiddle();
 	void releaseLast();
+	void getRevision();
 
 	void unrelease();
 	void updateMark();
@@ -124,6 +125,7 @@ void Test_TextRevision::syncRevision()
 	QCOMPARE(containerSync2.size(), 1);
 }
 
+
 void Test_TextRevision::releaseMiddle()
 {
 	QVERIFY(!container.release(0));
@@ -155,6 +157,20 @@ void Test_TextRevision::releaseLast()
 	// try to update based on new revision
 	QVERIFY(container.update("privet5").isValid());
 	QCOMPARE(container.size(), 5);
+}
+
+void Test_TextRevision::getRevision()
+{
+	TextRevision relRev = *(container.end() - 2);
+	QCOMPARE(relRev.isRelease(), true);
+	TextRevision unrelRev = container.last();
+	QCOMPARE(unrelRev.isRelease(), false);
+	TextRevisionContainer c;
+	// we havent access to unrealsed revision from other users
+	QVERIFY(!c.revision(unrelRev.revisionId()).isValid());
+	QVERIFY(c.revision(relRev.revisionId()).isValid());
+	// by value also must work
+	QVERIFY(container.revision(unrelRev.revisionId()).isValid());
 }
 
 
@@ -191,7 +207,6 @@ void Test_TextRevision::removeCheck()
 	QVERIFY(container.removeRevision(container.last()));
 	QCOMPARE(container.size(), 4);
 }
-
 
 
 /********************** DECLARE_TEST LIST ****************************/

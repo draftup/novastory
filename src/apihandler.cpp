@@ -135,7 +135,6 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		user.loginByToken(userid, stoken);
 		TextRevisionContainer container;
 		container.setUser(user);
-		container.sync();
 		TextRevision rev = container.revision(post["revision"].toInt());
 		if (rev.isValid())
 		{

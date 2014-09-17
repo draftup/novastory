@@ -440,7 +440,39 @@ QString TextRevisionContainer::treeFolders()
 
 novastory::TextRevision TextRevisionContainer::revision(int rev)
 {
-	return value(rev);
+	if (contains(rev))
+	{
+		return value(rev);
+	}
+	else
+	{
+		QString userWhere;
+		if (userid() > 0)
+		{
+			userWhere = "AND userid = :userid";
+		}
+		else
+		{
+			userWhere = "AND `release` = 1";
+		}
+		SqlQuery selectQuery;
+		selectQuery.prepare("SELECT * FROM textrevisions WHERE revisionid = :revid " + userWhere + " LIMIT 1");
+		if (userid() > 0)
+		{
+			selectQuery.bindValue(":userid", userid());
+		}
+		selectQuery.bindValue(":revid", rev);
+		VERIFY(selectQuery.exec());
+		if (selectQuery.size() != 1)
+		{
+			return TextRevision();
+		}
+		VERIFY(selectQuery.next());
+		TextRevision revision;
+		revision.syncRecord(selectQuery);
+		QMap::insert(revision.revisionId(), revision);
+		return revision;
+	}
 }
 
 void TextRevisionContainer::setMark(const QString& text)
