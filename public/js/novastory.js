@@ -1000,7 +1000,7 @@ $(document).ready(function ()
 						);
 
 						//also update directories
-						NovastoryApi.revisionDirectories(function(data)
+						NovastoryApi.revisionDirectories(function (data)
 						{
 							var list = $('#revisions-directory');
 							list.empty();
@@ -1043,24 +1043,28 @@ $(document).ready(function ()
 							}
 
 							parseDirectory(data);
-							
-							$('#revisions-directory li').click(function(){
+
+							$('#revisions-directory li').click(function ()
+							{
 								$('#revisions-directory li').removeClass('current');
 								var clickedItem = $(this);
 								clickedItem.addClass('current');
-								var clickedRevision = parseInt(clickedItem.children('.revisionid').text());
-								if(clickedRevision <= 0)
+								clickedRevisionInTree = parseInt(clickedItem.children('.revisionid').text());
+								if (clickedRevisionInTree <= 0)
 								{
 									Novastory.error("Something wrong on revision click. Contact us.");
 								}
 								$('#text-block').show();
-								NovastoryApi.revision(clickedRevision, function(revdata){
+								NovastoryApi.revision(clickedRevisionInTree, function (revdata)
+								{
 									$('#text-block-name-edit').val(revdata.mark);
 									$('#text-block-name').text(revdata.mark);
 									$('#text-block-description-edit').val('');
 									$('#text-block-description').text('');
-								});
-							});
+								}
+								);
+							}
+							);
 						}
 						);
 					}
@@ -1118,13 +1122,38 @@ $(document).ready(function ()
 						}
 					}
 					);
+
+					$('#editor-books-controls').load('/rp-projects.html #projects-panel', null, function ()
+					{
+						$('#delete-butt').click(function ()
+						{
+							if (clickedRevisionInTree <= 0)
+							{
+								Novastory.error("Something wrong on clickedRevisionInTree");
+								return;
+							}
+							NovastoryApi.removeRevision(clickedRevisionInTree, function (data)
+							{
+								if (data.error != null && !data.error)
+								{
+									Novastory.ok("Removed");
+									updateRevisionList();
+									$('#text-block').hide();
+								}
+								else
+								{
+									Novastory.error("Something wrong on revision delete");
+								}
+							}
+							);
+						}
+						);
+
+					}
+					);
 				}
 				);
 
-				$('#editor-books-controls').load('/rp-projects.html #projects-panel', null, function ()
-				{}
-
-				);
 			} // подгрузка редактора
 			);
 		}
