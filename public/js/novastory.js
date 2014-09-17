@@ -835,12 +835,12 @@ $(document).ready(function ()
 					}
 					);
 
-					var lastClickedRevision = 0;
+					lastClickedRevision = 0;
 					function updateRevisionList()
 					{
 						function updateFolderContent()
 						{
-							if(typeof clickedRevisionInTree == 'undefined')
+							if (typeof clickedRevisionInTree == 'undefined')
 								clickedRevisionInTree = 0;
 							NovastoryApi.revisionsList(clickedRevisionInTree, function (revisions)
 							{
@@ -878,6 +878,7 @@ $(document).ready(function ()
 											lastClickedRevision = revision;
 											NovastoryApi.revision(revision, function (data)
 											{
+												lastClickedRevisionRelease = data.isRelease;
 												var currentText = $('#editor').val();
 												$('#editor-revisions > div.current').each(function ()
 												{
@@ -916,27 +917,6 @@ $(document).ready(function ()
 												originalText[data.revisionid] = data.text;
 											}
 											);
-										}
-										);
-										var isRelease = revisions[i].isRelease;
-										element.children('.to-release').click(function (e)
-										{
-											e.stopPropagation();
-											function helper(data)
-											{
-												if (data.error != null && !data.error)
-												{
-													updateRevisionList();
-												}
-												else
-												{
-													Novastory.error("Something wrong on release revision");
-												}
-											}
-											if (!isRelease)
-												NovastoryApi.release(revision, helper);
-											else
-												NovastoryApi.unrelease(revision, helper);
 										}
 										);
 
@@ -1157,6 +1137,33 @@ $(document).ready(function ()
 								}
 							}
 							);
+						}
+						);
+
+						$('#publish-butt').click(function ()
+						{
+							if (typeof lastClickedRevision == 'undefined' || typeof lastClickedRevisionRelease == 'undefined')
+							{
+								Novastory.error("Please check some revision on bottom");
+								return;
+							}
+
+							function helper(data)
+							{
+								if (data.error != null && !data.error)
+								{
+									updateRevisionList();
+									Novastory.ok("Released");
+								}
+								else
+								{
+									Novastory.error("Something wrong on release revision");
+								}
+							}
+							if (!lastClickedRevisionRelease)
+								NovastoryApi.release(lastClickedRevision, helper);
+							else
+								NovastoryApi.unrelease(lastClickedRevision, helper);
 						}
 						);
 
