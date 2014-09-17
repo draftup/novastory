@@ -35,11 +35,21 @@
 	
 /* Боковая панель: функциональный блок: шапка текста */
 
+#text-block
+{
+	display: none;
+}
+
 #text-block .help-card {
 	background: #66A3D2;
 }
 
 /* Боковая панель: функциональный блок: шапка текста */
+
+#project-block
+{
+	display: none;
+}
 
 #project-block .help-card {
 	background: #FFAD40;

@@ -1034,6 +1034,7 @@ $(document).ready(function ()
 										// This is final leef
 										list.append(
 											'<li class="file" id="file' + dir[i].revisionid + '">'
+											 + '<div class="revisionid" style="display: none;">' + dir[i].revisionid + '</div>'
 											 + '<div></div>'
 											 + '<a>' + dir[i].mark + '</a>'
 											 + '</li>');
@@ -1045,7 +1046,20 @@ $(document).ready(function ()
 							
 							$('#revisions-directory li').click(function(){
 								$('#revisions-directory li').removeClass('current');
-								$(this).addClass('current');
+								var clickedItem = $(this);
+								clickedItem.addClass('current');
+								var clickedRevision = parseInt(clickedItem.children('.revisionid').text());
+								if(clickedRevision <= 0)
+								{
+									Novastory.error("Something wrong on revision click. Contact us.");
+								}
+								$('#text-block').show();
+								NovastoryApi.revision(clickedRevision, function(revdata){
+									$('#text-block-name-edit').val(revdata.mark);
+									$('#text-block-name').text(revdata.mark);
+									$('#text-block-description-edit').val('');
+									$('#text-block-description').text('');
+								});
 							});
 						}
 						);
