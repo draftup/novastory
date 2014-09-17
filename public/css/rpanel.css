@@ -264,7 +264,7 @@ ol.tree
 	font-size: 0.9em;
 }
 
-ol.tree li {
+ol.tree {
 	list-style: none;
 }
 
@@ -272,7 +272,7 @@ ol.tree .file {
 	cursor: pointer;
 }
 
-ol.tree li .file.current a {
+ol.tree .file.current a {
 	color: #66A3D2;
 }
 
@@ -280,28 +280,23 @@ ol.tree label.current {
 	color: #FFAD40;
 }
 
-ol.tree li.file a {
-	color: #000;
-	display: block;
-}
-
-ol.tree li input {
+ol.tree input {
 	display: none;
 }
 
-ol.tree li input + ol > li {
+ol.tree input + ol > li {
 	display: none;
 	margin-left: -14px !important;
 	padding-left: 1px;
 }
 
-ol.tree li label {
+ol.tree label {
 	cursor: pointer;
 	display: block;
 	height: 25px;
 }
 
-ol.tree li label div, .file div {
+ol.tree label div, .file div {
 	float: left;
 	height: 20px;
 	width: 20px;
@@ -316,7 +311,7 @@ ol.tree li label div, .file div {
 				}
 
 
-ol.tree li label div svg {
+ol.tree label div svg {
 	fill: #FFAD40;
 	}
 	
@@ -334,10 +329,10 @@ a {
 	font-size: 0.8em;
 }
 
-ol.tree li input:checked + ol {
+ol.tree input:checked + ol {
 
 }
 
-ol.tree li input:checked + ol > li {
+ol.tree input:checked + ol > li {
 	display: block;
 }
