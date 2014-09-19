@@ -36,13 +36,13 @@ void Test_MultiThreadWeb::multifileTest()
 {
 	QStringList testFiles;
 	testFiles
-			<< "/images/editor.svg"
-			<< "/images/fbook.svg"
-			<< "/images/gplus.svg"
-			<< "/images/login.svg"
-			<< "/images/message.svg"
+			<< "/images/check-mark.svg"
+			<< "/images/warning.svg"
+			<< "/images/x-mark.svg"
+			<< "/images/modal-settings/profile.svg"
 			<< "/images/message-unread.svg"
-			<< "/images/mylibrary.svg";
+			<< "/images/modal-settings/art.svg"
+			<< "/images/modal-settings/ava.svg";
 
 	const int readersCount = 7;
 	QTcpSocket htmlReader[readersCount]; // number of readers

@@ -1,5 +1,6 @@
 #include "textrevision.h"
 #include <QDebug>
+#include <QJsonArray>
 #include "utils/globals.h"
 #include "sql/sqlquery.h"
 
@@ -61,7 +62,7 @@ void TextRevision::setRevisionID(int revision)
 	m_revisionId = revision;
 }
 
-TextRevision::TextRevision() : m_release(false), m_revisionId(-1)
+TextRevision::TextRevision() : m_release(false), m_revisionId(-1), m_parentId(0)
 {
 	setObjectName("textrevisions");
 	setProperty("auto_increment", QVariant("revisionid"));
@@ -103,6 +104,13 @@ QJsonObject TextRevision::json(bool withoutText /* = false */) const
 	revision.insert("modifyDate", modifyDate().toMSecsSinceEpoch());
 	revision.insert("mark", mark());
 
+	QJsonArray childs;
+	for (const TextRevision& rev : m_childs)
+	{
+		childs.append(rev.json());
+	}
+	revision.insert("childs", childs);
+
 	return revision;
 }
 
@@ -139,6 +147,31 @@ void TextRevision::setModifyDate(const QDateTime& date)
 void TextRevision::resetModifyDate()
 {
 	m_modify_date = QDateTime();
+}
+
+const int& TextRevision::parent() const
+{
+	return m_parentId;
+}
+
+void TextRevision::setParent(int id)
+{
+	m_parentId = id;
+}
+
+void TextRevision::resetParent()
+{
+	m_parentId = -1;
+}
+
+void TextRevision::appendChild(const TextRevision& rev)
+{
+	m_childs.append(rev);
+}
+
+void TextRevision::clearChilds()
+{
+	m_childs.clear();
 }
 
 }

@@ -20,11 +20,13 @@ private slots:
 
 	void unloginedTest();
 	void createRevision();
+	void treeFolders();
 	void updateRevision();
 	void syncRevision();
 
 	void releaseMiddle();
 	void releaseLast();
+	void getRevision();
 
 	void unrelease();
 	void updateMark();
@@ -39,6 +41,9 @@ private:
 
 void Test_TextRevision::initTestCase()
 {
+	buser.setEmail("doentcar@dsadasd.ds");
+	buser.setRawPassword("doentcare");
+	buser.removeUser();
 	buser.setEmail("doentcar@dsadasd.ds");
 	buser.setRawPassword("doentcare");
 	QVERIFY(buser.addUser());
@@ -60,7 +65,7 @@ void Test_TextRevision::cleanupTestCase()
 {
 	SqlQuery q;
 	q.exec(QString("SELECT * FROM textrevisions WHERE userid = ") + QString::number(buser.userid()));
-	QCOMPARE(q.size(), 4);
+	QCOMPARE(q.size(), 7);
 	container.clear();
 	q.exec(QString("SELECT * FROM textrevisions WHERE userid = ") + QString::number(buser.userid()));
 	QCOMPARE(q.size(), 0);
@@ -78,15 +83,23 @@ void Test_TextRevision::createRevision()
 {
 	QCOMPARE(container.size(), 0);
 	QVERIFY(container.update("privet").isValid());
-	QCOMPARE(container.size(), 1);
+	QCOMPARE(container.size(), 1); // only text
 	QVERIFY(container.insert("privet2").isValid());
-	QCOMPARE(container.size(), 2);
+	QCOMPARE(container.size(), 2); // only text
+	// also must created 2 folders for each revisions
+	QCOMPARE(container.notLeefs().size(), 2);
+}
+
+
+void Test_TextRevision::treeFolders()
+{
+	QVERIFY(container.treeFolders().contains("New Text"));
 }
 
 
 void Test_TextRevision::updateRevision()
 {
-	QVERIFY(container.update("privet22").isValid());
+	QVERIFY(container.update("privet22").isValid()); // update last revisions
 	QCOMPARE(container.size(), 2);
 	TextRevision f = container.first();
 	TextRevision l = container.last();
@@ -105,7 +118,13 @@ void Test_TextRevision::syncRevision()
 	QCOMPARE(containerSync.size(), 0);
 	QVERIFY(containerSync.sync());
 	QCOMPARE(containerSync.size(), 2);
+	// sync folder
+	TextRevisionContainer containerSync2;
+	containerSync2.setUser(buser);
+	QVERIFY(containerSync2.sync(containerSync.first().parent()));
+	QCOMPARE(containerSync2.size(), 1);
 }
+
 
 void Test_TextRevision::releaseMiddle()
 {
@@ -138,6 +157,20 @@ void Test_TextRevision::releaseLast()
 	// try to update based on new revision
 	QVERIFY(container.update("privet5").isValid());
 	QCOMPARE(container.size(), 5);
+}
+
+void Test_TextRevision::getRevision()
+{
+	TextRevision relRev = *(container.end() - 2);
+	QCOMPARE(relRev.isRelease(), true);
+	TextRevision unrelRev = container.last();
+	QCOMPARE(unrelRev.isRelease(), false);
+	TextRevisionContainer c;
+	// we havent access to unrealsed revision from other users
+	QVERIFY(!c.revision(unrelRev.revisionId()).isValid());
+	QVERIFY(c.revision(relRev.revisionId()).isValid());
+	// by value also must work
+	QVERIFY(container.revision(unrelRev.revisionId()).isValid());
 }
 
 
@@ -174,7 +207,6 @@ void Test_TextRevision::removeCheck()
 	QVERIFY(container.removeRevision(container.last()));
 	QCOMPARE(container.size(), 4);
 }
-
 
 
 /********************** DECLARE_TEST LIST ****************************/

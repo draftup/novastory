@@ -1,0 +1,170 @@
+﻿
+
+#label{ 
+background: #FFFFFF;
+
+
+	height:75px;
+	width:100%;
+	min-width:900px;
+	
+font-family: Arial, Verdana,  sans-serif;
+	 font-size: 4em; text-shadow: 4px 2px black; color: #D0D0D0  ;
+ }
+#total{ margin-top: 10px;
+background: 
+  #FFFFFF;
+float:left;
+	
+         
+	height:1100px;
+	width:100%;
+	min-width:900px;
+	
+
+ }
+
+
+#news{ 
+display: inline-block;
+
+background: 
+  #FFFFCC;
+float:left;
+	
+         
+	height:100%;
+	width:665px;
+	
+
+ }
+
+#best_users{
+display: inline-block;
+ 
+margin-left: 5px;
+background: 
+  #CCFFCC;
+float:right;
+         
+	height:400px;
+	width:230px;
+	
+
+ }
+
+
+.face{ margin-top: 10px;
+margin-left: 9px;
+background: 
+  #FFFFFF;
+        height:50px;
+	width:50px;
+border-radius: 25px;
+	float:left;
+	
+}
+.name{ margin-top: 35px;
+margin-left: 9px;
+background: 
+  #FFFFFF;
+        height:25px;
+	width:150px;
+	float:left;
+
+}
+#button {margin-top:175px;
+        height:25px;
+	width:100px;
+	float:right;}
+button {
+margin-bottom:10px;
+
+padding: 7px 30px;
+font-size: 12px;
+font-weight: bold;
+color: #FFFFFF;
+text-align: center;
+border: none;
+cursor: pointer;
+
+
+background: #CC3399;
+
+
+
+}
+	
+button:hover { 
+background: #990066; 
+
+}
+
+button:active {
+background: #660033; 
+
+padding: 8px 29px 6px 31px;
+}
+#best_books_of_all_the_motherfucking_times
+{margin-top: 10px;
+
+background: 
+  #FFFFFF;
+
+	float:right;
+         
+	height:400px;
+	width:230px;
+	clear:right;
+	}
+
+.book{margin-top: 10px;
+margin-left: 10px;
+border-style:solid;
+border-color:#000033;
+border-width:thin;
+background: 
+  #CCFFCC;
+
+	float:right;
+         
+	height:100px;
+	width:230px;
+}
+.cover{margin-top: 10px;
+margin-left: 9px;
+background: 
+  #FFFFFF;
+
+	float:left;
+         
+	height:75px;
+	width:50px;
+	
+
+ }
+#button2 {margin-top:25px;
+	     
+        height:25px;
+	width:100px;
+	float:right;}
+.ratingbar{margin-top: 77px;
+margin-right: 10px;
+background: 
+  #9D0019;
+
+	float:right;
+         
+	height:8px;
+	width:150px;
+	
+
+ }
+.likebar{
+background: 
+  #268E00;
+
+	float:left;
+         
+	height:8px;
+	width:75px; }

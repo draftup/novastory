@@ -117,7 +117,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		user.loginByToken(userid, stoken);
 		TextRevisionContainer container;
 		container.setUser(user);
-		container.sync();
+		container.sync(post["folder"].toInt());
 		json = container.json(true).toUtf8();
 	}
 	else if (hook == "revisions")
@@ -135,7 +135,6 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		user.loginByToken(userid, stoken);
 		TextRevisionContainer container;
 		container.setUser(user);
-		container.sync();
 		TextRevision rev = container.revision(post["revision"].toInt());
 		if (rev.isValid())
 		{
@@ -204,6 +203,14 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		container.setUser(user);
 		VERIFY(container.unrelease(post["revision"].toInt()));
 		json = container.jsonString().toUtf8();
+	}
+	else if (hook == "revdirs")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		TextRevisionContainer container;
+		container.setUser(user);
+		json = container.treeFolders().toUtf8();
 	}
 	else if (hook == "subscribe")
 	{

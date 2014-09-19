@@ -25,6 +25,7 @@ class TextRevision : protected Sqlizable, public JsonThrower
 	Q_PROPERTY(QDateTime modifydate READ modifyDate WRITE setModifyDate RESET resetModifyDate)
 	Q_PROPERTY(QString mark READ mark WRITE setMark RESET resetMark)
 	Q_PROPERTY(QString text READ text WRITE setText RESET resetText)
+	Q_PROPERTY(int parent_id READ parent WRITE setParent RESET resetParent)
 public:
 	TextRevision();
 
@@ -55,11 +56,18 @@ public:
 	const int& revisionId() const;
 	void setRevisionID(int revision);
 
+	const int& parent() const;
+	void setParent(int id);
+	void resetParent();
+
 	bool operator==(const TextRevision& rv) const;
 
 	bool isValid() const;
 
 	QJsonObject json(bool withoutText = false) const;
+
+	void appendChild(const TextRevision& rev);
+	void clearChilds();
 private:
 	User m_user;
 	QString m_text;
@@ -68,6 +76,8 @@ private:
 	bool m_release;
 	QDateTime m_create_date;
 	QDateTime m_modify_date;
+	int m_parentId;
+	QList<TextRevision> m_childs;
 };
 
 }

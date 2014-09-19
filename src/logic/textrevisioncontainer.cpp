@@ -10,9 +10,15 @@ namespace novastory
 
 TextRevisionContainer::TextRevisionContainer() : m_synchronized(false)
 {
+	m_table_name = "textrevisions";
+	m_left_name = "left_key";
+	m_right_name = "right_key";
+	m_data_name = "text";
+	m_id_name = "revisionid";
+	m_parent_name = "parent_id";
 }
 
-bool TextRevisionContainer::sync()
+bool TextRevisionContainer::sync(int parentId /* = 0 */)
 {
 	if (!m_user.isLogined())
 	{
@@ -23,8 +29,12 @@ bool TextRevisionContainer::sync()
 	JSON_INSERT("text", QString());
 
 	SqlQuery selectQuery;
-	selectQuery.prepare("SELECT * FROM textrevisions WHERE userid = :userid");
+	selectQuery.prepare("SELECT * FROM textrevisions WHERE right_key - left_key = 1 AND userid = :userid" + ((parentId > 0) ? " AND " + m_parent_name + " = :parentid" : ""));
 	selectQuery.bindValue(":userid", userid());
+	if (parentId > 0)
+	{
+		selectQuery.bindValue(":parentid", parentId);
+	}
 
 	VERIFY(selectQuery.exec());
 
@@ -45,7 +55,7 @@ int TextRevisionContainer::userid() const
 	return m_user.userid();
 }
 
-TextRevision TextRevisionContainer::insert()
+TextRevision TextRevisionContainer::insert(int parentId /* = 0 */)
 {
 	if (!m_user.isLogined())
 	{
@@ -67,11 +77,35 @@ TextRevision TextRevisionContainer::insert()
 	}
 
 	TextRevision revision;
+	QHash<QString, QVariant> valuesToDB;
 	revision.setUser(m_user);
+	valuesToDB.insert("userid", m_user.userid());
 	revision.setText(m_text);
+	valuesToDB.insert("text", m_text);
 	revision.setMark(m_mark);
-	if (revision.insertSQL())
+	valuesToDB.insert("mark", m_mark);
+	m_where_coincidence = "userid = " + QString::number(m_user.userid());
+	Q_ASSERT(parentId >= 0);
+	int revisionid = -1;
+	// If no parent we must create some folder
+	if (parentId > 0)
 	{
+		revisionid = NestedSet::insert(parentId, valuesToDB);
+	}
+	else
+	{
+		// no parent create folder then add text to this folder
+		QHash<QString, QVariant> folderInfo;
+		folderInfo.insert("userid", m_user.userid());
+		folderInfo.insert("mark", "New Text");
+		int folderid = NestedSet::insert(0, folderInfo);
+		Q_ASSERT(folderid > 0);
+		revisionid = NestedSet::insert(folderid, valuesToDB);
+	}
+
+	if (revisionid > 0)
+	{
+		revision.setRevisionID(revisionid);
 		Q_ASSERT(revision.revisionId() > 0);
 		QMap::insert(revision.revisionId(), revision);
 	}
@@ -82,15 +116,15 @@ TextRevision TextRevisionContainer::insert()
 	return revision;
 }
 
-TextRevision TextRevisionContainer::insert(const QString& text)
+TextRevision TextRevisionContainer::insert(const QString& text, int parentId /* = 0 */)
 {
 	setText(text);
-	return insert();
+	return insert(parentId);
 }
 
-novastory::TextRevision TextRevisionContainer::insert(char* text)
+novastory::TextRevision TextRevisionContainer::insert(char* text, int parentId /* = 0 */)
 {
-	return insert(QString(text));
+	return insert(QString(text), parentId);
 }
 
 
@@ -147,9 +181,17 @@ novastory::TextRevision TextRevisionContainer::update(int revision /* = 0 */)
 		else
 		{
 			rev.setRelease(false);
-			rev.setRevisionID(-1);
-			if (rev.insertSQL())
+
+			QHash<QString, QVariant> valuesToDB;
+			valuesToDB.insert("userid", rev.userid());
+			valuesToDB.insert("text", rev.text());
+			valuesToDB.insert("mark", rev.mark());
+			valuesToDB.insert("release", rev.isRelease());
+			m_where_coincidence = "userid = " + QString::number(rev.userid());
+			int revisionid = NestedSet::insert(rev.parent(), valuesToDB);
+			if (revisionid > 0)
 			{
+				rev.setRevisionID(revisionid);
 				Q_ASSERT(rev.revisionId() > 0);
 				QMap::insert(rev.revisionId(), rev);
 			}
@@ -168,8 +210,23 @@ novastory::TextRevision TextRevisionContainer::update(int revision /* = 0 */)
 		revision.setUser(m_user);
 		revision.setText(m_text);
 		revision.setMark(m_mark);
-		if (revision.insertSQL())
+		QHash<QString, QVariant> valuesToDB;
+		valuesToDB.insert("userid", m_user.userid());
+		valuesToDB.insert("text", m_text);
+		valuesToDB.insert("mark", m_mark);
+		m_where_coincidence = "userid = " + QString::number(m_user.userid());
+
+		// we also need to create folder
+		QHash<QString, QVariant> folderInfo;
+		folderInfo.insert("userid", m_user.userid());
+		folderInfo.insert("mark", "New Text");
+		int folderid = NestedSet::insert(0, folderInfo);
+		Q_ASSERT(folderid > 0);
+
+		int revisionid = NestedSet::insert(folderid, valuesToDB);
+		if (revisionid > 0)
 		{
+			revision.setRevisionID(revisionid);
 			Q_ASSERT(revision.revisionId() > 0);
 			QMap::insert(revision.revisionId(), revision);
 		}
@@ -270,7 +327,15 @@ bool TextRevisionContainer::release(int targetRevision)
 		TextRevision newRevision = value(targetRevision); // copy of old revision
 		newRevision.setRelease(true);
 		newRevision.setRevisionID(-1);
-		VERIFY(newRevision.insertSQL());
+		QHash<QString, QVariant> valuesToDB;
+		valuesToDB.insert("userid", newRevision.userid());
+		valuesToDB.insert("text", newRevision.text());
+		valuesToDB.insert("mark", newRevision.mark());
+		valuesToDB.insert("release", newRevision.isRelease());
+		m_where_coincidence = "userid = " + QString::number(newRevision.userid());
+		int revisionid = NestedSet::insert(0, valuesToDB);
+		Q_ASSERT(revisionid > 0);
+		newRevision.setRevisionID(revisionid);
 		Q_ASSERT(newRevision.revisionId() > 0);
 		QMap::insert(newRevision.revisionId(), newRevision);
 		qDebug() << "Revision" << targetRevision << "was copy to new release" << newRevision.revisionId() << "revision for user" << userid();
@@ -334,9 +399,80 @@ QString TextRevisionContainer::json(bool withoutText /* = false */)
 	return doc.toJson();
 }
 
+QString TextRevisionContainer::treeFolders()
+{
+	QJsonDocument doc;
+	m_where_coincidence = "userid = " + QString::number(m_user.userid());
+	SqlQuery tree = NestedSet::notLeefs();
+
+	QJsonArray array;
+	QList<TextRevision> revisions;
+	int lastid = -1;
+	while (tree.next())
+	{
+		TextRevision revision;
+		revision.syncRecord(tree);
+		if (lastid > 0 && lastid == revision.parent())
+		{
+			TextRevision& rev = revisions.last();
+			if (rev.revisionId() != lastid)
+			{
+				qCritical() << "Wrong treefolder structure";
+			}
+			Q_ASSERT(rev.revisionId() == lastid);
+			rev.appendChild(revision);
+		}
+		else
+		{
+			revisions.append(revision);
+		}
+
+		lastid = revision.revisionId();
+	}
+	for (const TextRevision& rev : revisions)
+	{
+		array.append(rev.json());
+	}
+	doc.setArray(array);
+
+	return doc.toJson();
+}
+
 novastory::TextRevision TextRevisionContainer::revision(int rev)
 {
-	return value(rev);
+	if (contains(rev))
+	{
+		return value(rev);
+	}
+	else
+	{
+		QString userWhere;
+		if (userid() > 0)
+		{
+			userWhere = "AND userid = :userid";
+		}
+		else
+		{
+			userWhere = "AND `release` = 1";
+		}
+		SqlQuery selectQuery;
+		selectQuery.prepare("SELECT * FROM textrevisions WHERE revisionid = :revid " + userWhere + " LIMIT 1");
+		if (userid() > 0)
+		{
+			selectQuery.bindValue(":userid", userid());
+		}
+		selectQuery.bindValue(":revid", rev);
+		VERIFY(selectQuery.exec());
+		if (selectQuery.size() != 1)
+		{
+			return TextRevision();
+		}
+		VERIFY(selectQuery.next());
+		TextRevision revision;
+		revision.syncRecord(selectQuery);
+		QMap::insert(revision.revisionId(), revision);
+		return revision;
+	}
 }
 
 void TextRevisionContainer::setMark(const QString& text)
@@ -357,8 +493,8 @@ bool TextRevisionContainer::removeRevision(int revision)
 		return false;
 	}
 
-	SqlQuery removeQ("DELETE FROM textrevisions WHERE revisionid = " + QString::number(revision));
-	if (removeQ.lastError().type() == QSqlError::NoError)
+	m_where_coincidence = "userid = " + QString::number(m_user.userid());
+	if (NestedSet::remove(revision))
 	{
 		QMap::remove(revision);
 		return true;

@@ -222,11 +222,12 @@ NovastoryApi.removeRevision = function (revision, callback)
 		'json');
 };
 
-NovastoryApi.revisionsList = function (callback)
+NovastoryApi.revisionsList = function (folder, callback)
 {
 	$.post(
 		'/api/revisionslist',
 	{
+		folder: folder
 	},
 		callback,
 		'json');
@@ -262,6 +263,15 @@ NovastoryApi.unrelease = function (revision, callback)
 	{
 		revision: revision
 	},
+		callback,
+		'json');
+};
+
+NovastoryApi.revisionDirectories = function (callback)
+{
+	$.post(
+		'/api/revdirs',
+	{},
 		callback,
 		'json');
 };

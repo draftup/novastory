@@ -1,6 +1,6 @@
 ﻿body {
 	font-family: 'Open Sans', sans-serif;
-	font-size: 11pt;
+	font-size: 1em;
 	background: #FFF;
 	color:#474747;
 	margin:0;
@@ -24,7 +24,6 @@ dialog {
 	height:40px;
 	width:100%;
 	min-width:1000px;
-	line-height:40px;
 	z-index: 10;
 }
 
@@ -55,10 +54,10 @@ footer {
 /*Верхняя панель: кнопки навигации*/
 
 .left-button {
-	font-size:13pt;
 	width:160px;
 	display:inline-block;
 	text-align:center;
+	line-height: 40px;
 }
 
 .left-button a
@@ -71,20 +70,14 @@ footer {
 	color: #787878;
 }
 
-.current-button {
-	border-bottom: 2px solid #FFA13D;
-}
-
 /*Верхняя панель: графа поиска*/
 
 .searchout {
+	position: absolute;
 	background:#FFFFFF;
-	display:inline-block;
-	height:25px;
-	width:300px;
-	margin-left:40px;
-	position:relative;
-	top:6.5px;
+	padding: 3px 5px;
+	left:400px;
+	top: 6px;
 }
 
 input[type="search"] {
@@ -92,46 +85,20 @@ input[type="search"] {
 	outline:none;
 	-webkit-appearance:none;
 	width:220px;
-	height:25px;
-	margin-left:5px;
-	display: block;
-	float: left;
-}
-
-/*Верхняя панель: графа поиска: кнопки фильтрации*/
-
-.searchfilter {
-	height:16px;
-	width:16px;
-	margin-top:5px;
-	margin-right:5px;
-	cursor:pointer;
-	float:right;
-}
-
-#postfilter {
-	background:url(../images/search-filters/post.svg);
-	background-size:contain;
-}
-
-#userfilter {
-	background:url(../images/search-filters/user.svg);
-	background-size:contain;
-}
-
-#biblfilter {
-	background:url(../images/search-filters/library.svg);
-	background-size:contain;
 }
 
 /*Верхняя панель: кнопка логина*/
 
 .logblock {
 	background: #99146F;
-	display: inline-block;
 	position:absolute;
 	color: #FFFFFF;
+	height: 40px;
 	top: 0px;
+}
+
+.logblock a {
+	line-height: 40px;
 }
 
 #login {
@@ -144,7 +111,6 @@ input[type="search"] {
 #logout {
 	width: 280px;
 	right:-140px;
-
 	-moz-transition:all 0.5s;
 	-o-transition:all 0.5s;
 	-webkit-transition:all 0.5s;
@@ -158,6 +124,7 @@ input[type="search"] {
 #logname {
 	width:140px;
 	text-align:center;
+	line-height: 40px;
 	float:left;
 	overflow:hidden;
 	cursor:default;
@@ -170,21 +137,6 @@ input[type="search"] {
 	margin-right:25px;
 	cursor:pointer;
 	float:right;
-}
-
-#inico {
-	background:url(../images/login.svg);
-	background-size:contain;
-}
-
-#outico {
-	background:url(../images/logout.svg);
-	background-size:contain;
-}
-
-#setico {
-	background:url(../images/settings.svg);
-	background-size:contain;
 }
 
 /*Верхняя панель: пользователь*/
@@ -205,6 +157,12 @@ input[type="search"] {
 	margin-top:13px;
 	margin-left:15px;
 }
+
+/*Верхняя панель: кнопки*/
+
+.logblock svg, .tools svg {
+	fill: white;
+	}
 
 /*Верхняя панель: пользователь: аватар*/
 
@@ -230,32 +188,12 @@ input[type="search"] {
 /*Верхняя панель: пользователь: инструменты*/
 
 .toolico {
-	height:20px;
-	width:20px;
+	height:18px;
+	width:18px;
 	cursor:pointer;
 	float:left;
-	margin-top:10px;
+	margin-top:11px;
 	margin-left:15px;
-}
-
-#mylibico {
-	background:url(../images/mylibrary.svg);
-	background-size:contain;
-}
-
-#editico {
-	background:url(../images/editor.svg);
-	background-size:contain;
-}
-
-#messico {
-	background:url(../images/message.svg);
-	background-size:contain;
-}
-
-#helpico {
-	background:url(../images/help.svg);
-	background-size:contain;
 }
 
 /* Всплывающие подсказки */ 
@@ -299,119 +237,10 @@ input[type="search"] {
 	box-shadow: 0 0 25px #FF8C00;
 	background:url(../images/warning.svg) no-repeat #FF8C00;
 	background-size:contain;
-}
-
-/* Боковая панель справа */
-
-.rightpanel {
-	position: fixed;
-	width:315px;
-	height: 100%;
-	right:0px;
-	padding-top: 40px;
-	background: #FFFFFF;
-	border-left: 1px solid #EDEDED;
-	z-index:5;
-}
-
-/* Боковая панель справа: текущие */
-
-.rpcurrent {
-	width: 100%;
-	min-height: 85px;
-	border-bottom: 1px solid #EDEDED;
-}
-
-.rpcurrent.nounread {
-	width: 100%;
-	height: 80px;
-	text-align:center;
-	line-height: 80px;
-}
-
-/* Боковая панель справа: ярлыки диалогов */
-
-.dialogref {
-	position:relative;
-	width: 290px;
-	height: 60px;
-	margin: 10px;
-	cursor: pointer;
-	border: 1px solid #EDEDED;
-	border-radius: 12%/50% 0 0 50%;
-}
-
-.dialogref.newmess {
-	background: #F5F5F5;
-}
-
-
-.messcount {
-	position:absolute;
-	width: 22px;
-	height: 22px;
-	border-radius: 50%;
-	-webkit-border-radius:50%;
-	-moz-border-radius:50%;
-	background: #6CDA6C;
-	color: #FFFFFF;
-	font-weight: bold;
-	font-size: 9pt;
-	text-align:center;
-	line-height: 22px;
-	margin-top: 18px;
-	margin-left: -7px;
-}
-
-.dialogava {
-	position:absolute;
-	height: 50px;
-	width: 50px;
-	margin: 5px;
-}
-
-.dialogava img {
-	height:inherit;
-	width:inherit;
-	border-radius:50%;
-	-webkit-border-radius:50%;
-	-moz-border-radius:50%;
-}
-
-.dialoginfo {
-	position:absolute;
-	width:190px;
-	height:inherit;
-	left:70px;
-}
-
-.dialoginfo .compname {
-	width: 150px;
-	height: 30px;
-	line-height: 30px;
-}
-
-#recentmess .dialoginfo .compname {
-	color:inherit;
-}
-
-.dialoginfo .dialogdate {
-	font-size:10px;
-}
-
-/* Боковая панель справа: недавние */
-
-.rprecent .message {
-	width: inherit;
-	height: 30px;
-	text-align:center;
-	line-height: 40px;
-	font-size:11px;
-	color: #787878;
-}
-	
+}	
 	
 /* помощник */
+
 #helpme-dialog
 {
 	position: fixed;

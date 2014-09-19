@@ -96,6 +96,24 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 				"MUL"
 			},
 			DBPatcher::Column{
+				"left_key",
+				"int(10) unsigned",
+				true,
+				""
+			},
+			DBPatcher::Column{
+				"right_key",
+				"int(10) unsigned",
+				true,
+				""
+			},
+			DBPatcher::Column{
+				"parent_id",
+				"int(10) unsigned",
+				true,
+				"MUL"
+			},
+			DBPatcher::Column{
 				"release",
 				"tinyint(1)",
 				false,
