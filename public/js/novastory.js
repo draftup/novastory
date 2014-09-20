@@ -1095,7 +1095,12 @@ $(document).ready(function ()
 						if (e.ctrlKey && e.which === 82)
 						{
 							e.preventDefault();
-							NovastoryApi.insertRevision($("#editor").val(), $("#revision-mark").val(), function (data)
+							
+							var parentRev = 0;
+							if(typeof clickedRevisionInTree != 'undefined' && clickedRevisionInTree > 0)
+								parentRev = clickedRevisionInTree;
+							
+							NovastoryApi.insertRevision($("#editor").val(), $("#revision-mark").val(), parentRev, function (data)
 							{
 								if (data.error != null && !data.error)
 								{

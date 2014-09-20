@@ -151,7 +151,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		container.setUser(user);
 		container.setText(post["text"]);
 		container.setMark(post["mark"]);
-		container.insert();
+		container.insert(post["parent"].toInt());
 		json = container.jsonString().toUtf8();
 	}
 	else if (hook == "revisionupdate")
