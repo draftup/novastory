@@ -1035,9 +1035,11 @@ $(document).ready(function ()
 								$('#revisions-directory li').click(function ()
 								{
 									$('#revisions-directory li').removeClass('current');
-									var clickedItem = $(this);
-									clickedItem.addClass('current');
-									clickedRevisionInTree = parseInt(clickedItem.children('.revisionid').text());
+									$('#text-block-head-event').attr('checked', false);
+									
+									clickedRevisionInTreeElement = $(this);
+									clickedRevisionInTreeElement.addClass('current');
+									clickedRevisionInTree = parseInt(clickedRevisionInTreeElement.children('.revisionid').text());
 									if (clickedRevisionInTree <= 0)
 									{
 										Novastory.error("Something wrong on revision click. Contact us.");
@@ -1167,6 +1169,33 @@ $(document).ready(function ()
 						}
 						);
 
+						$('#text-block-head-event').change(function ()
+						{
+							if (!this.checked)
+							{
+								if (typeof clickedRevisionInTree == 'undefined' || typeof clickedRevisionInTreeElement == 'undefined')
+								{
+									Novastory.error("Please check some revision on bottom");
+									return;
+								}
+
+								var newName = $('#text-block-name-edit').val();
+								NovastoryApi.updateRevisionMark(clickedRevisionInTree, newName, function (data)
+								{
+									if (data.error != null && !data.error)
+									{
+										$('#text-block-name').text(newName);
+										clickedRevisionInTreeElement.children('a').text(newName);
+									}
+									else
+									{
+										Novastory.error("Something wrong on revision update mark");
+									}
+								}
+								);
+							}
+						}
+						);
 					}
 					);
 				}
