@@ -52,7 +52,7 @@ private:
 
 void Test_NestedSet::initTestCase()
 {
-	SqlQuery("CREATE TABLE nested_table(id int unsigned auto_increment, primary key(id), leftkey int unsigned, rightkey int unsigned, parent_id int unsigned, unique key(leftkey, rightkey), data int)");
+	SqlQuery("CREATE TABLE nested_table(id int unsigned auto_increment, primary key(id), leftkey int, rightkey int, parent_id int unsigned, unique key(leftkey, rightkey), data int)");
 }
 
 void Test_NestedSet::init()

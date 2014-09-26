@@ -20,6 +20,7 @@ public:
 	int insert(int id, const QHash<QString, QVariant>& values);
 	int insert(const QVariant& value);
 	bool remove(int id);
+	bool move(int id, int parent_id);
 
 	SqlQuery tree() const;
 	SqlQuery subtree(int id) const;

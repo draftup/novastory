@@ -288,4 +288,138 @@ novastory::SqlQuery NestedSet::notLeefs() const
 	return SqlQuery(QString("SELECT * FROM %1 WHERE %3 - %2 > 1%4 ORDER BY %2").arg(m_table_name).arg(m_left_name).arg(m_right_name).arg(coincidenceString));
 }
 
+bool NestedSet::move(int id, int parent_id)
+{
+	QString coincidenceString;
+	if (!m_where_coincidence.isEmpty())
+	{
+		coincidenceString = " AND " + m_where_coincidence;
+	}
+	SqlQuery idFind(QString("SELECT %2,%5 FROM %1 WHERE %3 = %4%6").arg(m_table_name).arg(m_right_name).arg(m_id_name).arg(id).arg(m_left_name).arg(coincidenceString));
+	if (idFind.size() != 1)
+	{
+		return false;
+	}
+	VERIFY(idFind.next());
+
+	int moving_left = idFind.value(m_left_name).toInt();
+	int moving_right = idFind.value(m_right_name).toInt();
+	int moving_size = moving_right - moving_left + 1;
+
+	SqlQuery parentFind(QString("SELECT %2,%3 FROM %1 WHERE %3 = %4%6").arg(m_table_name).arg(m_right_name).arg(m_id_name).arg(parent_id).arg(coincidenceString));
+	if (parentFind.size() != 1)
+	{
+		return false;
+	}
+	VERIFY(parentFind.next());
+
+	int parent_id_ = parentFind.value(m_id_name).toInt();
+	int parent_right = parentFind.value(m_right_name).toInt();
+
+	// update all moving tree to negate
+	/*
+	UPDATE `list_items`
+	SET `pos_left` = 0-(`pos_left`), `pos_right` = 0-(`pos_right`)
+	WHERE `pos_left` >= @node_pos_left AND `pos_right` <= @node_pos_right;
+	*/
+	SqlQuery disableTree(
+		QString("UPDATE %1 "
+				"SET `%2` = 0 - (`%2`), `%3` = 0 - (`%3`) "
+				"WHERE `%2` >= " + QString::number(moving_left) + " AND `%3` <= " + QString::number(moving_right))
+		.arg(m_table_name).arg(m_left_name).arg(m_right_name)
+	);
+
+	if (disableTree.lastError().type() != QSqlError::NoError)
+	{
+		return false;
+	}
+
+	/*
+	UPDATE `list_items`
+	SET `pos_left` = `pos_left` - @node_size
+	WHERE `pos_left` > @node_pos_right;
+	UPDATE `list_items`
+	SET `pos_right` = `pos_right` - @node_size
+	WHERE `pos_right` > @node_pos_right;
+	*/
+	SqlQuery restrictFullTree1(
+		QString("UPDATE %1"
+				" SET `%2` = `%2` - " + QString::number(moving_size)
+				" WHERE `%2` > " + QString::number(moving_right)
+			   ).arg(m_table_name).arg(m_left_name)
+	);
+	if (restrictFullTree1.lastError().type() != QSqlError::NoError)
+	{
+		return false;
+	}
+	SqlQuery restrictFullTree2(
+		QString("UPDATE %1"
+				" SET `%2` = `%2` - " + QString::number(moving_size)
+				" WHERE `%2` > " + QString::number(moving_right)
+			   ).arg(m_table_name).arg(m_right_name)
+	);
+	if (restrictFullTree2.lastError().type() != QSqlError::NoError)
+	{
+		return false;
+	}
+
+	/*
+	UPDATE `list_items`
+	SET `pos_left` = `pos_left` + @node_size
+	WHERE `pos_left` >= IF(@parent_pos_right > @node_pos_right, @parent_pos_right - @node_size, @parent_pos_right);
+	UPDATE `list_items`
+	SET `pos_right` = `pos_right` + @node_size
+	WHERE `pos_right` >= IF(@parent_pos_right > @node_pos_right, @parent_pos_right - @node_size, @parent_pos_right);
+	*/
+	SqlQuery addFullTree1(
+		QString(
+			"UPDATE %1 "
+			"SET %2 = %2 + " + QString::number(moving_size) + " "
+			"WHERE %2 >= IF(" + QString::number(parent_right) + " > " + QString::number(moving_right) + ", " + QString::number(parent_right) + " - " + QString::number(moving_size) + ", " + QString::number(parent_right) + ") "
+		).arg(m_table_name).arg(m_left_name)
+	);
+	if (addFullTree1.lastError().type() != QSqlError::NoError)
+	{
+		return false;
+	}
+	SqlQuery addFullTree2(
+		QString(
+			"UPDATE %1 "
+			"SET %2 = %2 + " + QString::number(moving_size) + " "
+			"WHERE %2 >= IF(" + QString::number(parent_right) + " > " + QString::number(moving_right) + ", " + QString::number(parent_right) + " - " + QString::number(moving_size) + ", " + QString::number(parent_right) + ") "
+		).arg(m_table_name).arg(m_right_name)
+	);
+	if (addFullTree2.lastError().type() != QSqlError::NoError)
+	{
+		return false;
+	}
+
+	/*
+	UPDATE `list_items`
+	SET
+	`pos_left` = 0-(`pos_left`)+IF(@parent_pos_right > @node_pos_right, @parent_pos_right - @node_pos_right - 1, @parent_pos_right - @node_pos_right - 1 + @node_size),
+	`pos_right` = 0-(`pos_right`)+IF(@parent_pos_right > @node_pos_right, @parent_pos_right - @node_pos_right - 1, @parent_pos_right - @node_pos_right - 1 + @node_size)
+	WHERE `pos_left` <= 0-@node_pos_left AND `pos_right` >= 0-@node_pos_right;
+	UPDATE `list_items`
+	SET `parent_item_id` = @parent_id
+	WHERE `item_id` = @node_id;
+	*/
+	SqlQuery backNode(
+		QString(
+			"UPDATE %1"
+			" SET"
+			" `%2` = 0 - (`%2`) + IF(" + QString::number(parent_right) + " > " + QString::number(moving_right) + ", " + QString::number(parent_right) + " - " + QString::number(moving_right) + " - 1, " + QString::number(parent_right) + " - " + QString::number(moving_right) + " - 1 + " + QString::number(moving_size) + "),"
+			" `%3` = 0 - (`%3`) + IF(" + QString::number(parent_right) + " > " + QString::number(moving_right) + ", " + QString::number(parent_right) + " - " + QString::number(moving_right) + " - 1, " + QString::number(parent_right) + " - " + QString::number(moving_right) + " - 1 + " + QString::number(moving_size) + ")"
+			" WHERE `%2` <= 0 - " + QString::number(moving_left) + " AND `%3` >= 0 - " + QString::number(moving_right)
+		).arg(m_table_name).arg(m_left_name).arg(m_right_name)
+	);
+
+	if (backNode.lastError().type() != QSqlError::NoError)
+	{
+		return false;
+	}
+
+	return true;
+}
+
 }
