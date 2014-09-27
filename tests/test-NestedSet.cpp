@@ -41,6 +41,7 @@ private slots:
 	void contaisTree();
 	void leefs();
 	void notLeefs();
+	void move();
 private:
 	NestedSetTest m_set;
 	int root;
@@ -194,6 +195,39 @@ void Test_NestedSet::notLeefs()
 {
 	SqlQuery q = m_set.notLeefs();
 	QCOMPARE(q.size(), 2);
+}
+
+void Test_NestedSet::move()
+{
+	m_set.move(root_leef1, root_leef2);
+	QCOMPARE(m_set.leftKey(root), 1);
+	QCOMPARE(m_set.rightKey(root), 10);
+	QCOMPARE(m_set.leftKey(root_leef2), 2);
+	QCOMPARE(m_set.rightKey(root_leef2), 9);
+	QCOMPARE(m_set.leftKey(root_leef1), 3);
+	QCOMPARE(m_set.rightKey(root_leef1), 8);
+	QCOMPARE(m_set.leftKey(root_leef1_leef1), 4);
+	QCOMPARE(m_set.rightKey(root_leef1_leef1), 5);
+	QCOMPARE(m_set.leftKey(root_leef1_leef2), 6);
+	QCOMPARE(m_set.rightKey(root_leef1_leef2), 7);
+
+	int root_leef1_new = m_set.insert(root, 20);
+	QVERIFY(root_leef1_new > 0);
+	QCOMPARE(m_set.leftKey(root_leef1_new), 10);
+	QCOMPARE(m_set.rightKey(root_leef1_new), 11);
+	m_set.move(root_leef1_new, root_leef2);
+	QCOMPARE(m_set.leftKey(root), 1);
+	QCOMPARE(m_set.rightKey(root), 12);
+	QCOMPARE(m_set.leftKey(root_leef2), 2);
+	QCOMPARE(m_set.rightKey(root_leef2), 11);
+	QCOMPARE(m_set.leftKey(root_leef1), 3);
+	QCOMPARE(m_set.rightKey(root_leef1), 8);
+	QCOMPARE(m_set.leftKey(root_leef1_new), 9);
+	QCOMPARE(m_set.rightKey(root_leef1_new), 10);
+	QCOMPARE(m_set.leftKey(root_leef1_leef1), 4);
+	QCOMPARE(m_set.rightKey(root_leef1_leef1), 5);
+	QCOMPARE(m_set.leftKey(root_leef1_leef2), 6);
+	QCOMPARE(m_set.rightKey(root_leef1_leef2), 7);
 }
 
 

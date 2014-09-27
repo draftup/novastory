@@ -343,9 +343,9 @@ bool NestedSet::move(int id, int parent_id)
 	WHERE `pos_right` > @node_pos_right;
 	*/
 	SqlQuery restrictFullTree1(
-		QString("UPDATE %1"
-				" SET `%2` = `%2` - " + QString::number(moving_size)
-				" WHERE `%2` > " + QString::number(moving_right)
+		QString(QString("UPDATE %1")
+				+ " SET `%2` = `%2` - " + QString::number(moving_size)
+				+ " WHERE `%2` > " + QString::number(moving_right)
 			   ).arg(m_table_name).arg(m_left_name)
 	);
 	if (restrictFullTree1.lastError().type() != QSqlError::NoError)
@@ -353,9 +353,9 @@ bool NestedSet::move(int id, int parent_id)
 		return false;
 	}
 	SqlQuery restrictFullTree2(
-		QString("UPDATE %1"
-				" SET `%2` = `%2` - " + QString::number(moving_size)
-				" WHERE `%2` > " + QString::number(moving_right)
+		QString(QString("UPDATE %1")
+				+ " SET `%2` = `%2` - " + QString::number(moving_size)
+				+ " WHERE `%2` > " + QString::number(moving_right)
 			   ).arg(m_table_name).arg(m_right_name)
 	);
 	if (restrictFullTree2.lastError().type() != QSqlError::NoError)
@@ -415,6 +415,19 @@ bool NestedSet::move(int id, int parent_id)
 	);
 
 	if (backNode.lastError().type() != QSqlError::NoError)
+	{
+		return false;
+	}
+
+	SqlQuery updateID(
+		QString(
+			QString("UPDATE `%1`")
+			+ " SET `" + m_parent_name + "` = " + QString::number(parent_id)
+			+ " WHERE `" + m_id_name + "` = " + QString::number(id)
+		).arg(m_table_name)
+	);
+
+	if (updateID.lastError().type() != QSqlError::NoError)
 	{
 		return false;
 	}
