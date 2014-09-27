@@ -97,13 +97,13 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 			},
 			DBPatcher::Column{
 				"left_key",
-				"int(10) unsigned",
+				"int(10)",
 				true,
 				""
 			},
 			DBPatcher::Column{
 				"right_key",
-				"int(10) unsigned",
+				"int(10)",
 				true,
 				""
 			},
