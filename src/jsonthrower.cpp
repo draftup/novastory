@@ -37,3 +37,8 @@ int novastory::JsonThrower::jsonErrorType()
 {
 	return jsonMainObject.value("errorType").toInt();
 }
+
+QJsonObject& novastory::JsonThrower::getMainObject()
+{
+	return jsonMainObject;
+}

@@ -1056,6 +1056,11 @@ $(document).ready(function ()
 									updateFolderContent();
 								}
 								);
+								
+								if (typeof clickedRevtreeDefault != 'undefined' && clickedRevtreeDefault > 0)
+								{
+								    $('#file' + clickedRevtreeDefault).click();
+								}
 							}
 							);
 						}
@@ -1182,6 +1187,7 @@ $(document).ready(function ()
 								{
 									Novastory.ok("New text created");
 									updateRevisionList();
+									clickedRevtreeDefault = data.revision.parentid;
 								}
 								else if (data.error != null && data.error && data.errorType == 3)
 								{

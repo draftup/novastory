@@ -20,6 +20,7 @@ public:
 	int jsonErrorType();
 
 	QString jsonString();
+	QJsonObject& getMainObject();
 
 	inline void JSON_ERROR(const QString& errorDesc, int error_type = 0)
 	{

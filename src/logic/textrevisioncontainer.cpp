@@ -104,6 +104,7 @@ TextRevision TextRevisionContainer::insert(int parentId /* = 0 */)
 		int folderid = NestedSet::insert(0, folderInfo);
 		Q_ASSERT(folderid > 0);
 		revisionid = NestedSet::insert(folderid, valuesToDB);
+		revision.setParent(folderid);
 	}
 
 	if (revisionid > 0)

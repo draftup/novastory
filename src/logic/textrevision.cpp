@@ -102,6 +102,7 @@ QJsonObject TextRevision::json(bool withoutText /* = false */) const
 	revision.insert("textLength", text().length());
 	revision.insert("createDate", createDate().toMSecsSinceEpoch());
 	revision.insert("modifyDate", modifyDate().toMSecsSinceEpoch());
+	revision.insert("parentid", parent());
 	revision.insert("mark", mark());
 
 	QJsonArray childs;
