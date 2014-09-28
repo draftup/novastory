@@ -868,12 +868,12 @@ $(document).ready(function ()
 										list.prepend(element);
 										var revision = revisions[i].revisionid;
 
-										if(revisions[i].modifyDate > bigestDate)
+										if (revisions[i].modifyDate > bigestDate)
 										{
 											bigestDate = revisions[i].modifyDate;
 											clickedRevlistDefault = revisions[i].revisionid;
 										}
-										
+
 										// мы не хотим чтобы при нажатии на инпут обновляло элемент
 										element.children('input[name=new-rev-name]').click(function (e)
 										{
@@ -987,12 +987,12 @@ $(document).ready(function ()
 									}
 									)(i);
 								}
-								
+
 								if (typeof clickedRevlistDefault != 'undefined' && clickedRevlistDefault > 0 && $('#revision' + clickedRevlistDefault).exists())
 								{
 									backupedText[clickedRevlistDefault] = $('#editor').val();
 									var item = $('#revision' + clickedRevlistDefault);
-								    item.click();
+									item.click();
 									item.addClass('unsaved');
 								}
 							}
@@ -1007,7 +1007,7 @@ $(document).ready(function ()
 							{
 								var list = $('#revisions-directory');
 								list.empty();
-								
+
 								var bigestDate = 0;
 								function parseDirectory(dir)
 								{
@@ -1043,8 +1043,8 @@ $(document).ready(function ()
 												 + '<div></div>'
 												 + '<a>' + dir[i].mark + '</a>'
 												 + '</li>');
-												 
-											if(dir[i].modifyDate > bigestDate)
+
+											if (dir[i].modifyDate > bigestDate)
 											{
 												bigestDate = dir[i].modifyDate;
 												clickedRevtreeDefault = dir[i].revisionid;
@@ -1059,7 +1059,7 @@ $(document).ready(function ()
 								{
 									$('#revisions-directory li').removeClass('current');
 									$('#text-block-head-event').attr('checked', false);
-									
+
 									clickedRevisionInTreeElement = $(this);
 									clickedRevisionInTreeElement.addClass('current');
 									clickedRevisionInTree = parseInt(clickedRevisionInTreeElement.children('.revisionid').text());
@@ -1079,10 +1079,10 @@ $(document).ready(function ()
 									updateFolderContent();
 								}
 								);
-								
+
 								if (typeof clickedRevtreeDefault != 'undefined' && clickedRevtreeDefault > 0)
 								{
-								    $('#file' + clickedRevtreeDefault).click();
+									$('#file' + clickedRevtreeDefault).click();
 								}
 							}
 							);
@@ -1123,11 +1123,11 @@ $(document).ready(function ()
 						if (e.ctrlKey && e.which === 82)
 						{
 							e.preventDefault();
-							
+
 							var parentRev = 0;
-							if(typeof clickedRevisionInTree != 'undefined' && clickedRevisionInTree > 0)
+							if (typeof clickedRevisionInTree != 'undefined' && clickedRevisionInTree > 0)
 								parentRev = clickedRevisionInTree;
-							
+
 							NovastoryApi.insertRevision($("#editor").val(), $("#revision-mark").val(), parentRev, function (data)
 							{
 								if (data.error != null && !data.error)
@@ -1201,7 +1201,7 @@ $(document).ready(function ()
 								NovastoryApi.unrelease(lastClickedRevision, helper);
 						}
 						);
-						
+
 						$('#new-text-butt').click(function ()
 						{
 							NovastoryApi.insertRevision($("#editor").val(), "New Text", 0, function (data)
