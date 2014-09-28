@@ -846,14 +846,15 @@ $(document).ready(function ()
 							{
 								var list = $('#editor-revisions');
 								list.empty();
+								var backupedText = {};
 								for (var i = 0; i < revisions.length; i++)
 								{
-									var backupedText = {};
 									var originalText = {};
+									var bigestDate = 0;
 									(function (i)
 									{
 										var dateModify = new Date(revisions[i].modifyDate);
-										var element = $('<div><div class="pointer"><div></div></div>'
+										var element = $('<div id="revision' + revisions[i].revisionid + '"><div class="pointer"><div></div></div>'
 												 + '<div class="revision-id" style="display: none;">' + revisions[i].revisionid + '</div>'
 												 + '<div class="rev-name">' + ((revisions[i].mark.length > 0) ? revisions[i].mark : prettyDate(dateModify)) + '</div>'
 												 + '<input size="" name="new-rev-name" value="' + ((revisions[i].mark.length > 0) ? revisions[i].mark : '') + '" autofocus>'
@@ -867,6 +868,12 @@ $(document).ready(function ()
 										list.prepend(element);
 										var revision = revisions[i].revisionid;
 
+										if(revisions[i].modifyDate > bigestDate)
+										{
+											bigestDate = revisions[i].modifyDate;
+											clickedRevlistDefault = revisions[i].revisionid;
+										}
+										
 										// мы не хотим чтобы при нажатии на инпут обновляло элемент
 										element.children('input[name=new-rev-name]').click(function (e)
 										{
@@ -980,6 +987,14 @@ $(document).ready(function ()
 									}
 									)(i);
 								}
+								
+								if (typeof clickedRevlistDefault != 'undefined' && clickedRevlistDefault > 0 && $('#revision' + clickedRevlistDefault).exists())
+								{
+									backupedText[clickedRevlistDefault] = $('#editor').val();
+									var item = $('#revision' + clickedRevlistDefault);
+								    item.click();
+									item.addClass('unsaved');
+								}
 							}
 							);
 						}
@@ -992,6 +1007,8 @@ $(document).ready(function ()
 							{
 								var list = $('#revisions-directory');
 								list.empty();
+								
+								var bigestDate = 0;
 								function parseDirectory(dir)
 								{
 									if (dir.length == 0)
@@ -1026,6 +1043,12 @@ $(document).ready(function ()
 												 + '<div></div>'
 												 + '<a>' + dir[i].mark + '</a>'
 												 + '</li>');
+												 
+											if(dir[i].modifyDate > bigestDate)
+											{
+												bigestDate = dir[i].modifyDate;
+												clickedRevtreeDefault = dir[i].revisionid;
+											}
 										}
 									}
 								}
