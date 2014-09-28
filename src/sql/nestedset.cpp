@@ -325,8 +325,8 @@ bool NestedSet::move(int id, int parent_id)
 	SqlQuery disableTree(
 		QString("UPDATE %1 "
 				"SET `%2` = 0 - (`%2`), `%3` = 0 - (`%3`) "
-				"WHERE `%2` >= " + QString::number(moving_left) + " AND `%3` <= " + QString::number(moving_right))
-		.arg(m_table_name).arg(m_left_name).arg(m_right_name)
+				"WHERE `%2` >= " + QString::number(moving_left) + " AND `%3` <= " + QString::number(moving_right) + "%4")
+				.arg(m_table_name).arg(m_left_name).arg(m_right_name).arg(coincidenceString)
 	);
 
 	if (disableTree.lastError().type() != QSqlError::NoError)
@@ -346,7 +346,8 @@ bool NestedSet::move(int id, int parent_id)
 		QString(QString("UPDATE %1")
 				+ " SET `%2` = `%2` - " + QString::number(moving_size)
 				+ " WHERE `%2` > " + QString::number(moving_right)
-			   ).arg(m_table_name).arg(m_left_name)
+				+ "%3"
+				).arg(m_table_name).arg(m_left_name).arg(coincidenceString)
 	);
 	if (restrictFullTree1.lastError().type() != QSqlError::NoError)
 	{
@@ -356,7 +357,8 @@ bool NestedSet::move(int id, int parent_id)
 		QString(QString("UPDATE %1")
 				+ " SET `%2` = `%2` - " + QString::number(moving_size)
 				+ " WHERE `%2` > " + QString::number(moving_right)
-			   ).arg(m_table_name).arg(m_right_name)
+				+ "%3"
+				).arg(m_table_name).arg(m_right_name).arg(coincidenceString)
 	);
 	if (restrictFullTree2.lastError().type() != QSqlError::NoError)
 	{
@@ -376,7 +378,8 @@ bool NestedSet::move(int id, int parent_id)
 			"UPDATE %1 "
 			"SET %2 = %2 + " + QString::number(moving_size) + " "
 			"WHERE %2 >= IF(" + QString::number(parent_right) + " > " + QString::number(moving_right) + ", " + QString::number(parent_right) + " - " + QString::number(moving_size) + ", " + QString::number(parent_right) + ") "
-		).arg(m_table_name).arg(m_left_name)
+			"%3"
+			).arg(m_table_name).arg(m_left_name).arg(coincidenceString)
 	);
 	if (addFullTree1.lastError().type() != QSqlError::NoError)
 	{
@@ -387,7 +390,8 @@ bool NestedSet::move(int id, int parent_id)
 			"UPDATE %1 "
 			"SET %2 = %2 + " + QString::number(moving_size) + " "
 			"WHERE %2 >= IF(" + QString::number(parent_right) + " > " + QString::number(moving_right) + ", " + QString::number(parent_right) + " - " + QString::number(moving_size) + ", " + QString::number(parent_right) + ") "
-		).arg(m_table_name).arg(m_right_name)
+			"%3"
+			).arg(m_table_name).arg(m_right_name).arg(coincidenceString)
 	);
 	if (addFullTree2.lastError().type() != QSqlError::NoError)
 	{
@@ -411,7 +415,8 @@ bool NestedSet::move(int id, int parent_id)
 			" `%2` = 0 - (`%2`) + IF(" + QString::number(parent_right) + " > " + QString::number(moving_right) + ", " + QString::number(parent_right) + " - " + QString::number(moving_right) + " - 1, " + QString::number(parent_right) + " - " + QString::number(moving_right) + " - 1 + " + QString::number(moving_size) + "),"
 			" `%3` = 0 - (`%3`) + IF(" + QString::number(parent_right) + " > " + QString::number(moving_right) + ", " + QString::number(parent_right) + " - " + QString::number(moving_right) + " - 1, " + QString::number(parent_right) + " - " + QString::number(moving_right) + " - 1 + " + QString::number(moving_size) + ")"
 			" WHERE `%2` <= 0 - " + QString::number(moving_left) + " AND `%3` >= 0 - " + QString::number(moving_right)
-		).arg(m_table_name).arg(m_left_name).arg(m_right_name)
+			+ "%4"
+			).arg(m_table_name).arg(m_left_name).arg(m_right_name).arg(coincidenceString)
 	);
 
 	if (backNode.lastError().type() != QSqlError::NoError)
@@ -424,7 +429,8 @@ bool NestedSet::move(int id, int parent_id)
 			QString("UPDATE `%1`")
 			+ " SET `" + m_parent_name + "` = " + QString::number(parent_id)
 			+ " WHERE `" + m_id_name + "` = " + QString::number(id)
-		).arg(m_table_name)
+			+ "%2"
+			).arg(m_table_name).arg(coincidenceString)
 	);
 
 	if (updateID.lastError().type() != QSqlError::NoError)

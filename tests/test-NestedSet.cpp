@@ -199,7 +199,9 @@ void Test_NestedSet::notLeefs()
 
 void Test_NestedSet::move()
 {
-	m_set.move(root_leef1, root_leef2);
+	QVERIFY(!m_set.move(root_leef1, 4454));
+	QVERIFY(!m_set.move(4454, root_leef2));
+	QVERIFY(m_set.move(root_leef1, root_leef2));
 	QCOMPARE(m_set.leftKey(root), 1);
 	QCOMPARE(m_set.rightKey(root), 10);
 	QCOMPARE(m_set.leftKey(root_leef2), 2);
@@ -215,7 +217,7 @@ void Test_NestedSet::move()
 	QVERIFY(root_leef1_new > 0);
 	QCOMPARE(m_set.leftKey(root_leef1_new), 10);
 	QCOMPARE(m_set.rightKey(root_leef1_new), 11);
-	m_set.move(root_leef1_new, root_leef2);
+	QVERIFY(m_set.move(root_leef1_new, root_leef2));
 	QCOMPARE(m_set.leftKey(root), 1);
 	QCOMPARE(m_set.rightKey(root), 12);
 	QCOMPARE(m_set.leftKey(root_leef2), 2);
