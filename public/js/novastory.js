@@ -1173,6 +1173,28 @@ $(document).ready(function ()
 								NovastoryApi.unrelease(lastClickedRevision, helper);
 						}
 						);
+						
+						$('#new-text-butt').click(function ()
+						{
+							NovastoryApi.insertRevision($("#editor").val(), "New Text", 0, function (data)
+							{
+								if (data.error != null && !data.error)
+								{
+									Novastory.ok("New text created");
+									updateRevisionList();
+								}
+								else if (data.error != null && data.error && data.errorType == 3)
+								{
+									Novastory.warning("Same text was saved slightly before");
+								}
+								else
+								{
+									Novastory.error("Something wrong on text save");
+								}
+							}
+							);
+						}
+						);
 
 						$('#text-block-head-event').change(function ()
 						{

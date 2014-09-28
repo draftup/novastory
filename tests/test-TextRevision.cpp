@@ -65,7 +65,7 @@ void Test_TextRevision::cleanupTestCase()
 {
 	SqlQuery q;
 	q.exec(QString("SELECT * FROM textrevisions WHERE userid = ") + QString::number(buser.userid()));
-	QCOMPARE(q.size(), 7);
+	QCOMPARE(q.size(), 9);
 	container.clear();
 	q.exec(QString("SELECT * FROM textrevisions WHERE userid = ") + QString::number(buser.userid()));
 	QCOMPARE(q.size(), 0);
@@ -194,18 +194,17 @@ void Test_TextRevision::updateMark()
 void Test_TextRevision::dublicateCheck()
 {
 	QCOMPARE(container.size(), 5);
-	QVERIFY(!container.insert("privet5").isValid());
-	QCOMPARE(container.jsonErrorType(), 3);
-	QCOMPARE(container.size(), 5);
+	QVERIFY(container.insert("privet5").isValid());
+	QCOMPARE(container.size(), 6); // all ok because of we insert absolute new text
 	QVERIFY(!container.update("privet5").isValid());
 	QCOMPARE(container.jsonErrorType(), 3);
 }
 
 void Test_TextRevision::removeCheck()
 {
-	QCOMPARE(container.size(), 5);
+	QCOMPARE(container.size(), 6);
 	QVERIFY(container.removeRevision(container.last()));
-	QCOMPARE(container.size(), 4);
+	QCOMPARE(container.size(), 5);
 }
 
 

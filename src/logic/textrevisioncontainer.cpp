@@ -64,15 +64,18 @@ TextRevision TextRevisionContainer::insert(int parentId /* = 0 */)
 	}
 
 	// Check last revision, may be text the save
-	SqlQuery dublicateCheck("SELECT text FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + " ORDER BY revisionid DESC LIMIT 1");
-	Q_ASSERT(dublicateCheck.lastError().type() == QSqlError::NoError);
-	if (dublicateCheck.size() == 1)
+	if (parentId > 0)
 	{
-		VERIFY(dublicateCheck.next());
-		if (dublicateCheck.value("text").toString() == m_text) // Dublicate, skip this
+		SqlQuery dublicateCheck("SELECT text FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + " AND " + m_parent_name + " = " + QString::number(parentId) + " ORDER BY revisionid DESC LIMIT 1");
+		Q_ASSERT(dublicateCheck.lastError().type() == QSqlError::NoError);
+		if (dublicateCheck.size() == 1)
 		{
-			JSON_ERROR("Dublicate of last revision", 3);
-			return TextRevision();
+			VERIFY(dublicateCheck.next());
+			if (dublicateCheck.value("text").toString() == m_text) // Dublicate, skip this
+			{
+				JSON_ERROR("Dublicate of last revision", 3);
+				return TextRevision();
+			}
 		}
 	}
 
