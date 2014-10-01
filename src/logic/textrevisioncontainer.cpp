@@ -29,7 +29,7 @@ bool TextRevisionContainer::sync(int parentId /* = 0 */)
 	JSON_INSERT("text", QString());
 
 	SqlQuery selectQuery;
-	selectQuery.prepare("SELECT * FROM textrevisions WHERE right_key - left_key = 1 AND userid = :userid" + ((parentId > 0) ? " AND " + m_parent_name + " = :parentid" : ""));
+	selectQuery.prepare("SELECT * FROM textrevisions WHERE `type` = 'REVISION' AND userid = :userid" + ((parentId > 0) ? " AND " + m_parent_name + " = :parentid" : ""));
 	selectQuery.bindValue(":userid", userid());
 	if (parentId > 0)
 	{
@@ -87,6 +87,8 @@ TextRevision TextRevisionContainer::insert(int parentId /* = 0 */)
 	valuesToDB.insert("text", m_text);
 	revision.setMark(m_mark);
 	valuesToDB.insert("mark", m_mark);
+	revision.setType("REVISION");
+	valuesToDB.insert("type", "REVISION");
 	m_where_coincidence = "userid = " + QString::number(m_user.userid());
 	Q_ASSERT(parentId >= 0);
 	int revisionid = -1;
@@ -191,6 +193,7 @@ novastory::TextRevision TextRevisionContainer::update(int revision /* = 0 */)
 			valuesToDB.insert("text", rev.text());
 			valuesToDB.insert("mark", rev.mark());
 			valuesToDB.insert("release", rev.isRelease());
+			valuesToDB.insert("type", rev.type());
 			m_where_coincidence = "userid = " + QString::number(rev.userid());
 			int revisionid = NestedSet::insert(rev.parent(), valuesToDB);
 			if (revisionid > 0)
@@ -214,10 +217,12 @@ novastory::TextRevision TextRevisionContainer::update(int revision /* = 0 */)
 		revision.setUser(m_user);
 		revision.setText(m_text);
 		revision.setMark(m_mark);
+		revision.setType("REVISION");
 		QHash<QString, QVariant> valuesToDB;
 		valuesToDB.insert("userid", m_user.userid());
 		valuesToDB.insert("text", m_text);
 		valuesToDB.insert("mark", m_mark);
+		valuesToDB.insert("type", "REVISION");
 		m_where_coincidence = "userid = " + QString::number(m_user.userid());
 
 		// we also need to create folder
@@ -407,7 +412,7 @@ QString TextRevisionContainer::treeFolders()
 {
 	QJsonDocument doc;
 	m_where_coincidence = "userid = " + QString::number(m_user.userid());
-	SqlQuery tree = NestedSet::notLeefs();
+	SqlQuery tree = SqlQuery("SELECT * FROM textrevisions WHERE `type` != 'REVISION' ORDER BY left_key");
 
 	QJsonArray array;
 	QList<TextRevision> revisions;

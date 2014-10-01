@@ -21,6 +21,7 @@ class TextRevision : protected Sqlizable, public JsonThrower
 	Q_PROPERTY(int revisionid READ revisionId WRITE setRevisionID)
 	Q_PROPERTY(int userid READ userid WRITE setUserID)
 	Q_PROPERTY(bool release READ isRelease WRITE setRelease RESET resetRelease)
+	Q_PROPERTY(QString type READ type WRITE setType RESET resetType)
 	Q_PROPERTY(QDateTime createdate READ createDate WRITE setCreateDate RESET resetCreateDate)
 	Q_PROPERTY(QDateTime modifydate READ modifyDate WRITE setModifyDate RESET resetModifyDate)
 	Q_PROPERTY(QString mark READ mark WRITE setMark RESET resetMark)
@@ -60,6 +61,10 @@ public:
 	void setParent(int id);
 	void resetParent();
 
+	const QString& type() const;
+	void setType(QString id);
+	void resetType();
+
 	bool operator==(const TextRevision& rv) const;
 
 	bool isValid() const;
@@ -74,6 +79,7 @@ private:
 	QString m_mark;
 	int m_revisionId;
 	bool m_release;
+	QString m_type;
 	QDateTime m_create_date;
 	QDateTime m_modify_date;
 	int m_parentId;

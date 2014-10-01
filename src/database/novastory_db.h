@@ -121,6 +121,13 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 				"0"
 			},
 			DBPatcher::Column{
+				"type",
+				"enum('OTHER','REVISION','BOOK')",
+				false,
+				"MUL",
+				"OTHER"
+			},
+			DBPatcher::Column{
 				"createdate",
 				"timestamp",
 				false,

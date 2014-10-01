@@ -62,7 +62,7 @@ void TextRevision::setRevisionID(int revision)
 	m_revisionId = revision;
 }
 
-TextRevision::TextRevision() : m_release(false), m_revisionId(-1), m_parentId(0)
+TextRevision::TextRevision() : m_release(false), m_revisionId(-1), m_parentId(0), m_type("OTHER")
 {
 	setObjectName("textrevisions");
 	setProperty("auto_increment", QVariant("revisionid"));
@@ -173,6 +173,21 @@ void TextRevision::appendChild(const TextRevision& rev)
 void TextRevision::clearChilds()
 {
 	m_childs.clear();
+}
+
+void TextRevision::resetType()
+{
+	m_type = "OTHER";
+}
+
+void TextRevision::setType(QString id)
+{
+	m_type = id;
+}
+
+const QString& TextRevision::type() const
+{
+	return m_type;
 }
 
 }
