@@ -309,7 +309,7 @@ QString DBPatcher::Column::serialize() const
 	}
 	if (default_data != "NULL" && !default_data.isEmpty())
 	{
-		sql += " DEFAULT " + default_data;
+		sql += " DEFAULT '" + default_data + "'";
 	}
 	if (!extra.isEmpty())
 	{
