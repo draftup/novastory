@@ -23,7 +23,7 @@ set (CMAKE_MODULE_PATH
 include(cmake/testing.cmake)
 include(cmake/qtx.cmake)
 include(cmake/doxigenHelper.cmake)
-include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/server)
 
 
 execute_process(COMMAND git log --pretty=format:cmake
@@ -97,7 +97,7 @@ include_directories( ${OPENSSL_INCLUDE_DIR} )
 SETUP_DOXYGEN()
 
 SETUP_TESTING()
-add_subdirectory(src)
+add_subdirectory(server)
 if(WITH_TESTS)
 	add_subdirectory(tests)
 endif(WITH_TESTS)

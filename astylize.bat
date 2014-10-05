@@ -16,7 +16,7 @@ astyle ^
 	--lineend=windows ^
 	--suffix=none ^
 	--preserve-date ^
-	src/*.h ^
-	src/*.cpp ^
+	server/*.h ^
+	server/*.cpp ^
 	tests/*.h ^
 	tests/*.cpp
