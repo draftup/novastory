@@ -80,6 +80,7 @@ if(WITH_TESTS)
 	option (WITH_TESTS_CDASH "Enable cdash testing" OFF)
 endif(WITH_TESTS)
 option (FEDORA_CROSSCOMPILATION "Enabling fedora crosscompilation features" OFF)
+option (TOOLKIT_UTIL "Build toolkit for fast windows server compilation" OFF)
 
 
 # Searching for packets
@@ -101,3 +102,6 @@ add_subdirectory(server)
 if(WITH_TESTS)
 	add_subdirectory(tests)
 endif(WITH_TESTS)
+if(TOOLKIT_UTIL)
+	add_subdirectory(toolkit)
+endif(TOOLKIT_UTIL)
