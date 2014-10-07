@@ -15,8 +15,10 @@ QByteArray Templator::generate(
 	static QString templateData;
 	QString generatedTemplate;
 
+#ifndef QT_DEBUG
 	if (templateData.isEmpty())
 	{
+#endif
 		const QString workingDirectory = WebServer::Instance().directory();
 		QFile templateFile(workingDirectory + "/template.html");
 		if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -26,7 +28,9 @@ QByteArray Templator::generate(
 		}
 
 		templateData = templateFile.readAll();
+#ifndef QT_DEBUG
 	}
+#endif
 
 
 	//replace data
@@ -56,8 +60,10 @@ QByteArray Templator::generateLogined(const User& user, const QString& title /*=
 	static QString templateData;
 	QString generatedTemplate;
 
+#ifndef QT_DEBUG
 	if (templateData.isEmpty())
 	{
+#endif
 		const QString workingDirectory = WebServer::Instance().directory();
 		QFile templateFile(workingDirectory + "/template-logined.html");
 		if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -67,7 +73,9 @@ QByteArray Templator::generateLogined(const User& user, const QString& title /*=
 		}
 
 		templateData = templateFile.readAll();
+#ifndef QT_DEBUG
 	}
+#endif
 
 
 	//replace data
