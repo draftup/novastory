@@ -23,11 +23,11 @@ set(HEADERS
 )
 
 set(SOURCES
-
+	main.cpp
 )
 
 
-QT5_WRAP_CPP(MOC_FILES ${HEADERS_TOMOC})
+#QT5_WRAP_CPP(MOC_FILES ${HEADERS_TOMOC})
 
 source_group("core\\Sources" FILES 
 				${HEADERS} 
@@ -36,7 +36,16 @@ source_group("core\\Sources" FILES
 				
 ADD_EXECUTABLE(toolkit
 	${DESKTOP_TARGET}
-	main.cpp
+	
+	# Sources
+	${HEADERS_TOMOC}
+	${HEADERS}
+	${SOURCES}
 )
+target_link_libraries(toolkit
+	${Qt5Core_LIBRARIES}
+	${OPENSSL_LIBRARIES}
+)
+
 
 install (TARGETS toolkit DESTINATION ${CMAKE_SOURCE_DIR}/utils)
