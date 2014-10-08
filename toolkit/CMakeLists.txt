@@ -15,7 +15,7 @@ INCLUDE_DIRECTORIES(
 
 
 set(HEADERS_TOMOC
-
+	downloader.h
 )
 
 set(HEADERS
@@ -23,11 +23,12 @@ set(HEADERS
 )
 
 set(SOURCES
+    downloader.cpp
 	main.cpp
 )
 
 
-#QT5_WRAP_CPP(MOC_FILES ${HEADERS_TOMOC})
+QT5_WRAP_CPP(MOC_FILES ${HEADERS_TOMOC})
 
 source_group("core\\Sources" FILES 
 				${HEADERS} 
@@ -41,9 +42,17 @@ ADD_EXECUTABLE(toolkit
 	${HEADERS_TOMOC}
 	${HEADERS}
 	${SOURCES}
+	
+    # Genered resources
+	${UI_FILES} 
+	${MOC_FILES} 
+	${QRC_RESOURCES}
+	${QM_FILES}
+
 )
 target_link_libraries(toolkit
 	${Qt5Core_LIBRARIES}
+	${Qt5Network_LIBRARIES}
 	${OPENSSL_LIBRARIES}
 )
 
