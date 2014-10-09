@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QDebug>
 #include <QEventLoop>
+#include <QDir>
 
 namespace novastory
 {
@@ -25,16 +26,20 @@ namespace novastory
 	void Downloader::fileDownloaded()
 	{
 		QNetworkReply* reply = (QNetworkReply*)sender();
-		QFile file(m_destination + "/" + m_url.fileName());
+
+		QFile file(QDir(m_destination).absolutePath() + "/" + m_url.fileName());
+		m_data = reply->readAll();
 		if (file.open(QIODevice::WriteOnly)) 
 		{
-			file.write(reply->readAll());
+			file.write(m_data);
 			file.close();
 		}
 		else
 		{
 			qFatal("Failed to save file");
 		}
+
+		qDebug() << m_url.fileName() << "downloaded";
 
 		reply->deleteLater();
 		emit downloaded();
@@ -50,6 +55,18 @@ namespace novastory
 		QEventLoop loop;
 		Downloader dw(QUrl(url), destination);
 		QObject::connect(&dw, SIGNAL(downloaded()), &loop, SLOT(quit()));
+		loop.exec();
+	}
+
+	const QByteArray& Downloader::data() const
+	{
+		return m_data;
+	}
+
+	void Downloader::wait() const
+	{
+		QEventLoop loop;
+		QObject::connect(this, SIGNAL(downloaded()), &loop, SLOT(quit()));
 		loop.exec();
 	}
 

@@ -20,6 +20,8 @@ namespace novastory
 		QByteArray downloadedData() const;
 
 		static void download(QString url, QString destination);
+		void wait() const;
+		const QByteArray& data() const;
 	signals:
 		void downloaded();
 	private slots:
@@ -29,6 +31,7 @@ namespace novastory
 		QNetworkAccessManager m_WebCtrl;
 		QUrl m_url;
 		QString m_destination;
+		QByteArray m_data;
 	};
 }
 
