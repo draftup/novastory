@@ -129,12 +129,38 @@ int main(int argc, char* argv[])
 
 	if (cmake.exitStatus() != QProcess::NormalExit)
 	{
-		qFatal("Something wrong on unpacking");
+		qFatal("Something wrong on cmake");
 	}
 
-	//QProcess build;
-	//build.setProcessEnvironment(env);
+	QProcess build;
+	build.setProcessEnvironment(env);
+	build.setWorkingDirectory(build_directory);
+	build.start("mingw32-make", QStringList() << "-j4");
 
+	build.waitForFinished(-1);
+
+	qDebug() << "Build status: " << build.readAll();
+
+	if (build.exitStatus() != QProcess::NormalExit)
+	{
+		qFatal("Something wrong on buiding");
+	}
+
+	QProcess installation;
+	installation.setProcessEnvironment(env);
+	installation.setWorkingDirectory(build_directory);
+	installation.start("mingw32-make install");
+
+	installation.waitForFinished(-1);
+
+	qDebug() << "Installation status: " << installation.readAll();
+
+	if (installation.exitStatus() != QProcess::NormalExit)
+	{
+		qFatal("Something wrong on installation");
+	}
+
+	exit(0);
 
 	return a.exec();
 }
