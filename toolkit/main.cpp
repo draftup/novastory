@@ -25,6 +25,15 @@ int main(int argc, char* argv[])
 	const QString ar7za_file = "https://dl.dropboxusercontent.com/u/66826430/Work/buildenv/7za.exe";
 	const QString package_md5_file = "https://dl.dropboxusercontent.com/u/66826430/Work/buildenv/package.md5";
 	const QString package_file = "https://dl.dropboxusercontent.com/u/66826430/Work/buildenv/package.7z";
+	const QString source_directory = QDir(exe_dir + "/../").absolutePath();
+	const QString build_directory = exe_dir + "/build";
+
+	qDebug() << "Source directory: " << source_directory;
+
+	if (!QFileInfo::exists(source_directory + "/CMakeLists.txt"))
+	{
+		qFatal("unknown source directory");
+	}
 
 	// First of all download archive util
 	if (!QFileInfo::exists(ar7za_exe))
@@ -74,18 +83,58 @@ int main(int argc, char* argv[])
 		if (QFileInfo::exists(package_dir) && !QDir(package_dir).removeRecursively())
 			qFatal("Remove old package directory failed");
 	}
+	
+	if (!QFileInfo::exists(package_dir + "/bin/qmake.exe"))
+	{
+		QProcess un7zip;
+		un7zip.start("7za.exe", QStringList() << "x" << "-o" + exe_dir << package);
+		qDebug() << "Unpacking pakage file";
+		un7zip.waitForFinished(-1);
+		qDebug() << "Unpacked Log:";
+		qDebug() << un7zip.readAll();
 
-	QProcess un7zip;
-	un7zip.start("7za.exe", QStringList() << "x" << "-o" + exe_dir << package);
-	qDebug() << "Unpacking pakage file";
-	un7zip.waitForFinished();
-	qDebug() << "Unpacked Log:";
-	qDebug() << un7zip.readAll();
+		if (un7zip.exitStatus() != QProcess::NormalExit)
+		{
+			qFatal("Something wrong on unpacking");
+		}
+	}
+	else
+	{
+		qDebug() << "Package already unpacked";
+	}
 
-	if (un7zip.exitStatus() != QProcess::NormalExit)
+	if (!QFileInfo::exists(build_directory))
+	{
+		QDir().mkpath(build_directory);
+	}
+
+	QProcess cmake;
+	QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+	env.insert("PATH", env.value("Path") + ";" + package_dir + "/bin");
+	cmake.setProcessEnvironment(env);
+	cmake.setWorkingDirectory(build_directory);
+	cmake.start("cmake.exe", QStringList()
+		<< "-G"
+		<< "MinGW Makefiles"
+		<< "-DWITH_TESTS=ON"
+		<< "-DCMAKE_BUILD_TYPE=Release"
+		<< "-DCMAKE_INSTALL_PREFIX=\"" + build_directory + "\""
+		<< source_directory
+		);
+
+	cmake.waitForFinished(-1);
+
+	qDebug() << "Cmake log: ";
+	qDebug() << cmake.readAll();
+
+	if (cmake.exitStatus() != QProcess::NormalExit)
 	{
 		qFatal("Something wrong on unpacking");
 	}
+
+	//QProcess build;
+	//build.setProcessEnvironment(env);
+
 
 	return a.exec();
 }
