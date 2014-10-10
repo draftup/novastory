@@ -118,8 +118,12 @@ endmacro(do_test testname)
 
 macro(append_test_resource testname)
 	set(test_resource ${ARGV1})
+	set(test_subdirectory ${ARGV2})
 	get_target_property(TEST_BINARY_FILE test_${testname} LOCATION)
 	get_filename_component(TEST_BINARY_PATH ${TEST_BINARY_FILE} PATH)
-	add_custom_command(TARGET test_${testname} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy \"${test_resource}\" ${TEST_BINARY_PATH}/)
+	if (NOT "${test_subdirectory}" STREQUAL "")
+		add_custom_command(TARGET test_${testname} POST_BUILD COMMAND ${CMAKE_COMMAND} -E make_directory ${TEST_BINARY_PATH}/${test_subdirectory})
+	endif(NOT "${test_subdirectory}" STREQUAL "")
+	add_custom_command(TARGET test_${testname} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy \"${test_resource}\" ${TEST_BINARY_PATH}/${test_subdirectory})
 endmacro(append_test_resource testname)
 
