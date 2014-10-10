@@ -37,3 +37,4 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 QT5_WRAP_CPP(SMTP_MOC_SRCS ${SMTP_MOC_HDRS})
 
 add_library (smtpemail STATIC ${SMTP_SRCS} ${SMTP_HEADERS} ${SMTP_MOC_SRCS} ${SMTP_MOC_HDRS})
+target_link_libraries(smtpemail ${OPENSSL_LIBRARIES} ${Qt5Core_LIBRARIES} ${Qt5Network_LIBRARIES})
