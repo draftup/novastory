@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
 		<< "-DWITH_TESTS=ON"
 		<< "-DREMOTE_TESTING=ON"
 		<< "-DCMAKE_BUILD_TYPE=Release"
-		<< "-DCMAKE_INSTALL_PREFIX=\"" + installation_dir + "\""
+		<< "-DCMAKE_INSTALL_PREFIX=" + installation_dir + ""
 		<< source_directory
 		);
 
