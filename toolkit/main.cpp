@@ -27,6 +27,7 @@ int main(int argc, char* argv[])
 	const QString package_file = "https://dl.dropboxusercontent.com/u/66826430/Work/buildenv/package.7z";
 	const QString source_directory = QDir(exe_dir + "/../").absolutePath();
 	const QString build_directory = exe_dir + "/build";
+	const QString installation_dir = source_directory + "/build";
 
 	qDebug() << "Source directory: " << source_directory;
 
@@ -123,7 +124,7 @@ int main(int argc, char* argv[])
 		<< "MinGW Makefiles"
 		<< "-DWITH_TESTS=ON"
 		<< "-DCMAKE_BUILD_TYPE=Release"
-		<< "-DCMAKE_INSTALL_PREFIX=\"" + build_directory + "\""
+		<< "-DCMAKE_INSTALL_PREFIX=\"" + installation_dir + "\""
 		<< source_directory
 		);
 
@@ -149,6 +150,20 @@ int main(int argc, char* argv[])
 	if (build.exitStatus() != QProcess::NormalExit)
 	{
 		qFatal("Something wrong on buiding");
+	}
+
+	QProcess testing;
+	testing.setProcessEnvironment(env);
+	testing.setWorkingDirectory(build_directory);
+	testing.start(package_dir + "/bin/mingw32-make test");
+
+	testing.waitForFinished(-1);
+
+	qDebug() << "Testing status: " << testing.readAll();
+
+	if (testing.exitStatus() != QProcess::NormalExit)
+	{
+		qFatal("Something wrong on testing");
 	}
 
 	QProcess installation;
