@@ -52,7 +52,7 @@ QString novastory::WebDataContainer::eTag() const
 		return QString();
 	}
 
-	return QString().sprintf("\"%xT-%xO\"", m_modificated.toMSecsSinceEpoch(), size());
+	return QString().sprintf("\"%xT-%xO\"", (unsigned int)m_modificated.toMSecsSinceEpoch(), (unsigned int)size());
 }
 
 void novastory::WebDataContainer::setRFCData(const QString& rfc2397data)
