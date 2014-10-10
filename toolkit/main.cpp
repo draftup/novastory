@@ -182,6 +182,24 @@ int main(int argc, char* argv[])
 		qFatal("Something wrong on installation");
 	}
 
+	// Copy dlls
+	QFile::copy(package_dir + "/bin/libgcc_s_dw2-1.dll", installation_dir + "/libgcc_s_dw2-1.dll");
+	QFile::copy(package_dir + "/bin/libwinpthread-1.dll", installation_dir + "/libwinpthread-1.dll");
+	QFile::copy(package_dir + "/bin/libstdc++-6.dll", installation_dir + "/libstdc++-6.dll");
+
+	QFile::copy(package_dir + "/bin/Qt5Core.dll", installation_dir + "/Qt5Core.dll");
+	QFile::copy(package_dir + "/bin/Qt5Network.dll", installation_dir + "/Qt5Network.dll");
+	QFile::copy(package_dir + "/bin/Qt5Sql.dll", installation_dir + "/Qt5Sql.dll");
+
+	QFile::copy(package_dir + "/bin/libeay32.dll", installation_dir + "/libeay32.dll");
+	QFile::copy(package_dir + "/bin/ssleay32.dll", installation_dir + "/ssleay32.dll");
+
+	QFile::copy(package_dir + "/bin/icudt52.dll", installation_dir + "/icudt52.dll");
+	QFile::copy(package_dir + "/bin/icuin52.dll", installation_dir + "/icuin52.dll");
+	QFile::copy(package_dir + "/bin/icuuc52.dll", installation_dir + "/icuuc52.dll");
+
+	QFile::copy(package_dir + "/bin/libmysql.dll", installation_dir + "/libmysql.dll");
+
 	exit(0);
 
 	return a.exec();
