@@ -73,15 +73,19 @@ int main(int argc, char* argv[])
 
 	if (md5package_test != md5package_real)
 	{
+		if (QFileInfo::exists(package_dir) && !QDir(package_dir).removeRecursively())
+			qFatal("Remove old package directory failed");
+
+		// also removing build dir: who knows, may be changed compiller or cmake
+		if (QFileInfo::exists(build_directory) && !QDir(build_directory).removeRecursively())
+			qFatal("Remove old build directory failed");
+
 		qDebug() << "Update old package";
 		Downloader package_downloader(package_file, exe_dir);
 		package_downloader.wait();
 		md5package_test = QString(QCryptographicHash::hash(package_downloader.data(), QCryptographicHash::Md5).toHex());
 		if (md5package_test != md5package_real)
 			qFatal("New pakage is deprecated, update md5");
-
-		if (QFileInfo::exists(package_dir) && !QDir(package_dir).removeRecursively())
-			qFatal("Remove old package directory failed");
 	}
 	
 	if (!QFileInfo::exists(package_dir + "/bin/qmake.exe"))
@@ -111,9 +115,10 @@ int main(int argc, char* argv[])
 	QProcess cmake;
 	QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 	env.insert("PATH", env.value("Path") + ";" + package_dir + "/bin");
+	env.insert("OPENSSL_ROOT_DIR", package_dir);
 	cmake.setProcessEnvironment(env);
 	cmake.setWorkingDirectory(build_directory);
-	cmake.start("cmake.exe", QStringList()
+	cmake.start(package_dir + "/bin/cmake.exe", QStringList()
 		<< "-G"
 		<< "MinGW Makefiles"
 		<< "-DWITH_TESTS=ON"
@@ -135,7 +140,7 @@ int main(int argc, char* argv[])
 	QProcess build;
 	build.setProcessEnvironment(env);
 	build.setWorkingDirectory(build_directory);
-	build.start("mingw32-make", QStringList() << "-j4");
+	build.start(package_dir + "/bin/mingw32-make", QStringList() << "-j4");
 
 	build.waitForFinished(-1);
 
@@ -149,7 +154,7 @@ int main(int argc, char* argv[])
 	QProcess installation;
 	installation.setProcessEnvironment(env);
 	installation.setWorkingDirectory(build_directory);
-	installation.start("mingw32-make install");
+	installation.start(package_dir + "/bin/mingw32-make install");
 
 	installation.waitForFinished(-1);
 
