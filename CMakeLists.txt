@@ -81,6 +81,10 @@ if(WITH_TESTS)
 endif(WITH_TESTS)
 option (FEDORA_CROSSCOMPILATION "Enabling fedora crosscompilation features" OFF)
 option (TOOLKIT_UTIL "Build toolkit for fast windows server compilation" OFF)
+option (REMOTE_TESTING "Remote testing db with novastory server" OFF)
+if(REMOTE_TESTING)
+	add_definitions(-DREMOTE_TESTING)
+endif(REMOTE_TESTING)
 
 
 # Searching for packets

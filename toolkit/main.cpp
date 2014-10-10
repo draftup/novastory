@@ -92,7 +92,8 @@ int main(int argc, char* argv[])
 	if (!QFileInfo::exists(package_dir + "/bin/qmake.exe"))
 	{
 		QProcess un7zip;
-		un7zip.start("7za.exe", QStringList() << "x" << "-o" + exe_dir << package);
+		un7zip.setWorkingDirectory(exe_dir);
+		un7zip.start("7za.exe", QStringList() << "x" << package);
 		qDebug() << "Unpacking pakage file";
 		un7zip.waitForFinished(-1);
 		qDebug() << "Unpacked Log:";
@@ -123,6 +124,7 @@ int main(int argc, char* argv[])
 		<< "-G"
 		<< "MinGW Makefiles"
 		<< "-DWITH_TESTS=ON"
+		<< "-DREMOTE_TESTING=ON"
 		<< "-DCMAKE_BUILD_TYPE=Release"
 		<< "-DCMAKE_INSTALL_PREFIX=\"" + installation_dir + "\""
 		<< source_directory
