@@ -4,6 +4,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QProcess>
+#include <QThread>
 
 using namespace novastory;
 
@@ -140,10 +141,16 @@ int main(int argc, char* argv[])
 		qFatal("Something wrong on cmake");
 	}
 
+	int threads_count = QThread::idealThreadCount();
+	if (threads_count < 1)
+		threads_count = 1;
+
+	qDebug() << "Using" << threads_count << "threads for build";
+
 	QProcess build;
 	build.setProcessEnvironment(env);
 	build.setWorkingDirectory(build_directory);
-	build.start(package_dir + "/bin/mingw32-make", QStringList() << "-j4");
+	build.start(package_dir + "/bin/mingw32-make", QStringList() << "-j" + QString::number(threads_count));
 
 	build.waitForFinished(-1);
 
