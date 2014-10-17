@@ -56,5 +56,9 @@ target_link_libraries(toolkit
 	${OPENSSL_LIBRARIES}
 )
 
+if(MSVC)
+	SET_TARGET_PROPERTIES(toolkit PROPERTIES LINK_FLAGS "/level='requireAdministrator' /uiAccess='false'")
+endif(MSVC)
+
 
 install (TARGETS toolkit DESTINATION ${CMAKE_SOURCE_DIR}/utils)

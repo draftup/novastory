@@ -141,6 +141,12 @@ int main(int argc, char* argv[])
 		qFatal("Something wrong on cmake");
 	}
 
+	// Copy runtime
+	QDir().mkpath(build_directory + "/tests/sqldrivers");
+	QDir().mkpath(build_directory + "/server/sqldrivers");
+	QFile::copy(package_dir + "/plugins/sqldrivers/qsqlmysql.dll", build_directory + "/tests/sqldrivers/qsqlmysql.dll");
+	QFile::copy(package_dir + "/plugins/sqldrivers/qsqlmysql.dll", build_directory + "/server/sqldrivers/qsqlmysql.dll");
+
 	int threads_count = QThread::idealThreadCount();
 	if (threads_count < 1)
 		threads_count = 1;
@@ -206,6 +212,9 @@ int main(int argc, char* argv[])
 	QFile::copy(package_dir + "/bin/icuuc52.dll", installation_dir + "/icuuc52.dll");
 
 	QFile::copy(package_dir + "/bin/libmysql.dll", installation_dir + "/libmysql.dll");
+
+	QDir().mkpath(installation_dir + "/sqldrivers");
+	QFile::copy(package_dir + "/plugins/sqldrivers/qsqlmysql.dll", installation_dir + "/sqldrivers/qsqlmysql.dll");
 
 	exit(0);
 

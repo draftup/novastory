@@ -110,8 +110,13 @@ set(SOURCES
 add_subdirectory(3dparty/smtp)
 include_directories(3dparty/smtp)
 
-
 QT5_WRAP_CPP(MOC_FILES ${HEADERS_TOMOC})
+
+if(WIN32 OR APPLE)
+	#QT5_ADD_RESOURCES(QRC_RESOURCES
+	#	${CMAKE_CURRENT_SOURCE_DIR}/resources/qtconf.qrc
+	#)
+endif()
 
 source_group("core\\Sources" FILES 
 				${HEADERS} 
