@@ -1020,9 +1020,9 @@ $(document).ready(function ()
 										{
 											// This is directory
 											list.append(
-												'<li>'
-												 + '<label for="folder' + dir[i].revisionid + '" class="cheked">'
+												'<li draggable="true">'
 												 + '<div class="revisionid" style="display: none;">' + dir[i].revisionid + '</div>'
+												 + '<label for="folder' + dir[i].revisionid + '" class="cheked">'
 												 + '<div>'
 												 + '<svg  id="new-project-icon" viewBox="0 0 512 512">'
 												 + '<path id="full-folder-icon" d="M430,122.265v77.303h-63.119l-75.04-57.707l-25.129,32.676l32.62,25.031h-33.843l-75.041-57.707l-44.379,57.707H81V89.66h100.35l22.979,22.834c6.298,6.258,14.814,9.771,23.693,9.771H430z M462,234.528H50L74,422.34h358.583L462,234.528z"></path>'
@@ -1039,7 +1039,7 @@ $(document).ready(function ()
 										{
 											// This is final leef
 											list.append(
-												'<li class="file" id="file' + dir[i].revisionid + '">'
+												'<li draggable="true" class="file" id="file' + dir[i].revisionid + '">'
 												 + '<div class="revisionid" style="display: none;">' + dir[i].revisionid + '</div>'
 												 + '<div></div>'
 												 + '<a>' + dir[i].mark + '</a>'
@@ -1085,6 +1085,50 @@ $(document).ready(function ()
 								{
 									$('#file' + clickedRevtreeDefault).click();
 								}
+
+								$('#revisions-directory').on("dragover", "li", function (event)
+								{
+									event.stopPropagation();
+									event.preventDefault();
+									event.originalEvent.dataTransfer.effectAllowed = 'move';
+								}
+								);
+
+								$('#revisions-directory').on("dragstart", "li", function (event)
+								{
+									event.originalEvent.dataTransfer.effectAllowed = 'move';
+									event.originalEvent.dataTransfer.setData('text/plain', $(this).children('.revisionid').text());
+								}
+								);
+
+								$('#revisions-directory').on("drop", "li", function (event)
+								{
+									event.stopPropagation();
+									event.preventDefault();
+									var revisionid = parseInt(event.originalEvent.dataTransfer.getData("text/plain"));
+									var target = parseInt($(this).children('.revisionid').text());
+									if (revisionid <= 0 || target <= 0)
+									{
+										Novastory.error("No revision to move founded");
+										return;
+									}
+
+									NovastoryApi.moveRevision(revisionid, target, function (data)
+									{
+										if (data.error != null && !data.error)
+										{
+											Novastory.ok("Moved");
+											clickedRevtreeDefault = revisionid;
+											updateRevisionList();
+										}
+										else
+										{
+											Novastory.error("Something wrong on revision move");
+										}
+									}
+									);
+								}
+								);
 							}
 							);
 						}
@@ -1225,8 +1269,9 @@ $(document).ready(function ()
 							);
 						}
 						);
-						
-						$("#new-project-butt").click(function(){
+
+						$("#new-project-butt").click(function ()
+						{
 							NovastoryApi.newProject("New Project", function (data)
 							{
 								if (data.error != null && !data.error)
@@ -1241,7 +1286,8 @@ $(document).ready(function ()
 								}
 							}
 							);
-						});
+						}
+						);
 
 						$('#text-block-head-event').change(function ()
 						{

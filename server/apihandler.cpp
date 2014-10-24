@@ -223,6 +223,15 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		container.getMainObject().insert("revision", rev.json(true));
 		json = container.jsonString().toUtf8();
 	}
+	else if (hook == "revisionmove")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		TextRevisionContainer container;
+		container.setUser(user);
+		container.move(post["revision"].toInt(), post["target"].toInt());
+		json = container.jsonString().toUtf8();
+	}
 	else if (hook == "subscribe")
 	{
 		User user;

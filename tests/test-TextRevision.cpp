@@ -34,10 +34,13 @@ private slots:
 
 	void dublicateCheck();
 	void removeCheck();
+
+	void moveRevisions();
 private:
 	User buser;
 	TextRevisionContainer container;
 	int releaseID;
+	int projectid;
 };
 
 void Test_TextRevision::initTestCase()
@@ -94,7 +97,10 @@ void Test_TextRevision::createRevision()
 
 void Test_TextRevision::createProject()
 {
-	QVERIFY(container.newProject("privproject").isValid());
+	TextRevision rev = container.newProject("privproject");
+	QVERIFY(rev.isValid());
+	projectid = rev.revisionId();
+	QVERIFY(projectid > 0);
 }
 
 
@@ -215,6 +221,20 @@ void Test_TextRevision::removeCheck()
 	QCOMPARE(container.size(), 5);
 }
 
+void Test_TextRevision::moveRevisions()
+{
+	QCOMPARE(container.size(), 5);
+	TextRevision f = container.first();
+	TextRevision l = container.last();
+	QCOMPARE(l.text(), QString("privet5"));
+	QCOMPARE(f.text(), QString("privet33"));
+	QVERIFY(!container.move(l, f)); // rev into rev
+	QVERIFY(!container.move(f, l)); // rev into rev
+	QVERIFY(!container.move(l.revisionId(), projectid)); // rev into other
+	QVERIFY(!container.move(l.parent(), f.revisionId())); // text into rev
+	QVERIFY(container.move(l.parent(), projectid)); // text into other - ok
+	QVERIFY(container.move(f.parent(), projectid)); // text into other - ok
+}
 
 /********************** DECLARE_TEST LIST ****************************/
 QTEST_MAIN(Test_TextRevision)

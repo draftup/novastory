@@ -287,3 +287,15 @@ NovastoryApi.newProject = function (projectname, callback)
 		callback,
 		'json');
 };
+
+NovastoryApi.moveRevision = function (revision, target, callback)
+{
+	$.post(
+		'/api/revisionmove',
+	{
+		revision: revision,
+		target: target,
+	},
+		callback,
+		'json');
+};

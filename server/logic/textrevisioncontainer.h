@@ -37,6 +37,9 @@ public:
 	bool unrelease(int targetRevision);
 	bool unrelease(const TextRevision& targetRevision);
 
+	bool move(int revisionId, int targetId);
+	bool move(const TextRevision& revisionId, const TextRevision& targetId);
+
 	TextRevision revision(int rev);
 
 	void setText(const QString& text);

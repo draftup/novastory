@@ -592,4 +592,52 @@ bool TextRevisionContainer::updateMark(const TextRevision& targetRevision)
 	return updateMark(targetRevision.revisionId());
 }
 
+bool TextRevisionContainer::move(int revisionId, int targetId)
+{
+	if (!m_user.isLogined())
+	{
+		JSON_ERROR("Not loginned", 1);
+		return false;
+	}
+
+	SqlQuery revTest("SELECT `type` FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + " AND revisionid = " + QString::number(revisionId));
+	if (revTest.size() != 1)
+	{
+		JSON_ERROR("Wrong size", 2);
+		return false;
+	}
+	VERIFY(revTest.next());
+	QString revType = revTest.value("type").toString();
+
+	if (revType == "REVISION")
+	{
+		JSON_ERROR("We cannot move revisions", 4);
+		return false;
+	}
+
+	SqlQuery destTest("SELECT `type` FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + " AND revisionid = " + QString::number(targetId));
+	if (destTest.size() != 1)
+	{
+		JSON_ERROR("Wrong size", 3);
+		return false;
+	}
+	VERIFY(destTest.next());
+	QString destType = destTest.value("type").toString();
+
+	if (destType == "REVISION" || destType == "TEXT")
+	{
+		JSON_ERROR("We cannot into revision or text", 5);
+		return false;
+	}
+
+	m_where_coincidence = "userid = " + QString::number(m_user.userid());
+	bool status = NestedSet::move(revisionId, targetId);
+	return status;
+}
+
+bool TextRevisionContainer::move(const TextRevision& revisionId, const TextRevision& targetId)
+{
+	return TextRevisionContainer::move(revisionId.revisionId(), targetId.revisionId());
+}
+
 }
