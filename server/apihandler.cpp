@@ -213,6 +213,16 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		container.setUser(user);
 		json = container.treeFolders().toUtf8();
 	}
+	else if (hook == "newproject")
+	{
+		User user;
+		user.loginByToken(userid, stoken);
+		TextRevisionContainer container;
+		container.setUser(user);
+		TextRevision rev = container.newProject(post["projectname"], post["parent"].toInt());
+		container.getMainObject().insert("revision", rev.json(true));
+		json = container.jsonString().toUtf8();
+	}
 	else if (hook == "subscribe")
 	{
 		User user;

@@ -22,6 +22,7 @@ public:
 	TextRevision insert(int parentId = 0);
 	TextRevision insert(const QString& text, int parentId = 0);
 	TextRevision insert(char* text, int parentId = 0);
+	TextRevision newProject(const QString& projectName, int parentId = 0);
 	TextRevision update(int revision = 0);
 	TextRevision update(const TextRevision& revision, const QString& text = QString());
 	TextRevision update(const QString& text);

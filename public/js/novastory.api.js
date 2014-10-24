@@ -276,3 +276,14 @@ NovastoryApi.revisionDirectories = function (callback)
 		callback,
 		'json');
 };
+
+NovastoryApi.newProject = function (projectname, callback)
+{
+	$.post(
+		'/api/newproject',
+	{
+		projectname: projectname
+	},
+		callback,
+		'json');
+};

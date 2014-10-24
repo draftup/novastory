@@ -122,7 +122,7 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 			},
 			DBPatcher::Column{
 				"type",
-				"enum('OTHER','REVISION','BOOK')",
+				"enum('OTHER','REVISION','BOOK','TEXT')",
 				false,
 				"MUL",
 				"OTHER"

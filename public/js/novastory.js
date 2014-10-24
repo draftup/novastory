@@ -1016,12 +1016,13 @@ $(document).ready(function ()
 
 									for (var i = 0; i < dir.length; i++)
 									{
-										if (dir[i].childs.length > 0)
+										if (dir[i].childs.length > 0 || (dir[i].type != 'REVISION' && dir[i].type != 'TEXT'))
 										{
 											// This is directory
 											list.append(
 												'<li>'
 												 + '<label for="folder' + dir[i].revisionid + '" class="cheked">'
+												 + '<div class="revisionid" style="display: none;">' + dir[i].revisionid + '</div>'
 												 + '<div>'
 												 + '<svg  id="new-project-icon" viewBox="0 0 512 512">'
 												 + '<path id="full-folder-icon" d="M430,122.265v77.303h-63.119l-75.04-57.707l-25.129,32.676l32.62,25.031h-33.843l-75.041-57.707l-44.379,57.707H81V89.66h100.35l22.979,22.834c6.298,6.258,14.814,9.771,23.693,9.771H430z M462,234.528H50L74,422.34h358.583L462,234.528z"></path>'
@@ -1224,6 +1225,23 @@ $(document).ready(function ()
 							);
 						}
 						);
+						
+						$("#new-project-butt").click(function(){
+							NovastoryApi.newProject("New Project", function (data)
+							{
+								if (data.error != null && !data.error)
+								{
+									Novastory.ok("Project created");
+									updateRevisionList();
+									clickedRevtreeDefault = data.revision.revisionid;
+								}
+								else
+								{
+									Novastory.error("Something wrong on text save");
+								}
+							}
+							);
+						});
 
 						$('#text-block-head-event').change(function ()
 						{

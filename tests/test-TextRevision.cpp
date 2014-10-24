@@ -20,6 +20,7 @@ private slots:
 
 	void unloginedTest();
 	void createRevision();
+	void createProject();
 	void treeFolders();
 	void updateRevision();
 	void syncRevision();
@@ -65,7 +66,7 @@ void Test_TextRevision::cleanupTestCase()
 {
 	SqlQuery q;
 	q.exec(QString("SELECT * FROM textrevisions WHERE userid = ") + QString::number(buser.userid()));
-	QCOMPARE(q.size(), 9);
+	QCOMPARE(q.size(), 10);
 	container.clear();
 	q.exec(QString("SELECT * FROM textrevisions WHERE userid = ") + QString::number(buser.userid()));
 	QCOMPARE(q.size(), 0);
@@ -91,9 +92,16 @@ void Test_TextRevision::createRevision()
 }
 
 
+void Test_TextRevision::createProject()
+{
+	QVERIFY(container.newProject("privproject").isValid());
+}
+
+
 void Test_TextRevision::treeFolders()
 {
 	QVERIFY(container.treeFolders().contains("New Text"));
+	QVERIFY(container.treeFolders().contains("privproject"));
 }
 
 

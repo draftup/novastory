@@ -103,6 +103,7 @@ TextRevision TextRevisionContainer::insert(int parentId /* = 0 */)
 		QHash<QString, QVariant> folderInfo;
 		folderInfo.insert("userid", m_user.userid());
 		folderInfo.insert("mark", "New Text");
+		folderInfo.insert("type", "TEXT");
 		int folderid = NestedSet::insert(0, folderInfo);
 		Q_ASSERT(folderid > 0);
 		revisionid = NestedSet::insert(folderid, valuesToDB);
@@ -134,6 +135,50 @@ novastory::TextRevision TextRevisionContainer::insert(char* text, int parentId /
 }
 
 
+novastory::TextRevision TextRevisionContainer::newProject(const QString& projectName, int parentId /*= 0*/)
+{
+	if (!m_user.isLogined())
+	{
+		JSON_ERROR("Not loginned", 1);
+		return TextRevision();
+	}
+
+	TextRevision revision;
+	QHash<QString, QVariant> valuesToDB;
+	revision.setUser(m_user);
+	valuesToDB.insert("userid", m_user.userid());
+	setMark(projectName);
+	revision.setMark(m_mark);
+	valuesToDB.insert("mark", m_mark);
+	revision.setType("OTHER");
+	valuesToDB.insert("type", "OTHER");
+	m_where_coincidence = "userid = " + QString::number(m_user.userid());
+	int revisionid = -1;
+	// If no parent we must create some folder
+	if (parentId > 0)
+	{
+		revisionid = NestedSet::insert(parentId, valuesToDB);
+	}
+	else
+	{
+		revisionid = NestedSet::insert(0, valuesToDB);
+	}
+
+	if (revisionid > 0)
+	{
+		revision.setRevisionID(revisionid);
+		Q_ASSERT(revision.revisionId() > 0);
+		//QMap::insert(revision.revisionId(), revision);
+	}
+	else
+	{
+		JSON_ERROR("Something wrong on revision save", 2);
+	}
+
+	return revision;
+}
+
+
 novastory::TextRevision TextRevisionContainer::update(int revision /* = 0 */)
 {
 	if (!m_user.isLogined())
@@ -143,7 +188,7 @@ novastory::TextRevision TextRevisionContainer::update(int revision /* = 0 */)
 	}
 
 	// Check last revision, may be text the save
-	SqlQuery dublicateCheck("SELECT * FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + ((revision > 0) ? " AND revisionid = " + QString::number(revision) : "") + " ORDER BY revisionid DESC LIMIT 1");
+	SqlQuery dublicateCheck("SELECT * FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + ((revision > 0) ? " AND revisionid = " + QString::number(revision) : "") + " AND `type` = 'REVISION' ORDER BY revisionid DESC LIMIT 1");
 	Q_ASSERT(dublicateCheck.lastError().type() == QSqlError::NoError);
 	if (dublicateCheck.size() == 1)
 	{
@@ -229,6 +274,7 @@ novastory::TextRevision TextRevisionContainer::update(int revision /* = 0 */)
 		QHash<QString, QVariant> folderInfo;
 		folderInfo.insert("userid", m_user.userid());
 		folderInfo.insert("mark", "New Text");
+		folderInfo.insert("type", "TEXT");
 		int folderid = NestedSet::insert(0, folderInfo);
 		Q_ASSERT(folderid > 0);
 
