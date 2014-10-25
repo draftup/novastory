@@ -115,7 +115,7 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 			},
 			DBPatcher::Column{
 				"release",
-				"tinyint(1)",
+				"int(10) unsigned",
 				false,
 				"",
 				"0"

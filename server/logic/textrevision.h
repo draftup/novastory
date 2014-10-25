@@ -43,8 +43,10 @@ public:
 	void resetMark();
 
 	bool isRelease() const;
+	void setRelease(int rel);
 	void setRelease(bool rel);
 	void resetRelease();
+	int releaseValue() const;
 
 	const QDateTime& createDate() const;
 	void setCreateDate(const QDateTime& date);
@@ -78,7 +80,7 @@ private:
 	QString m_text;
 	QString m_mark;
 	int m_revisionId;
-	bool m_release;
+	int m_release;
 	QString m_type;
 	QDateTime m_create_date;
 	QDateTime m_modify_date;

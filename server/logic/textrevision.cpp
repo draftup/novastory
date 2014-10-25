@@ -62,7 +62,7 @@ void TextRevision::setRevisionID(int revision)
 	m_revisionId = revision;
 }
 
-TextRevision::TextRevision() : m_release(false), m_revisionId(-1), m_parentId(0), m_type("OTHER")
+TextRevision::TextRevision() : m_release(0), m_revisionId(-1), m_parentId(0), m_type("OTHER")
 {
 	setObjectName("textrevisions");
 	setProperty("auto_increment", QVariant("revisionid"));
@@ -71,17 +71,22 @@ TextRevision::TextRevision() : m_release(false), m_revisionId(-1), m_parentId(0)
 
 bool TextRevision::isRelease() const
 {
-	return m_release;
+	return m_release > 0;
 }
 
-void TextRevision::setRelease(bool rel)
+void TextRevision::setRelease(int rel)
 {
 	m_release = rel;
 }
 
+void TextRevision::setRelease(bool rel)
+{
+	m_release = (int)rel;
+}
+
 void TextRevision::resetRelease()
 {
-	m_release = false;
+	m_release = 0;
 }
 
 bool TextRevision::operator==(const TextRevision& rv) const
@@ -189,6 +194,11 @@ void TextRevision::setType(QString id)
 const QString& TextRevision::type() const
 {
 	return m_type;
+}
+
+int TextRevision::releaseValue() const
+{
+	return m_release;
 }
 
 }

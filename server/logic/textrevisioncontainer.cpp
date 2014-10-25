@@ -283,6 +283,7 @@ novastory::TextRevision TextRevisionContainer::update(int revision /* = 0 */)
 		{
 			revision.setRevisionID(revisionid);
 			Q_ASSERT(revision.revisionId() > 0);
+			revision.setParent(folderid);
 			QMap::insert(revision.revisionId(), revision);
 		}
 		else
@@ -350,53 +351,38 @@ bool TextRevisionContainer::release(int targetRevision)
 		return false;
 	}
 
-	if (!m_synchronized)
+	SqlQuery releaseRevInfo("SELECT left_key,right_key,`type`,`release` FROM textrevisions WHERE revisionid = " + QString::number(targetRevision));
+	if (releaseRevInfo.size() != 1)
 	{
-		sync();
-		Q_ASSERT(m_synchronized);
+		JSON_ERROR("Revision not founded", 2);
+		return false;
+	}
+	VERIFY(releaseRevInfo.next());
+
+	QString left_key = releaseRevInfo.value("left_key").toString();
+	QString right_key = releaseRevInfo.value("right_key").toString();
+	QString relType = releaseRevInfo.value("type").toString();
+	int releaseVal = releaseRevInfo.value("release").toInt();
+
+	if (releaseVal != 0)
+	{
+		JSON_ERROR("Already released", 3);
+		return false;
 	}
 
-	TextRevision* lastRevision = &last();
-	// If last revision promote it to release
-	if (lastRevision->revisionId() == targetRevision)
+	if (relType != "REVISION")
 	{
-		if (lastRevision->isRelease())
-		{
-			return true;
-		}
-		lastRevision->setRelease(true);
-		bool status = lastRevision->updateSQL("revisionid", QList<QString>() << "text");
-		if (status)
-		{
-			qDebug() << "Last revision updated to release for user" << userid();
-		}
-		return status;
-	}
-	else
-	{
-		if (!contains(targetRevision))
-		{
-			JSON_ERROR("Revision not founded", 2);
-			return false;
-		}
-		TextRevision newRevision = value(targetRevision); // copy of old revision
-		newRevision.setRelease(true);
-		newRevision.setRevisionID(-1);
-		QHash<QString, QVariant> valuesToDB;
-		valuesToDB.insert("userid", newRevision.userid());
-		valuesToDB.insert("text", newRevision.text());
-		valuesToDB.insert("mark", newRevision.mark());
-		valuesToDB.insert("release", newRevision.isRelease());
-		m_where_coincidence = "userid = " + QString::number(newRevision.userid());
-		int revisionid = NestedSet::insert(0, valuesToDB);
-		Q_ASSERT(revisionid > 0);
-		newRevision.setRevisionID(revisionid);
-		Q_ASSERT(newRevision.revisionId() > 0);
-		QMap::insert(newRevision.revisionId(), newRevision);
-		qDebug() << "Revision" << targetRevision << "was copy to new release" << newRevision.revisionId() << "revision for user" << userid();
+		JSON_ERROR("You can release only revisions", 4);
+		return false;
 	}
 
-	return true;
+	SqlQuery releaseQuery("UPDATE textrevisions SET `release` = `release` + 1 WHERE left_key <= " + left_key + " AND right_key >=" + right_key);
+	if (QMap::contains(targetRevision))
+	{
+		QMap::find(targetRevision)->setRelease(true);
+	}
+
+	return releaseQuery.lastError().type() == QSqlError::NoError;
 }
 
 
@@ -408,26 +394,38 @@ bool TextRevisionContainer::unrelease(int targetRevision)
 		return false;
 	}
 
-	if (!m_synchronized)
-	{
-		sync();
-		Q_ASSERT(m_synchronized);
-	}
-
-	if (!contains(targetRevision))
+	SqlQuery releaseRevInfo("SELECT left_key,right_key,`type`,`release` FROM textrevisions WHERE revisionid = " + QString::number(targetRevision));
+	if (releaseRevInfo.size() != 1)
 	{
 		JSON_ERROR("Revision not founded", 2);
 		return false;
 	}
+	VERIFY(releaseRevInfo.next());
 
-	iterator revisionPoint = find(targetRevision); // copy of old revision
-	revisionPoint->setRelease(false);
-	bool status = revisionPoint->updateSQL("revisionid", QList<QString>() << "text");
-	if (status)
+	QString left_key = releaseRevInfo.value("left_key").toString();
+	QString right_key = releaseRevInfo.value("right_key").toString();
+	QString relType = releaseRevInfo.value("type").toString();
+	int releaseVal = releaseRevInfo.value("release").toInt();
+
+	if (releaseVal <= 0)
 	{
-		qDebug() << "Revision" << targetRevision << "was made unreleased now for user" << userid();
+		JSON_ERROR("Revision not founded", 3);
+		return false;
 	}
-	return status;
+
+	if (relType != "REVISION")
+	{
+		JSON_ERROR("You can release only revisions", 4);
+		return false;
+	}
+
+	SqlQuery releaseQuery("UPDATE textrevisions SET `release` = `release` - 1 WHERE left_key <= " + left_key + " AND right_key >=" + right_key);
+	if (QMap::contains(targetRevision))
+	{
+		QMap::find(targetRevision)->setRelease(false);
+	}
+
+	return releaseQuery.lastError().type() == QSqlError::NoError;
 }
 
 bool TextRevisionContainer::unrelease(const TextRevision& targetRevision)
@@ -525,7 +523,10 @@ novastory::TextRevision TextRevisionContainer::revision(int rev)
 		VERIFY(selectQuery.next());
 		TextRevision revision;
 		revision.syncRecord(selectQuery);
-		QMap::insert(revision.revisionId(), revision);
+		if (selectQuery.value("type").toString() == "REVISION")
+		{
+			QMap::insert(revision.revisionId(), revision);
+		}
 		return revision;
 	}
 }

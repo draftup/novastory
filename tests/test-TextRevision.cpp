@@ -25,8 +25,7 @@ private slots:
 	void updateRevision();
 	void syncRevision();
 
-	void releaseMiddle();
-	void releaseLast();
+	void releaseTest();
 	void getRevision();
 
 	void unrelease();
@@ -69,7 +68,7 @@ void Test_TextRevision::cleanupTestCase()
 {
 	SqlQuery q;
 	q.exec(QString("SELECT * FROM textrevisions WHERE userid = ") + QString::number(buser.userid()));
-	QCOMPARE(q.size(), 10);
+	QCOMPARE(q.size(), 7);
 	container.clear();
 	q.exec(QString("SELECT * FROM textrevisions WHERE userid = ") + QString::number(buser.userid()));
 	QCOMPARE(q.size(), 0);
@@ -140,51 +139,37 @@ void Test_TextRevision::syncRevision()
 }
 
 
-void Test_TextRevision::releaseMiddle()
+void Test_TextRevision::releaseTest()
 {
 	QVERIFY(!container.release(0));
-	QCOMPARE(container.first().isRelease(), false);
-	QVERIFY(container.release(container.firstKey()));
-	QCOMPARE(container.size(), 3);
+	QCOMPARE(container.last().isRelease(), false);
+	QVERIFY(container.release(container.lastKey()));
+	QCOMPARE(container.size(), 2);
 	TextRevision& rv = container.last();
 	QCOMPARE(rv.isRelease(), true);
 	releaseID = rv.revisionId();
 	container.release(rv.revisionId());
-	QCOMPARE(container.size(), 3);
-	QCOMPARE(rv, container.last());
-}
+	QCOMPARE(container.size(), 2);
 
-void Test_TextRevision::releaseLast()
-{
-	QVERIFY(container.insert("privet4").isValid());
-	QCOMPARE(container.size(), 4);
-	TextRevision& rv = container.last();
+	// check parent release now
+	TextRevision parentRev = container.revision(rv.parent());
+	QVERIFY(parentRev.isValid());
+	QCOMPARE(parentRev.isRelease(), true);
 
-	QCOMPARE(rv, container.revision(rv.revisionId()));
-
-	QCOMPARE(rv.isRelease(), false);
-	QCOMPARE(rv.text(), QString("privet4"));
-	QVERIFY(container.release(rv));
-	QCOMPARE(rv.isRelease(), true);
-	QCOMPARE(container.size(), 4);
+	QCOMPARE(container.size(), 2);
 
 	// try to update based on new revision
 	QVERIFY(container.update("privet5").isValid());
-	QCOMPARE(container.size(), 5);
+	QCOMPARE(container.size(), 3);
 }
 
 void Test_TextRevision::getRevision()
 {
 	TextRevision relRev = *(container.end() - 2);
 	QCOMPARE(relRev.isRelease(), true);
-	TextRevision unrelRev = container.last();
-	QCOMPARE(unrelRev.isRelease(), false);
 	TextRevisionContainer c;
 	// we havent access to unrealsed revision from other users
-	QVERIFY(!c.revision(unrelRev.revisionId()).isValid());
 	QVERIFY(c.revision(relRev.revisionId()).isValid());
-	// by value also must work
-	QVERIFY(container.revision(unrelRev.revisionId()).isValid());
 }
 
 
@@ -207,23 +192,23 @@ void Test_TextRevision::updateMark()
 
 void Test_TextRevision::dublicateCheck()
 {
-	QCOMPARE(container.size(), 5);
+	QCOMPARE(container.size(), 3);
 	QVERIFY(container.insert("privet5").isValid());
-	QCOMPARE(container.size(), 6); // all ok because of we insert absolute new text
+	QCOMPARE(container.size(), 4); // all ok because of we insert absolute new text
 	QVERIFY(!container.update("privet5").isValid());
 	QCOMPARE(container.jsonErrorType(), 3);
 }
 
 void Test_TextRevision::removeCheck()
 {
-	QCOMPARE(container.size(), 6);
+	QCOMPARE(container.size(), 4);
 	QVERIFY(container.removeRevision(container.last()));
-	QCOMPARE(container.size(), 5);
+	QCOMPARE(container.size(), 3);
 }
 
 void Test_TextRevision::moveRevisions()
 {
-	QCOMPARE(container.size(), 5);
+	QCOMPARE(container.size(), 3);
 	TextRevision f = container.first();
 	TextRevision l = container.last();
 	QCOMPARE(l.text(), QString("privet5"));
