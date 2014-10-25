@@ -1011,15 +1011,17 @@ $(document).ready(function ()
 								var bigestDate = 0;
 								function parseDirectory(dir)
 								{
+									var html = '';
+								
 									if (dir.length == 0)
-										return;
-
+										return html;
+										
 									for (var i = 0; i < dir.length; i++)
 									{
 										if (dir[i].childs.length > 0 || (dir[i].type != 'REVISION' && dir[i].type != 'TEXT'))
 										{
 											// This is directory
-											list.append(
+											html +=
 												'<li draggable="true">'
 												 + '<div class="revisionid" style="display: none;">' + dir[i].revisionid + '</div>'
 												 + '<label for="folder' + dir[i].revisionid + '" class="cheked">'
@@ -1031,20 +1033,20 @@ $(document).ready(function ()
 												 + '<a>' + dir[i].mark + '</a>'
 												 + '</label>'
 												 + '<input checked type="checkbox" id="folder' + dir[i].revisionid + '" />'
-												 + '<ol>');
-											parseDirectory(dir[i].childs);
-											list.append('</ol></li>');
+												 + '<ol>'
+												 + parseDirectory(dir[i].childs)
+											     + '</ol></li>';
 										}
 										else
-										{
+										{	
 											// This is final leef
-											list.append(
+											html +=
 												'<li draggable="true" class="file" id="file' + dir[i].revisionid + '">'
 												 + '<div class="revisionid" style="display: none;">' + dir[i].revisionid + '</div>'
 												 + '<div></div>'
 												 + '<a>' + dir[i].mark + '</a>'
-												 + '</li>');
-
+												 + '</li>';
+												 
 											if (dir[i].modifyDate > bigestDate)
 											{
 												bigestDate = dir[i].modifyDate;
@@ -1052,9 +1054,10 @@ $(document).ready(function ()
 											}
 										}
 									}
+									return html;
 								}
 
-								parseDirectory(data);
+								list.append(parseDirectory(data));
 
 								$('#revisions-directory li').click(function ()
 								{
@@ -1117,7 +1120,6 @@ $(document).ready(function ()
 									if (!movingRightTreeLocker)
 									{
 										movingRightTreeLocker = true;
-										alert("gogo");
 										NovastoryApi.moveRevision(revisionid, target, function (data)
 										{
 											if (data.error != null && !data.error)
