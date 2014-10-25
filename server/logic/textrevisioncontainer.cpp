@@ -460,27 +460,29 @@ QString TextRevisionContainer::treeFolders()
 
 	QJsonArray array;
 	QList<TextRevision> revisions;
-	int lastid = -1;
+	TextRevision* lastParent = nullptr;
+	TextRevision* lastChild = nullptr;
 	while (tree.next())
 	{
 		TextRevision revision;
 		revision.syncRecord(tree);
-		if (lastid > 0 && lastid == revision.parent())
+
+		if (lastParent != nullptr && lastParent->revisionId() == revision.parent())
 		{
-			TextRevision& rev = revisions.last();
-			if (rev.revisionId() != lastid)
-			{
-				qCritical() << "Wrong treefolder structure";
-			}
-			Q_ASSERT(rev.revisionId() == lastid);
-			rev.appendChild(revision);
+			lastParent->appendChild(revision);
+			lastChild = &lastParent->m_childs.last();
+		}
+		else if (lastChild != nullptr && lastChild->revisionId() == revision.parent())
+		{
+			lastChild->appendChild(revision);
+			lastParent = lastChild;
+			lastChild = &lastChild->m_childs.last();
 		}
 		else
 		{
 			revisions.append(revision);
+			lastParent = &revisions.last();
 		}
-
-		lastid = revision.revisionId();
 	}
 	for (const TextRevision& rev : revisions)
 	{

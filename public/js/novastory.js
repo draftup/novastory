@@ -1059,8 +1059,9 @@ $(document).ready(function ()
 
 								list.append(parseDirectory(data));
 
-								$('#revisions-directory li').click(function ()
+								$('#revisions-directory li').click(function (event)
 								{
+									event.stopPropagation();
 									$('#revisions-directory li').removeClass('current');
 									$('#text-block-head-event').attr('checked', false);
 
@@ -1099,6 +1100,7 @@ $(document).ready(function ()
 
 								$('#revisions-directory').on("dragstart", "li", function (event)
 								{
+									event.stopPropagation();
 									event.originalEvent.dataTransfer.effectAllowed = 'move';
 									event.originalEvent.dataTransfer.setData('text/plain', $(this).children('.revisionid').text());
 								}
