@@ -1101,6 +1101,7 @@ $(document).ready(function ()
 								}
 								);
 
+								movingRightTreeLocker = false;
 								$('#revisions-directory').on("drop", "li", function (event)
 								{
 									event.stopPropagation();
@@ -1113,20 +1114,26 @@ $(document).ready(function ()
 										return;
 									}
 
-									NovastoryApi.moveRevision(revisionid, target, function (data)
+									if (!movingRightTreeLocker)
 									{
-										if (data.error != null && !data.error)
+										movingRightTreeLocker = true;
+										alert("gogo");
+										NovastoryApi.moveRevision(revisionid, target, function (data)
 										{
-											Novastory.ok("Moved");
-											clickedRevtreeDefault = revisionid;
-											updateRevisionList();
+											if (data.error != null && !data.error)
+											{
+												Novastory.ok("Moved");
+												clickedRevtreeDefault = revisionid;
+												updateRevisionList();
+											}
+											else
+											{
+												movingRightTreeLocker = false;
+												Novastory.error("Something wrong on revision move");
+											}
 										}
-										else
-										{
-											Novastory.error("Something wrong on revision move");
-										}
+										);
 									}
-									);
 								}
 								);
 							}

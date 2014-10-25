@@ -630,6 +630,17 @@ bool TextRevisionContainer::move(int revisionId, int targetId)
 		return false;
 	}
 
+	SqlQuery parentTest("SELECT `" + m_parent_name + "` FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + " AND revisionid = " + QString::number(revisionId));
+	VERIFY(parentTest.size() > 0);
+	VERIFY(parentTest.next());
+	int parent_id_now = parentTest.value(m_parent_name).toInt();
+	if (parent_id_now == targetId)
+	{
+		JSON_ERROR("Already moved", 7);
+		return false;
+		// already moved
+	}
+
 	m_where_coincidence = "userid = " + QString::number(m_user.userid());
 	bool status = NestedSet::move(revisionId, targetId);
 	return status;

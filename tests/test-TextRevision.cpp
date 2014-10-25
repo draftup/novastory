@@ -234,6 +234,7 @@ void Test_TextRevision::moveRevisions()
 	QVERIFY(!container.move(l.parent(), f.revisionId())); // text into rev
 	QVERIFY(container.move(l.parent(), projectid)); // text into other - ok
 	QVERIFY(container.move(f.parent(), projectid)); // text into other - ok
+	QVERIFY(!container.move(f.parent(), projectid)); // alredy moved
 }
 
 /********************** DECLARE_TEST LIST ****************************/
