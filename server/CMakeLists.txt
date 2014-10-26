@@ -34,6 +34,7 @@ set(HEADERS_TOMOC
 	logic/avatar.h
 	logic/webdata.h
 	logic/userpic.h
+	logic/bookinfo.h
 )
 
 set(HEADERS
@@ -83,6 +84,7 @@ set(SOURCES
 	logic/avatar.cpp
 	logic/webdata.cpp
 	logic/userpic.cpp
+	logic/bookinfo.cpp
 	
 	utils/globals.cpp
 	sql/nestedset.cpp

@@ -403,6 +403,36 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 			},
 		})
 	};
+	TABLE_STRUCT << DBPatcher::Table
+	{
+		"books",
+		QList<DBPatcher::Column>({
+			DBPatcher::Column{
+				"bookid",
+				"int(10) unsigned",
+				false,
+				"PRI",
+				"",
+				"auto_increment"
+			},
+			DBPatcher::Column{
+				"textid",
+				"int(10) unsigned",
+				false,
+				"MUL",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"description",
+				"text",
+				true,
+				"",
+				"",
+				""
+			},
+		})
+	};
 	return TABLE_STRUCT;
 }
 
