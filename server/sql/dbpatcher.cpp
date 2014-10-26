@@ -309,7 +309,14 @@ QString DBPatcher::Column::serialize() const
 	}
 	if (default_data != "NULL" && !default_data.isEmpty())
 	{
-		sql += " DEFAULT '" + default_data + "'";
+		if (default_data == "CURRENT_TIMESTAMP")
+		{
+			sql += " DEFAULT " + default_data;
+		}
+		else
+		{
+			sql += " DEFAULT '" + default_data + "'";
+		}
 	}
 	if (!extra.isEmpty())
 	{
