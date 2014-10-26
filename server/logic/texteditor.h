@@ -16,6 +16,8 @@ class TextEditor : protected Sqlizable, public JsonThrower
 	Q_OBJECT
 	Q_PROPERTY(int userid READ userid WRITE setUserID)
 	Q_PROPERTY(QString text READ text WRITE setText RESET resetText)
+	Q_PROPERTY(int lastrevision READ lastRevision WRITE setLastRevision RESET resetLastRevision)
+	Q_PROPERTY(QDateTime modifydate READ modifyDate WRITE setModifyDate RESET resetModifyDate)
 public:
 	TextEditor();
 
@@ -27,11 +29,21 @@ public:
 	void setText(const QString& text);
 	void resetText();
 
+	const int& lastRevision() const;
+	void setLastRevision(int rev);
+	void resetLastRevision();
+
+	const QDateTime& modifyDate() const;
+	void setModifyDate(const QDateTime& date);
+	void resetModifyDate();
+
 	bool update();
 	bool sync();
 private:
 	User m_user;
 	QString m_text;
+	int m_lastRevision;
+	QDateTime m_modify_date;
 };
 
 }

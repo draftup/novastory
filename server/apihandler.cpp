@@ -99,6 +99,7 @@ bool ApiHandler::handle(const QString& type, const QString& path, const QHash<QS
 		TextEditor editor;
 		editor.setUser(user);
 		editor.setText(post["text"]);
+		editor.setLastRevision(post["lastrevision"].toInt());
 		editor.update();
 		json = editor.jsonString().toUtf8();
 	}

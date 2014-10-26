@@ -75,6 +75,22 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 				"",
 				""
 			},
+			DBPatcher::Column{
+				"lastrevision",
+				"int(10) unsigned",
+				true,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"modifydate",
+				"timestamp",
+				false,
+				"",
+				"CURRENT_TIMESTAMP",
+				"on update CURRENT_TIMESTAMP"
+			}
 		})
 	};
 	TABLE_STRUCT << DBPatcher::Table

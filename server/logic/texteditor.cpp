@@ -6,7 +6,7 @@
 namespace novastory
 {
 
-TextEditor::TextEditor()
+TextEditor::TextEditor() : m_lastRevision(0)
 {
 	setObjectName("texteditor");
 }
@@ -53,9 +53,10 @@ bool TextEditor::update()
 	}
 
 	SqlQuery updateQuery;
-	updateQuery.prepare("INSERT INTO " + objectName() + "(userid, text) VALUES(:userid, :text) ON DUPLICATE KEY UPDATE text = :text");
+	updateQuery.prepare("INSERT INTO " + objectName() + "(userid, text, lastrevision) VALUES(:userid, :text, :lastrevision) ON DUPLICATE KEY UPDATE text = :text, lastrevision = :lastrevision");
 	updateQuery.bindValue(":userid", userid());
 	updateQuery.bindValue(":text", text());
+	updateQuery.bindValue(":lastrevision", lastRevision());
 	return updateQuery.exec();
 }
 
@@ -84,10 +85,44 @@ bool TextEditor::sync()
 		VERIFY(selectQuery.next());
 		QString text = selectQuery.value("text").toString();
 		setText(text);
+		setLastRevision(selectQuery.value("lastrevision").toInt());
+		setModifyDate(selectQuery.value("modifydate").toDateTime());
 
 		JSON_INSERT("text", text);
+		JSON_INSERT("lastrevision", lastRevision());
+		JSON_INSERT("modifydate", modifyDate().toMSecsSinceEpoch());
 	}
 	return true;
+}
+
+const int& TextEditor::lastRevision() const
+{
+	return m_lastRevision;
+}
+
+void TextEditor::setLastRevision(int rev)
+{
+	m_lastRevision = rev;
+}
+
+void TextEditor::resetLastRevision()
+{
+	m_lastRevision = 0;
+}
+
+const QDateTime& TextEditor::modifyDate() const
+{
+	return m_modify_date;
+}
+
+void TextEditor::setModifyDate(const QDateTime& date)
+{
+	m_modify_date = date;
+}
+
+void TextEditor::resetModifyDate()
+{
+	m_modify_date = QDateTime();
 }
 
 }

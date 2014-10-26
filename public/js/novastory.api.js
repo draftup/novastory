@@ -137,19 +137,22 @@ NovastoryApi.isSubscribed = function (targetuser, callback)
 		'json');
 };
 
-NovastoryApi.editorUpdate = function (text, callback)
+NovastoryApi.editorUpdate = function (text, lastrevision, callback)
 {
+	lastrevision = lastrevision || 0;
 	$.post(
 		'/api/editorupdate',
 	{
 		text : text,
+		lastrevision: lastrevision
 	},
 		callback,
 		'json');
 };
 
-NovastoryApi.editorUpdateSync = function (text)
+NovastoryApi.editorUpdateSync = function (text, lastrevision)
 {
+	lastrevision = lastrevision || 0;
 	$.ajax(
 	{
 		type : "POST",
@@ -157,6 +160,7 @@ NovastoryApi.editorUpdateSync = function (text)
 		data :
 		{
 			text : text,
+			lastrevision: lastrevision
 		},
 		async : false
 	}

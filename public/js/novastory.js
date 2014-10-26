@@ -668,7 +668,7 @@ $(document).ready(function ()
 		{
 			if ($("#editor").exists())
 			{
-				NovastoryApi.editorUpdate($("#editor").val());
+				NovastoryApi.editorUpdate($("#editor").val(), lastClickedRevision);
 			}
 		}
 
@@ -676,7 +676,7 @@ $(document).ready(function ()
 		{
 			if ($("#editor").exists())
 			{
-				NovastoryApi.editorUpdateSync($("#editor").val());
+				NovastoryApi.editorUpdateSync($("#editor").val(), lastClickedRevision);
 			}
 		}
 
@@ -772,6 +772,8 @@ $(document).ready(function ()
 			// скрываем кнопку от дальнейших нажатий и перезагрузок
 			$('#editico').hide();
 
+			clickedRevlistDefaultBigestDate = 0;
+			
 			$('#editor-space').load('/editor.html #editor-page', null, function ()
 			{
 				// сразу же скрываем панель от наглых глаз
@@ -813,6 +815,12 @@ $(document).ready(function ()
 						);
 
 						$('#editor').val(data.text);
+						
+						if(data.modifydate > clickedRevlistDefaultBigestDate)
+						{
+							clickedRevlistDefaultBigestDate = data.modifydate;
+							clickedRevlistDefault = data.lastrevision;
+						}
 					}
 
 					// Back up tab close
@@ -850,7 +858,6 @@ $(document).ready(function ()
 								for (var i = 0; i < revisions.length; i++)
 								{
 									var originalText = {};
-									var bigestDate = 0;
 									(function (i)
 									{
 										var dateModify = new Date(revisions[i].modifyDate);
@@ -868,9 +875,9 @@ $(document).ready(function ()
 										list.prepend(element);
 										var revision = revisions[i].revisionid;
 
-										if (revisions[i].modifyDate > bigestDate)
+										if (revisions[i].modifyDate > clickedRevlistDefaultBigestDate)
 										{
-											bigestDate = revisions[i].modifyDate;
+											clickedRevlistDefaultBigestDate = revisions[i].modifyDate;
 											clickedRevlistDefault = revisions[i].revisionid;
 										}
 
@@ -887,6 +894,14 @@ $(document).ready(function ()
 											{
 												lastClickedRevisionRelease = data.isRelease;
 												var currentText = $('#editor').val();
+												
+												// Current element
+												if(backupedText[revision] != null && backupedText[revision] != data.text)
+												{
+													element.addClass('unsaved');
+												}
+												
+												// Not current elements
 												$('#editor-revisions > div.current').each(function ()
 												{
 													var revisionid = parseInt($(this).children('.revision-id').text());
@@ -901,15 +916,6 @@ $(document).ready(function ()
 
 												$('#editor-revisions > div').removeClass('current');
 												element.addClass('current');
-												/*
-												$('#editor').on('input', function ()
-											{
-												currentTextElement.remove();
-												currentTextElement = null;
-												$(this).off('input');
-												}
-												);
-												 */
 												if (backupedText[revision] != null)
 												{
 													$('#editor').val(backupedText[revision]);
@@ -993,7 +999,6 @@ $(document).ready(function ()
 									backupedText[clickedRevlistDefault] = $('#editor').val();
 									var item = $('#revision' + clickedRevlistDefault);
 									item.click();
-									item.addClass('unsaved');
 								}
 							}
 							);
@@ -1012,41 +1017,41 @@ $(document).ready(function ()
 								function parseDirectory(dir)
 								{
 									var html = '';
-								
+
 									if (dir.length == 0)
 										return html;
-										
+
 									for (var i = 0; i < dir.length; i++)
 									{
 										if (dir[i].childs.length > 0 || (dir[i].type != 'REVISION' && dir[i].type != 'TEXT'))
 										{
 											// This is directory
 											html +=
-												'<li draggable="true">'
-												 + '<div class="revisionid" style="display: none;">' + dir[i].revisionid + '</div>'
-												 + '<label for="folder' + dir[i].revisionid + '" class="cheked">'
-												 + '<div>'
-												 + '<svg  id="new-project-icon" viewBox="0 0 512 512">'
-												 + '<path id="full-folder-icon" d="M430,122.265v77.303h-63.119l-75.04-57.707l-25.129,32.676l32.62,25.031h-33.843l-75.041-57.707l-44.379,57.707H81V89.66h100.35l22.979,22.834c6.298,6.258,14.814,9.771,23.693,9.771H430z M462,234.528H50L74,422.34h358.583L462,234.528z"></path>'
-												 + '</svg>'
-												 + '</div>'
-												 + '<a>' + dir[i].mark + '</a>'
-												 + '</label>'
-												 + '<input checked type="checkbox" id="folder' + dir[i].revisionid + '" />'
-												 + '<ol>'
-												 + parseDirectory(dir[i].childs)
-											     + '</ol></li>';
+											'<li draggable="true">'
+											 + '<div class="revisionid" style="display: none;">' + dir[i].revisionid + '</div>'
+											 + '<label for="folder' + dir[i].revisionid + '" class="cheked">'
+											 + '<div>'
+											 + '<svg  id="new-project-icon" viewBox="0 0 512 512">'
+											 + '<path id="full-folder-icon" d="M430,122.265v77.303h-63.119l-75.04-57.707l-25.129,32.676l32.62,25.031h-33.843l-75.041-57.707l-44.379,57.707H81V89.66h100.35l22.979,22.834c6.298,6.258,14.814,9.771,23.693,9.771H430z M462,234.528H50L74,422.34h358.583L462,234.528z"></path>'
+											 + '</svg>'
+											 + '</div>'
+											 + '<a>' + dir[i].mark + '</a>'
+											 + '</label>'
+											 + '<input checked type="checkbox" id="folder' + dir[i].revisionid + '" />'
+											 + '<ol>'
+											 + parseDirectory(dir[i].childs)
+											 + '</ol></li>';
 										}
 										else
-										{	
+										{
 											// This is final leef
 											html +=
-												'<li draggable="true" class="file" id="file' + dir[i].revisionid + '">'
-												 + '<div class="revisionid" style="display: none;">' + dir[i].revisionid + '</div>'
-												 + '<div></div>'
-												 + '<a>' + dir[i].mark + '</a>'
-												 + '</li>';
-												 
+											'<li draggable="true" class="file" id="file' + dir[i].revisionid + '">'
+											 + '<div class="revisionid" style="display: none;">' + dir[i].revisionid + '</div>'
+											 + '<div></div>'
+											 + '<a>' + dir[i].mark + '</a>'
+											 + '</li>';
+
 											if (dir[i].modifyDate > bigestDate)
 											{
 												bigestDate = dir[i].modifyDate;
@@ -1317,6 +1322,7 @@ $(document).ready(function ()
 									{
 										$('#text-block-name').text(newName);
 										clickedRevisionInTreeElement.children('a').text(newName);
+										clickedRevisionInTreeElement.find('label a').text(newName);
 									}
 									else
 									{
