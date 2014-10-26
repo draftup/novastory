@@ -1027,7 +1027,7 @@ $(document).ready(function ()
 										{
 											// This is directory
 											html +=
-											'<li draggable="true">'
+											'<li draggable="true" class="' + ((dir[i].isRelease > 0) ? "published" : "") + '">'
 											 + '<div class="revisionid" style="display: none;">' + dir[i].revisionid + '</div>'
 											 + '<label for="folder' + dir[i].revisionid + '" class="cheked">'
 											 + '<div>'
@@ -1046,7 +1046,7 @@ $(document).ready(function ()
 										{
 											// This is final leef
 											html +=
-											'<li draggable="true" class="file" id="file' + dir[i].revisionid + '">'
+											'<li draggable="true" class="file' + ((dir[i].isRelease > 0) ? " published" : "") + '" id="file' + dir[i].revisionid + '">'
 											 + '<div class="revisionid" style="display: none;">' + dir[i].revisionid + '</div>'
 											 + '<div></div>'
 											 + '<a>' + dir[i].mark + '</a>'
@@ -1070,6 +1070,12 @@ $(document).ready(function ()
 									$('#revisions-directory li').removeClass('current');
 									$('#text-block-head-event').attr('checked', false);
 
+									// changing publishing text
+									if($(this).hasClass('published'))
+										$('#publish-butt div').text('Unpublish');
+									else
+										$('#publish-butt div').text('Publish');
+									
 									clickedRevisionInTreeElement = $(this);
 									clickedRevisionInTreeElement.addClass('current');
 									clickedRevisionInTree = parseInt(clickedRevisionInTreeElement.children('.revisionid').text());
