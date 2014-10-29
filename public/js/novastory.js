@@ -773,7 +773,7 @@ $(document).ready(function ()
 			$('#editico').hide();
 
 			clickedRevlistDefaultBigestDate = 0;
-			
+
 			$('#editor-space').load('/editor.html #editor-page', null, function ()
 			{
 				// сразу же скрываем панель от наглых глаз
@@ -815,8 +815,8 @@ $(document).ready(function ()
 						);
 
 						$('#editor').val(data.text);
-						
-						if(data.modifydate > clickedRevlistDefaultBigestDate)
+
+						if (data.modifydate > clickedRevlistDefaultBigestDate)
 						{
 							clickedRevlistDefaultBigestDate = data.modifydate;
 							clickedRevlistDefault = data.lastrevision;
@@ -894,13 +894,13 @@ $(document).ready(function ()
 											{
 												lastClickedRevisionRelease = data.isRelease;
 												var currentText = $('#editor').val();
-												
+
 												// Current element
-												if(backupedText[revision] != null && backupedText[revision] != data.text)
+												if (backupedText[revision] != null && backupedText[revision] != data.text)
 												{
 													element.addClass('unsaved');
 												}
-												
+
 												// Not current elements
 												$('#editor-revisions > div.current').each(function ()
 												{
@@ -916,6 +916,12 @@ $(document).ready(function ()
 
 												$('#editor-revisions > div').removeClass('current');
 												element.addClass('current');
+
+												if (data.isRelease)
+													$('#publish-butt div').text('Unpublish');
+												else
+													$('#publish-butt div').text('Publish');
+
 												if (backupedText[revision] != null)
 												{
 													$('#editor').val(backupedText[revision]);
@@ -1070,12 +1076,6 @@ $(document).ready(function ()
 									$('#revisions-directory li').removeClass('current');
 									$('#text-block-head-event').attr('checked', false);
 
-									// changing publishing text
-									if($(this).hasClass('published'))
-										$('#publish-butt div').text('Unpublish');
-									else
-										$('#publish-butt div').text('Publish');
-									
 									clickedRevisionInTreeElement = $(this);
 									clickedRevisionInTreeElement.addClass('current');
 									clickedRevisionInTree = parseInt(clickedRevisionInTreeElement.children('.revisionid').text());
