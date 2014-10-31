@@ -57,10 +57,22 @@ bool BookInfo::sync()
 {
 	if (bookid() <= 0)
 	{
+		JSON_ERROR("book id null", 1);
 		return false;
 	}
 
 	return syncSQL("bookid");
+}
+
+bool BookInfo::update()
+{
+	if (!isLogged())
+	{
+		JSON_ERROR("not loggined", 1);
+		return false;
+	}
+
+	return insertSQL(true);
 }
 
 

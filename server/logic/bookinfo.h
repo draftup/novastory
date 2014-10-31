@@ -32,6 +32,7 @@ public:
 	void resetTextID();
 
 	bool sync();
+	bool update();
 private:
 	int m_bookid;
 	int m_revisionid;
