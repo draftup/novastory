@@ -11,16 +11,6 @@ TextEditor::TextEditor() : m_lastRevision(0)
 	setObjectName("texteditor");
 }
 
-int TextEditor::userid() const
-{
-	return m_user.userid();
-}
-
-void TextEditor::setUserID(int userid)
-{
-	m_user.setUserID(userid);
-}
-
 const QString& TextEditor::text() const
 {
 	return m_text;
@@ -58,11 +48,6 @@ bool TextEditor::update()
 	updateQuery.bindValue(":text", text());
 	updateQuery.bindValue(":lastrevision", lastRevision());
 	return updateQuery.exec();
-}
-
-void TextEditor::setUser(const User& user)
-{
-	m_user = user;
 }
 
 bool TextEditor::sync()

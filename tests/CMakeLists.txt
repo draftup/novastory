@@ -25,4 +25,5 @@ append_test_resource(WebDataContainer ${CMAKE_SOURCE_DIR}/tests/rating_1_on.gif)
 do_test(LRUCache test-LRUCache.cpp)
 do_test(DBPatcher test-DBPatcher.cpp)
 do_test(NestedSet test-NestedSet.cpp)
+do_test(BookInfo test-BookInfo.cpp)
 

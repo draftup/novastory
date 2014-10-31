@@ -75,13 +75,14 @@ bool skipCleanVariant(const QVariant& variant)
 }
 */
 
-bool Sqlizable::insertSQL()
+bool Sqlizable::insertSQL(bool can_dublicate /*= false*/)
 {
 	const QMetaObject* mObject = metaObject();
 	const int propCount = mObject->propertyCount();
 	if (propCount > 0)
 	{
 		QList<QVariant> values;
+		QList<QString> keys;
 
 		QString objName = objectName();
 		if (objName.isEmpty())
@@ -122,6 +123,7 @@ bool Sqlizable::insertSQL()
 			}
 
 			values.append(propValue);
+			keys.append(propName);
 
 			sql += "`" + propName + "`, ";
 		}
@@ -136,16 +138,25 @@ bool Sqlizable::insertSQL()
 		sql += ") VALUES(";
 		for (int i = 0; i < valuesCout; ++i)
 		{
-			sql += (i == valuesCout - 1) ? "?" : "?, ";
+			sql += (i == valuesCout - 1) ? ":" + keys[i] : ":" + keys[i] + ", ";
 		}
 		sql += ")";
+
+		if (can_dublicate)
+		{
+			sql += " ON DUPLICATE KEY UPDATE ";
+			for (int i = 0; i < valuesCout; ++i)
+			{
+				sql += (i == valuesCout - 1) ? "`" + keys[i] + "` = :" + keys[i] : "`" + keys[i] + "` = :" + keys[i] + ", ";
+			}
+		}
 
 		SqlQuery query;
 		query.prepare(sql);
 
 		for (int i = 0; i < valuesCout; ++i)
 		{
-			query.bindValue(i, values.at(i));
+			query.bindValue(":" + keys.at(i), values.at(i));
 		}
 
 		bool result = query.exec();

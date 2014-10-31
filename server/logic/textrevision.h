@@ -5,6 +5,7 @@
 #include "jsonthrower.h"
 #include "user.h"
 #include <QDateTime>
+#include "logic/loggedactions.h"
 
 class Test_TextRevision;
 
@@ -13,7 +14,7 @@ namespace novastory
 
 class TextRevisionContainer;
 
-class TextRevision : protected Sqlizable, public JsonThrower
+class TextRevision : protected Sqlizable, public JsonThrower, public LoggedActions
 {
 	friend class ::Test_TextRevision;
 	friend class TextRevisionContainer;
@@ -29,10 +30,6 @@ class TextRevision : protected Sqlizable, public JsonThrower
 	Q_PROPERTY(int parent_id READ parent WRITE setParent RESET resetParent)
 public:
 	TextRevision();
-
-	int userid() const;
-	void setUserID(int userid);
-	void setUser(const User& user);
 
 	const QString& text() const;
 	void setText(const QString& text);
@@ -76,7 +73,6 @@ public:
 	void appendChild(const TextRevision& rev);
 	void clearChilds();
 private:
-	User m_user;
 	QString m_text;
 	QString m_mark;
 	int m_revisionId;

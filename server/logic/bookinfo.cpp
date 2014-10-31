@@ -18,5 +18,50 @@ int BookInfo::bookid() const
 	return m_bookid;
 }
 
+void BookInfo::setBookID(int bookid)
+{
+	m_bookid = bookid;
+}
+
+const QString& BookInfo::description() const
+{
+	return m_description;
+}
+
+void BookInfo::setDescription(const QString& text)
+{
+	m_description = text;
+}
+
+void BookInfo::resetDescription()
+{
+	m_description = QString();
+}
+
+int BookInfo::textid() const
+{
+	return m_revisionid;
+}
+
+void BookInfo::setTextID(int textid)
+{
+	m_revisionid = textid;
+}
+
+void BookInfo::resetTextID()
+{
+	m_revisionid = -1;
+}
+
+bool BookInfo::sync()
+{
+	if (bookid() <= 0)
+	{
+		return false;
+	}
+
+	return syncSQL("bookid");
+}
+
 
 }

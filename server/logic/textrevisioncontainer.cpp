@@ -50,11 +50,6 @@ bool TextRevisionContainer::sync(int parentId /* = 0 */)
 	return true;
 }
 
-int TextRevisionContainer::userid() const
-{
-	return m_user.userid();
-}
-
 TextRevision TextRevisionContainer::insert(int parentId /* = 0 */)
 {
 	if (!m_user.isLogined())
@@ -317,15 +312,6 @@ novastory::TextRevision TextRevisionContainer::update(const TextRevision& revisi
 void TextRevisionContainer::setText(const QString& text)
 {
 	m_text = text;
-}
-
-void TextRevisionContainer::setUser(const User& user)
-{
-	if (m_user != user)
-	{
-		QMap::clear();
-	}
-	m_user = user;
 }
 
 void TextRevisionContainer::clear()

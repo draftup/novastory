@@ -45,6 +45,7 @@ set(HEADERS
 	database/novastory_db.h
 	
 	logic/textrevisioncontainer.h
+	logic/loggedactions.h
 	
 	utils/globals.h
 	utils/lrucache.hpp
@@ -85,6 +86,7 @@ set(SOURCES
 	logic/webdata.cpp
 	logic/userpic.cpp
 	logic/bookinfo.cpp
+	logic/loggedactions.cpp
 	
 	utils/globals.cpp
 	sql/nestedset.cpp

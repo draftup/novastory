@@ -7,16 +7,6 @@
 namespace novastory
 {
 
-int TextRevision::userid() const
-{
-	return m_user.userid();
-}
-
-void TextRevision::setUserID(int userid)
-{
-	m_user.setUserID(userid);
-}
-
 const QString& TextRevision::text() const
 {
 	return m_text;
@@ -45,11 +35,6 @@ void TextRevision::setMark(const QString& mark)
 void TextRevision::resetMark()
 {
 	m_mark = QString();
-}
-
-void TextRevision::setUser(const User& user)
-{
-	m_user = user;
 }
 
 const int& TextRevision::revisionId() const

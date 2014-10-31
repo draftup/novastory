@@ -17,7 +17,7 @@ public:
 	Sqlizable(const novastory::Sqlizable&);
 	~Sqlizable() {};
 
-	bool insertSQL();
+	bool insertSQL(bool can_dublicate = false);
 	bool updateSQL(const QList<QString>& basis, const QList<QString>& ignoreVariables = QList<QString>());
 	bool updateSQL(const QString& basis, const QList<QString>& ignoreVariables = QList<QString>());
 	bool removeSQL(const QList<QString>& basis);

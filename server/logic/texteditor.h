@@ -4,13 +4,14 @@
 #include "sql/sqlizable.h"
 #include "jsonthrower.h"
 #include "user.h"
+#include "logic/loggedactions.h"
 
 class Test_TextEditor;
 
 namespace novastory
 {
 
-class TextEditor : protected Sqlizable, public JsonThrower
+class TextEditor : protected Sqlizable, public JsonThrower, public LoggedActions
 {
 	friend class ::Test_TextEditor;
 	Q_OBJECT
@@ -20,10 +21,6 @@ class TextEditor : protected Sqlizable, public JsonThrower
 	Q_PROPERTY(QDateTime modifydate READ modifyDate WRITE setModifyDate RESET resetModifyDate)
 public:
 	TextEditor();
-
-	int userid() const;
-	void setUserID(int userid);
-	void setUser(const User& user);
 
 	const QString& text() const;
 	void setText(const QString& text);
@@ -40,7 +37,6 @@ public:
 	bool update();
 	bool sync();
 private:
-	User m_user;
 	QString m_text;
 	int m_lastRevision;
 	QDateTime m_modify_date;

@@ -6,13 +6,14 @@
 #include "user.h"
 #include "jsonthrower.h"
 #include "sql/nestedset.h"
+#include "logic/loggedactions.h"
 
 class Test_TextRevision;
 
 namespace novastory
 {
 
-class TextRevisionContainer : public QMap<int, TextRevision>, public JsonThrower, public NestedSet
+class TextRevisionContainer : public QMap<int, TextRevision>, public JsonThrower, public NestedSet, public LoggedActions
 {
 	friend class ::Test_TextRevision;
 public:
@@ -44,14 +45,10 @@ public:
 
 	void setText(const QString& text);
 	void setMark(const QString& text);
-	void setUser(const User& user);
-
-	int userid() const;
 
 	QString json(bool withoutText = false);
 	QString treeFolders();
 private:
-	User m_user;
 	QString m_text;
 	QString m_mark;
 	bool m_synchronized;

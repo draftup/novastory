@@ -3,13 +3,14 @@
 
 #include "sql/sqlizable.h"
 #include "jsonthrower.h"
+#include "logic/loggedactions.h"
 
 class Test_BookInfo;
 
 namespace novastory
 {
 
-class BookInfo : protected Sqlizable, public JsonThrower
+class BookInfo : protected Sqlizable, public JsonThrower, public LoggedActions
 {
 	friend class ::Test_BookInfo;
 	Q_OBJECT
@@ -29,6 +30,8 @@ public:
 	int textid() const;
 	void setTextID(int textid);
 	void resetTextID();
+
+	bool sync();
 private:
 	int m_bookid;
 	int m_revisionid;
