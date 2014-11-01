@@ -362,7 +362,7 @@ bool TextRevisionContainer::release(int targetRevision)
 		return false;
 	}
 
-	SqlQuery releaseQuery("UPDATE textrevisions SET `release` = `release` + 1 WHERE left_key <= " + left_key + " AND right_key >=" + right_key);
+	SqlQuery releaseQuery("UPDATE textrevisions SET `release` = `release` + 1 WHERE left_key <= " + left_key + " AND right_key >=" + right_key + " AND userid = " + QString::number(userid()));
 	if (QMap::contains(targetRevision))
 	{
 		QMap::find(targetRevision)->setRelease(true);
@@ -405,13 +405,13 @@ bool TextRevisionContainer::unrelease(int targetRevision)
 		return false;
 	}
 
-	SqlQuery releaseQuery("UPDATE textrevisions SET `release` = `release` - 1 WHERE left_key <= " + left_key + " AND right_key >=" + right_key);
+	SqlQuery unreleaseQuery("UPDATE textrevisions SET `release` = `release` - 1 WHERE left_key <= " + left_key + " AND right_key >=" + right_key + " AND userid = " + QString::number(userid()));
 	if (QMap::contains(targetRevision))
 	{
 		QMap::find(targetRevision)->setRelease(false);
 	}
 
-	return releaseQuery.lastError().type() == QSqlError::NoError;
+	return unreleaseQuery.lastError().type() == QSqlError::NoError;
 }
 
 bool TextRevisionContainer::unrelease(const TextRevision& targetRevision)
@@ -589,7 +589,7 @@ bool TextRevisionContainer::move(int revisionId, int targetId)
 		return false;
 	}
 
-	SqlQuery revTest("SELECT `type` FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + " AND revisionid = " + QString::number(revisionId));
+	SqlQuery revTest("SELECT `type`,`release`,`left_key`,`right_key` FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + " AND revisionid = " + QString::number(revisionId));
 	if (revTest.size() != 1)
 	{
 		JSON_ERROR("Wrong size", 2);
@@ -597,6 +597,9 @@ bool TextRevisionContainer::move(int revisionId, int targetId)
 	}
 	VERIFY(revTest.next());
 	QString revType = revTest.value("type").toString();
+	int revRelease = revTest.value("release").toInt();
+	int revLeft = revTest.value("left_key").toInt();
+	int revRight = revTest.value("right_key").toInt();
 
 	if (revType == "REVISION")
 	{
@@ -604,7 +607,7 @@ bool TextRevisionContainer::move(int revisionId, int targetId)
 		return false;
 	}
 
-	SqlQuery destTest("SELECT `type` FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + " AND revisionid = " + QString::number(targetId));
+	SqlQuery destTest("SELECT `type`,`release`,`left_key`,`right_key` FROM textrevisions WHERE userid = " + QString::number(m_user.userid()) + " AND revisionid = " + QString::number(targetId));
 	if (destTest.size() != 1)
 	{
 		JSON_ERROR("Wrong size", 3);
@@ -612,6 +615,9 @@ bool TextRevisionContainer::move(int revisionId, int targetId)
 	}
 	VERIFY(destTest.next());
 	QString destType = destTest.value("type").toString();
+	int destRelease = destTest.value("release").toInt();
+	int destLeft = destTest.value("left_key").toInt();
+	int destRight = destTest.value("right_key").toInt();
 
 	if (destType == "REVISION" || destType == "TEXT")
 	{
@@ -628,6 +634,17 @@ bool TextRevisionContainer::move(int revisionId, int targetId)
 		JSON_ERROR("Already moved", 7);
 		return false;
 		// already moved
+	}
+
+	// Update realeses
+	if (revRelease > 0)
+	{
+		SqlQuery updateRelease("UPDATE textrevisions SET `release` = `release` + " + QString::number(revRelease) + " WHERE left_key <= " + QString::number(destLeft) + " AND right_key >= " + QString::number(destRight) + " AND userid = " + QString::number(userid()));
+	}
+
+	if (destRelease > 0)
+	{
+		SqlQuery updateRelease("UPDATE textrevisions SET `release` = `release` - " + QString::number(revRelease) + " WHERE left_key < " + QString::number(revLeft) + " AND right_key > " + QString::number(revRight) + " AND userid = " + QString::number(userid()));
 	}
 
 	m_where_coincidence = "userid = " + QString::number(m_user.userid());
