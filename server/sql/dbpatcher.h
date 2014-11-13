@@ -3,6 +3,8 @@
 
 #include <QString>
 #include <QSet>
+#include <QList>
+#include <QHash>
 
 class Test_DBPatcher;
 
@@ -31,6 +33,7 @@ public:
 	{
 		QString table;
 		QList<Column> columns;
+		QHash<QString, QList<QString>> uniq_keys;
 
 		bool create();
 		bool modify(const Table& old);

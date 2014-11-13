@@ -78,8 +78,23 @@ QString DBPatcher::cppSerialize()
 
 			cpp += "   },\n";
 		}
+		cpp += "  }),\n";
 
-		cpp += "  })\n};\n";
+		cpp += "QHash<QString, QList<QString>>{";
+		QHashIterator<QString, QList<QString>> it(table.uniq_keys);
+		while (it.hasNext())
+		{
+			it.next();
+			cpp += QString("{\"%1\", QList<QString>{").arg(it.key());
+			for (const QString& k : it.value())
+			{
+				cpp += "\"" + k + "\", ";
+			}
+			cpp += "}}, ";
+		}
+		cpp += "}\n";
+
+		cpp += "};\n";
 	}
 
 	cpp += " return TABLE_STRUCT;\n}\n\n}\n\n#endif // NOVASTORY_DB_H"; // close namespace
@@ -89,19 +104,19 @@ QString DBPatcher::cppSerialize()
 
 QHash<QString, DBPatcher::Table> DBPatcher::columnListDB()
 {
-	SqlQuery fields("select * from  information_schema.columns where table_schema = '" MYSQL_DATABASE "'");
-	QHash<QString, Table> columnList;
+	SqlQuery fields("select * from information_schema.columns where table_schema = '" MYSQL_DATABASE "'");
+	QHash<QString, Table> tableList;
 	while (fields.next())
 	{
 		QString name = fields.value("TABLE_NAME").toString();
-		if (!columnList.contains(name))
+		if (!tableList.contains(name))
 		{
 			Table tb;
 			tb.table = name;
-			columnList[name] = tb;
+			tableList[name] = tb;
 		}
 
-		Table& table = columnList[name];
+		Table& table = tableList[name];
 
 		Column newColumn;
 		newColumn.field = fields.value("COLUMN_NAME").toString();
@@ -114,7 +129,18 @@ QHash<QString, DBPatcher::Table> DBPatcher::columnListDB()
 		table.columns.append(newColumn);
 	}
 
-	return columnList;
+	SqlQuery uniq_keys("select * from information_schema.key_column_usage where table_schema = '" MYSQL_DATABASE "' and CONSTRAINT_NAME != 'PRIMARY'");
+	while (uniq_keys.next())
+	{
+		QString table = uniq_keys.value("TABLE_NAME").toString();
+		QString uniq_name = uniq_keys.value("CONSTRAINT_NAME").toString();
+		QString uniq_cont = uniq_keys.value("COLUMN_NAME").toString();
+
+		Table& tab = tableList[table];
+		tab.uniq_keys[uniq_name].append(uniq_cont);
+	}
+
+	return tableList;
 }
 
 void DBPatcher::setDatabaseStructure(const QSet<Table>& structure)
@@ -288,6 +314,33 @@ bool DBPatcher::Table::modify(const Table& old)
 					qCritical() << "Create drop key '" << column.field;;
 				}
 			}
+		}
+	}
+
+	// Create/delete unique fields
+	if (uniq_keys != old.uniq_keys)
+	{
+		QSet<QString> new_ukeys = uniq_keys.keys().toSet() - old.uniq_keys.keys().toSet();
+		for (const QString& key : new_ukeys)
+		{
+			QString sql = QString("ALTER TABLE `%1` ADD UNIQUE KEY `%2`(").arg(this->table).arg(key);
+			QListIterator<QString> it(uniq_keys[key]);
+			while (it.hasNext())
+			{
+				sql += "`" + it.next() + "`";
+				if (it.hasNext())
+				{
+					sql += ",";
+				}
+			}
+			sql += ")";
+			status &= SqlQuery().exec(sql);
+		}
+
+		QSet<QString> old_ukeys = old.uniq_keys.keys().toSet() - uniq_keys.keys().toSet();
+		for (const QString& key : old_ukeys)
+		{
+			status &= SqlQuery().exec(QString("ALTER TABLE `%1` DROP KEY `%2`").arg(this->table).arg(key));
 		}
 	}
 
