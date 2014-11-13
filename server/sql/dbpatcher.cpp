@@ -285,18 +285,26 @@ bool DBPatcher::Table::modify(const Table& old)
 				if (oldColumn.key == "PRI")
 				{
 					status &= query.exec(QString("ALTER TABLE `%1` DROP PRIMARY KEY").arg(this->table));
+					if (status)
+					{
+						qDebug() << "Drop primary key '" << column.field;
+					}
+					else
+					{
+						qCritical() << "Failed drop primary key '" << column.field;;
+					}
 				}
 				else if (!uniColumsOld.contains(column.field))
 				{
 					status &= query.exec(QString("ALTER TABLE `%1` DROP KEY `%2`").arg(this->table).arg(column.field));
-				}
-				if (status)
-				{
-					qDebug() << "Drop key '" << column.field;
-				}
-				else
-				{
-					qCritical() << "Failed drop key '" << column.field;;
+					if (status)
+					{
+						qDebug() << "Drop key '" << column.field;
+					}
+					else
+					{
+						qCritical() << "Failed drop key '" << column.field;;
+					}
 				}
 			}
 
@@ -306,23 +314,31 @@ bool DBPatcher::Table::modify(const Table& old)
 				if (column.key == "PRI")
 				{
 					status &= query.exec(QString("ALTER TABLE `%1` ADD PRIMARY KEY(`%2`)").arg(this->table).arg(column.field));
+					if (status)
+					{
+						qDebug() << "Created primary key '" << column.field;
+					}
+					else
+					{
+						qCritical() << "Failed to create primary key '" << column.field;
+					}
 				}
 				else if (column.key == "MUL" && !uniColums.contains(column.field))
 				{
 					status &= query.exec(QString("ALTER TABLE `%1` ADD KEY(`%2`)").arg(this->table).arg(column.field));
+					if (status)
+					{
+						qDebug() << "Created key '" << column.field;
+					}
+					else
+					{
+						qCritical() << "Failed to create key '" << column.field;
+					}
 				}
 				else if (!uniColums.contains(column.field))
 				{
 					qWarning() << "Unsupported key type " << column.key << "for patching";
 					continue;
-				}
-				if (status)
-				{
-					qDebug() << "Create key '" << column.field;
-				}
-				else
-				{
-					qCritical() << "Create drop key '" << column.field;;
 				}
 			}
 		}
@@ -346,12 +362,28 @@ bool DBPatcher::Table::modify(const Table& old)
 			}
 			sql += ")";
 			status &= SqlQuery().exec(sql);
+			if (status)
+			{
+				qDebug() << "Unique key" << key << "added";
+			}
+			else
+			{
+				qCritical() << "Failed on key add";
+			}
 		}
 
 		QSet<QString> old_ukeys = old.uniq_keys.keys().toSet() - uniq_keys.keys().toSet();
 		for (const QString& key : old_ukeys)
 		{
 			status &= SqlQuery().exec(QString("ALTER TABLE `%1` DROP KEY `%2`").arg(this->table).arg(key));
+			if (status)
+			{
+				qDebug() << "Unique key" << key << "removed";
+			}
+			else
+			{
+				qCritical() << "Failed on key remove";
+			}
 		}
 	}
 

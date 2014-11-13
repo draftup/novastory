@@ -11,170 +11,6 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 	QSet<DBPatcher::Table> TABLE_STRUCT;
 	TABLE_STRUCT << DBPatcher::Table
 	{
-		"avatars",
-		QList<DBPatcher::Column>({
-			DBPatcher::Column{
-				"userid",
-				"int(10) unsigned",
-				false,
-				"PRI",
-				"",
-				""
-			},
-			DBPatcher::Column{
-				"data",
-				"mediumblob",
-				true,
-				"",
-				"",
-				""
-			},
-			DBPatcher::Column{
-				"contenttype",
-				"varchar(64)",
-				true,
-				"",
-				"",
-				""
-			},
-			DBPatcher::Column{
-				"contentsize",
-				"int(10) unsigned",
-				true,
-				"",
-				"",
-				""
-			},
-			DBPatcher::Column{
-				"modifydate",
-				"timestamp",
-				false,
-				"",
-				"CURRENT_TIMESTAMP",
-				"on update CURRENT_TIMESTAMP"
-			},
-		})
-	};
-	TABLE_STRUCT << DBPatcher::Table
-	{
-		"texteditor",
-		QList<DBPatcher::Column>({
-			DBPatcher::Column{
-				"userid",
-				"int(10) unsigned",
-				false,
-				"PRI",
-				"",
-				""
-			},
-			DBPatcher::Column{
-				"text",
-				"mediumtext",
-				true,
-				"",
-				"",
-				""
-			},
-			DBPatcher::Column{
-				"lastrevision",
-				"int(10) unsigned",
-				true,
-				"",
-				"",
-				""
-			},
-			DBPatcher::Column{
-				"modifydate",
-				"timestamp",
-				false,
-				"",
-				"CURRENT_TIMESTAMP",
-				"on update CURRENT_TIMESTAMP"
-			}
-		})
-	};
-	TABLE_STRUCT << DBPatcher::Table
-	{
-		"textrevisions",
-		QList<DBPatcher::Column>({
-			DBPatcher::Column{
-				"revisionid",
-				"int(10) unsigned",
-				false,
-				"PRI",
-				"",
-				"auto_increment"
-			},
-			DBPatcher::Column{
-				"userid",
-				"int(10) unsigned",
-				false,
-				"MUL"
-			},
-			DBPatcher::Column{
-				"left_key",
-				"int(10)",
-				true,
-				""
-			},
-			DBPatcher::Column{
-				"right_key",
-				"int(10)",
-				true,
-				""
-			},
-			DBPatcher::Column{
-				"parent_id",
-				"int(10) unsigned",
-				true,
-				"MUL"
-			},
-			DBPatcher::Column{
-				"release",
-				"int(10) unsigned",
-				false,
-				"",
-				"0"
-			},
-			DBPatcher::Column{
-				"type",
-				"enum('OTHER','REVISION','BOOK','TEXT')",
-				false,
-				"MUL",
-				"OTHER"
-			},
-			DBPatcher::Column{
-				"createdate",
-				"timestamp",
-				false,
-				"",
-				"CURRENT_TIMESTAMP"
-			},
-			DBPatcher::Column{
-				"modifydate",
-				"timestamp",
-				false,
-				"",
-				"CURRENT_TIMESTAMP",
-				"on update CURRENT_TIMESTAMP"
-			},
-			DBPatcher::Column{
-				"mark",
-				"varchar(64)",
-				true,
-				"",
-				"",
-				""
-			},
-			DBPatcher::Column{
-				"text",
-				"mediumtext",
-				true
-			},
-		})
-	};
-	TABLE_STRUCT << DBPatcher::Table
-	{
 		"userspassforgot",
 		QList<DBPatcher::Column>({
 			DBPatcher::Column{
@@ -201,7 +37,8 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 				"",
 				""
 			},
-		})
+		}),
+		QHash<QString, QList<QString>>{}
 	};
 	TABLE_STRUCT << DBPatcher::Table
 	{
@@ -279,83 +116,8 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 				"",
 				""
 			},
-		})
-	};
-	TABLE_STRUCT << DBPatcher::Table
-	{
-		"subscriptions",
-		QList<DBPatcher::Column>({
-			DBPatcher::Column{
-				"userid",
-				"int(10) unsigned",
-				true,
-				"MUL",
-				"",
-				""
-			},
-			DBPatcher::Column{
-				"targetid",
-				"int(10) unsigned",
-				true,
-				"MUL",
-				"",
-				""
-			},
-			DBPatcher::Column{
-				"options",
-				"int(10) unsigned",
-				false,
-				"",
-				"0",
-				""
-			},
-		})
-	};
-	TABLE_STRUCT << DBPatcher::Table
-	{
-		"userspics",
-		QList<DBPatcher::Column>({
-			DBPatcher::Column{
-				"userid",
-				"int(10) unsigned",
-				false,
-				"PRI",
-				"",
-				""
-			},
-			DBPatcher::Column{
-				"data",
-				"mediumblob",
-				true,
-				"",
-				"",
-				""
-			},
-			DBPatcher::Column{
-				"contenttype",
-				"varchar(64)",
-				true,
-				"",
-				"",
-				""
-			},
-			DBPatcher::Column{
-				"contentsize",
-				"int(10) unsigned",
-				true,
-				"",
-				"",
-				""
-			},
-			DBPatcher::Column{
-				"modifydate",
-				"timestamp",
-				false,
-				"",
-				"CURRENT_TIMESTAMP",
-				"on update CURRENT_TIMESTAMP"
-			},
-		})
+		}),
+		QHash<QString, QList<QString>>{}
 	};
 	TABLE_STRUCT << DBPatcher::Table
 	{
@@ -401,7 +163,267 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 				"CURRENT_TIMESTAMP",
 				"on update CURRENT_TIMESTAMP"
 			},
-		})
+		}),
+		QHash<QString, QList<QString>>{}
+	};
+	TABLE_STRUCT << DBPatcher::Table
+	{
+		"textrevisions",
+		QList<DBPatcher::Column>({
+			DBPatcher::Column{
+				"revisionid",
+				"int(10) unsigned",
+				false,
+				"PRI",
+				"",
+				"auto_increment"
+			},
+			DBPatcher::Column{
+				"userid",
+				"int(10) unsigned",
+				false,
+				"MUL",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"release",
+				"int(10) unsigned",
+				false,
+				"",
+				"0",
+				""
+			},
+			DBPatcher::Column{
+				"createdate",
+				"timestamp",
+				false,
+				"",
+				"CURRENT_TIMESTAMP",
+				""
+			},
+			DBPatcher::Column{
+				"modifydate",
+				"timestamp",
+				false,
+				"",
+				"CURRENT_TIMESTAMP",
+				"on update CURRENT_TIMESTAMP"
+			},
+			DBPatcher::Column{
+				"mark",
+				"varchar(64)",
+				true,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"text",
+				"mediumtext",
+				true,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"right_key",
+				"int(10)",
+				true,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"parent_id",
+				"int(10) unsigned",
+				true,
+				"MUL",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"left_key",
+				"int(10)",
+				true,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"type",
+				"enum('OTHER','REVISION','BOOK','TEXT')",
+				false,
+				"MUL",
+				"OTHER",
+				""
+			},
+		}),
+		QHash<QString, QList<QString>>{}
+	};
+	TABLE_STRUCT << DBPatcher::Table
+	{
+		"texteditor",
+		QList<DBPatcher::Column>({
+			DBPatcher::Column{
+				"userid",
+				"int(10) unsigned",
+				false,
+				"PRI",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"text",
+				"mediumtext",
+				true,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"lastrevision",
+				"int(10) unsigned",
+				true,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"modifydate",
+				"timestamp",
+				false,
+				"",
+				"CURRENT_TIMESTAMP",
+				"on update CURRENT_TIMESTAMP"
+			},
+		}),
+		QHash<QString, QList<QString>>{{"userid", QList<QString>{"userid", }}, }
+	};
+	TABLE_STRUCT << DBPatcher::Table
+	{
+		"userspics",
+		QList<DBPatcher::Column>({
+			DBPatcher::Column{
+				"userid",
+				"int(10) unsigned",
+				false,
+				"PRI",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"data",
+				"mediumblob",
+				true,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"contenttype",
+				"varchar(64)",
+				true,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"contentsize",
+				"int(10) unsigned",
+				true,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"modifydate",
+				"timestamp",
+				false,
+				"",
+				"CURRENT_TIMESTAMP",
+				"on update CURRENT_TIMESTAMP"
+			},
+		}),
+		QHash<QString, QList<QString>>{}
+	};
+	TABLE_STRUCT << DBPatcher::Table
+	{
+		"subscriptions",
+		QList<DBPatcher::Column>({
+			DBPatcher::Column{
+				"userid",
+				"int(10) unsigned",
+				true,
+				"MUL",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"targetid",
+				"int(10) unsigned",
+				true,
+				"MUL",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"options",
+				"int(10) unsigned",
+				false,
+				"",
+				"0",
+				""
+			},
+		}),
+		QHash<QString, QList<QString>>{{"userid_2", QList<QString>{"userid", "targetid", }}, }
+	};
+	TABLE_STRUCT << DBPatcher::Table
+	{
+		"avatars",
+		QList<DBPatcher::Column>({
+			DBPatcher::Column{
+				"userid",
+				"int(10) unsigned",
+				false,
+				"PRI",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"data",
+				"mediumblob",
+				true,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"contenttype",
+				"varchar(64)",
+				true,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"contentsize",
+				"int(10) unsigned",
+				true,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"modifydate",
+				"timestamp",
+				false,
+				"",
+				"CURRENT_TIMESTAMP",
+				"on update CURRENT_TIMESTAMP"
+			},
+		}),
+		QHash<QString, QList<QString>>{}
 	};
 	TABLE_STRUCT << DBPatcher::Table
 	{
@@ -431,8 +453,10 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 				"",
 				""
 			},
-		})
+		}),
+		QHash<QString, QList<QString>>{{"uniq_book", QList<QString>{"textid", }}, }
 	};
+
 	return TABLE_STRUCT;
 }
 
