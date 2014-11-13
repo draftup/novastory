@@ -198,6 +198,17 @@ bool DBPatcher::Table::modify(const Table& old)
 {
 	bool status = true;
 
+	QList<QString> uniColums;
+	QList<QString> uniColumsOld;
+	for (const QList<QString>& keys : old.uniq_keys.values())
+	{
+		uniColumsOld += keys;
+	}
+	for (const QList<QString>& keys : uniq_keys.values())
+	{
+		uniColums += keys;
+	}
+
 	QSet<Column> columnsSet = columns.toSet();
 	QSet<Column> oldColumnsSet = old.columns.toSet();
 
@@ -275,7 +286,7 @@ bool DBPatcher::Table::modify(const Table& old)
 				{
 					status &= query.exec(QString("ALTER TABLE `%1` DROP PRIMARY KEY").arg(this->table));
 				}
-				else
+				else if (!uniColumsOld.contains(column.field))
 				{
 					status &= query.exec(QString("ALTER TABLE `%1` DROP KEY `%2`").arg(this->table).arg(column.field));
 				}
@@ -296,11 +307,11 @@ bool DBPatcher::Table::modify(const Table& old)
 				{
 					status &= query.exec(QString("ALTER TABLE `%1` ADD PRIMARY KEY(`%2`)").arg(this->table).arg(column.field));
 				}
-				else if (column.key == "MUL")
+				else if (column.key == "MUL" && !uniColums.contains(column.field))
 				{
 					status &= query.exec(QString("ALTER TABLE `%1` ADD KEY(`%2`)").arg(this->table).arg(column.field));
 				}
-				else
+				else if (!uniColums.contains(column.field))
 				{
 					qWarning() << "Unsupported key type " << column.key << "for patching";
 					continue;

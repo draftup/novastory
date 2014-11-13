@@ -22,6 +22,7 @@ private slots:
 	void modifycolumn();
 	void modifyExtraColumn();
 	void modifyKeys();
+	void modifyUniKeys();
 
 	void someWrongCases();
 private:
@@ -397,6 +398,103 @@ void Test_DBPatcher::modifyKeys()
 	SqlQuery q5("select COLUMN_KEY from information_schema.columns where table_schema = '" MYSQL_DATABASE "' AND TABLE_NAME = 'test_table' AND COLUMN_NAME = 'testfield'");
 	QVERIFY(q5.next());
 	QCOMPARE(q5.value("COLUMN_KEY").toString(), QString(""));
+}
+
+
+void Test_DBPatcher::modifyUniKeys()
+{
+	patcher.m_database.clear();
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
+				"testid",
+				"int(10) unsigned",
+				false,
+				""
+			},
+			novastory::DBPatcher::Column{
+				"testfield",
+				"int(10) unsigned", // modify data
+				true,
+				""
+			},
+			// add new extra field
+			DBPatcher::Column{
+				"somedate",
+				"timestamp",
+				false,
+				"",
+				"CURRENT_TIMESTAMP",
+				"on update CURRENT_TIMESTAMP"
+			},
+		}),
+		QHash<QString, QList<QString>>{{ "textx", QList<QString>{"testid", "testfield", } }, }
+	};
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table2",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
+				"testfield",
+				"int(10) unsigned",
+				true,
+				"MUL"
+			}
+		})
+	};
+	QVERIFY(patcher.patch());
+	SqlQuery q4("select * from information_schema.key_column_usage where table_schema = '" MYSQL_DATABASE "' AND TABLE_NAME = 'test_table' AND CONSTRAINT_NAME = 'textx'");
+	QCOMPARE(q4.size(), 2);
+
+	// delete
+	patcher.m_database.clear();
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
+				"testid",
+				"int(10) unsigned",
+				false,
+				""
+			},
+			novastory::DBPatcher::Column{
+				"testfield",
+				"int(10) unsigned", // modify data
+				true,
+				"MUL"
+			},
+			// add new extra field
+			DBPatcher::Column{
+				"somedate",
+				"timestamp",
+				false,
+				"",
+				"CURRENT_TIMESTAMP",
+				"on update CURRENT_TIMESTAMP"
+			},
+		})
+	};
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table2",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
+				"testfield",
+				"int(10) unsigned",
+				true,
+				"MUL"
+			}
+		})
+	};
+	QVERIFY(patcher.patch());
+	SqlQuery q5("select * from information_schema.key_column_usage where table_schema = '" MYSQL_DATABASE "' AND TABLE_NAME = 'test_table' AND CONSTRAINT_NAME = 'textx'");
+	QCOMPARE(q5.size(), 0);
+	SqlQuery q6("select COLUMN_KEY from information_schema.columns where table_schema = '" MYSQL_DATABASE "' AND TABLE_NAME = 'test_table' AND COLUMN_NAME = 'testfield'");
+	QVERIFY(q6.next());
+	QCOMPARE(q6.value("COLUMN_KEY").toString(), QString("MUL"));
 }
 
 void Test_DBPatcher::someWrongCases()
