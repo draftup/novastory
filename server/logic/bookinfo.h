@@ -33,6 +33,7 @@ public:
 
 	bool sync();
 	bool update();
+	bool remove();
 private:
 	int m_bookid;
 	int m_revisionid;

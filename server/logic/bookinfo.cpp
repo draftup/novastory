@@ -72,7 +72,18 @@ bool BookInfo::update()
 		return false;
 	}
 
-	return insertSQL(true);
+	return insertSQL(true, true);
+}
+
+bool BookInfo::remove()
+{
+	if (!isLogged())
+	{
+		JSON_ERROR("not loggined", 1);
+		return false;
+	}
+
+	return removeSQL("bookid");
 }
 
 

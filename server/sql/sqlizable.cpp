@@ -75,7 +75,7 @@ bool skipCleanVariant(const QVariant& variant)
 }
 */
 
-bool Sqlizable::insertSQL(bool can_dublicate /*= false*/)
+bool Sqlizable::insertSQL(bool can_dublicate /*= false*/, bool not_ignore_id /* = false */)
 {
 	const QMetaObject* mObject = metaObject();
 	const int propCount = mObject->propertyCount();
@@ -114,7 +114,7 @@ bool Sqlizable::insertSQL(bool can_dublicate /*= false*/)
 			}
 
 			// Skip auto_increment value
-			if (isAutoIncrement)
+			if (isAutoIncrement && (!not_ignore_id || propValue.toInt() <= 0))
 			{
 				if (propName == auto_increment.toString())
 				{
@@ -147,6 +147,10 @@ bool Sqlizable::insertSQL(bool can_dublicate /*= false*/)
 			sql += " ON DUPLICATE KEY UPDATE ";
 			for (int i = 0; i < valuesCout; ++i)
 			{
+				if (not_ignore_id && keys[i] == property("auto_increment").toString())
+				{
+					continue;
+				}
 				sql += (i == valuesCout - 1) ? "`" + keys[i] + "` = :" + keys[i] : "`" + keys[i] + "` = :" + keys[i] + ", ";
 			}
 		}

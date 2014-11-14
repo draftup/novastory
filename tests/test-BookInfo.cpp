@@ -44,6 +44,7 @@ void Test_BookInfo::cleanup()
 void Test_BookInfo::cleanupTestCase()
 {
 	QVERIFY(buser.removeUser());
+	QVERIFY(info.remove());
 }
 
 void Test_BookInfo::update()
