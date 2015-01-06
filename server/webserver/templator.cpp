@@ -1,7 +1,7 @@
 #include <QFile>
 
 #include "templator.h"
-#include "webserver/webserver.h"
+#include "webserver.h"
 
 
 namespace novastory
@@ -43,6 +43,7 @@ QByteArray Templator::generate(
 	return generatedTemplate.toUtf8();
 }
 
+#ifdef NOVASTORY_BUILD
 QByteArray Templator::generate(const User& user, const QString& title /*= "Novastory"*/, const QString& article /*= QString() */)
 {
 	if (user.isLogined())
@@ -90,6 +91,7 @@ QByteArray Templator::generateLogined(const User& user, const QString& title /*=
 
 	return generatedTemplate.toUtf8();
 }
+#endif
 
 }
 

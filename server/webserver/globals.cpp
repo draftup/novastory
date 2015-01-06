@@ -2,7 +2,7 @@
 #include <time.h>
 #include <QCryptographicHash>
 #include <SmtpMime>
-#include "config.h"
+#include "webserver_config.h"
 #include <thread>
 
 QString novastory::md5(const QString& str)

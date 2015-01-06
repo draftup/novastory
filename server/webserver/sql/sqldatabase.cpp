@@ -1,6 +1,6 @@
 #include "sqldatabase.h"
-#include "utils/globals.h"
-#include "config.h"
+#include "globals.h"
+#include "webserver_config.h"
 #include <QThread>
 
 namespace novastory

@@ -1,6 +1,6 @@
 #include "webrouter.h"
 #include "webserver.h"
-#include "utils/globals.h"
+#include "globals.h"
 #include "templator.h"
 #include <QTextStream>
 #include <QTcpSocket>
@@ -30,6 +30,7 @@ void WebRouter::sendHtml()
 	if (!isHandeled)
 	{
 		qDebug() << "404 Error, page not founded";
+#ifdef NOVASTORY_BUILD
 		if (!coockie("userid").isNull())
 		{
 			User user;
@@ -41,9 +42,12 @@ void WebRouter::sendHtml()
 		}
 		else
 		{
+#endif
 			QByteArray responce = Templator::generate("Page not founded", "<div style=\"text-align: center;\"><img src=\"/images/404.jpg\" /></div>");
 			bindedSocket->write(htmlHeaderGen("text/html", responce.size(), "404 Not Found") + responce);
+#ifdef NOVASTORY_BUILD
 		}
+#endif
 	}
 }
 

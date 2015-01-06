@@ -1,7 +1,7 @@
 #include "webprocess.h"
 #include "webrouter.h"
 #include <QTcpSocket>
-#include "utils/globals.h"
+#include "globals.h"
 #include <QThreadPool>
 #include <QTimer>
 #include "sql/sqldatabase.h"

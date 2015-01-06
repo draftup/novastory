@@ -1,8 +1,8 @@
 #include "webrequest.h"
 #include <QTcpSocket>
-#include "utils/globals.h"
+#include "globals.h"
 #include <QRegExp>
-#include "config.h"
+#include "webserver_config.h"
 
 namespace novastory
 {

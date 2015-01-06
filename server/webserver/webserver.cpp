@@ -1,19 +1,21 @@
 #include "webserver.h"
 #include <QTcpSocket>
 #include "webrouter.h"
-#include "utils/globals.h"
+#include "globals.h"
 #include "sql/sqldatabase.h"
 #include "sql/dbpatcher.h"
 #include <QThreadPool>
 #include <QDir>
-#include "config.h"
+#include "webserver_config.h"
 #include <QMimeDatabase>
 #include "logger.h"
 #include <QCoreApplication>
-#include "webserver/datahandler.h"
+#include "datahandler.h"
 
 // pregenerated db
+#ifdef NOVASTORY_BUILD
 #include "database/novastory_db.h"
+#endif
 
 namespace novastory
 {
@@ -85,8 +87,10 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/)
 
 	// Update db to last version
 	DBPatcher patcher;
+#ifdef NOVASTORY_BUILD
 	patcher.setDatabaseStructure(DB_TABLE_STRUCT());
 	patcher.patch();
+#endif
 }
 
 

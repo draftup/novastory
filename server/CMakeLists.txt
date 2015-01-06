@@ -24,7 +24,6 @@ INCLUDE_DIRECTORIES(
 set(HEADERS_TOMOC
 	novastoryserver.h
 	recaptcha.h
-	sql/sqlizable.h
 	
 	logic/user.h
 	logic/captcha.h
@@ -37,23 +36,15 @@ set(HEADERS_TOMOC
 )
 
 set(HEADERS
-	sql/sqlquery.h
-	sql/sqldatabase.h
-	sql/dbpatcher.h
-
 	database/novastory_db.h
 	
 	logic/textrevisioncontainer.h
 	logic/loggedactions.h
 	
-	utils/globals.h
-	utils/lrucache.hpp
-	utils/bytecache.hpp
 	sql/nestedset.h
 
 	jsonthrower.h
 	config.h
-	rawfilehandler.h
 	avatarshandler.h
 	userspicshandler.h
 	registrationhandler.h
@@ -61,16 +52,10 @@ set(HEADERS
 	profilehandler.h
 	profile.h
 	htmltemplate.h
-	logger.h
 	apihandler.h
 )
 
 set(SOURCES
-	sql/sqlquery.cpp
-	sql/sqldatabase.cpp
-	sql/sqlizable.cpp
-	sql/dbpatcher.cpp
-	
 	logic/user.cpp
 	logic/captcha.cpp
 	logic/texteditor.cpp
@@ -82,9 +67,6 @@ set(SOURCES
 	logic/bookinfo.cpp
 	logic/loggedactions.cpp
 	
-	utils/globals.cpp
-	sql/nestedset.cpp
-	
 	recaptcha.cpp
 	rawfilehandler.cpp
 	avatarshandler.cpp
@@ -95,14 +77,10 @@ set(SOURCES
 	profile.cpp
 	apihandler.cpp
 	jsonthrower.cpp
-	logger.cpp
 	novastoryserver.cpp
 )
 
-
-add_subdirectory(3dparty/smtp)
 add_subdirectory(webserver)
-include_directories(3dparty/smtp)
 
 QT5_WRAP_CPP(MOC_FILES ${HEADERS_TOMOC})
 
@@ -138,7 +116,6 @@ target_link_libraries(${FUNCTIONAL_MODULE}
 	${Qt5Core_LIBRARIES}
 	${Qt5Network_LIBRARIES}
 	${Qt5Sql_LIBRARIES}
-	smtpemail
 	WebServer
 	${OPENSSL_LIBRARIES}
 )

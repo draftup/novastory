@@ -1,7 +1,7 @@
 #include "nestedset.h"
 #include "sql/sqlquery.h"
 #include <QSqlError>
-#include "utils/globals.h"
+#include "globals.h"
 
 namespace novastory
 {

@@ -1,7 +1,7 @@
 #ifndef RAWFILEHANDLER_H
 #define RAWFILEHANDLER_H
 
-#include "webserver/datahandler.h"
+#include "datahandler.h"
 class QTcpSocket;
 
 namespace novastory

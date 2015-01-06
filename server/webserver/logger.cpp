@@ -4,8 +4,8 @@
 #include <QFileInfo>
 #include <QDateTime>
 #include <QThread>
-#include "utils/globals.h"
-#include "config.h"
+#include "globals.h"
+#include "webserver_config.h"
 
 namespace novastory
 {

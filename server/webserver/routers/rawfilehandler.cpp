@@ -1,6 +1,6 @@
 #include "rawfilehandler.h"
-#include "utils/globals.h"
-#include "webserver/webserver.h"
+#include "globals.h"
+#include "webserver.h"
 #include <QDebug>
 #include <QFile>
 #include <QTcpSocket>

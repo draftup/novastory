@@ -10,6 +10,8 @@ include_directories(
 set(HEADERS_TOMOC_
 	webserver.h
 	webprocess.h
+	
+	sql/sqlizable.h
 )
 
 set(HEADERS_
@@ -20,15 +22,35 @@ set(HEADERS_
 	webrequest.h
 	bytecache.hpp
 	lrucache.hpp
+	globals.h
+	webserver_config.h
+	
+	logger.h
+	
+	routers/rawfilehandler.h
+	
+	sql/sqlquery.h
+	sql/sqldatabase.h
+	sql/dbpatcher.h
 )
 
 set(SOURCES_
+	globals.cpp
 	webdatacontainer.cpp
 	templator.cpp
 	webserver.cpp
 	webprocess.cpp
 	webrouter.cpp
 	webrequest.cpp
+	
+	logger.cpp
+	routers/rawfilehandler.cpp
+	
+	sql/sqlquery.cpp
+	sql/sqldatabase.cpp
+	sql/sqlizable.cpp
+	sql/dbpatcher.cpp
+	sql/nestedset.cpp
 )
 
 source_group("sources" FILES
@@ -45,13 +67,20 @@ source_group(".generated" FILES
 	${MOC_FILES_}
 )
 
+add_subdirectory(3dparty/smtp)
+include_directories(3dparty/smtp)
 
 add_library(WebServer STATIC
 	${HEADERS_TOMOC_}
 	${HEADERS_}
 	${SOURCES_}
 	${MOC_FILES_}
-)	
+)
+
+target_link_libraries(WebServer
+	smtpemail
+)
+
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY FOLDER "webserver")
 

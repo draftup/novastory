@@ -1,6 +1,6 @@
 #include "sqlizable.h"
 #include "sqlquery.h"
-#include "utils/globals.h"
+#include "globals.h"
 #include <QSqlRecord>
 #include <QMetaObject>
 #include <QMetaProperty>
