@@ -51,7 +51,7 @@ set(HEADERS
 	utils/lrucache.hpp
 	utils/bytecache.hpp
 	sql/nestedset.h
-	webdatacontainer.h
+	webserver/webdatacontainer.h
 
 	jsonthrower.h
 	config.h
@@ -90,7 +90,7 @@ set(SOURCES
 	
 	utils/globals.cpp
 	sql/nestedset.cpp
-	webdatacontainer.cpp
+	webserver/webdatacontainer.cpp
 	
 	recaptcha.cpp
 	rawfilehandler.cpp
