@@ -9,19 +9,32 @@ namespace novastory
 {
 
 class DataHandler;
+class WebRouter;
 
 class WebServer : public QTcpServer
 {
 	Q_OBJECT
-
+	friend class WebRouter;
 public:
-	WebServer(QObject* parent = nullptr, quint16 initializationPort = 8008);
-	virtual ~WebServer();
-
 	static WebServer& Instance(quint16 initializationPort = 8008)
 	{
-		static WebServer theSingleInstance(nullptr, initializationPort);
-		return theSingleInstance;
+		if (!_self)
+		{
+			_self = new WebServer(nullptr, initializationPort);
+		}
+
+		return *_self;
+	}
+
+	static bool deleteInstance()
+	{
+		if (_self)
+		{
+			delete _self;
+			_self = 0;
+			return true;
+		}
+		return false;
 	}
 
 	void setDirectory(const QString& path);
@@ -29,6 +42,11 @@ public:
 	void resetDirectory();
 	ByteCache& cache();
 protected:
+	WebServer(QObject* parent = nullptr, quint16 initializationPort = 8008);
+	virtual ~WebServer();
+
+	static WebServer* _self;
+
 	void incomingConnection(qintptr socketDescriptor) override;
 
 	void appendHandler(DataHandler* handler);

@@ -28,7 +28,7 @@ void Test_RawFileHandler::initTestCase()
 
 void Test_RawFileHandler::init()
 {
-	handler = new novastory::RawFileHandler(&socket);
+	handler = new novastory::RawFileHandler();
 }
 
 void Test_RawFileHandler::cleanup()
@@ -43,14 +43,14 @@ void Test_RawFileHandler::cleanupTestCase()
 void Test_RawFileHandler::handleTest()
 {
 	WebServer::Instance().setDirectory(QCoreApplication::applicationDirPath());
-	QVERIFY(handler->handle("GET", "/test-RawFileHandler.testfile"));
-	QVERIFY(!handler->handle("GET", "/test-RawFileHandle.testfile"));
+	QVERIFY(handler->handle(&socket, "GET", "/test-RawFileHandler.testfile"));
+	QVERIFY(!handler->handle(&socket, "GET", "/test-RawFileHandle.testfile"));
 }
 
 void Test_RawFileHandler::defaultHandleTest()
 {
 	WebServer::Instance().resetDirectory();
-	QVERIFY(handler->handle("GET", "/images/warning.svg"));
+	QVERIFY(handler->handle(&socket, "GET", "/images/warning.svg"));
 }
 
 /********************** DECLARE_TEST LIST ****************************/

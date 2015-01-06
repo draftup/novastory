@@ -1,5 +1,5 @@
 #include <QCoreApplication>
-#include "webserver/webserver.h"
+#include "novastoryserver.h"
 #include "sql/dbpatcher.h"
 #ifdef Q_OS_LINUX
 #include <unistd.h>
@@ -17,7 +17,8 @@ int main(int argc, char* argv[])
 	qDebug() << "-----------------------------------------\n";
 
 	// Now we can start our application
-	WebServer::Instance();
-
-	return a.exec();
+	NovastoryServer::Instance();
+	int status = a.exec();
+	NovastoryServer::deleteInstance();
+	return status;
 }

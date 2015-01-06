@@ -1,5 +1,5 @@
 #include <QtTest>
-#include "webdatacontainer.h"
+#include "webserver/webdatacontainer.h"
 
 using namespace novastory;
 

@@ -18,6 +18,8 @@
 namespace novastory
 {
 
+WebServer* WebServer::_self = nullptr;
+
 WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/)
 	: QTcpServer(parent), webCache(CACHE_SIZE)
 {

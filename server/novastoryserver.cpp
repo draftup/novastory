@@ -11,15 +11,20 @@ namespace novastory
 {
 
 
-NovastoryServer::NovastoryServer(QObject* parent, quint16 initializationPort) : WebServer::WebServer(parent, initializationPort)
+NovastoryServer::NovastoryServer(QObject* parent, quint16 initializationPort) : WebServer(parent, initializationPort)
 {
-	appendHandler(new RawFileHandler(bindedSocket));
-	appendHandler(new IndexHandler(bindedSocket));
-	appendHandler(new ApiHandler(bindedSocket));
-	appendHandler(new RegistrationHandler(bindedSocket));
-	appendHandler(new AvatarsHandler(bindedSocket));
-	appendHandler(new UsersPicsHandler(bindedSocket));
-	appendHandler(new ProfileHandler(bindedSocket));
+	appendHandler(new RawFileHandler());
+	appendHandler(new IndexHandler());
+	appendHandler(new ApiHandler());
+	appendHandler(new RegistrationHandler());
+	appendHandler(new AvatarsHandler());
+	appendHandler(new UsersPicsHandler());
+	appendHandler(new ProfileHandler());
+}
+
+NovastoryServer::~NovastoryServer()
+{
+
 }
 
 }

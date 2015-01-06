@@ -26,7 +26,6 @@ public:
 	QString coockie(const QString& name);
 
 private:
-	QTcpSocket* socket;
 	QHash<QString, QString> postVariables;
 	QHash<QString, QString> cookieVariables;
 };

@@ -8,17 +8,7 @@
 namespace novastory
 {
 
-AvatarsHandler::AvatarsHandler(QTcpSocket* bindedSocket) :
-	socket(bindedSocket)
-{
-}
-
-AvatarsHandler::~AvatarsHandler()
-{
-
-}
-
-bool AvatarsHandler::handle(const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& get /* = "" */,
+bool AvatarsHandler::handle(QTcpSocket* socket, const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& get /* = "" */,
 							const QHash<QString, QString>& header /*= QHash<QString, QString>()*/, const QHash<QString, QString>& cookies /*= QHash<QString, QString>()*/)
 {
 	if (path.startsWith("/avatar/"))
@@ -93,6 +83,5 @@ bool AvatarsHandler::handle(const QString& type, const QString& path, const QHas
 
 	return false;
 }
-
 
 }

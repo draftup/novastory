@@ -1,13 +1,14 @@
 #include "webrouter.h"
+#include "webserver.h"
 #include "utils/globals.h"
-#include "webserver/templator.h"
+#include "templator.h"
 #include <QTextStream>
 #include <QTcpSocket>
 #include <QUrl>
 
 namespace novastory
 {
-WebRouter::WebRouter(QTcpSocket* bindedSocket) : WebRequest(bindedSocket), socket(bindedSocket)
+WebRouter::WebRouter(QTcpSocket* bindedSocket) : WebRequest(bindedSocket)
 {
 	/*
 
@@ -22,9 +23,9 @@ QString WebRouter::path() const
 void WebRouter::sendHtml()
 {
 	bool isHandeled = false;
-	for (QSharedPointer<DataHandler> handler : handlers)
+	for (QSharedPointer<DataHandler> handler : WebServer::Instance().handlers)
 	{
-		isHandeled |= handler->handle(parsedValues["type"], path(), postVariables, QString(), parsedValues, cookieVariables);
+		isHandeled |= handler->handle(bindedSocket, parsedValues["type"], path(), postVariables, QString(), parsedValues, cookieVariables);
 	}
 	if (!isHandeled)
 	{
@@ -35,13 +36,13 @@ void WebRouter::sendHtml()
 			if (user.loginByToken(coockie("userid").toInt(), coockie("stoken")))
 			{
 				QByteArray responce = Templator::generateLogined(user, "Page not founded", "<div style=\"text-align: center;\"><img src=\"/images/404.jpg\" /></div>");
-				socket->write(htmlHeaderGen("text/html", responce.size(), "404 Not Found") + responce);
+				bindedSocket->write(htmlHeaderGen("text/html", responce.size(), "404 Not Found") + responce);
 			}
 		}
 		else
 		{
 			QByteArray responce = Templator::generate("Page not founded", "<div style=\"text-align: center;\"><img src=\"/images/404.jpg\" /></div>");
-			socket->write(htmlHeaderGen("text/html", responce.size(), "404 Not Found") + responce);
+			bindedSocket->write(htmlHeaderGen("text/html", responce.size(), "404 Not Found") + responce);
 		}
 	}
 }

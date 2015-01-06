@@ -9,17 +9,7 @@
 namespace novastory
 {
 
-IndexHandler::IndexHandler(QTcpSocket* bindedSocket) :
-	socket(bindedSocket)
-{
-}
-
-IndexHandler::~IndexHandler()
-{
-
-}
-
-bool IndexHandler::handle(const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& get /* = "" */,
+bool IndexHandler::handle(QTcpSocket* socket, const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& get /* = "" */,
 						  const QHash<QString, QString>& header /* = QHash<QString, QString>()*/, const QHash<QString, QString>& cookies /*= QHash<QString, QString>()*/)
 {
 
@@ -51,6 +41,5 @@ bool IndexHandler::handle(const QString& type, const QString& path, const QHash<
 
 	return false;
 }
-
 
 }

@@ -8,17 +8,7 @@
 namespace novastory
 {
 
-UsersPicsHandler::UsersPicsHandler(QTcpSocket* bindedSocket) :
-	socket(bindedSocket)
-{
-}
-
-UsersPicsHandler::~UsersPicsHandler()
-{
-
-}
-
-bool UsersPicsHandler::handle(const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& get /* = "" */,
+bool UsersPicsHandler::handle(QTcpSocket* socket, const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& get /* = "" */,
 							  const QHash<QString, QString>& header /*= QHash<QString, QString>()*/, const QHash<QString, QString>& cookies /*= QHash<QString, QString>()*/)
 {
 	if (path.startsWith("/userpic/"))
@@ -93,6 +83,5 @@ bool UsersPicsHandler::handle(const QString& type, const QString& path, const QH
 
 	return false;
 }
-
 
 }
