@@ -22,8 +22,6 @@ INCLUDE_DIRECTORIES(
 
 
 set(HEADERS_TOMOC
-	webserver/webserver.h
-	webserver/webprocess.h
 	novastoryserver.h
 	recaptcha.h
 	sql/sqlizable.h
@@ -52,11 +50,9 @@ set(HEADERS
 	utils/lrucache.hpp
 	utils/bytecache.hpp
 	sql/nestedset.h
-	webserver/webdatacontainer.h
 
 	jsonthrower.h
 	config.h
-	webserver/datahandler.h
 	rawfilehandler.h
 	avatarshandler.h
 	userspicshandler.h
@@ -67,9 +63,6 @@ set(HEADERS
 	htmltemplate.h
 	logger.h
 	apihandler.h
-	webserver/templator.h
-	webserver/webrouter.h
-	webserver/webrequest.h
 )
 
 set(SOURCES
@@ -91,7 +84,6 @@ set(SOURCES
 	
 	utils/globals.cpp
 	sql/nestedset.cpp
-	webserver/webdatacontainer.cpp
 	
 	recaptcha.cpp
 	rawfilehandler.cpp
@@ -104,16 +96,12 @@ set(SOURCES
 	apihandler.cpp
 	jsonthrower.cpp
 	logger.cpp
-	webserver/templator.cpp
-	webserver/webserver.cpp
-	webserver/webprocess.cpp
-	webserver/webrouter.cpp
-	webserver/webrequest.cpp
 	novastoryserver.cpp
 )
 
 
 add_subdirectory(3dparty/smtp)
+add_subdirectory(webserver)
 include_directories(3dparty/smtp)
 
 QT5_WRAP_CPP(MOC_FILES ${HEADERS_TOMOC})
@@ -151,6 +139,7 @@ target_link_libraries(${FUNCTIONAL_MODULE}
 	${Qt5Network_LIBRARIES}
 	${Qt5Sql_LIBRARIES}
 	smtpemail
+	WebServer
 	${OPENSSL_LIBRARIES}
 )
 				
