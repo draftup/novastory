@@ -8,6 +8,8 @@
 #include <QDir>
 #include "config.h"
 #include <QMimeDatabase>
+#include "logger.h"
+#include <QCoreApplication>
 
 // pregenerated db
 #include "database/novastory_db.h"
@@ -19,6 +21,53 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/)
 	: QTcpServer(parent), webCache(CACHE_SIZE)
 {
 	setObjectName("WebServer");
+
+	Logger::Instance().setWriteToLogFile(true); // Log all to file output
+#ifndef QT_DEBUG
+	Logger::Instance().setFailReports(true);
+#endif
+
+	for (QString arg : QCoreApplication::instance()->arguments())
+	{
+#ifdef Q_OS_LINUX
+		if (arg == "-d")
+		{
+			if (daemon(true, false))
+			{
+				qFatal("Cannot run in daemon mode");
+			}
+		}
+#endif
+		if (arg == "-s")
+		{
+			QFile file("novastory_db.h");
+			if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+			{
+				QTextStream stream(&file);
+				stream << DBPatcher::cppSerialize();
+			}
+			file.close();
+
+			qDebug() << "DB struct saved to file, run server without -s now";
+			QCoreApplication::instance()->quit();
+			return;
+		}
+	}
+
+	// save pid to file
+#ifdef Q_OS_LINUX
+	pid_t pid = getpid();
+
+	FILE* fp = fopen((QCoreApplication::instance()->applicationDirPath() + "/novastory.pid").toLatin1().data(), "w");
+	if (!fp)
+	{
+		perror("fopen");
+		exit(EXIT_FAILURE);
+	}
+
+	fprintf(fp, "%d\n", pid);
+	fclose(fp);
+#endif
 
 	resetDirectory();
 
