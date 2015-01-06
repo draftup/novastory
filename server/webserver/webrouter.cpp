@@ -1,11 +1,4 @@
 #include "webrouter.h"
-#include "rawfilehandler.h"
-#include "registrationhandler.h"
-#include "apihandler.h"
-#include "avatarshandler.h"
-#include "userspicshandler.h"
-#include "profilehandler.h"
-#include "indexhandler.h"
 #include "utils/globals.h"
 #include "webserver/templator.h"
 #include <QTextStream>
@@ -16,35 +9,14 @@ namespace novastory
 {
 WebRouter::WebRouter(QTcpSocket* bindedSocket) : WebRequest(bindedSocket), socket(bindedSocket)
 {
-	appendHandler(new RawFileHandler(bindedSocket));
-	appendHandler(new IndexHandler(bindedSocket));
-	appendHandler(new ApiHandler(bindedSocket));
-	appendHandler(new RegistrationHandler(bindedSocket));
-	appendHandler(new AvatarsHandler(bindedSocket));
-	appendHandler(new UsersPicsHandler(bindedSocket));
-	appendHandler(new ProfileHandler(bindedSocket));
+	/*
+
+	*/
 }
 
 QString WebRouter::path() const
 {
 	return parsedValues["path"];
-}
-
-void WebRouter::removeHandler(DataHandler* handler)
-{
-	QMutableListIterator< QSharedPointer<DataHandler> > i(handlers);
-	while (i.hasNext())
-	{
-		if (i.next().data() == handler)
-		{
-			i.remove();
-		}
-	}
-}
-
-void WebRouter::appendHandler(DataHandler* handler)
-{
-	handlers.append(QSharedPointer<DataHandler>(handler));
 }
 
 void WebRouter::sendHtml()

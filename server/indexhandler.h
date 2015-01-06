@@ -1,7 +1,7 @@
 #ifndef INDEXHANDLER_H
 #define INDEXHANDLER_H
 
-#include "datahandler.h"
+#include "webserver/datahandler.h"
 class QTcpSocket;
 
 namespace novastory

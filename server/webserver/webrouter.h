@@ -17,8 +17,6 @@ public:
 	WebRouter(QTcpSocket* bindedSocket);
 	QString path() const;
 	const QString& postData() const;
-	void appendHandler(DataHandler* handler);
-	void removeHandler(DataHandler* handler);
 	void sendHtml();
 	void parse() override;
 
@@ -29,7 +27,6 @@ public:
 
 private:
 	QTcpSocket* socket;
-	QList< QSharedPointer<DataHandler> > handlers;
 	QHash<QString, QString> postVariables;
 	QHash<QString, QString> cookieVariables;
 };

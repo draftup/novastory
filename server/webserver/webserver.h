@@ -8,6 +8,8 @@
 namespace novastory
 {
 
+class DataHandler;
+
 class WebServer : public QTcpServer
 {
 	Q_OBJECT
@@ -29,9 +31,12 @@ public:
 protected:
 	void incomingConnection(qintptr socketDescriptor) override;
 
+	void appendHandler(DataHandler* handler);
+	void removeHandler(DataHandler* handler);
 private:
 	QString publicDirectory;
 	ByteCache webCache;
+	QList< QSharedPointer<DataHandler> > handlers;
 };
 
 }

@@ -10,6 +10,7 @@
 #include <QMimeDatabase>
 #include "logger.h"
 #include <QCoreApplication>
+#include "webserver/datahandler.h"
 
 // pregenerated db
 #include "database/novastory_db.h"
@@ -139,5 +140,21 @@ ByteCache& WebServer::cache()
 	return webCache;
 }
 
+void WebServer::removeHandler(DataHandler* handler)
+{
+	QMutableListIterator< QSharedPointer<DataHandler> > i(handlers);
+	while (i.hasNext())
+	{
+		if (i.next().data() == handler)
+		{
+			i.remove();
+		}
+	}
+}
+
+void WebServer::appendHandler(DataHandler* handler)
+{
+	handlers.append(QSharedPointer<DataHandler>(handler));
+}
 
 }

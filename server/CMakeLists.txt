@@ -24,6 +24,7 @@ INCLUDE_DIRECTORIES(
 set(HEADERS_TOMOC
 	webserver/webserver.h
 	webserver/webprocess.h
+	novastoryserver.h
 	recaptcha.h
 	sql/sqlizable.h
 	
@@ -55,7 +56,7 @@ set(HEADERS
 
 	jsonthrower.h
 	config.h
-	datahandler.h
+	webserver/datahandler.h
 	rawfilehandler.h
 	avatarshandler.h
 	userspicshandler.h
@@ -108,6 +109,7 @@ set(SOURCES
 	webserver/webprocess.cpp
 	webserver/webrouter.cpp
 	webserver/webrequest.cpp
+	novastoryserver.cpp
 )
 
 
