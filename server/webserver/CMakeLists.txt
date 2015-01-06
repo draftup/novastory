@@ -18,6 +18,8 @@ set(HEADERS_
 	templator.h
 	webrouter.h
 	webrequest.h
+	bytecache.hpp
+	lrucache.hpp
 )
 
 set(SOURCES_

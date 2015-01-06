@@ -3,7 +3,7 @@
 
 #include <QTcpServer>
 #include "webprocess.h"
-#include "utils/bytecache.hpp"
+#include "bytecache.hpp"
 
 namespace novastory
 {

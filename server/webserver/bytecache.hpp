@@ -3,7 +3,7 @@
 
 #include "lrucache.hpp"
 #include <QString>
-#include "webserver/webdatacontainer.h"
+#include "webdatacontainer.h"
 
 namespace novastory {
 
