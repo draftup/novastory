@@ -21,10 +21,7 @@ public:
 		const QString& get = QString(),
 		const QHash<QString, QString>& header = QHash<QString, QString>(),
 		const QHash<QString, QString>& cookies = QHash<QString, QString>()
-	) = 0
-	{
-
-	};
+	) = 0;
 };
 
 }

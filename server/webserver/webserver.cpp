@@ -12,6 +12,11 @@
 #include <QCoreApplication>
 #include "datahandler.h"
 
+#ifdef Q_OS_LINUX
+#include <unistd.h>
+#endif
+#include <QFile>
+
 // pregenerated db
 #ifdef NOVASTORY_BUILD
 #include "database/novastory_db.h"
