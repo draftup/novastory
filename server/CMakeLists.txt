@@ -40,8 +40,6 @@ set(HEADERS
 	
 	logic/textrevisioncontainer.h
 	logic/loggedactions.h
-	
-	sql/nestedset.h
 
 	jsonthrower.h
 	config.h
@@ -68,7 +66,6 @@ set(SOURCES
 	logic/loggedactions.cpp
 	
 	recaptcha.cpp
-	rawfilehandler.cpp
 	avatarshandler.cpp
 	userspicshandler.cpp
 	registrationhandler.cpp

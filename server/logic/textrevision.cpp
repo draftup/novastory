@@ -1,8 +1,8 @@
 #include "textrevision.h"
 #include <QDebug>
 #include <QJsonArray>
-#include "utils/globals.h"
-#include "sql/sqlquery.h"
+#include "webserver/globals.h"
+#include "webserver/sql/sqlquery.h"
 
 namespace novastory
 {

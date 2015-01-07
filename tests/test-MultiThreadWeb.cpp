@@ -2,7 +2,7 @@
 #include <QTcpSocket>
 #include <functional>
 #include "webserver/webserver.h"
-#include "rawfilehandler.h"
+#include "webserver/routers/rawfilehandler.h"
 
 class Test_MultiThreadWeb: public QObject
 {

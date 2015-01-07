@@ -2,7 +2,7 @@
 #define SQLIZABLE_H
 
 #include <QObject>
-#include "sql/sqlquery.h"
+#include "sqlquery.h"
 #include <QJsonObject>
 #include <QVariant>
 

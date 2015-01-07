@@ -1,7 +1,7 @@
 #ifndef	TEXTREVISION_H
 #define TEXTREVISION_H
 
-#include "sql/sqlizable.h"
+#include "webserver/sql/sqlizable.h"
 #include "jsonthrower.h"
 #include "user.h"
 #include <QDateTime>

@@ -1,7 +1,7 @@
 #include <QtTest>
 #include "recaptcha.h"
 #include "logic/captcha.h"
-#include "utils/globals.h"
+#include "webserver/globals.h"
 
 using namespace novastory;
 

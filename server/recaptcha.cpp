@@ -6,7 +6,7 @@
 #include <QEventLoop>
 #include <QTimer>
 
-#include "utils/globals.h"
+#include "webserver/globals.h"
 #include "config.h"
 
 namespace novastory

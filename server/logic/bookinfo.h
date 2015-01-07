@@ -1,7 +1,7 @@
 #ifndef	BOOKINFO_H
 #define BOOKINFO_H
 
-#include "sql/sqlizable.h"
+#include "webserver/sql/sqlizable.h"
 #include "jsonthrower.h"
 #include "logic/loggedactions.h"
 

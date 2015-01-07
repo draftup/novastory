@@ -1,5 +1,5 @@
 #include <QtTest>
-#include "logger.h"
+#include "webserver/logger.h"
 #include <QFile>
 
 using namespace novastory;

@@ -1,7 +1,7 @@
 #include <QtTest>
 #include <QTcpSocket>
 #include <QCoreApplication>
-#include "rawfilehandler.h"
+#include "webserver/routers/rawfilehandler.h"
 #include "webserver/webserver.h"
 
 using namespace novastory;

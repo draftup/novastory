@@ -1,6 +1,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include "webserver/webserver_config.h"
+
 #define RECAPTCHA_PUBLIC_KEY "6LfjsO4SAAAAADEhNeb51KeXPpVu_vtFQRC0w4iO"
 #define RECAPTCHA_PRIVATE_KEY "6LfjsO4SAAAAAOlX0CmwHqWtaqUmftDha4PUmXQ2"
 

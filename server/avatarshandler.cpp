@@ -1,5 +1,5 @@
 #include "avatarshandler.h"
-#include "utils/globals.h"
+#include "webserver/globals.h"
 #include <QDebug>
 #include <QTcpSocket>
 #include "logic/avatar.h"

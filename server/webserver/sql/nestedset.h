@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <QVariant>
-#include "sql/sqlquery.h"
+#include "sqlquery.h"
 
 class Test_NestedSet;
 

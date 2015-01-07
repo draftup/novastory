@@ -1,8 +1,8 @@
 #ifndef	USER_H
 #define USER_H
 
-#include "sql/sqlizable.h"
-#include "utils/globals.h"
+#include "webserver/sql/sqlizable.h"
+#include "webserver/globals.h"
 #include "jsonthrower.h"
 
 class Test_LogicUsers;

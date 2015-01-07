@@ -32,6 +32,7 @@ set(HEADERS_
 	sql/sqlquery.h
 	sql/sqldatabase.h
 	sql/dbpatcher.h
+	sql/nestedset.h
 )
 
 set(SOURCES_

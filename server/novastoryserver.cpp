@@ -1,5 +1,5 @@
 #include "novastoryserver.h"
-#include "rawfilehandler.h"
+#include "webserver/routers/rawfilehandler.h"
 #include "registrationhandler.h"
 #include "apihandler.h"
 #include "avatarshandler.h"

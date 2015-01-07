@@ -1,6 +1,6 @@
 #include <QtTest>
-#include "sql/sqldatabase.h"
-#include "sql/sqlquery.h"
+#include "webserver/sql/sqldatabase.h"
+#include "webserver/sql/sqlquery.h"
 
 class Test_QMySqlSimple: public QObject
 {

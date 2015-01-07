@@ -1,6 +1,6 @@
 #include <QtTest>
-#include "utils/lrucache.hpp"
-#include "utils/bytecache.hpp"
+#include "webserver/lrucache.hpp"
+#include "webserver/bytecache.hpp"
 #include <QByteArray>
 
 using namespace cache;

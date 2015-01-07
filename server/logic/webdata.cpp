@@ -1,6 +1,6 @@
 #include "webdata.h"
 #include <QDebug>
-#include "utils/globals.h"
+#include "webserver/globals.h"
 #include "config.h"
 
 int novastory::WebData::userid() const

@@ -1,8 +1,8 @@
 #include <QtTest>
-#include "sql/sqldatabase.h"
-#include "sql/sqlquery.h"
-#include "utils/globals.h"
-#include "sql/nestedset.h"
+#include "webserver/sql/sqldatabase.h"
+#include "webserver/sql/sqlquery.h"
+#include "webserver/globals.h"
+#include "webserver/sql/nestedset.h"
 
 using namespace novastory;
 

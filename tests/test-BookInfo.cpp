@@ -1,5 +1,5 @@
 #include <QtTest>
-#include "utils/globals.h"
+#include "webserver/globals.h"
 #include "logic/bookinfo.h"
 #include "logic/user.h"
 

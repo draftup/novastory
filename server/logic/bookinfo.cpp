@@ -1,7 +1,7 @@
 #include "bookinfo.h"
 #include <QDebug>
-#include "utils/globals.h"
-#include "sql/sqlquery.h"
+#include "webserver/globals.h"
+#include "webserver/sql/sqlquery.h"
 
 namespace novastory
 {

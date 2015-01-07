@@ -1,7 +1,7 @@
 #ifndef	CAPTHA_H
 #define CAPTHA_H
 
-#include "sql/sqlizable.h"
+#include "webserver/sql/sqlizable.h"
 #include "jsonthrower.h"
 #include <QHostAddress>
 

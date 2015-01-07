@@ -1,7 +1,7 @@
 #include <QtTest>
 #include <QSqlError>
-#include "sql/dbpatcher.h"
-#include "sql/sqlquery.h"
+#include "webserver/sql/dbpatcher.h"
+#include "webserver/sql/sqlquery.h"
 #include "config.h"
 
 using namespace novastory;

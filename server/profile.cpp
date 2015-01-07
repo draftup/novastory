@@ -1,5 +1,5 @@
 #include "profile.h"
-#include "utils/globals.h"
+#include "webserver/globals.h"
 #include <QDebug>
 #include <QFile>
 #include "logic/user.h"

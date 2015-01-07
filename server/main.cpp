@@ -1,10 +1,5 @@
 #include <QCoreApplication>
 #include "novastoryserver.h"
-#include "sql/dbpatcher.h"
-#ifdef Q_OS_LINUX
-#include <unistd.h>
-#endif
-#include <QFile>
 
 using namespace novastory;
 

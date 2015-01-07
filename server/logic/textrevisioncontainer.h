@@ -5,7 +5,7 @@
 #include <QMap>
 #include "user.h"
 #include "jsonthrower.h"
-#include "sql/nestedset.h"
+#include "webserver/sql/nestedset.h"
 #include "logic/loggedactions.h"
 
 class Test_TextRevision;

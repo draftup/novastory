@@ -1,8 +1,8 @@
 #include "captcha.h"
 #include <QVariant>
 #include <QDebug>
-#include "utils/globals.h"
-#include "sql/sqlquery.h"
+#include "webserver/globals.h"
+#include "webserver/sql/sqlquery.h"
 #include "recaptcha.h"
 #include "user.h"
 

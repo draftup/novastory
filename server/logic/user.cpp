@@ -3,8 +3,8 @@
 #include <QDebug>
 #include <QSqlRecord>
 #include <QSqlError>
-#include "utils/globals.h"
-#include "sql/sqlquery.h"
+#include "webserver/globals.h"
+#include "webserver/sql/sqlquery.h"
 #include "logic/captcha.h"
 
 novastory::User::User() : m_userid(-1), m_subscriptions_filled(false), m_subscribed_filled(false)

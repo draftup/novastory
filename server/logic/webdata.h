@@ -1,7 +1,7 @@
 #ifndef	WEBDATA_H
 #define WEBDATA_H
 
-#include "sql/sqlizable.h"
+#include "webserver/sql/sqlizable.h"
 #include "jsonthrower.h"
 #include "webserver/webdatacontainer.h"
 #include "user.h"

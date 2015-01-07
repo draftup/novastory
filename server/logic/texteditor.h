@@ -1,7 +1,7 @@
 #ifndef	TEXTEDITOR_H
 #define TEXTEDITOR_H
 
-#include "sql/sqlizable.h"
+#include "webserver/sql/sqlizable.h"
 #include "jsonthrower.h"
 #include "user.h"
 #include "logic/loggedactions.h"
