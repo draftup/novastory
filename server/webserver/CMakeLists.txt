@@ -28,6 +28,7 @@ set(HEADERS_
 	logger.h
 	
 	routers/rawfilehandler.h
+	routers/errorhandler.h
 	
 	sql/sqlquery.h
 	sql/sqldatabase.h
@@ -46,6 +47,7 @@ set(SOURCES_
 	
 	logger.cpp
 	routers/rawfilehandler.cpp
+	routers/errorhandler.cpp
 	
 	sql/sqlquery.cpp
 	sql/sqldatabase.cpp

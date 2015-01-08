@@ -1,5 +1,6 @@
 #include "novastoryserver.h"
 #include "webserver/routers/rawfilehandler.h"
+#include "novastoryerrorhandler.h"
 #include "registrationhandler.h"
 #include "apihandler.h"
 #include "avatarshandler.h"
@@ -14,6 +15,7 @@ namespace novastory
 NovastoryServer::NovastoryServer(QObject* parent, quint16 initializationPort) : WebServer(parent, initializationPort)
 {
 	appendHandler(new RawFileHandler());
+	appendHandler(new NovastoryErrorHandler());
 	appendHandler(new IndexHandler());
 	appendHandler(new ApiHandler());
 	appendHandler(new RegistrationHandler());

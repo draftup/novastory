@@ -51,6 +51,7 @@ set(HEADERS
 	profile.h
 	htmltemplate.h
 	apihandler.h
+	novastoryerrorhandler.h
 )
 
 set(SOURCES
@@ -75,6 +76,7 @@ set(SOURCES
 	apihandler.cpp
 	jsonthrower.cpp
 	novastoryserver.cpp
+	novastoryerrorhandler.cpp
 )
 
 add_subdirectory(webserver)
