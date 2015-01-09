@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 	qDebug() << "-----------------------------------------\n";
 
 	// Now we can start our application
-	NovastoryServer::Instance();
+	NovastoryServer::Instance(8008, "novastory.pid", "novastory_db.h");
 	int status = a.exec();
 	NovastoryServer::deleteInstance();
 	return status;

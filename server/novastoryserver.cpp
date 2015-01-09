@@ -12,7 +12,7 @@ namespace novastory
 {
 
 
-NovastoryServer::NovastoryServer(QObject* parent, quint16 initializationPort) : WebServer(parent, initializationPort)
+NovastoryServer::NovastoryServer(QObject* parent, quint16 initializationPort, const QString& pid_file, const QString& db_file) : WebServer(parent, initializationPort, pid_file, db_file)
 {
 	appendHandler(new RawFileHandler());
 	appendHandler(new NovastoryErrorHandler());

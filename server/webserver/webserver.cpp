@@ -27,8 +27,10 @@ namespace novastory
 
 WebServer* WebServer::_self = nullptr;
 
-WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/)
+WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, const QString& pid_file /* = "default_app.pid" */, const QString& db_file /* = "default_db.h" */)
 	: QTcpServer(parent), webCache(CACHE_SIZE)
+	, m_pid_name(pid_file), m_db_file(db_file),
+	m_public_dir("public")
 {
 	setObjectName("WebServer");
 
@@ -50,7 +52,7 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/)
 #endif
 		if (arg == "-s")
 		{
-			QFile file("novastory_db.h");
+			QFile file(m_db_file);
 			if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
 			{
 				QTextStream stream(&file);
@@ -68,7 +70,7 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/)
 #ifdef Q_OS_LINUX
 	pid_t pid = getpid();
 
-	FILE* fp = fopen((QCoreApplication::instance()->applicationDirPath() + "/novastory.pid").toLatin1().data(), "w");
+	FILE* fp = fopen((QCoreApplication::instance()->applicationDirPath() + "/" + m_pid_name).toLatin1().data(), "w");
 	if (!fp)
 	{
 		perror("fopen");
@@ -122,18 +124,18 @@ void WebServer::setDirectory(const QString& path)
 
 void WebServer::resetDirectory()
 {
-	QDir dataDirectory = QDir(DATA_DIRECTORY + QString("/public"));
+	QDir dataDirectory = QDir(DATA_DIRECTORY + QString("/" + m_public_dir));
 	if (dataDirectory.exists())
 	{
 		publicDirectory = dataDirectory.absolutePath();
 	}
-	else if (QDir(QDir::currentPath() + "/../.." + "/public").exists())
+	else if (QDir(QDir::currentPath() + "/../.." + "/" + m_public_dir).exists())
 	{
-		publicDirectory = QDir::currentPath() + "/../.." + "/public";
+		publicDirectory = QDir::currentPath() + "/../.." + "/" + m_public_dir;
 	}
-	else if (QDir(QDir::currentPath() + "/public").exists())
+	else if (QDir(QDir::currentPath() + "/" + m_public_dir).exists())
 	{
-		publicDirectory = QDir::currentPath() + "/public";
+		publicDirectory = QDir::currentPath() + "/" + m_public_dir;
 	}
 	else
 	{
@@ -166,6 +168,26 @@ void WebServer::removeHandler(DataHandler* handler)
 void WebServer::appendHandler(DataHandler* handler)
 {
 	handlers.append(QSharedPointer<DataHandler>(handler));
+}
+
+QString WebServer::pidFile() const
+{
+	return m_pid_name;
+}
+
+void WebServer::setPidFile(const QString& pid)
+{
+	m_pid_name = pid;
+}
+
+QString WebServer::dbFile() const
+{
+	return m_db_file;
+}
+
+void WebServer::setDBFile(const QString& db)
+{
+	m_db_file = db;
 }
 
 }
