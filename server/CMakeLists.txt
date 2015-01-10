@@ -22,7 +22,6 @@ INCLUDE_DIRECTORIES(
 
 
 set(HEADERS_TOMOC
-	novastoryserver.h
 	recaptcha.h
 	
 	logic/user.h
@@ -52,6 +51,7 @@ set(HEADERS
 	htmltemplate.h
 	apihandler.h
 	novastoryerrorhandler.h
+	novastoryserver.h
 )
 
 set(SOURCES
