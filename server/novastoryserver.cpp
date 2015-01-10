@@ -8,12 +8,19 @@
 #include "profilehandler.h"
 #include "indexhandler.h"
 
+#include "database/novastory_db.h"
+
 namespace novastory
 {
 
 
 NovastoryServer::NovastoryServer(QObject* parent, quint16 initializationPort, const QString& pid_file, const QString& db_file) : WebServer(parent, initializationPort, pid_file, db_file)
 {
+	// Update db to last version
+	DBPatcher patcher;
+	patcher.setDatabaseStructure(DB_TABLE_STRUCT());
+	patcher.patch();
+
 	appendHandler(new RawFileHandler());
 	appendHandler(new NovastoryErrorHandler());
 	appendHandler(new IndexHandler());

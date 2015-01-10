@@ -17,11 +17,6 @@
 #endif
 #include <QFile>
 
-// pregenerated db
-#ifdef NOVASTORY_BUILD
-#include "database/novastory_db.h"
-#endif
-
 namespace novastory
 {
 
@@ -92,12 +87,6 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, cons
 	qDebug() << "Maximum workers number: " << WORKERS_NUMBER;
 	QThreadPool::globalInstance()->setExpiryTimeout(WORKERS_MAX_TIME * 1000);
 
-	// Update db to last version
-	DBPatcher patcher;
-#ifdef NOVASTORY_BUILD
-	patcher.setDatabaseStructure(DB_TABLE_STRUCT());
-	patcher.patch();
-#endif
 }
 
 
