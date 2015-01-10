@@ -54,7 +54,7 @@ bool DBPatcher::patch()
 QString DBPatcher::cppSerialize()
 {
 	QString cpp = "#ifndef NOVASTORY_DB_H\n#define NOVASTORY_DB_H\n\n"
-				  "#include \"sql/dbpatcher.h\"\n\n"
+				  "#include \"webserver/sql/dbpatcher.h\"\n\n"
 				  "namespace novastory {\n\n"
 				  "QSet<DBPatcher::Table> DB_TABLE_STRUCT()\n{\n QSet<DBPatcher::Table> TABLE_STRUCT;\n"
 				  ;

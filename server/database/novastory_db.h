@@ -1,7 +1,7 @@
 #ifndef NOVASTORY_DB_H
 #define NOVASTORY_DB_H
 
-#include "sql/dbpatcher.h"
+#include "webserver/sql/dbpatcher.h"
 
 namespace novastory
 {
