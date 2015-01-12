@@ -20,19 +20,4 @@
 
 #define REPORTS_MAIL "degitx@gmail.com"
 
-
-
-
-#ifndef REMOTE_TESTING
-#define MYSQL_HOST "localhost"
-#define MYSQL_DATABASE "novastory"
-#define MYSQL_USER "novastory"
-#define MYSQL_PASSWORD "novapassworddb"
-#else
-#define MYSQL_HOST "novastory.org"
-#define MYSQL_DATABASE "novastory_test"
-#define MYSQL_USER "novastory_tester"
-#define MYSQL_PASSWORD "novatester8x9"
-#endif
-
 #endif // WEBSERVER_CONFIG_H

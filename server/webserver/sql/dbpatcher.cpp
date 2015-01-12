@@ -1,7 +1,7 @@
 #include "dbpatcher.h"
 #include "sqldatabase.h"
 #include "sqlquery.h"
-#include "webserver_config.h"
+#include "config.h"
 #include <QSet>
 #include <QMutableSetIterator>
 
