@@ -10,29 +10,29 @@
 
 namespace novastory
 {
-	class Downloader : public QObject
-	{
-		Q_OBJECT
-	public:
-		explicit Downloader(const QUrl& file, const QString& destination);
-		virtual ~Downloader();
+class Downloader : public QObject
+{
+	Q_OBJECT
+public:
+	explicit Downloader(const QUrl& file, const QString& destination);
+	virtual ~Downloader();
 
-		QByteArray downloadedData() const;
+	QByteArray downloadedData() const;
 
-		static void download(QString url, QString destination);
-		void wait() const;
-		const QByteArray& data() const;
-	signals:
-		void downloaded();
-	private slots:
-		void fileDownloaded();
-		void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-	private:
-		QNetworkAccessManager m_WebCtrl;
-		QUrl m_url;
-		QString m_destination;
-		QByteArray m_data;
-	};
+	static void download(QString url, QString destination);
+	void wait() const;
+	const QByteArray& data() const;
+signals:
+	void downloaded();
+private slots:
+	void fileDownloaded();
+	void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+private:
+	QNetworkAccessManager m_WebCtrl;
+	QUrl m_url;
+	QString m_destination;
+	QByteArray m_data;
+};
 }
 
 #endif

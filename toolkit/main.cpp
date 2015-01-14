@@ -39,10 +39,14 @@ int main(int argc, char* argv[])
 
 	// First of all download archive util
 	if (!QFileInfo::exists(ar7za_exe))
+	{
 		Downloader::download(ar7za_file, exe_dir);
+	}
 
 	if (!QFileInfo::exists(ar7za_exe))
+	{
 		qFatal("No 7za founded");
+	}
 
 	Downloader md5checker(package_md5_file, exe_dir);
 	md5checker.wait();
@@ -55,7 +59,9 @@ int main(int argc, char* argv[])
 	md5package_real = md5fList[0];
 
 	if (md5package_real.size() <= 0)
+	{
 		qFatal("Md5 not founded in downloaded file");
+	}
 
 	qDebug() << "package.7z must be md5:" << md5package_real;
 
@@ -65,7 +71,9 @@ int main(int argc, char* argv[])
 	{
 		QFile checkPackage(package);
 		if (!checkPackage.open(QIODevice::ReadOnly))
+		{
 			qFatal("Can not read pakage.7z");
+		}
 
 		QByteArray package_data = checkPackage.readAll();
 		md5package_test = QString(QCryptographicHash::hash(package_data, QCryptographicHash::Md5).toHex());
@@ -76,20 +84,26 @@ int main(int argc, char* argv[])
 	if (md5package_test != md5package_real)
 	{
 		if (QFileInfo::exists(package_dir) && !QDir(package_dir).removeRecursively())
+		{
 			qFatal("Remove old package directory failed");
+		}
 
 		// also removing build dir: who knows, may be changed compiller or cmake
 		if (QFileInfo::exists(build_directory) && !QDir(build_directory).removeRecursively())
+		{
 			qFatal("Remove old build directory failed");
+		}
 
 		qDebug() << "Update old package";
 		Downloader package_downloader(package_file, exe_dir);
 		package_downloader.wait();
 		md5package_test = QString(QCryptographicHash::hash(package_downloader.data(), QCryptographicHash::Md5).toHex());
 		if (md5package_test != md5package_real)
+		{
 			qFatal("New pakage is deprecated, update md5");
+		}
 	}
-	
+
 	if (!QFileInfo::exists(package_dir + "/bin/qmake.exe"))
 	{
 		QProcess un7zip;
@@ -122,14 +136,14 @@ int main(int argc, char* argv[])
 	cmake.setProcessEnvironment(env);
 	cmake.setWorkingDirectory(build_directory);
 	cmake.start(package_dir + "/bin/cmake.exe", QStringList()
-		<< "-G"
-		<< "MinGW Makefiles"
-		<< "-DWITH_TESTS=ON"
-		<< "-DREMOTE_TESTING=ON"
-		<< "-DCMAKE_BUILD_TYPE=Release"
-		<< "-DCMAKE_INSTALL_PREFIX=" + installation_dir + ""
-		<< source_directory
-		);
+				<< "-G"
+				<< "MinGW Makefiles"
+				<< "-DWITH_TESTS=ON"
+				<< "-DREMOTE_TESTING=ON"
+				<< "-DCMAKE_BUILD_TYPE=Release"
+				<< "-DCMAKE_INSTALL_PREFIX=" + installation_dir + ""
+				<< source_directory
+			   );
 
 	cmake.waitForFinished(-1);
 
@@ -149,7 +163,9 @@ int main(int argc, char* argv[])
 
 	int threads_count = QThread::idealThreadCount();
 	if (threads_count < 1)
+	{
 		threads_count = 1;
+	}
 
 	qDebug() << "Using" << threads_count << "threads for build";
 
