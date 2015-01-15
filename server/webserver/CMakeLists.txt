@@ -24,6 +24,7 @@ set(HEADERS_
 	lrucache.hpp
 	globals.h
 	webserver_config.h
+	jsonthrower.h
 	
 	logger.h
 	
@@ -44,6 +45,7 @@ set(SOURCES_
 	webprocess.cpp
 	webrouter.cpp
 	webrequest.cpp
+	jsonthrower.cpp
 	
 	logger.cpp
 	routers/rawfilehandler.cpp

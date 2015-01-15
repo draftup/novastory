@@ -40,7 +40,6 @@ set(HEADERS
 	logic/textrevisioncontainer.h
 	logic/loggedactions.h
 
-	jsonthrower.h
 	config.h
 	avatarshandler.h
 	userspicshandler.h
@@ -74,7 +73,6 @@ set(SOURCES
 	profilehandler.cpp
 	profile.cpp
 	apihandler.cpp
-	jsonthrower.cpp
 	novastoryserver.cpp
 	novastoryerrorhandler.cpp
 )
