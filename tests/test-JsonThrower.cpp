@@ -1,5 +1,5 @@
 #include <QtTest>
-#include "jsonthrower.h"
+#include "webserver/jsonthrower.h"
 
 using namespace novastory;
 

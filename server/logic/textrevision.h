@@ -2,7 +2,7 @@
 #define TEXTREVISION_H
 
 #include "webserver/sql/sqlizable.h"
-#include "jsonthrower.h"
+#include "webserver/jsonthrower.h"
 #include "user.h"
 #include <QDateTime>
 #include "logic/loggedactions.h"

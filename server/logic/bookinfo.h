@@ -2,7 +2,7 @@
 #define BOOKINFO_H
 
 #include "webserver/sql/sqlizable.h"
-#include "jsonthrower.h"
+#include "webserver/jsonthrower.h"
 #include "logic/loggedactions.h"
 
 class Test_BookInfo;

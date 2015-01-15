@@ -4,7 +4,7 @@
 #include "textrevision.h"
 #include <QMap>
 #include "user.h"
-#include "jsonthrower.h"
+#include "webserver/jsonthrower.h"
 #include "webserver/sql/nestedset.h"
 #include "logic/loggedactions.h"
 

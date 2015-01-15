@@ -2,7 +2,7 @@
 #define CAPTHA_H
 
 #include "webserver/sql/sqlizable.h"
-#include "jsonthrower.h"
+#include "webserver/jsonthrower.h"
 #include <QHostAddress>
 
 class Test_Recaptcha;

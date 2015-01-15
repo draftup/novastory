@@ -3,7 +3,7 @@
 
 #include "webserver/sql/sqlizable.h"
 #include "webserver/globals.h"
-#include "jsonthrower.h"
+#include "webserver/jsonthrower.h"
 
 class Test_LogicUsers;
 
