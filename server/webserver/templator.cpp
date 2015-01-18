@@ -43,7 +43,7 @@ QByteArray Templator::generate(
 	return generatedTemplate.toUtf8();
 }
 
-#ifdef NOVASTORY_BUILD
+#if defined(NOVASTORY_BUILD) || defined(VSTEAMS_BUILD)
 QByteArray Templator::generate(const User& user, const QString& title /*= "Novastory"*/, const QString& article /*= QString() */)
 {
 	if (user.isLogined())
@@ -85,8 +85,9 @@ QByteArray Templator::generateLogined(const User& user, const QString& title /*=
 	generatedTemplate = generatedTemplate.replace("{powered}", "2014 &copy; Copyright Novastory Engine " GIT_DESCRIBE " [r" GIT_REVISION "]");
 	user.substitute(generatedTemplate);
 	generatedTemplate = generatedTemplate.replace("{users.stoken}", user.token());
+#ifdef NOVASTORY_BUILD
 	generatedTemplate = generatedTemplate.replace("{users.namemail}", !user.firstName().isEmpty() ? user.firstName() : user.email());
-
+#endif
 	qDebug() << "Html template generated with title:" << title << "and article" << article;
 
 	return generatedTemplate.toUtf8();

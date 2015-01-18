@@ -2,7 +2,7 @@
 #define TEMPLATOR_H
 
 #include <QByteArray>
-#ifdef NOVASTORY_BUILD
+#if defined(NOVASTORY_BUILD) || defined(VSTEAMS_BUILD)
 #include "logic/user.h"
 #endif
 
@@ -36,7 +36,7 @@ public:
 		const QString& article = QString()
 	);
 
-#ifdef NOVASTORY_BUILD
+#if defined(NOVASTORY_BUILD) || defined(VSTEAMS_BUILD)
 	static QByteArray generate(
 		const User& user,
 		const QString& title = "Novastory",
