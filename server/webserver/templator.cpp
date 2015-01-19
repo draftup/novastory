@@ -9,7 +9,8 @@ namespace novastory
 
 QByteArray Templator::generate(
 	const QString& title /*= "Novastory"*/,
-	const QString& article /*= QString()*/
+	const QString& article /*= QString()*/,
+	const QHash<QString, QString>& add_map /* = QHash<QString, QString>()*/
 )
 {
 	static QString templateData;
@@ -37,6 +38,12 @@ QByteArray Templator::generate(
 	generatedTemplate = templateData.replace("{title}", title);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
 	generatedTemplate = generatedTemplate.replace("{powered}", "2014 &copy; Copyright Novastory Engine " GIT_DESCRIBE " [r" GIT_REVISION "]");
+	QHashIterator<QString, QString> it(add_map);
+	while (it.hasNext())
+	{
+		it.next();
+		generatedTemplate = generatedTemplate.replace("{" + it.key() + "}", it.value());
+	}
 
 	qDebug() << "Html template generated with title:" << title << "and article" << article;
 
@@ -44,7 +51,7 @@ QByteArray Templator::generate(
 }
 
 #if defined(NOVASTORY_BUILD) || defined(VSTEAMS_BUILD)
-QByteArray Templator::generate(const User& user, const QString& title /*= "Novastory"*/, const QString& article /*= QString() */)
+QByteArray Templator::generate(const User& user, const QString& title /*= "Novastory"*/, const QString& article /*= QString() */, const QHash<QString, QString>& add_map /* = QHash<QString, QString>()*/)
 {
 	if (user.isLogined())
 	{
@@ -56,7 +63,7 @@ QByteArray Templator::generate(const User& user, const QString& title /*= "Novas
 	}
 }
 
-QByteArray Templator::generateLogined(const User& user, const QString& title /*= "Novastory"*/, const QString& article /*= QString() */)
+QByteArray Templator::generateLogined(const User& user, const QString& title /*= "Novastory"*/, const QString& article /*= QString() */, const QHash<QString, QString>& add_map /* = QHash<QString, QString>()*/)
 {
 	static QString templateData;
 	QString generatedTemplate;
@@ -88,6 +95,13 @@ QByteArray Templator::generateLogined(const User& user, const QString& title /*=
 #ifdef NOVASTORY_BUILD
 	generatedTemplate = generatedTemplate.replace("{users.namemail}", !user.firstName().isEmpty() ? user.firstName() : user.email());
 #endif
+	QHashIterator<QString, QString> it(add_map);
+	while (it.hasNext())
+	{
+		it.next();
+		generatedTemplate = generatedTemplate.replace("{" + it.key() + "}", it.value());
+	}
+
 	qDebug() << "Html template generated with title:" << title << "and article" << article;
 
 	return generatedTemplate.toUtf8();

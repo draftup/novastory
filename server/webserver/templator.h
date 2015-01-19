@@ -2,6 +2,7 @@
 #define TEMPLATOR_H
 
 #include <QByteArray>
+#include <QHash>
 #if defined(NOVASTORY_BUILD) || defined(VSTEAMS_BUILD)
 #include "logic/user.h"
 #endif
@@ -33,20 +34,23 @@ public:
 	 */
 	static QByteArray generate(
 		const QString& title = "Novastory",
-		const QString& article = QString()
+		const QString& article = QString(),
+		const QHash<QString, QString>& add_map = QHash<QString, QString>()
 	);
 
 #if defined(NOVASTORY_BUILD) || defined(VSTEAMS_BUILD)
 	static QByteArray generate(
 		const User& user,
 		const QString& title = "Novastory",
-		const QString& article = QString()
+		const QString& article = QString(),
+		const QHash<QString, QString>& add_map = QHash<QString, QString>()
 	);
 
 	static QByteArray generateLogined(
 		const User& user,
 		const QString& title = "Novastory",
-		const QString& article = QString()
+		const QString& article = QString(),
+		const QHash<QString, QString>& add_map = QHash<QString, QString>()
 	);
 #endif
 };
