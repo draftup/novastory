@@ -55,11 +55,11 @@ QByteArray Templator::generate(const User& user, const QString& title /*= "Novas
 {
 	if (user.isLogined())
 	{
-		return generateLogined(user, title, article);
+		return generateLogined(user, title, article, add_map);
 	}
 	else
 	{
-		return generate(title, article);
+		return generate(title, article, add_map);
 	}
 }
 
