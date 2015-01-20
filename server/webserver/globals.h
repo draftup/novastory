@@ -15,6 +15,12 @@ class QFile;
 #define VERIFY(x) Q_ASSERT(x)
 #endif //QT_NO_DEBUG
 
+#ifdef Q_OS_WIN
+#define NVSTR(str) QString::fromLocal8Bit(str)
+#else
+#define NVSTR(str) QString(str)
+#endif
+
 namespace novastory
 {
 /**
