@@ -43,7 +43,7 @@ public:
 		return std::find(std::begin(objectTypeIds), std::end(objectTypeIds), type) != std::end(objectTypeIds);
 	}
 protected:
-	bool syncProcess(SqlQuery& query);
+	virtual bool syncProcess(SqlQuery& query);
 	void syncRecord(SqlQuery& query);
 	void syncRecord(QSqlRecord& query);
 };
