@@ -272,12 +272,25 @@ void Sqlizable::syncRecord(SqlQuery& query)
 
 void Sqlizable::syncRecord(QSqlRecord& record)
 {
+	const QMetaObject* mObject = metaObject();
 	for (int i = 0; i < record.count(); ++i)
 	{
 		QString propertyName = record.fieldName(i);
 		QVariant propertyValue = record.value(i);
-		setProperty(propertyName.toLatin1(), propertyValue);
-		qDebug() << "SYNCSQL" << propertyName << "=" << propertyValue.toString();
+		int iProperty = mObject->indexOfProperty(propertyName.toLatin1());
+		if (iProperty >= 0)
+		{
+			QMetaProperty mProperty = mObject->property(iProperty);
+			if (mProperty.isWritable())
+			{
+				mProperty.write(this, propertyValue);
+				qDebug() << "SYNCSQL" << propertyName << "=" << propertyValue.toString();
+			}
+			else
+			{
+				qDebug() << "SYNCSQL BLOCK" << propertyName << "write protected";
+			}
+		}
 	}
 }
 
