@@ -29,7 +29,7 @@ public:
 
 	Sqlizable& operator =(const Sqlizable&);
 
-	QJsonObject jsonObject() const;
+	virtual QJsonObject jsonObject() const;
 
 	static bool isObjectType(int type)
 	{
