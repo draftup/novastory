@@ -1,5 +1,11 @@
-project (SMTPEmail)
 cmake_minimum_required (VERSION 2.8)
+if(POLICY CMP0020)
+  cmake_policy(SET CMP0020 NEW)
+endif()
+IF(POLICY CMP0048)
+	cmake_policy(SET CMP0048 NEW)
+ENDIF(POLICY CMP0048)
+project (SMTPEmail VERSION 1.1)
 
 set(SMTP_MOC_HDRS
 	emailaddress.h
