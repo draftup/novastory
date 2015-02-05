@@ -19,7 +19,7 @@ private slots:
 
 void Test_Logger::initTestCase()
 {
-	QFile::remove("novastory.log");
+	QFile::remove(PROJECT_NAME ".log");
 }
 
 void Test_Logger::init()
@@ -34,14 +34,14 @@ void Test_Logger::cleanup()
 
 void Test_Logger::cleanupTestCase()
 {
-	QFile::remove("novastory.log");
+	QFile::remove(PROJECT_NAME ".log");
 }
 
 void Test_Logger::simpleOutputTest()
 {
 	Logger::Instance().log("hahaha");
 	qDebug() << "all good";
-	QVERIFY(!QFile::exists("novastory.log"));
+	QVERIFY(!QFile::exists(PROJECT_NAME ".log"));
 }
 
 void Test_Logger::fileOutputTest()
@@ -49,9 +49,9 @@ void Test_Logger::fileOutputTest()
 	Logger::Instance().setWriteToLogFile(true);
 	qDebug() << "all good 2";
 	qDebug() << "all good 3";
-	QVERIFY(QFile::exists("novastory.log"));
+	QVERIFY(QFile::exists(PROJECT_NAME ".log"));
 
-	QFile rd("novastory.log");
+	QFile rd(PROJECT_NAME ".log");
 	QVERIFY(rd.open(QIODevice::ReadOnly | QIODevice::Text));
 	QString r = rd.readAll();
 	QVERIFY(r.indexOf("all good 2") != -1);
