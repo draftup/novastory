@@ -43,6 +43,7 @@ add_definitions(-DGIT_DESCRIBE="${GIT_DESCRIBE}")
 add_definitions(-DGIT_VERSION="${PROJECT_VERSION}")
 message("Git revision detected: ${GIT_REVISION}")
 message("Git describe: ${GIT_DESCRIBE}")
+add_definitions(-DPROJECT_NAME="${PROJECT_NAME}")
 add_definitions(-DNOVASTORY_BUILD)
 
 #Directories

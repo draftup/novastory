@@ -51,14 +51,8 @@ void Logger::initializeFileLog()
 
 	QString logPath;
 	QString errorPath;
-#ifdef Q_OS_WIN
-	logPath = "novastory.log";
-	errorPath = "novastory.errors.log";
-#else
-	//path = "/var/log/novastory.log";
-	logPath = "novastory.log";
-	errorPath = "novastory.errors.log";
-#endif
+	logPath = PROJECT_NAME ".log";
+	errorPath = PROJECT_NAME ".errors.log";
 	Q_ASSERT(!logFile);
 	Q_ASSERT(!errorFile);
 	logFile = new QFile(logPath);
