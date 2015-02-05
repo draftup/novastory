@@ -23,6 +23,8 @@ Logger::Logger() :
 	logStream(nullptr),
 	errorFile(nullptr),
 	errorStream(nullptr),
+	htmlFile(nullptr),
+	htmlStream(nullptr),
 	isWriteToFile(false),
 	failReports(false)
 {
@@ -40,6 +42,8 @@ Logger::~Logger()
 	delete logFile;
 	delete errorStream;
 	delete errorFile;
+	delete htmlStream;
+	delete htmlFile;
 }
 
 void Logger::initializeFileLog()
@@ -51,18 +55,25 @@ void Logger::initializeFileLog()
 
 	QString logPath;
 	QString errorPath;
+	QString htmlPath;
 	logPath = PROJECT_NAME ".log";
 	errorPath = PROJECT_NAME ".errors.log";
+	htmlPath = PROJECT_NAME ".html";
 	Q_ASSERT(!logFile);
 	Q_ASSERT(!errorFile);
+	Q_ASSERT(!htmlFile);
 	logFile = new QFile(logPath);
 	logFile->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
 	errorFile = new QFile(errorPath);
 	errorFile->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
+	htmlFile = new QFile(htmlPath);
+	htmlFile->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
 	Q_ASSERT(!logStream);
 	Q_ASSERT(!errorStream);
+	Q_ASSERT(!htmlStream);
 	logStream = new QTextStream(logFile);
 	errorStream = new QTextStream(errorFile);
+	htmlStream = new QTextStream(htmlFile);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
 	previousMsgHandler = qInstallMessageHandler(&novastory::messageOutput);
@@ -160,6 +171,28 @@ void Logger::log(const QString& text, QtMsgType type)
 				break;
 			}
 		}
+
+		if (htmlStream)
+		{
+			QString html = record;
+			switch (type)
+			{
+			case QtDebugMsg:
+				html = "<div class=\"debug\">" + html + "</div>";
+				break;
+			case QtWarningMsg:
+				html = "<div class=\"warning\">" + html + "</div>";
+				break;
+			case QtCriticalMsg:
+				html = "<div class=\"critical\">" + html + "</div>";
+				break;
+			case QtFatalMsg:
+				html = "<div class=\"fatal\">" + html + "</div>";
+			}
+
+			*htmlStream << html;
+			htmlStream->flush();
+		}
 	}
 }
 
@@ -175,6 +208,18 @@ void Logger::setWriteToLogFile(bool writToFile)
 void Logger::setFailReports(bool enable)
 {
 	failReports = enable;
+}
+
+QByteArray Logger::html() const
+{
+	QFile html(PROJECT_NAME ".html");
+	if (!html.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		qCritical() << "Html log file not founded";
+		return QByteArray();
+	}
+
+	return html.readAll();
 }
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))

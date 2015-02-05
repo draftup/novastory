@@ -30,13 +30,17 @@ public:
 
 	void setWriteToLogFile(bool writToFile);
 	void setFailReports(bool enable);
+
+	QByteArray html() const;
 private:
 	void initializeFileLog();
 
 	QFile* logFile;
 	QFile* errorFile;
+	QFile* htmlFile;
 	QTextStream* logStream;
 	QTextStream* errorStream;
+	QTextStream* htmlStream;
 	bool isWriteToFile;
 	QMutex m_mutex;
 	bool failReports;
