@@ -77,6 +77,19 @@ QString novastory::selectorId(const QString& html, const QString& selector)
 		pos += idTag.matchedLength();
 		while (tags[idTag.cap(1)] > 0 && (pos = simpleTag.indexIn(html, pos)) != -1)
 		{
+			// Пропуск комментариев
+			if (simpleTag.cap(0).startsWith("<!--"))
+			{
+				int end_comment = html.indexOf("-->", pos);
+				if (end_comment > 0)
+					pos = end_comment + 3;
+				else
+					pos += 4;
+
+				end = pos;
+				continue;
+			}
+
 			if (simpleTag.cap(0).startsWith("</"))
 			{
 				tags[simpleTag.cap(1)]--;
