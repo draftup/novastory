@@ -130,8 +130,8 @@ int main(int argc, char* argv[])
 	}
 
 	QProcess cmake;
-	QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-	env.insert("PATH", env.value("Path") + ";" + package_dir + "/bin");
+	QProcessEnvironment env;
+	env.insert("PATH", package_dir + "/bin");
 	env.insert("OPENSSL_ROOT_DIR", package_dir);
 	cmake.setProcessEnvironment(env);
 	cmake.setWorkingDirectory(build_directory);
