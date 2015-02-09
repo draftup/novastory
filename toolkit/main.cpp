@@ -5,6 +5,9 @@
 #include <QDir>
 #include <QProcess>
 #include <QThread>
+#include <QObject>
+#include <iostream>
+#include <windows.h>
 
 using namespace novastory;
 
@@ -12,9 +15,12 @@ int main(int argc, char* argv[])
 {
 	QCoreApplication a(argc, argv);
 
+	HANDLE consolehwnd = GetStdHandle(STD_OUTPUT_HANDLE);
+
 	// Base checks
 	if (!QSslSocket::supportsSsl())
 	{
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 		qFatal("Ssl support failed");
 	}
 
@@ -30,10 +36,12 @@ int main(int argc, char* argv[])
 	const QString build_directory = exe_dir + "/build";
 	const QString installation_dir = source_directory + "/build";
 
+	SetConsoleTextAttribute(consolehwnd, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 	qDebug() << "Source directory: " << source_directory;
 
 	if (!QFileInfo::exists(source_directory + "/CMakeLists.txt"))
 	{
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 		qFatal("unknown source directory");
 	}
 
@@ -45,24 +53,29 @@ int main(int argc, char* argv[])
 
 	if (!QFileInfo::exists(ar7za_exe))
 	{
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 		qFatal("No 7za founded");
 	}
 
 	Downloader md5checker(package_md5_file, exe_dir);
 	md5checker.wait();
 	QString md5package_real = md5checker.data();
+	md5checker.close();
 	QStringList md5fList = md5package_real.split(" ");
 	if (md5fList.size() != 2)
 	{
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 		qFatal("Unknown md5 file format");
 	}
 	md5package_real = md5fList[0];
 
 	if (md5package_real.size() <= 0)
 	{
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 		qFatal("Md5 not founded in downloaded file");
 	}
 
+	SetConsoleTextAttribute(consolehwnd, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 	qDebug() << "package.7z must be md5:" << md5package_real;
 
 	QString md5package_test;
@@ -72,6 +85,7 @@ int main(int argc, char* argv[])
 		QFile checkPackage(package);
 		if (!checkPackage.open(QIODevice::ReadOnly))
 		{
+			SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 			qFatal("Can not read pakage.7z");
 		}
 
@@ -85,21 +99,26 @@ int main(int argc, char* argv[])
 	{
 		if (QFileInfo::exists(package_dir) && !QDir(package_dir).removeRecursively())
 		{
+			SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 			qFatal("Remove old package directory failed");
 		}
 
 		// also removing build dir: who knows, may be changed compiller or cmake
 		if (QFileInfo::exists(build_directory) && !QDir(build_directory).removeRecursively())
 		{
+			SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 			qFatal("Remove old build directory failed");
 		}
 
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_GREEN);
 		qDebug() << "Update old package";
 		Downloader package_downloader(package_file, exe_dir);
 		package_downloader.wait();
 		md5package_test = QString(QCryptographicHash::hash(package_downloader.data(), QCryptographicHash::Md5).toHex());
+		package_downloader.close();
 		if (md5package_test != md5package_real)
 		{
+			SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 			qFatal("New pakage is deprecated, update md5");
 		}
 	}
@@ -109,18 +128,30 @@ int main(int argc, char* argv[])
 		QProcess un7zip;
 		un7zip.setWorkingDirectory(exe_dir);
 		un7zip.start("7za.exe", QStringList() << "x" << package);
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_GREEN);
 		qDebug() << "Unpacking pakage file";
+
+		QObject::connect(&un7zip, &QProcess::readyReadStandardOutput, [&un7zip, consolehwnd](){
+			SetConsoleTextAttribute(consolehwnd, FOREGROUND_GREEN);
+			std::cout << un7zip.readAllStandardOutput().constData();
+		});
+		QObject::connect(&un7zip, &QProcess::readyReadStandardError, [&un7zip, consolehwnd](){
+			SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
+			std::cout << un7zip.readAllStandardError().constData();
+		});
+
 		un7zip.waitForFinished(-1);
-		qDebug() << "Unpacked Log:";
-		qDebug() << un7zip.readAll();
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
 		if (un7zip.exitStatus() != QProcess::NormalExit)
 		{
+			SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 			qFatal("Something wrong on unpacking");
 		}
 	}
 	else
 	{
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_GREEN);
 		qDebug() << "Package already unpacked";
 	}
 
@@ -145,13 +176,22 @@ int main(int argc, char* argv[])
 				<< source_directory
 			   );
 
-	cmake.waitForFinished(-1);
+	SetConsoleTextAttribute(consolehwnd, FOREGROUND_INTENSITY);
+	QObject::connect(&cmake, &QProcess::readyReadStandardOutput, [&cmake, consolehwnd](){
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_GREEN);
+		std::cout << cmake.readAllStandardOutput().constData();
+	});
+	QObject::connect(&cmake, &QProcess::readyReadStandardError, [&cmake, consolehwnd](){
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
+		std::cout << cmake.readAllStandardError().constData();
+	});
 
-	qDebug() << "Cmake log: ";
-	qDebug() << cmake.readAll();
+	cmake.waitForFinished(-1);
+	SetConsoleTextAttribute(consolehwnd, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
 	if (cmake.exitStatus() != QProcess::NormalExit)
 	{
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 		qFatal("Something wrong on cmake");
 	}
 
@@ -174,9 +214,18 @@ int main(int argc, char* argv[])
 	build.setWorkingDirectory(build_directory);
 	build.start(package_dir + "/bin/mingw32-make", QStringList() << "-j" + QString::number(threads_count));
 
-	build.waitForFinished(-1);
+	SetConsoleTextAttribute(consolehwnd, FOREGROUND_INTENSITY);
+	QObject::connect(&build, &QProcess::readyReadStandardOutput, [&build, consolehwnd](){
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_GREEN);
+		std::cout << build.readAllStandardOutput().constData();
+	});
+	QObject::connect(&build, &QProcess::readyReadStandardError, [&build, consolehwnd](){
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
+		std::cout << build.readAllStandardError().constData();
+	});
 
-	qDebug() << "Build status: " << build.readAll();
+	build.waitForFinished(-1);
+	SetConsoleTextAttribute(consolehwnd, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
 	if (build.exitStatus() != QProcess::NormalExit)
 	{
@@ -188,12 +237,22 @@ int main(int argc, char* argv[])
 	testing.setWorkingDirectory(build_directory);
 	testing.start(package_dir + "/bin/mingw32-make test");
 
-	testing.waitForFinished(-1);
+	SetConsoleTextAttribute(consolehwnd, FOREGROUND_INTENSITY);
+	QObject::connect(&testing, &QProcess::readyReadStandardOutput, [&testing, consolehwnd](){
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_GREEN);
+		std::cout << testing.readAllStandardOutput().constData();
+	});
+	QObject::connect(&testing, &QProcess::readyReadStandardError, [&testing, consolehwnd](){
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
+		std::cout << testing.readAllStandardError().constData();
+	});
 
-	qDebug() << "Testing status: " << testing.readAll();
+	testing.waitForFinished(-1);
+	SetConsoleTextAttribute(consolehwnd, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
 	if (testing.exitStatus() != QProcess::NormalExit)
 	{
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 		qFatal("Something wrong on testing");
 	}
 
@@ -202,12 +261,24 @@ int main(int argc, char* argv[])
 	installation.setWorkingDirectory(build_directory);
 	installation.start(package_dir + "/bin/mingw32-make install");
 
+	SetConsoleTextAttribute(consolehwnd, FOREGROUND_INTENSITY);
+	QObject::connect(&installation, &QProcess::readyReadStandardOutput, [&installation, consolehwnd](){
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_GREEN);
+		std::cout << installation.readAllStandardOutput().constData();
+	});
+	QObject::connect(&installation, &QProcess::readyReadStandardError, [&installation, consolehwnd](){
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
+		std::cout << installation.readAllStandardError().constData();
+	});
+
 	installation.waitForFinished(-1);
+	SetConsoleTextAttribute(consolehwnd, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
 	qDebug() << "Installation status: " << installation.readAll();
 
 	if (installation.exitStatus() != QProcess::NormalExit)
 	{
+		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 		qFatal("Something wrong on installation");
 	}
 
