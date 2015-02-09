@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 	HANDLE consolehwnd = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED | FOREGROUND_GREEN);
 	std::cout << "-------------------------------------" << std::endl;
-	std::cout << "   Build tookit: " GIT_DESCRIBE  " "   << std::endl;
+	std::cout << "   Build tookit " GIT_DESCRIBE  " "   << std::endl;
 	std::cout << "-------------------------------------" << std::endl;
 
 	// Base checks
@@ -198,12 +198,6 @@ int main(int argc, char* argv[])
 		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 		qFatal("Something wrong on cmake");
 	}
-
-	// Copy runtime
-	QDir().mkpath(build_directory + "/tests/sqldrivers");
-	QDir().mkpath(build_directory + "/server/sqldrivers");
-	QFile::copy(package_dir + "/plugins/sqldrivers/qsqlmysql.dll", build_directory + "/tests/sqldrivers/qsqlmysql.dll");
-	QFile::copy(package_dir + "/plugins/sqldrivers/qsqlmysql.dll", build_directory + "/server/sqldrivers/qsqlmysql.dll");
 
 	int threads_count = QThread::idealThreadCount();
 	if (threads_count < 1)
