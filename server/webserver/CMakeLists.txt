@@ -90,6 +90,9 @@ add_library(WebServer STATIC
 
 target_link_libraries(WebServer
 	smtpemail
+	${Qt5Core_LIBRARIES}
+	${Qt5Network_LIBRARIES}
+	${Qt5Sql_LIBRARIES}
 )
 
 

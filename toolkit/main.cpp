@@ -16,6 +16,10 @@ int main(int argc, char* argv[])
 	QCoreApplication a(argc, argv);
 
 	HANDLE consolehwnd = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED | FOREGROUND_GREEN);
+	std::cout << "-------------------------------------" << std::endl;
+	std::cout << "   Build tookit: " GIT_DESCRIBE  " "   << std::endl;
+	std::cout << "-------------------------------------" << std::endl;
 
 	// Base checks
 	if (!QSslSocket::supportsSsl())
@@ -294,9 +298,9 @@ int main(int argc, char* argv[])
 	QFile::copy(package_dir + "/bin/libeay32.dll", installation_dir + "/libeay32.dll");
 	QFile::copy(package_dir + "/bin/ssleay32.dll", installation_dir + "/ssleay32.dll");
 
-	QFile::copy(package_dir + "/bin/icudt52.dll", installation_dir + "/icudt52.dll");
-	QFile::copy(package_dir + "/bin/icuin52.dll", installation_dir + "/icuin52.dll");
-	QFile::copy(package_dir + "/bin/icuuc52.dll", installation_dir + "/icuuc52.dll");
+	QFile::copy(package_dir + "/bin/icudt53.dll", installation_dir + "/icudt53.dll");
+	QFile::copy(package_dir + "/bin/icuin53.dll", installation_dir + "/icuin53.dll");
+	QFile::copy(package_dir + "/bin/icuuc53.dll", installation_dir + "/icuuc53.dll");
 
 	QFile::copy(package_dir + "/bin/libmysql.dll", installation_dir + "/libmysql.dll");
 
