@@ -24,7 +24,7 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 		// First, looking in cache
 		try
 		{
-#ifdef QT_DEBUG
+#if defined(QT_DEBUG) || defined(REMOTE_TESTING)
 			if (filePath.endsWith(".js") || filePath.endsWith(".css") || filePath.endsWith(".html"))
 			{
 				throw std::range_error("debuging");
