@@ -118,6 +118,12 @@ void WebServer::resetDirectory()
 	{
 		publicDirectory = dataDirectory.absolutePath();
 	}
+#ifdef REMOTE_TESTING
+	else if (QDir(QDir::currentPath() + "/.." + "/" + m_public_dir).exists())
+	{
+		publicDirectory = QDir::currentPath() + "/.." + "/" + m_public_dir;
+	}
+#endif
 	else if (QDir(QDir::currentPath() + "/../.." + "/" + m_public_dir).exists())
 	{
 		publicDirectory = QDir::currentPath() + "/../.." + "/" + m_public_dir;
