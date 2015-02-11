@@ -89,7 +89,7 @@ void Test_Globals::selectorTest()
 	// wrong html
 	QCOMPARE(selectorId("a<div id='ss'><div></div><div><div></div></div></div></div>c", "ss"), QString("<div id='ss'><div></div><div><div></div></div></div>"));
 	QCOMPARE(selectorId("aa<div id='deg'>dsds<div></div>bb", "deg"), QString("<div id='deg'>dsds<div></div>"));
-	
+
 	// Bug
 	QCOMPARE(selectorId("aa<div id='deg'><div id='lol'> <!-- <div id='welcome'></div> --> </div><div id='lol2'></div></div>bb", "deg"), QString("<div id='deg'><div id='lol'> <!-- <div id='welcome'></div> --> </div><div id='lol2'></div></div>"));
 }

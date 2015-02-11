@@ -135,11 +135,13 @@ int main(int argc, char* argv[])
 		SetConsoleTextAttribute(consolehwnd, FOREGROUND_GREEN);
 		qDebug() << "Unpacking pakage file";
 
-		QObject::connect(&un7zip, &QProcess::readyReadStandardOutput, [&un7zip, consolehwnd](){
+		QObject::connect(&un7zip, &QProcess::readyReadStandardOutput, [&un7zip, consolehwnd]()
+		{
 			SetConsoleTextAttribute(consolehwnd, FOREGROUND_GREEN);
 			std::cout << un7zip.readAllStandardOutput().constData();
 		});
-		QObject::connect(&un7zip, &QProcess::readyReadStandardError, [&un7zip, consolehwnd](){
+		QObject::connect(&un7zip, &QProcess::readyReadStandardError, [&un7zip, consolehwnd]()
+		{
 			SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 			std::cout << un7zip.readAllStandardError().constData();
 		});
@@ -181,11 +183,13 @@ int main(int argc, char* argv[])
 			   );
 
 	SetConsoleTextAttribute(consolehwnd, FOREGROUND_INTENSITY);
-	QObject::connect(&cmake, &QProcess::readyReadStandardOutput, [&cmake, consolehwnd](){
+	QObject::connect(&cmake, &QProcess::readyReadStandardOutput, [&cmake, consolehwnd]()
+	{
 		SetConsoleTextAttribute(consolehwnd, FOREGROUND_GREEN);
 		std::cout << cmake.readAllStandardOutput().constData();
 	});
-	QObject::connect(&cmake, &QProcess::readyReadStandardError, [&cmake, consolehwnd](){
+	QObject::connect(&cmake, &QProcess::readyReadStandardError, [&cmake, consolehwnd]()
+	{
 		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 		std::cout << cmake.readAllStandardError().constData();
 	});
@@ -213,11 +217,13 @@ int main(int argc, char* argv[])
 	build.start(package_dir + "/bin/mingw32-make", QStringList() << "-j" + QString::number(threads_count));
 
 	SetConsoleTextAttribute(consolehwnd, FOREGROUND_INTENSITY);
-	QObject::connect(&build, &QProcess::readyReadStandardOutput, [&build, consolehwnd](){
+	QObject::connect(&build, &QProcess::readyReadStandardOutput, [&build, consolehwnd]()
+	{
 		SetConsoleTextAttribute(consolehwnd, FOREGROUND_GREEN);
 		std::cout << build.readAllStandardOutput().constData();
 	});
-	QObject::connect(&build, &QProcess::readyReadStandardError, [&build, consolehwnd](){
+	QObject::connect(&build, &QProcess::readyReadStandardError, [&build, consolehwnd]()
+	{
 		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 		std::cout << build.readAllStandardError().constData();
 	});
@@ -236,11 +242,13 @@ int main(int argc, char* argv[])
 	testing.start(package_dir + "/bin/mingw32-make test");
 
 	SetConsoleTextAttribute(consolehwnd, FOREGROUND_INTENSITY);
-	QObject::connect(&testing, &QProcess::readyReadStandardOutput, [&testing, consolehwnd](){
+	QObject::connect(&testing, &QProcess::readyReadStandardOutput, [&testing, consolehwnd]()
+	{
 		SetConsoleTextAttribute(consolehwnd, FOREGROUND_GREEN);
 		std::cout << testing.readAllStandardOutput().constData();
 	});
-	QObject::connect(&testing, &QProcess::readyReadStandardError, [&testing, consolehwnd](){
+	QObject::connect(&testing, &QProcess::readyReadStandardError, [&testing, consolehwnd]()
+	{
 		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 		std::cout << testing.readAllStandardError().constData();
 	});
@@ -260,11 +268,13 @@ int main(int argc, char* argv[])
 	installation.start(package_dir + "/bin/mingw32-make install");
 
 	SetConsoleTextAttribute(consolehwnd, FOREGROUND_INTENSITY);
-	QObject::connect(&installation, &QProcess::readyReadStandardOutput, [&installation, consolehwnd](){
+	QObject::connect(&installation, &QProcess::readyReadStandardOutput, [&installation, consolehwnd]()
+	{
 		SetConsoleTextAttribute(consolehwnd, FOREGROUND_GREEN);
 		std::cout << installation.readAllStandardOutput().constData();
 	});
-	QObject::connect(&installation, &QProcess::readyReadStandardError, [&installation, consolehwnd](){
+	QObject::connect(&installation, &QProcess::readyReadStandardError, [&installation, consolehwnd]()
+	{
 		SetConsoleTextAttribute(consolehwnd, FOREGROUND_RED);
 		std::cout << installation.readAllStandardError().constData();
 	});

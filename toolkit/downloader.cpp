@@ -30,7 +30,7 @@ Downloader::Downloader(const QUrl& file, const QString& destination) :
 	connect(currentDownload, SIGNAL(finished()),
 			SLOT(fileDownloaded()));
 	connect(currentDownload, SIGNAL(readyRead()),
-		SLOT(downloadReadyRead()));
+			SLOT(downloadReadyRead()));
 }
 
 Downloader::~Downloader()

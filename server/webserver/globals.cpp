@@ -82,9 +82,13 @@ QString novastory::selectorId(const QString& html, const QString& selector)
 			{
 				int end_comment = html.indexOf("-->", pos);
 				if (end_comment > 0)
+				{
 					pos = end_comment + 3;
+				}
 				else
+				{
 					pos += 4;
+				}
 
 				end = pos;
 				continue;
