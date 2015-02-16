@@ -19,6 +19,8 @@ private slots:
 	void mailSendTest();
 	void RFC822DateTest();
 	void selectorTest();
+
+	void pow2round();
 };
 
 void Test_Globals::initTestCase()
@@ -92,6 +94,13 @@ void Test_Globals::selectorTest()
 
 	// Bug
 	QCOMPARE(selectorId("aa<div id='deg'><div id='lol'> <!-- <div id='welcome'></div> --> </div><div id='lol2'></div></div>bb", "deg"), QString("<div id='deg'><div id='lol'> <!-- <div id='welcome'></div> --> </div><div id='lol2'></div></div>"));
+}
+
+void Test_Globals::pow2round()
+{
+	QCOMPARE(pow2roundup(57), 64);
+	QCOMPARE(pow2roundup(64), 64);
+	QCOMPARE(pow2roundup(65), 128);
 }
 
 
