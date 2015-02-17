@@ -154,7 +154,9 @@ inline int
 pow2roundup(int x)
 {
 	if (x < 0)
+	{
 		return 0;
+	}
 	--x;
 	x |= x >> 1;
 	x |= x >> 2;
