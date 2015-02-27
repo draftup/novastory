@@ -16,6 +16,7 @@ include_directories(
 set(HEADERS_TOMOC_
 	webserver.h
 	webprocess.h
+	cron.h
 	
 	sql/sqlizable.h
 )
@@ -54,6 +55,7 @@ set(SOURCES_
 	jsonthrower.cpp
 	
 	logger.cpp
+	cron.cpp
 	routers/rawfilehandler.cpp
 	routers/errorhandler.cpp
 	
