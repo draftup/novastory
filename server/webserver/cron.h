@@ -4,7 +4,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QSharedPointer>
-#include <functional>
+#include <QMutex>
 
 namespace novastory
 {
@@ -28,6 +28,7 @@ protected:
 	void run() override;
 private:
 	QList<QSharedPointer<QTimer>> m_tasks;
+	QMutex m_mutex;
 private slots:
 	void addTask(void* timer);
 };

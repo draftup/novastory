@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QEventLoop>
 #include <QMetaObject>
-#include <QCoreApplication>
+#include <QMutexLocker>
 
 namespace novastory
 {
@@ -31,6 +31,7 @@ void Cron::run()
 
 void Cron::newTask(void(*func)(void), int interval /* = 1000 */)
 {
+	QMutexLocker locker(&Instance().m_mutex);
 	qDebug() << "New cron task added to query with interaval" << interval;
 	QTimer* timer = new QTimer();
 	timer->moveToThread(&Instance());
