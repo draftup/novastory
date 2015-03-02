@@ -11,7 +11,7 @@ namespace novastory
 
 class Cron : public QThread
 {
-Q_OBJECT
+	Q_OBJECT
 public:
 	Cron();
 	~Cron();
