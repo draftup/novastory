@@ -250,9 +250,9 @@ bool Sqlizable::syncSQL(const QList<QString>& basis)
 
 bool Sqlizable::syncProcess(SqlQuery& query)
 {
-	if (query.size() != 1)
+	if (query.size() < 1)
 	{
-		qDebug() << "Not only one record in database. Can not sync.";
+		qWarning() << "No records in query. Can not be synced.";
 		return false;
 	}
 
