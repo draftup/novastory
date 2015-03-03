@@ -25,7 +25,7 @@ WebServer* WebServer::_self = nullptr;
 WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, const QString& pid_file /* = "default_app.pid" */, const QString& db_file /* = "default_db.h" */)
 	: QTcpServer(parent), webCache(CACHE_SIZE)
 	, m_pid_name(pid_file), m_db_file(db_file),
-	m_public_dir("public")
+	  m_public_dir("public")
 {
 	setObjectName("WebServer");
 
