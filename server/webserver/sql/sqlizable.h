@@ -44,8 +44,8 @@ public:
 	}
 protected:
 	virtual bool syncProcess(SqlQuery& query);
-	virtual void syncRecord(SqlQuery& query);
-	virtual void syncRecord(QSqlRecord& query);
+	virtual int syncRecord(SqlQuery& query, bool found_mode = false, int from = -1, int to = -1);
+	virtual int syncRecord(QSqlRecord& query, bool found_mode = false, int from = -1, int to = -1);
 };
 
 }

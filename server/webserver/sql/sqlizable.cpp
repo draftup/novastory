@@ -7,6 +7,7 @@
 #include <QVariant>
 #include <QList>
 #include <QDebug>
+#include <QSet>
 
 
 namespace novastory
@@ -264,22 +265,41 @@ bool Sqlizable::syncProcess(SqlQuery& query)
 
 
 
-void Sqlizable::syncRecord(SqlQuery& query)
+int Sqlizable::syncRecord(SqlQuery& query, bool found_mode /* = false*/, int from /* = -1*/, int to /* = -1*/)
 {
 	QSqlRecord record = query.record();
-	syncRecord(record);
+	return syncRecord(record, found_mode, from, to);
 }
 
-void Sqlizable::syncRecord(QSqlRecord& record)
+int Sqlizable::syncRecord(QSqlRecord& record, bool found_mode /* = false*/, int from /* = -1*/, int to/* = -1*/)
 {
+	QSet<QString> dublicator;
+	if (found_mode)
+	{
+		qDebug() << "SYNC working in found mode";
+	}
 	const QMetaObject* mObject = metaObject();
-	for (int i = 0; i < record.count(); ++i)
+	for (int i = ((from > 0) ? from : 0); i < record.count() && ((to > 0) ? i < to : true); ++i)
 	{
 		QString propertyName = record.fieldName(i);
 		QVariant propertyValue = record.value(i);
 		int iProperty = mObject->indexOfProperty(propertyName.toLatin1());
 		if (iProperty >= 0)
 		{
+			// Если режим поиска ищем первое совпадение в хэш таблице. Значит нужно прерывать синхронизацию, объект уже заполнин.
+			if (found_mode)
+			{
+				if (dublicator.contains(propertyName))
+				{
+					qDebug() << "SYNCSQL DUBLICATE: First dublicate " << propertyName << "on" << i;
+					return i;
+				}
+				else
+				{
+					dublicator.insert(propertyName);
+				}
+			}
+
 			QMetaProperty mProperty = mObject->property(iProperty);
 			if (mProperty.isWritable())
 			{
@@ -292,6 +312,8 @@ void Sqlizable::syncRecord(QSqlRecord& record)
 			}
 		}
 	}
+
+	return -1;
 }
 
 
