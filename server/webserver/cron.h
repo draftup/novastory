@@ -22,8 +22,8 @@ public:
 		return theSingleInstance;
 	}
 
-	static void newTask(void(*func)(void), int interval = 1000);
-
+	static void newTask(void(*func)(void), int interval = 1000, bool singlesht = false);
+	static void newTask(void(*func)(void), const QDateTime& time);
 protected:
 	void run() override;
 private:
