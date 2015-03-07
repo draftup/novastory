@@ -18,4 +18,5 @@ append_test_resource(WebDataContainer ${CMAKE_CURRENT_SOURCE_DIR}/rating_1_on.gi
 do_test(LRUCache test-LRUCache.cpp)
 do_test(DBPatcher test-DBPatcher.cpp)
 do_test(NestedSet test-NestedSet.cpp)
+do_test(Cron test-Cron.cpp)
 
