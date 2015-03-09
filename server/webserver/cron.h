@@ -31,17 +31,17 @@ public:
 
 	void resumeTasks();
 
-	static int startTask(const QString& name, const QString& args = QString(), int interval = 1000, bool singlesht = false);
+	static int startTask(const QString& name, const QString& args = QString(), int interval = 1000, bool singlesht = false, const QDateTime& endtime = QDateTime());
 	static int startTask(const QString& name, const QString& args = QString(), const QDateTime& time = QDateTime());
 	static int startTask(const QString& name, void(*func)(int, const QString&), const QString& args = QString(), const QDateTime& time = QDateTime());
-	static int startTask(const QString& name, void(*func)(int, const QString&), const QString& args = QString(), int interval = 1000, bool singlesht = false);
+	static int startTask(const QString& name, void(*func)(int, const QString&), const QString& args = QString(), int interval = 1000, bool singlesht = false, const QDateTime& endtime = QDateTime());
 	static void stopTask(int id);
 
 	static void addFunc(const QString& name, void(*func)(int, const QString&));
 protected:
 	void run() override;
 private:
-	static void newTask(void(*func)(int, const QString&), int id, const QString& args = QString(), int interval = 1000, bool singlesht = false);
+	static void newTask(void(*func)(int, const QString&), int id, const QString& args = QString(), int interval = 1000, bool singlesht = false, qint64 until_time = -1);
 
 	QMap<int, QSharedPointer<QTimer>> m_tasks;
 	QHash<QString, void(*)(int, const QString&)> m_tasks_func;

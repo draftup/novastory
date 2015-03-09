@@ -33,7 +33,7 @@ void Cron::run()
 	exec();
 }
 
-void Cron::newTask(void(*func)(int, const QString&), int id, const QString& args /* = QString()*/, int interval /* = 1000 */, bool singlesht /*= false*/)
+void Cron::newTask(void(*func)(int, const QString&), int id, const QString& args /* = QString()*/, int interval /* = 1000 */, bool singlesht /*= false*/, qint64 until_time /* = -1 */)
 {
 	QMutexLocker locker(&Instance().m_taks_mutex);
 	qDebug() << "New cron task" << id << "added to query with interaval" << interval << "started" << (singlesht ? "once" : "multiple times");
@@ -41,7 +41,20 @@ void Cron::newTask(void(*func)(int, const QString&), int id, const QString& args
 	timer->moveToThread(&Instance());
 	timer->setInterval(interval);
 	timer->setSingleShot(singlesht);
-	VERIFY(connect(timer, &QTimer::timeout, std::bind(func, id, args)));
+	VERIFY(connect(timer, &QTimer::timeout, std::bind([timer, func, until_time](int taskid, const QString & args)
+	{
+		func(taskid, args);
+
+		if (timer->isSingleShot())
+		{
+			stopTask(taskid);
+		}
+
+		if (until_time > 0 && QDateTime::currentDateTime().toMSecsSinceEpoch() > until_time)
+		{
+			stopTask(taskid);
+		}
+	}, id, args)));
 	Instance().m_tasks.insert(id, QSharedPointer<QTimer>(timer));
 	QMetaObject::invokeMethod(&Instance(), "addTask", Qt::QueuedConnection, Q_ARG(void*, (void*)timer));
 }
@@ -52,20 +65,21 @@ void Cron::addTask(void* timer)
 	qDebug() << "New cron task started";
 }
 
-int Cron::startTask(const QString& name, void(*func)(int, const QString&), const QString& args /* = QString()*/, int interval /*= 1000*/, bool singlesht /*= false*/)
+int Cron::startTask(const QString& name, void(*func)(int, const QString&), const QString& args /* = QString()*/, int interval /*= 1000*/, bool singlesht /*= false*/, const QDateTime& endtime /* = QDateTime()*/)
 {
 	QMutexLocker locker(&Instance().m_func_mutex);
 	SqlQuery saveTask;
-	saveTask.prepare("INSERT INTO cron(`task`, `args`, `starttime`, `oncetime`) VALUES(?, ?, ?, ?)");
+	saveTask.prepare("INSERT INTO cron(`task`, `args`, `starttime`, `oncetime`, `endtime`) VALUES(?, ?, ?, ?, ?)");
 	saveTask.bindValue(0, name);
 	saveTask.bindValue(1, args);
 	saveTask.bindValue(2, interval);
 	saveTask.bindValue(3, singlesht);
+	saveTask.bindValue(4, (endtime.isNull() ? -1 : endtime.toMSecsSinceEpoch()));
 	VERIFY(saveTask.exec());
-	SqlDatabase::close();
 	Instance().m_tasks_func.insert(name, func);
 	int id = saveTask.lastInsertId().toInt();
-	newTask(func, id, args, interval, singlesht);
+	SqlDatabase::close();
+	newTask(func, id, args, interval, singlesht, (endtime.isNull() ? -1 : endtime.toMSecsSinceEpoch()));
 	return id;
 }
 
@@ -77,15 +91,16 @@ int Cron::startTask(const QString& name, void(*func)(int, const QString&), const
 	}
 
 	int time_diff = time.toMSecsSinceEpoch() - QDateTime::currentDateTime().toMSecsSinceEpoch();
+	Q_ASSERT(time_diff > 0);
 
 	return startTask(name, func, args, time_diff, true);
 }
 
-int Cron::startTask(const QString& name, const QString& args /*= QString()*/, int interval /*= 1000*/, bool singlesht /*= false*/)
+int Cron::startTask(const QString& name, const QString& args /*= QString()*/, int interval /*= 1000*/, bool singlesht /*= false*/, const QDateTime& endtime /* = QDateTime()*/)
 {
 	if (Instance().m_tasks_func.contains(name))
 	{
-		return startTask(name, Instance().m_tasks_func[name], args, interval, singlesht);
+		return startTask(name, Instance().m_tasks_func[name], args, interval, singlesht, endtime);
 	}
 
 	return -1;
@@ -99,6 +114,7 @@ int Cron::startTask(const QString& name, const QString& args /*= QString()*/, co
 	}
 
 	int time_diff = time.toMSecsSinceEpoch() - QDateTime::currentDateTime().toMSecsSinceEpoch();
+	Q_ASSERT(time_diff > 0);
 
 	if (Instance().m_tasks_func.contains(name))
 	{
@@ -126,7 +142,7 @@ void Cron::resumeTasks()
 		QString task = tasks.value("task").toString();
 		if (m_tasks_func.contains(task))
 		{
-			newTask(m_tasks_func[task], tasks.value("taskid").toInt(), tasks.value("args").toString(), tasks.value("starttime").toInt(), tasks.value("oncetime").toBool());
+			newTask(m_tasks_func[task], tasks.value("taskid").toInt(), tasks.value("args").toString(), tasks.value("starttime").toInt(), tasks.value("oncetime").toBool(), tasks.value("endtime").toLongLong());
 		}
 	}
 	SqlDatabase::close();

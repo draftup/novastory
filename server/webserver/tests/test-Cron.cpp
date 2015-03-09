@@ -39,7 +39,14 @@ void Test_Cron::cleanupTestCase()
 
 void Test_Cron::start()
 {
+	/*
+	Cron::startTask("testtask", [](int taskid, const QString& args){
+		qDebug() << "haha";
+	}, "", 5000, false, QDateTime::fromMSecsSinceEpoch(QDateTime::currentDateTime().toMSecsSinceEpoch() + 30 * 1000));
 
+	QEventLoop l;
+	l.exec();
+	*/
 }
 
 
