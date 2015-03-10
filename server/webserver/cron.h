@@ -29,7 +29,7 @@ public:
 		return theSingleInstance;
 	}
 
-	void resumeTasks();
+	static void resumeTasks();
 
 	static int startTask(const QString& name, const QString& args = QString(), int interval = 1000, bool singlesht = false, const QDateTime& endtime = QDateTime());
 	static int startTask(const QString& name, const QString& args = QString(), const QDateTime& time = QDateTime());

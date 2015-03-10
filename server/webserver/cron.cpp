@@ -140,9 +140,16 @@ void Cron::resumeTasks()
 	while (tasks.next())
 	{
 		QString task = tasks.value("task").toString();
-		if (m_tasks_func.contains(task))
+		if (Instance().m_tasks_func.contains(task))
 		{
-			newTask(m_tasks_func[task], tasks.value("taskid").toInt(), tasks.value("args").toString(), tasks.value("starttime").toInt(), tasks.value("oncetime").toBool(), tasks.value("endtime").toLongLong());
+			if (tasks.value("endtime").toLongLong() > 0 && QDateTime::currentDateTime().toMSecsSinceEpoch() > tasks.value("endtime").toLongLong())
+			{
+				SqlQuery("DELETE FROM cron WHERE taskid = " + QString::number(tasks.value("taskid").toInt()));
+			}
+			else
+			{
+				newTask(Instance().m_tasks_func[task], tasks.value("taskid").toInt(), tasks.value("args").toString(), tasks.value("starttime").toInt(), tasks.value("oncetime").toBool(), tasks.value("endtime").toLongLong());
+			}
 		}
 	}
 	SqlDatabase::close();
