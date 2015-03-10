@@ -399,9 +399,13 @@ bool DBPatcher::Column::operator==(const Column& table) const
 QString DBPatcher::Column::serialize() const
 {
 	QString sql = QString("`%1` %2").arg(field).arg(type);
-	if (!isnull)
+	if (!isnull && type != "timestamp")
 	{
 		sql += " NOT NULL";
+	}
+	else if (isnull && type == "timestamp")
+	{
+		sql += " NULL";
 	}
 	if (default_data != "NULL" && !default_data.isEmpty())
 	{
