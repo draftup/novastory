@@ -45,7 +45,7 @@ QByteArray Templator::generate(
 		generatedTemplate = generatedTemplate.replace("{" + it.key() + "}", it.value());
 	}
 
-	qDebug() << "Html template generated with title:" << title << "and article" << article;
+	qDebug() << "Html template generated with title:" << title;
 
 	return generatedTemplate.toUtf8();
 }
@@ -102,7 +102,7 @@ QByteArray Templator::generateLogined(const User& user, const QString& title /*=
 		generatedTemplate = generatedTemplate.replace("{" + it.key() + "}", it.value());
 	}
 
-	qDebug() << "Html template generated with title:" << title << "and article" << article;
+	qDebug() << "Html template generated with title:" << title;
 
 	return generatedTemplate.toUtf8();
 }
