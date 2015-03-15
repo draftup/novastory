@@ -33,7 +33,7 @@ void Cron::run()
 	exec();
 }
 
-void Cron::newTask(void(*func)(int, const QString&), int id, const QString& args /* = QString()*/, int interval /* = 1000 */, bool singlesht /*= false*/, qint64 until_time /* = -1 */)
+void Cron::newTask(void(*func)(int, const QString&, bool last_call), int id, const QString& args /* = QString()*/, int interval /* = 1000 */, bool singlesht /*= false*/, qint64 until_time /* = -1 */)
 {
 	QMutexLocker locker(&Instance().m_taks_mutex);
 	qDebug() << "New cron task" << id << "added to query with interaval" << interval << "started" << (singlesht ? "once" : "multiple times");
@@ -43,14 +43,10 @@ void Cron::newTask(void(*func)(int, const QString&), int id, const QString& args
 	timer->setSingleShot(singlesht);
 	VERIFY(connect(timer, &QTimer::timeout, std::bind([timer, func, until_time](int taskid, const QString & args)
 	{
-		func(taskid, args);
+		bool last_call = timer->isSingleShot() || (until_time > 0 && QDateTime::currentDateTime().toMSecsSinceEpoch() > until_time);
+		func(taskid, args, last_call);
 
-		if (timer->isSingleShot())
-		{
-			stopTask(taskid);
-		}
-
-		if (until_time > 0 && QDateTime::currentDateTime().toMSecsSinceEpoch() > until_time)
+		if (last_call)
 		{
 			stopTask(taskid);
 		}
@@ -65,7 +61,7 @@ void Cron::addTask(void* timer)
 	qDebug() << "New cron task started";
 }
 
-int Cron::startTask(const QString& name, void(*func)(int, const QString&), const QString& args /* = QString()*/, int interval /*= 1000*/, bool singlesht /*= false*/, const QDateTime& endtime /* = QDateTime()*/)
+int Cron::startTask(const QString& name, void(*func)(int, const QString&, bool last_call), const QString& args /* = QString()*/, int interval /*= 1000*/, bool singlesht /*= false*/, const QDateTime& endtime /* = QDateTime()*/)
 {
 	QMutexLocker locker(&Instance().m_func_mutex);
 	SqlQuery saveTask;
@@ -83,7 +79,7 @@ int Cron::startTask(const QString& name, void(*func)(int, const QString&), const
 	return id;
 }
 
-int Cron::startTask(const QString& name, void(*func)(int, const QString&), const QString& args /* = QString()*/, const QDateTime& time)
+int Cron::startTask(const QString& name, void(*func)(int, const QString&, bool last_call), const QString& args /* = QString()*/, const QDateTime& time)
 {
 	if (time < QDateTime::currentDateTime())
 	{
@@ -155,7 +151,7 @@ void Cron::resumeTasks()
 	SqlDatabase::close();
 }
 
-void Cron::addFunc(const QString& name, void(*func)(int, const QString&))
+void Cron::addFunc(const QString& name, void(*func)(int, const QString&, bool last_call))
 {
 	QMutexLocker locker(&Instance().m_func_mutex);
 	Instance().m_tasks_func.insert(name, func);

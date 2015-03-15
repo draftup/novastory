@@ -33,18 +33,18 @@ public:
 
 	static int startTask(const QString& name, const QString& args = QString(), int interval = 1000, bool singlesht = false, const QDateTime& endtime = QDateTime());
 	static int startTask(const QString& name, const QString& args = QString(), const QDateTime& time = QDateTime());
-	static int startTask(const QString& name, void(*func)(int, const QString&), const QString& args = QString(), const QDateTime& time = QDateTime());
-	static int startTask(const QString& name, void(*func)(int, const QString&), const QString& args = QString(), int interval = 1000, bool singlesht = false, const QDateTime& endtime = QDateTime());
+	static int startTask(const QString& name, void(*func)(int, const QString&, bool last_call), const QString& args = QString(), const QDateTime& time = QDateTime());
+	static int startTask(const QString& name, void(*func)(int, const QString&, bool last_call), const QString& args = QString(), int interval = 1000, bool singlesht = false, const QDateTime& endtime = QDateTime());
 	static void stopTask(int id);
 
-	static void addFunc(const QString& name, void(*func)(int, const QString&));
+	static void addFunc(const QString& name, void(*func)(int, const QString&, bool last_call));
 protected:
 	void run() override;
 private:
-	static void newTask(void(*func)(int, const QString&), int id, const QString& args = QString(), int interval = 1000, bool singlesht = false, qint64 until_time = -1);
+	static void newTask(void(*func)(int, const QString&, bool last_call), int id, const QString& args = QString(), int interval = 1000, bool singlesht = false, qint64 until_time = -1);
 
 	QMap<int, QSharedPointer<QTimer>> m_tasks;
-	QHash<QString, void(*)(int, const QString&)> m_tasks_func;
+	QHash<QString, void(*)(int, const QString&, bool last_call)> m_tasks_func;
 	QMutex m_taks_mutex;
 	QMutex m_func_mutex;
 private slots:
