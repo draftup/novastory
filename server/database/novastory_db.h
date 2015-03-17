@@ -168,6 +168,61 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 	};
 	TABLE_STRUCT << DBPatcher::Table
 	{
+		"cron",
+		QList<DBPatcher::Column>({
+			DBPatcher::Column{
+				"taskid",
+				"int(10) unsigned",
+				false,
+				"PRI",
+				"",
+				"auto_increment"
+			},
+			DBPatcher::Column{
+				"task",
+				"char(128)",
+				false,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"args",
+				"varchar(255)",
+				true,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"starttime",
+				"int(12) unsigned",
+				false,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"oncetime",
+				"tinyint(1)",
+				false,
+				"",
+				"",
+				""
+			},
+			DBPatcher::Column{
+				"endtime",
+				"bigint(20)",
+				false,
+				"",
+				"",
+				""
+			},
+		}),
+		QHash < QString, QList<QString> > {}
+	};
+	TABLE_STRUCT << DBPatcher::Table
+	{
 		"textrevisions",
 		QList<DBPatcher::Column>({
 			DBPatcher::Column{
