@@ -39,16 +39,17 @@ void Test_Cron::cleanupTestCase()
 
 void Test_Cron::start()
 {
-	/*
-	Cron::addFunc("testtask", [](int taskid, const QString& args){
-		qDebug() << "haha";
+	Cron::addFunc("testtask", [](int taskid, const QString& args, bool last_call){
+		QCOMPARE(args, QString("200"));
+		qDebug() << "shot";
 	});
-	Cron::resumeTasks();
-	Cron::startTask("testtask", "", 5000, false, QDateTime::fromMSecsSinceEpoch(QDateTime::currentDateTime().toMSecsSinceEpoch() + 30 * 1000));
 
-	QEventLoop l;
-	l.exec();
-	*/
+	int id = Cron::startTask("testtask", "200", 200, false, QDateTime::fromMSecsSinceEpoch(QDateTime::currentDateTime().toMSecsSinceEpoch() + 1000));
+	SqlQuery tsk("SELECT * FROM cron WHERE taskid = " + QString::number(id));
+	QCOMPARE(tsk.size(), 1);
+	QTest::qWait(1500);
+	SqlQuery tsk2("SELECT * FROM cron WHERE taskid = " + QString::number(id));
+	QCOMPARE(tsk2.size(), 0);
 }
 
 
