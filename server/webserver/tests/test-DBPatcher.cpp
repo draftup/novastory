@@ -49,6 +49,7 @@ void Test_DBPatcher::cleanupTestCase()
 {
 	SqlQuery("DROP TABLE test_table");
 	SqlQuery("DROP TABLE test_table2");
+	SqlQuery("DROP TABLE test_table3");
 }
 
 void Test_DBPatcher::create()
@@ -444,9 +445,30 @@ void Test_DBPatcher::modifyUniKeys()
 			}
 		})
 	};
+	patcher.m_database << novastory::DBPatcher::Table
+	{
+		"test_table3",
+		QList<novastory::DBPatcher::Column>({
+			novastory::DBPatcher::Column{
+				"testfield",
+				"int(10) unsigned",
+				true,
+				"MUL"
+			},
+			novastory::DBPatcher::Column{
+				"testfield2",
+				"int(10) unsigned",
+				true,
+				"MUL"
+			}
+		}),
+		QHash < QString, QList<QString> > {{ "texty", QList < QString > {"testfield", "testfield2", } }, }
+	};
 	QVERIFY(patcher.patch());
 	SqlQuery q4("select * from information_schema.key_column_usage where table_schema = '" MYSQL_DATABASE "' AND TABLE_NAME = 'test_table' AND CONSTRAINT_NAME = 'textx'");
 	QCOMPARE(q4.size(), 2);
+	SqlQuery q7("select * from information_schema.key_column_usage where table_schema = '" MYSQL_DATABASE "' AND TABLE_NAME = 'test_table3' AND CONSTRAINT_NAME = 'texty'");
+	QCOMPARE(q7.size(), 2);
 
 	// delete
 	patcher.m_database.clear();

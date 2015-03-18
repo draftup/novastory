@@ -4,6 +4,7 @@
 #include "config.h"
 #include <QSet>
 #include <QMutableSetIterator>
+#include <QHashIterator>
 
 namespace novastory
 {
@@ -172,6 +173,21 @@ bool DBPatcher::Table::create()
 		{
 			sql += ",";
 		}
+	}
+	
+	QHashIterator<QString, QList<QString> > ukeys(uniq_keys);
+	while (ukeys.hasNext())
+	{
+		ukeys.next();
+		sql += ",\nUNIQUE KEY `" + ukeys.key() + "` (";
+		QListIterator<QString> uvals(ukeys.value());
+		while (uvals.hasNext())
+		{
+			sql += QString("`%1`").arg(uvals.next());
+			if (uvals.hasNext())
+				sql += ", ";
+		}
+		sql += ")";
 	}
 
 	sql += "\n)";
