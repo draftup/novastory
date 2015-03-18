@@ -39,7 +39,8 @@ void Test_Cron::cleanupTestCase()
 
 void Test_Cron::start()
 {
-	Cron::addFunc("testtask", [](int taskid, const QString& args, bool last_call){
+	Cron::addFunc("testtask", [](int taskid, const QString & args, bool last_call)
+	{
 		QCOMPARE(args, QString("200"));
 		qDebug() << "shot";
 	});

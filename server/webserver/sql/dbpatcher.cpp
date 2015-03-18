@@ -174,7 +174,7 @@ bool DBPatcher::Table::create()
 			sql += ",";
 		}
 	}
-	
+
 	QHashIterator<QString, QList<QString> > ukeys(uniq_keys);
 	while (ukeys.hasNext())
 	{
@@ -185,7 +185,9 @@ bool DBPatcher::Table::create()
 		{
 			sql += QString("`%1`").arg(uvals.next());
 			if (uvals.hasNext())
+			{
 				sql += ", ";
+			}
 		}
 		sql += ")";
 	}
@@ -298,7 +300,7 @@ bool DBPatcher::Table::modify(const Table& old)
 			if (!oldColumn.key.isEmpty())
 			{
 				SqlQuery query;
-				if (oldColumn.key == "PRI")
+				if (oldColumn.key == "PRI" && !uniColumsOld.contains(column.field))
 				{
 					status &= query.exec(QString("ALTER TABLE `%1` DROP PRIMARY KEY").arg(this->table));
 					if (status)
