@@ -8,7 +8,7 @@ set(CTEST_PROJECT_NAME "Novastory")
 set(CTEST_NIGHTLY_START_TIME "00:00:00 UTC")
 
 set(CTEST_DROP_METHOD "http")
-set(CTEST_DROP_SITE "cdash.novastory.org")
+set(CTEST_DROP_SITE "cdash.draftup.org")
 set(CTEST_DROP_LOCATION "/submit.php?project=Novastory")
 set(CTEST_DROP_SITE_CDASH TRUE)
 
