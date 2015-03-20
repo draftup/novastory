@@ -1,4 +1,5 @@
 #include <QtTest>
+#include "version.h"
 #include "webserver/globals.h"
 
 using namespace novastory;

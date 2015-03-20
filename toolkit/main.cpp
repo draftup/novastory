@@ -1,5 +1,6 @@
 #include <QCoreApplication>
 #include "downloader.h"
+#include "version.h"
 #include <QSslSocket>
 #include <QFileInfo>
 #include <QDir>

@@ -1,5 +1,5 @@
 #include <QFile>
-
+#include "version.h"
 #include "templator.h"
 #include "webserver.h"
 
