@@ -117,7 +117,7 @@ protected:
 	void setPassword(const QString& password);
 	inline QString generatePassword(const QString& sha1password, const QString& password_salt)
 	{
-		return md5(sha1password + sha1(password_salt) + "novastory");
+		return md5(sha1password + sha1(password_salt) + "draftup");
 	}
 	inline QString generateToken(qint64 time, int userid, const QString& usersalt)
 	{
