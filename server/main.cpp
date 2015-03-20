@@ -1,4 +1,5 @@
 #include <QCoreApplication>
+#include "version.h"
 #include "novastoryserver.h"
 
 using namespace novastory;

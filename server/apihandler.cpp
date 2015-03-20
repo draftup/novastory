@@ -6,6 +6,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
+#include "version.h"
 #include "webserver/webserver.h"
 #include "logic/captcha.h"
 #include "logic/user.h"

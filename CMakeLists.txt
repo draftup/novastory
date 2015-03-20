@@ -38,11 +38,9 @@ execute_process(COMMAND git describe
 		OUTPUT_STRIP_TRAILING_WHITESPACE
 		)
 
-add_definitions(-DGIT_REVISION="${GIT_REVISION}")
-add_definitions(-DGIT_DESCRIBE="${GIT_DESCRIBE}")
-add_definitions(-DGIT_VERSION="${PROJECT_VERSION}")
 message("Git revision detected: ${GIT_REVISION}")
 message("Git describe: ${GIT_DESCRIBE}")
+configure_file(${CMAKE_SOURCE_DIR}/version.h.in ${CMAKE_SOURCE_DIR}/src/version.h)
 add_definitions(-DPROJECT_NAME="${PROJECT_NAME}")
 add_definitions(-DNOVASTORY_BUILD)
 
