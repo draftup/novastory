@@ -1,4 +1,4 @@
-src/version.h
+server/version.h
 build/
 testing/
 win32build/

@@ -40,7 +40,7 @@ execute_process(COMMAND git describe
 
 message("Git revision detected: ${GIT_REVISION}")
 message("Git describe: ${GIT_DESCRIBE}")
-configure_file(${CMAKE_SOURCE_DIR}/version.h.in ${CMAKE_SOURCE_DIR}/src/version.h)
+configure_file(${CMAKE_SOURCE_DIR}/version.h.in ${CMAKE_SOURCE_DIR}/server/version.h)
 add_definitions(-DPROJECT_NAME="${PROJECT_NAME}")
 add_definitions(-DNOVASTORY_BUILD)
 
