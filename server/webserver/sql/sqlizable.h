@@ -22,8 +22,8 @@ public:
 	bool updateSQL(const QString& basis, const QList<QString>& ignoreVariables = QList<QString>());
 	bool removeSQL(const QList<QString>& basis);
 	bool removeSQL(const QString& basis);
-	bool syncSQL(const QList<QString>& basis);
-	bool syncSQL(const QString& basis);
+	bool syncSQL(const QList<QString>& basis, const QString& join_query = QString());
+	bool syncSQL(const QString& basis, const QString& join_query = QString());
 
 	void substitute(QString& data, QString prefix = QString()) const;
 

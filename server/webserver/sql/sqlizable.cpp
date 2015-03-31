@@ -179,7 +179,7 @@ bool Sqlizable::insertSQL(bool can_dublicate /*= false*/, bool not_ignore_id /* 
 	return true;
 }
 
-bool Sqlizable::syncSQL(const QList<QString>& basis)
+bool Sqlizable::syncSQL(const QList<QString>& basis, const QString& join_query /* = QString()*/)
 {
 	QString objName = objectName();
 	if (objName.isEmpty())
@@ -189,7 +189,7 @@ bool Sqlizable::syncSQL(const QList<QString>& basis)
 
 	SqlQuery query;
 
-	QString sql = QString("SELECT * FROM `") + objName + "` WHERE ";
+	QString sql = QString("SELECT * FROM `") + objName + "` " + join_query + " WHERE ";
 
 	// Founding keys
 	QList<QVariant> internalValues;
@@ -228,7 +228,7 @@ bool Sqlizable::syncSQL(const QList<QString>& basis)
 	for (QString questVar : basis)
 	{
 		QVariant propValue = property(questVar.toUtf8());
-		sql += (internalValues.size() == 0) ? questVar + " = ?" : " AND " + questVar + " = ?";
+		sql += (internalValues.size() == 0) ? objName + "." + questVar + " = ?" : " AND " + objName + "." + questVar + " = ?";
 		internalValues.append(propValue);
 	}
 
@@ -248,6 +248,10 @@ bool Sqlizable::syncSQL(const QList<QString>& basis)
 	return syncProcess(query);
 }
 
+bool Sqlizable::syncSQL(const QString& basis, const QString& join_query /* = QString()*/)
+{
+	return syncSQL(QList<QString>() << basis, join_query);
+}
 
 bool Sqlizable::syncProcess(SqlQuery& query)
 {
@@ -314,12 +318,6 @@ int Sqlizable::syncRecord(QSqlRecord& record, bool found_mode /* = false*/, int 
 	}
 
 	return -1;
-}
-
-
-bool Sqlizable::syncSQL(const QString& basis)
-{
-	return syncSQL(QList<QString>() << basis);
 }
 
 bool Sqlizable::removeSQL(const QList<QString>& basis)
