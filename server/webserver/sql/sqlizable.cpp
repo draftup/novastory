@@ -556,6 +556,20 @@ void Sqlizable::substitute(QString& data, QString prefix /*= QString()*/) const
 	}
 }
 
+QString Sqlizable::inList(const QList<int>& list)
+{
+	QListIterator<int> it(list);
+	QString ret = "IN(";
+	while (it.hasNext())
+	{
+		ret += QString::number(it.next());
+		if (it.hasNext())
+			ret += ", ";
+	}
+	ret = ")";
+	return ret;
+}
+
 }
 
 

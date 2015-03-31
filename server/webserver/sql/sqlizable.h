@@ -42,6 +42,8 @@ public:
 
 		return std::find(std::begin(objectTypeIds), std::end(objectTypeIds), type) != std::end(objectTypeIds);
 	}
+
+	static QString inList(const QList<int>& list);
 protected:
 	virtual bool syncProcess(SqlQuery& query);
 	virtual int syncRecord(SqlQuery& query, bool found_mode = false, int from = -1, int to = -1);
