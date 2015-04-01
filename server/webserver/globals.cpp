@@ -1,9 +1,8 @@
 #include "globals.h"
 #include <time.h>
 #include <QCryptographicHash>
-#include <SmtpMime>
+#include "smtpsender.h"
 #include "webserver_config.h"
-#include <thread>
 
 QString novastory::md5(const QString& str)
 {
@@ -22,46 +21,14 @@ qint64 novastory::unixtime()
 
 void novastory::sendMail(const QString& to, const QString& subject, const QString& textofmessage, const QList<QFile*>& attachments /* = QList<QFile*>()*/)
 {
-	SmtpClient smtp(SMTP_SERVER, SMTP_PORT, SmtpClient::SslConnection);
-	smtp.setUser(SMTP_USER);
-	smtp.setPassword(SMTP_PASSWORD);
-
-	MimeMessage message;
-	EmailAddress from_address("uruchie.org@gmail.com");
-	EmailAddress to_address(to);
-	message.setSender(&from_address);
-	message.addRecipient(&to_address);
-	message.setSubject(subject);
-
-	MimeText text;
-	text.setText(textofmessage);
-
-	message.addPart(&text);
-	QList<QSharedPointer<MimeAttachment>> attachToDelete;
-	for (QFile* file : attachments)
-	{
-		QSharedPointer<MimeAttachment> a(new MimeAttachment(file));
-		attachToDelete.append(a);
-		message.addPart(a.data());
-	}
-
-	// Now we can send the mail
-	smtp.connectToHost();
-	smtp.login();
-	smtp.sendMail(message);
-	smtp.quit();
-
-	qDebug() << "Email sended to " << to << " with subject: " << subject << " and content: " << textofmessage;
+	SmtpSender sender(to, subject, textofmessage, attachments);
+	sender.run();
 }
 
 void novastory::sendAsyncMail(const QString& to, const QString& subject, const QString& message, const QList<QFile*>& attachments /* = QList<QFile*>()*/)
 {
-	std::thread([to, subject, message, attachments]()
-	{
-		qDebug() << "Mail thread openned";
-		sendMail(to, subject, message, attachments);
-		qDebug() << "Mail thread closed";
-	}).detach();
+	SmtpSender* sender = new SmtpSender(to, subject, message, attachments);
+	sender->start();
 }
 
 QString novastory::selectorId(const QString& html, const QString& selector)
