@@ -566,7 +566,7 @@ QString Sqlizable::inList(const QList<int>& list)
 		if (it.hasNext())
 			ret += ", ";
 	}
-	ret = ")";
+	ret += ")";
 	return ret;
 }
 
