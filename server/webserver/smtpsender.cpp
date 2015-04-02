@@ -12,6 +12,7 @@ namespace novastory
 {
 	setObjectName("Smtp Thread");
 
+	disable_log = false;
 	to = tto;
 	subject = tsubject;
 	message = tmessage;
@@ -23,13 +24,15 @@ namespace novastory
 
 SmtpSender::~SmtpSender()
 {
-	qDebug() << "Smtp thread destroyed";
+	if (!disable_log)
+		qDebug() << "Smtp thread destroyed";
 }
 
 
 void SmtpSender::run()
 {
-	qDebug() << "Smtp thread started";
+	if (!disable_log)
+		qDebug() << "Smtp thread started";
 	SmtpClient smtp(SMTP_SERVER, SMTP_PORT, SmtpClient::SslConnection);
 	smtp.setUser(SMTP_USER);
 	smtp.setPassword(SMTP_PASSWORD);
@@ -59,8 +62,16 @@ void SmtpSender::run()
 	smtp.sendMail(message);
 	smtp.quit();
 
-	qDebug() << "Email sended to " << to << " with subject: " << subject << " and content: " << this->message;
-	qDebug() << "Smtp thread finished";
+	if (!disable_log)
+	{
+		qDebug() << "Email sended to " << to << " with subject: " << subject << " and content: " << this->message;
+		qDebug() << "Smtp thread finished";
+	}
+}
+
+void SmtpSender::setLog(bool en)
+{
+	disable_log = en;
 }
 
 }

@@ -164,7 +164,7 @@ void Logger::log(const QString& text, QtMsgType type)
 					if (type == QtCriticalMsg)
 						sendAsyncMail(REPORTS_MAIL, "Novastory failure", record, QList<QFile*>({ file }));
 					else
-						sendMail(REPORTS_MAIL, "Novastory failure", record, QList<QFile*>({ file }));
+						sendMail(REPORTS_MAIL, "Novastory failure", record, QList<QFile*>({ file }), true);
 				}
 			}
 			default:

@@ -19,9 +19,10 @@ qint64 novastory::unixtime()
 	return static_cast<qint64>(time(NULL));
 }
 
-void novastory::sendMail(const QString& to, const QString& subject, const QString& textofmessage, const QList<QFile*>& attachments /* = QList<QFile*>()*/)
+void novastory::sendMail(const QString& to, const QString& subject, const QString& textofmessage, const QList<QFile*>& attachments /* = QList<QFile*>()*/, bool disable_log)
 {
 	SmtpSender sender(to, subject, textofmessage, attachments);
+	sender.setLog(disable_log);
 	sender.run();
 }
 

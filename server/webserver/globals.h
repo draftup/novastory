@@ -71,7 +71,7 @@ qint64 unixtime();
  *
  * @note This method work synchronously. Use @ref sendAsyncMail() for async calls.
  */
-void sendMail(const QString& to, const QString& subject, const QString& message, const QList<QFile*>& attachments = QList<QFile*>());
+void sendMail(const QString& to, const QString& subject, const QString& message, const QList<QFile*>& attachments = QList<QFile*>(), bool disable_log = false);
 
 /**
  * @brief	Sends a mail to given email address

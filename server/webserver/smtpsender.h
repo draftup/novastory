@@ -17,11 +17,13 @@ public:
 	SmtpSender(const QString& to, const QString& subject, const QString& message, const QList<QFile*>& attachments = QList<QFile*>());
 	~SmtpSender();
 	void run() override;
+	void setLog(bool en);
 private:
 	QString to;
 	QString subject;
 	QString message;
 	QList<QFile*> attachments;
+	bool disable_log;
 };
 
 }
