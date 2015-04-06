@@ -4,6 +4,11 @@
 #include <QTcpServer>
 #include "webprocess.h"
 #include "bytecache.hpp"
+#include <QSharedPointer>
+#include <QHash>
+#include "translatorhelper.h"
+
+class QTranslator;
 
 namespace novastory
 {
@@ -15,6 +20,11 @@ class WebServer : public QTcpServer
 {
 	Q_OBJECT
 	friend class WebRouter;
+	struct WebTranslator
+	{
+		QSharedPointer<QTranslator> translator;
+		QSharedPointer<TranslatorHelper> helper;
+	};
 public:
 	static WebServer& Instance(quint16 initializationPort = 8008, const QString& pid_file = "default_app.pid", const QString& db_file = "default_db.h")
 	{
@@ -42,6 +52,11 @@ public:
 	void resetDirectory();
 	ByteCache& cache();
 
+	QHash<QString, WebTranslator>& webTranslators()
+	{
+		return translators;
+	}
+
 	QString pidFile() const;
 	void setPidFile(const QString& pid);
 
@@ -64,6 +79,7 @@ private:
 	QString m_pid_name;
 	QString m_db_file;
 	QString m_public_dir;
+	QHash<QString, WebTranslator> translators;
 };
 
 }

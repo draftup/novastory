@@ -33,6 +33,7 @@ set(HEADERS_
 	globals.h
 	webserver_config.h
 	jsonthrower.h
+	translatorhelper.h
 	
 	logger.h
 	
@@ -54,6 +55,7 @@ set(SOURCES_
 	webrouter.cpp
 	webrequest.cpp
 	jsonthrower.cpp
+	translatorhelper.cpp
 	
 	logger.cpp
 	cron.cpp
@@ -97,6 +99,7 @@ target_link_libraries(WebServer
 	${Qt5Core_LIBRARIES}
 	${Qt5Network_LIBRARIES}
 	${Qt5Sql_LIBRARIES}
+	${Qt5Xml_LIBRARIES}
 )
 
 

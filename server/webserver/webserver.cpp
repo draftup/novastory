@@ -10,6 +10,8 @@
 #include <QMimeDatabase>
 #include "logger.h"
 #include <QCoreApplication>
+#include <QTranslator>
+#include "translatorhelper.h"
 #include "datahandler.h"
 
 #ifdef Q_OS_LINUX
@@ -81,12 +83,21 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, cons
 	// Initialize mime database
 	QMimeDatabase().mimeTypeForFile("index.html");
 
+	// Load translators
+	QSharedPointer<QTranslator> ru(new QTranslator);
+	VERIFY(ru->load("translations_ru"));
+	translators["ru"].translator = ru;
+#ifdef GENERATE_TRANSLATIONS
+	QSharedPointer<TranslatorHelper> ru_helper(new TranslatorHelper);
+	ru_helper->open("e:/Projects/vsteams/translations/translations_ru.ts");
+	translators["ru"].helper = ru_helper;
+#endif
+
 	VERIFY(listen(QHostAddress::Any, initializationPort));
 	qDebug() << "Web server started at " << serverAddress() << ":" << serverPort();
 	QThreadPool::globalInstance()->setMaxThreadCount(WORKERS_NUMBER); // Maximum of working threads
 	qDebug() << "Maximum workers number: " << WORKERS_NUMBER;
 	QThreadPool::globalInstance()->setExpiryTimeout(WORKERS_MAX_TIME * 1000);
-
 }
 
 

@@ -3,6 +3,10 @@
 #include <QCryptographicHash>
 #include "smtpsender.h"
 #include "webserver_config.h"
+#include "webserver.h"
+#include <QTranslator>
+#include "translatorhelper.h"
+#include <QThread>
 
 QString novastory::md5(const QString& str)
 {
@@ -76,4 +80,31 @@ QString novastory::selectorId(const QString& html, const QString& selector)
 	}
 
 	return html.mid(begin, end - begin);
+}
+
+QString novastory::tr(const QString& key, const QString& dis /*= QString()*/)
+{
+	return translate("novastory", key, dis);
+}
+
+QString novastory::translate(const QString& context, const QString& key, const QString& dis /*= QString()*/)
+{
+	QThread* current_thread = QThread::currentThread();
+	QString lang;
+	if (current_thread != nullptr)
+	{
+		lang = current_thread->property("language").toString();
+	}
+
+	if (lang.isEmpty())
+		return key;
+
+	if (!WebServer::Instance().webTranslators().contains(lang))
+		return key;
+
+#ifndef GENERATE_TRANSLATIONS
+	return WebServer::Instance().webTranslators().value(lang).translator->translate(context.toLatin1().constData(), key.toLatin1().constData(), dis.toLatin1().constData());
+#else
+	return WebServer::Instance().webTranslators().value(lang).translator->translate(context.toLatin1().constData(), WebServer::Instance().webTranslators().value(lang).helper->tr(key, dis, context).toLatin1().constData(), dis.toLatin1().constData());
+#endif
 }
