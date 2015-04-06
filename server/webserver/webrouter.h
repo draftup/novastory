@@ -21,8 +21,9 @@ public:
 	void parse() override;
 
 	void parsePost();
-
 	void parseCookie();
+	void parseLanguage();
+
 	QString coockie(const QString& name);
 
 private:

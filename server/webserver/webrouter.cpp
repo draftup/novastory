@@ -5,6 +5,8 @@
 #include <QTextStream>
 #include <QTcpSocket>
 #include <QUrl>
+#include <QThread>
+#include <QMetaObject>
 
 namespace novastory
 {
@@ -73,6 +75,7 @@ void WebRouter::parse()
 	WebRequest::parse();
 	parsePost();
 	parseCookie();
+	parseLanguage();
 }
 
 void WebRouter::parseCookie()
@@ -100,6 +103,32 @@ void WebRouter::parseCookie()
 QString WebRouter::coockie(const QString& name)
 {
 	return cookieVariables[name];
+}
+
+void WebRouter::parseLanguage()
+{
+	if (!parsedValues.contains("Accept-Language"))
+		return;
+
+	QString laguages_str = parsedValues["Accept-Language"];
+	
+	if (laguages_str.isEmpty())
+		return;
+
+	QMap<double, QString> laguages;
+
+	QRegExp rx("([a-z]{1,8}(?:-[a-z]{1,8})?)(?:;q=([0-9.]+))?");
+	int pos = 0;
+	while ((pos = rx.indexIn(laguages_str, pos)) != -1)
+	{
+		pos += rx.matchedLength();
+		laguages[(rx.cap(2).isEmpty() ? 1.0 : rx.cap(2).toDouble())] = rx.cap(1);
+	}
+	if (laguages.size() > 0)
+	{
+		qDebug() << "Setting up current language for user: " << laguages.last();
+		//QMetaObject::invokeMethod((QObject*)QThread::currentThread(), "setProperty", Q_ARG(const char *, "language"), Q_ARG(QVariant, QVariant(laguages.last())));
+	}
 }
 
 }
