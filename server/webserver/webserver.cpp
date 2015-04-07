@@ -14,6 +14,7 @@
 #include <QMutexLocker>
 #include "translatorhelper.h"
 #include "datahandler.h"
+#include "version.h"
 
 #ifdef Q_OS_LINUX
 #include <unistd.h>
@@ -100,7 +101,7 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, cons
 WebServer::~WebServer()
 {
 #ifdef GENERATE_TRANSLATIONS
-	WebServer::Instance().webTranslatorsHelper().save("e:/Projects/vsteams/src/translations.h");
+	WebServer::Instance().webTranslatorsHelper().save(SOURCE_DIRECTORY "/src/translations.h");
 #endif
 
 	close();
