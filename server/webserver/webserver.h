@@ -21,11 +21,6 @@ class WebServer : public QTcpServer
 {
 	Q_OBJECT
 	friend class WebRouter;
-	struct WebTranslator
-	{
-		QSharedPointer<QTranslator> translator;
-		QSharedPointer<TranslatorHelper> helper;
-	};
 public:
 	static WebServer& Instance(quint16 initializationPort = 8008, const QString& pid_file = "default_app.pid", const QString& db_file = "default_db.h")
 	{
@@ -53,9 +48,14 @@ public:
 	void resetDirectory();
 	ByteCache& cache();
 
-	QHash<QString, WebTranslator>& webTranslators()
+	QHash<QString, QSharedPointer<QTranslator> >& webTranslators()
 	{
 		return translators;
+	}
+
+	TranslatorHelper& webTranslatorsHelper()
+	{
+		return translationHelper;
 	}
 
 	QString pidFile() const;
@@ -84,7 +84,8 @@ private:
 	QString m_pid_name;
 	QString m_db_file;
 	QString m_public_dir;
-	QHash<QString, WebTranslator> translators;
+	QHash<QString, QSharedPointer<QTranslator> > translators;
+	TranslatorHelper translationHelper;
 	QHash<QThread*, QString> default_language;
 	QMutex default_language_mutex;
 };

@@ -4,7 +4,7 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QString>
-#include <QHash>
+#include <QMap>
 
 namespace novastory
 {
@@ -12,11 +12,9 @@ namespace novastory
 	class TranslatorHelper
 	{
 	public:
-		TranslatorHelper(const QString& ts_file);
 		TranslatorHelper();
-		void open(const QString& ts_file);
-		bool save(const QString& output_file = "");
-		QString tr(const QString& key, const QString& dis = QString(), const QString& context = QString());
+		bool save(const QString& output_file);
+		void appendTranslation(const QString& key, const QString& dis = QString(), const QString& context = QString());
 		static TranslatorHelper& Instance()
 		{
 			static TranslatorHelper theSingleInstance;
@@ -29,10 +27,9 @@ namespace novastory
 			QString context;
 			QString comment;
 		};
-		void createTSBase();
-		QDomDocument m_tsfile;
 		QFile m_diskfile;
-		QHash<QString, TUnit> m_translations;
+		QMap<QString, TUnit> m_translations;
+		QMutex append_mutex;
 	};
 
 }

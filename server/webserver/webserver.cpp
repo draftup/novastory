@@ -87,12 +87,7 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, cons
 	// Load translators
 	QSharedPointer<QTranslator> ru(new QTranslator);
 	VERIFY(ru->load("translations_ru"));
-	translators["ru"].translator = ru;
-#ifdef GENERATE_TRANSLATIONS
-	QSharedPointer<TranslatorHelper> ru_helper(new TranslatorHelper);
-	ru_helper->open("e:/Projects/vsteams/translations/translations_ru.ts");
-	translators["ru"].helper = ru_helper;
-#endif
+	translators["en"] = ru;
 
 	VERIFY(listen(QHostAddress::Any, initializationPort));
 	qDebug() << "Web server started at " << serverAddress() << ":" << serverPort();
@@ -104,6 +99,10 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, cons
 
 WebServer::~WebServer()
 {
+#ifdef GENERATE_TRANSLATIONS
+	WebServer::Instance().webTranslatorsHelper().save("e:/Projects/vsteams/src/translations.h");
+#endif
+
 	close();
 	qDebug() << "Closed webserver. Waiting while workers done.";
 	// ~QThreadPool()

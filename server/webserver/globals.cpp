@@ -97,9 +97,9 @@ QString novastory::translate(const QString& context, const QString& key, const Q
 	if (!WebServer::Instance().webTranslators().contains(lang))
 		return key;
 
-#ifndef GENERATE_TRANSLATIONS
-	return WebServer::Instance().webTranslators().value(lang).translator->translate(context.toLatin1().constData(), key.toLatin1().constData(), dis.toLatin1().constData());
-#else
-	return WebServer::Instance().webTranslators().value(lang).translator->translate(context.toLatin1().constData(), WebServer::Instance().webTranslators().value(lang).helper->tr(key, dis, context).toLatin1().constData(), dis.toLatin1().constData());
+#ifdef GENERATE_TRANSLATIONS
+	WebServer::Instance().webTranslatorsHelper().appendTranslation(key, dis, context);
 #endif
+	return WebServer::Instance().webTranslators().value(lang)->translate(context.toLatin1().constData(), key.toLatin1().constData(), dis.toLatin1().constData());
+
 }
