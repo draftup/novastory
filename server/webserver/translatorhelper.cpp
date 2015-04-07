@@ -25,6 +25,8 @@ namespace novastory
 
 		QString current = m_diskfile.readAll();
 
+		QMutexLocker locker(&append_mutex);
+
 		QRegExp rx("([a-z]+)::tr\\(\"(.+)\"(?:,\\w\"(.+)\"\\))?");
 		int pos = 0;
 		while ((pos = rx.indexIn(current, pos)) != -1)
