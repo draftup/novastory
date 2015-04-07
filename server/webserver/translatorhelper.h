@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QString>
 #include <QMap>
+#include <QMutex>
 
 namespace novastory
 {
