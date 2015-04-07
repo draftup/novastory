@@ -38,6 +38,8 @@ public:
 		const QHash<QString, QString>& add_map = QHash<QString, QString>()
 	);
 
+	static void translate(QString& html);
+
 #if defined(NOVASTORY_BUILD) || defined(VSTEAMS_BUILD)
 	static QByteArray generate(
 		const User& user,
