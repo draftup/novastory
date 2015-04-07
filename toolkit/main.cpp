@@ -178,6 +178,7 @@ int main(int argc, char* argv[])
 				<< "MinGW Makefiles"
 				<< "-DWITH_TESTS=ON"
 				<< "-DREMOTE_TESTING=ON"
+				<< "-DGENERATE_TRANSLATIONS=ON"
 				<< "-DCMAKE_BUILD_TYPE=Release"
 				<< "-DCMAKE_INSTALL_PREFIX=" + installation_dir + ""
 				<< source_directory
