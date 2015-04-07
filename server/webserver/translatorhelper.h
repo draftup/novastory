@@ -1,7 +1,6 @@
 #ifndef TRANSLATOR_HELPER_H
 #define TRANSLATOR_HELPER_H
 
-#include <QDomDocument>
 #include <QFile>
 #include <QString>
 #include <QMap>

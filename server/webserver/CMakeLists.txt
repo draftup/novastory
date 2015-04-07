@@ -99,7 +99,6 @@ target_link_libraries(WebServer
 	${Qt5Core_LIBRARIES}
 	${Qt5Network_LIBRARIES}
 	${Qt5Sql_LIBRARIES}
-	${Qt5Xml_LIBRARIES}
 )
 
 
