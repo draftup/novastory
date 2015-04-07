@@ -6,6 +6,7 @@
 #include "bytecache.hpp"
 #include <QSharedPointer>
 #include <QHash>
+#include <QMutex>
 #include "translatorhelper.h"
 
 class QTranslator;
@@ -62,6 +63,10 @@ public:
 
 	QString dbFile() const;
 	void setDBFile(const QString& pid);
+
+	void addDefaultLanguage(const QString& language);
+	void removeDefaultLanguage();
+	QString defaultLanguage();
 protected:
 	WebServer(QObject* parent = nullptr, quint16 initializationPort = 8008, const QString& pid_file = "default_app.pid", const QString& db_file = "default_db.h");
 	virtual ~WebServer();
@@ -80,6 +85,8 @@ private:
 	QString m_db_file;
 	QString m_public_dir;
 	QHash<QString, WebTranslator> translators;
+	QHash<QThread*, QString> default_language;
+	QMutex default_language_mutex;
 };
 
 }

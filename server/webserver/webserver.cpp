@@ -11,6 +11,7 @@
 #include "logger.h"
 #include <QCoreApplication>
 #include <QTranslator>
+#include <QMutexLocker>
 #include "translatorhelper.h"
 #include "datahandler.h"
 
@@ -194,6 +195,25 @@ QString WebServer::dbFile() const
 void WebServer::setDBFile(const QString& db)
 {
 	m_db_file = db;
+}
+
+void WebServer::addDefaultLanguage(const QString& language)
+{
+	QMutexLocker locker(&default_language_mutex);
+	default_language.insert(QThread::currentThread(), language);
+}
+
+void WebServer::removeDefaultLanguage()
+{
+	QMutexLocker locker(&default_language_mutex);
+	default_language.remove(QThread::currentThread());
+}
+
+
+QString WebServer::defaultLanguage()
+{
+	QMutexLocker locker(&default_language_mutex);
+	return default_language.value(QThread::currentThread());
 }
 
 }

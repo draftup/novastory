@@ -89,12 +89,7 @@ QString novastory::tr(const QString& key, const QString& dis /*= QString()*/)
 
 QString novastory::translate(const QString& context, const QString& key, const QString& dis /*= QString()*/)
 {
-	QThread* current_thread = QThread::currentThread();
-	QString lang;
-	if (current_thread != nullptr)
-	{
-		lang = current_thread->property("language").toString();
-	}
+	QString lang = WebServer::Instance().defaultLanguage();
 
 	if (lang.isEmpty())
 		return key;

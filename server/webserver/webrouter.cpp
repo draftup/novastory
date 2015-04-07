@@ -17,6 +17,13 @@ WebRouter::WebRouter(QTcpSocket* bindedSocket) : WebRequest(bindedSocket)
 	*/
 }
 
+
+WebRouter::~WebRouter()
+{
+	WebServer::Instance().removeDefaultLanguage();
+}
+
+
 QString WebRouter::path() const
 {
 	return parsedValues["path"];
@@ -127,7 +134,7 @@ void WebRouter::parseLanguage()
 	if (laguages.size() > 0)
 	{
 		qDebug() << "Setting up current language for user: " << laguages.last();
-		//QMetaObject::invokeMethod((QObject*)QThread::currentThread(), "setProperty", Q_ARG(const char *, "language"), Q_ARG(QVariant, QVariant(laguages.last())));
+		WebServer::Instance().addDefaultLanguage(laguages.last());
 	}
 }
 
