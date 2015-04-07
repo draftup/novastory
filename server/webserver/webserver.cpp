@@ -10,9 +10,7 @@
 #include <QMimeDatabase>
 #include "logger.h"
 #include <QCoreApplication>
-#include <QTranslator>
 #include <QMutexLocker>
-#include "translatorhelper.h"
 #include "datahandler.h"
 
 #ifdef Q_OS_LINUX
@@ -83,11 +81,6 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, cons
 
 	// Initialize mime database
 	QMimeDatabase().mimeTypeForFile("index.html");
-
-	// Load translators
-	QSharedPointer<QTranslator> ru(new QTranslator);
-	VERIFY(ru->load("translations_ru"));
-	translators["en"] = ru;
 
 	VERIFY(listen(QHostAddress::Any, initializationPort));
 	qDebug() << "Web server started at " << serverAddress() << ":" << serverPort();

@@ -100,6 +100,9 @@ QString novastory::translate(const QString& context, const QString& key, const Q
 #ifdef GENERATE_TRANSLATIONS
 	WebServer::Instance().webTranslatorsHelper().appendTranslation(key, dis, context);
 #endif
-	return WebServer::Instance().webTranslators().value(lang)->translate(context.toLatin1().constData(), key.toLatin1().constData(), dis.toLatin1().constData());
+	QString ret = WebServer::Instance().webTranslators().value(lang)->translate(context.toLatin1().constData(), key.toLatin1().constData(), dis.toLatin1().constData());
+	if (ret.isNull())
+		return key;
 
+	return ret;
 }

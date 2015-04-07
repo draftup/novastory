@@ -28,6 +28,7 @@ namespace novastory
 		QMutexLocker locker(&append_mutex);
 
 		QRegExp rx("([a-z]+)::tr\\(\"(.+)\"(?:,\\w\"(.+)\"\\))?");
+		rx.setMinimal(true);
 		int pos = 0;
 		while ((pos = rx.indexIn(current, pos)) != -1)
 		{

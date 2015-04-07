@@ -77,6 +77,8 @@ protected:
 
 	void appendHandler(DataHandler* handler);
 	void removeHandler(DataHandler* handler);
+
+	QHash<QString, QSharedPointer<QTranslator> > translators;
 private:
 	QString publicDirectory;
 	ByteCache webCache;
@@ -84,7 +86,6 @@ private:
 	QString m_pid_name;
 	QString m_db_file;
 	QString m_public_dir;
-	QHash<QString, QSharedPointer<QTranslator> > translators;
 	TranslatorHelper translationHelper;
 	QHash<QThread*, QString> default_language;
 	QMutex default_language_mutex;
