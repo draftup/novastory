@@ -33,7 +33,7 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 #endif
 			QString postfix;
 			QString pref_lang = WebServer::Instance().defaultLanguage();
-			if (!pref_lang.isEmpty() && (filePath.endsWith(".js") || filePath.endsWith(".html")))
+			if (!pref_lang.isEmpty() && (filePath.endsWith(".js") || filePath.endsWith(".css") || filePath.endsWith(".html")))
 			{
 				postfix = "-" + pref_lang;
 				qDebug() << "Using postfix for this file:" << (filePath + postfix);
@@ -73,7 +73,7 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 
 				QString postfix;
 				QString pref_lang = WebServer::Instance().defaultLanguage();
-				if (!pref_lang.isEmpty() && (filePath.endsWith(".js") || filePath.endsWith(".html")))
+				if (!pref_lang.isEmpty() && (filePath.endsWith(".js") || filePath.endsWith(".css") || filePath.endsWith(".html")))
 				{
 					postfix = "-" + pref_lang;
 					QString temp = data;
