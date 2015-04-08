@@ -8,6 +8,7 @@
 #include <QMimeDatabase>
 #include <QMimeType>
 #include <QFileInfo>
+#include "templator.h"
 
 namespace novastory
 {
@@ -30,7 +31,15 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 				throw std::range_error("debuging");
 			}
 #endif
-			WebDataContainer inCacheData = WebServer::Instance().cache().get(filePath.toStdString());
+			QString postfix;
+			QString pref_lang = WebServer::Instance().defaultLanguage();
+			if (!pref_lang.isEmpty() && (filePath.endsWith(".js") || filePath.endsWith(".html")))
+			{
+				postfix = "-" + pref_lang;
+				qDebug() << "Using postfix for this file:" << (filePath + postfix);
+			}
+			// Вынимаем файл из кэша, притом файлы языкозависимые имеют постфикс uruchie.js-ru и т.п.
+			WebDataContainer inCacheData = WebServer::Instance().cache().get((filePath + postfix).toStdString());
 			qDebug() << "Readed from cache " << path << "(Current cache size:" << WebServer::Instance().cache().currentSize() << ")";
 
 			QString controlEtag = header["If-None-Match"];
@@ -62,12 +71,23 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 
 				qDebug() << "Raw file type is: " << mime.name();
 
+				QString postfix;
+				QString pref_lang = WebServer::Instance().defaultLanguage();
+				if (!pref_lang.isEmpty() && (filePath.endsWith(".js") || filePath.endsWith(".html")))
+				{
+					postfix = "-" + pref_lang;
+					QString temp = data;
+					qDebug() << "Translate file" << filePath + postfix;
+					Templator::translate(temp);
+					data = temp.toUtf8();
+				}
+
 				WebDataContainer webData(data, mime.name());
 				QFileInfo info(existFile);
 				webData.setModificatedDate(info.lastModified());
 
 				// Save in cache
-				WebServer::Instance().cache().put(filePath.toStdString(), webData);
+				WebServer::Instance().cache().put((filePath + postfix).toStdString(), webData);
 
 				QString controlEtag = header["If-None-Match"];
 				QString eTag = webData.eTag();
