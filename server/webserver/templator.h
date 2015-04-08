@@ -38,7 +38,15 @@ public:
 		const QHash<QString, QString>& add_map = QHash<QString, QString>()
 	);
 
-	static void translate(QString& html);
+	static void translate(QString& html)
+	{
+		QRegExp rx("\\{\\{(.+)\\}\\}");
+		rx.setMinimal(true);
+		while (rx.indexIn(html) != -1)
+		{
+			html.replace(rx.pos(), rx.matchedLength(), novastory::tr(rx.cap(1)));
+		}
+	}
 
 #if defined(NOVASTORY_BUILD) || defined(VSTEAMS_BUILD)
 	static QByteArray generate(
