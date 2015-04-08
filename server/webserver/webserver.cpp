@@ -204,4 +204,9 @@ QString WebServer::defaultLanguage()
 	return default_language.value(QThread::currentThread());
 }
 
+QList<QString> WebServer::languageList() const
+{
+	return translators.keys();
+}
+
 }

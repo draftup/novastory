@@ -67,6 +67,7 @@ public:
 	void addDefaultLanguage(const QString& language);
 	void removeDefaultLanguage();
 	QString defaultLanguage();
+	QList<QString> languageList() const;
 protected:
 	WebServer(QObject* parent = nullptr, quint16 initializationPort = 8008, const QString& pid_file = "default_app.pid", const QString& db_file = "default_db.h");
 	virtual ~WebServer();

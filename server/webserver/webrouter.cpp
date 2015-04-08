@@ -131,10 +131,32 @@ void WebRouter::parseLanguage()
 		pos += rx.matchedLength();
 		laguages[(rx.cap(2).isEmpty() ? 1.0 : rx.cap(2).toDouble())] = rx.cap(1);
 	}
-	if (laguages.size() > 0)
+	QList<QString> available_langs = WebServer::Instance().languageList();
+	QMapIterator<double, QString> it(laguages);
+	it.toBack();
+	QString prefer_lang;
+	while (it.hasPrevious())
 	{
-		qDebug() << "Setting up current language for user: " << laguages.last();
-		WebServer::Instance().addDefaultLanguage(laguages.last());
+		it.previous();
+		if (it.key() <= 0.5)
+		{
+			break;
+		}
+
+		if (available_langs.contains(it.value()))
+		{
+			prefer_lang = it.value();
+		}
+
+		if (it.value() != "en")
+		{
+			break;
+		}
+	}
+	if (!prefer_lang.isNull())
+	{
+		WebServer::Instance().addDefaultLanguage(prefer_lang);
+		qDebug() << "Setting up current language for user: " << prefer_lang;
 	}
 }
 
