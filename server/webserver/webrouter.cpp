@@ -7,6 +7,7 @@
 #include <QUrl>
 #include <QThread>
 #include <QMetaObject>
+#include <QSet>
 
 namespace novastory
 {
@@ -115,12 +116,18 @@ QString WebRouter::coockie(const QString& name)
 void WebRouter::parseLanguage()
 {
 	if (!parsedValues.contains("Accept-Language"))
+	{
+		qDebug() << "No Accept-Language in this client. Ignore language setting.";
 		return;
+	}
 
 	QString laguages_str = parsedValues["Accept-Language"];
 	
 	if (laguages_str.isEmpty())
+	{
+		qWarning() << "Very stange. Accept-Language recived bu empty";
 		return;
+	}
 
 	QMap<double, QString> laguages;
 
@@ -131,14 +138,15 @@ void WebRouter::parseLanguage()
 		pos += rx.matchedLength();
 		laguages[(rx.cap(2).isEmpty() ? 1.0 : rx.cap(2).toDouble())] = rx.cap(1);
 	}
-	QList<QString> available_langs = WebServer::Instance().languageList();
+	qDebug() << "User client languages are:" << laguages.size();
+	QSet<QString> available_langs = WebServer::Instance().languageList().toSet();
 	QMapIterator<double, QString> it(laguages);
 	it.toBack();
 	QString prefer_lang;
 	while (it.hasPrevious())
 	{
 		it.previous();
-		if (it.key() <= 0.5)
+		if (it.key() <= 0.5 && !prefer_lang.isNull())
 		{
 			break;
 		}
@@ -148,7 +156,7 @@ void WebRouter::parseLanguage()
 			prefer_lang = it.value();
 		}
 
-		if (it.value() != "en")
+		if (!prefer_lang.isNull() && prefer_lang != "en")
 		{
 			break;
 		}
