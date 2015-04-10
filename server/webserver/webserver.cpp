@@ -15,11 +15,37 @@
 
 #ifdef Q_OS_LINUX
 #include <unistd.h>
+#include <signal.h>
+#include <execinfo.h>
 #endif
 #include <QFile>
 
 namespace novastory
 {
+
+#ifdef Q_OS_LINUX
+void handler_sigfault(int sig) {
+  void *buffer[15];
+  char **strings;
+  size_t size;
+
+  // get void*'s for all entries on the stack
+  size = backtrace(buffer, 15);
+
+  // print out all the frames to stderr
+  qDebug() << "Sigfault with signal:" << sig;
+  strings = backtrace_symbols(buffer, size);
+  if (strings == NULL) {
+          qFatal("backtrace_symbols");
+          exit(EXIT_FAILURE);
+  }
+  for (int j = 0; j < size; j++)
+      qDebug() << strings[j];
+  free(strings);
+  qDebug() << "Application closed";
+  exit(1);
+}
+#endif
 
 WebServer* WebServer::_self = nullptr;
 
@@ -33,6 +59,10 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, cons
 	Logger::Instance().setWriteToLogFile(true); // Log all to file output
 #ifndef QT_DEBUG
 	Logger::Instance().setFailReports(true);
+#endif
+
+#ifdef Q_OS_LINUX
+    signal(SIGSEGV, handler_sigfault);
 #endif
 
 	for (QString arg : QCoreApplication::instance()->arguments())
