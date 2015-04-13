@@ -73,11 +73,18 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 
 				QString postfix;
 				QString pref_lang = WebServer::Instance().defaultLanguage();
-				if (!pref_lang.isEmpty() && (filePath.endsWith(".js") || filePath.endsWith(".css") || filePath.endsWith(".html")))
+				if (filePath.endsWith(".js") || filePath.endsWith(".css") || filePath.endsWith(".html"))
 				{
-					postfix = "-" + pref_lang;
+					if (!pref_lang.isEmpty())
+					{
+						postfix = "-" + pref_lang;
+						qDebug() << "Translate file" << filePath + postfix;
+					}
+					else
+					{
+						qDebug() << "Clean translations in file" << filePath;
+					}
 					QString temp = data;
-					qDebug() << "Translate file" << filePath + postfix;
 					Templator::translate(temp);
 					data = temp.toUtf8();
 				}
