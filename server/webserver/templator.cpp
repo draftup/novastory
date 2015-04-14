@@ -35,7 +35,8 @@ QByteArray Templator::generate(
 
 
 	//replace data
-	generatedTemplate = templateData.replace("{title}", title);
+	generatedTemplate = templateData;
+	generatedTemplate = generatedTemplate.replace("{title}", title);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
 	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright " PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]");
 	QHashIterator<QString, QString> it(add_map);
@@ -89,7 +90,8 @@ QByteArray Templator::generateLogined(const User& user, const QString& title /*=
 
 
 	//replace data
-	generatedTemplate = templateData.replace("{title}", title);
+	generatedTemplate = templateData;
+	generatedTemplate = generatedTemplate.replace("{title}", title);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
 	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright " PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]");
 	user.substitute(generatedTemplate);
