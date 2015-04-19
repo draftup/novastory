@@ -38,7 +38,7 @@ QByteArray Templator::generate(
 	generatedTemplate = templateData;
 	generatedTemplate = generatedTemplate.replace("{title}", title);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
-	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright " PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]");
+	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright <a href=\"/about\">" PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]</a>");
 	QHashIterator<QString, QString> it(add_map);
 	while (it.hasNext())
 	{
@@ -93,7 +93,7 @@ QByteArray Templator::generateLogined(const User& user, const QString& title /*=
 	generatedTemplate = templateData;
 	generatedTemplate = generatedTemplate.replace("{title}", title);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
-	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright " PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]");
+	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright <a href=\"/about\">" PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]</a>");
 	user.substitute(generatedTemplate);
 	generatedTemplate = generatedTemplate.replace("{users.stoken}", user.token());
 #ifdef NOVASTORY_BUILD
