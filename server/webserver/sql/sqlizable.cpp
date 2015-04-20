@@ -560,6 +560,10 @@ QString Sqlizable::inList(const QList<int>& list)
 {
 	QListIterator<int> it(list);
 	QString ret = "IN(";
+	if (list.size() == 0)
+	{
+		ret += "0";
+	}
 	while (it.hasNext())
 	{
 		ret += QString::number(it.next());
