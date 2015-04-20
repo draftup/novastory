@@ -577,7 +577,7 @@ QString Sqlizable::inList(const QList<int>& list)
 QString Sqlizable::inField(const QString& name, const QList<int>& list)
 {
 	QListIterator<int> it(list);
-	QString ret = "FIELD(`" + name + "`, ";
+	QString ret = "FIELD(" + name + ", ";
 	if (list.size() == 0)
 	{
 		ret += "0";
