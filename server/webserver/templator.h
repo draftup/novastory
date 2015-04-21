@@ -35,7 +35,9 @@ public:
 	static QByteArray generate(
 		const QString& title = "Novastory",
 		const QString& article = QString(),
-		const QHash<QString, QString>& add_map = QHash<QString, QString>()
+		const QHash<QString, QString>& add_map = QHash<QString, QString>(),
+		const QString& description = QString(),
+		const QString& keywords = QString()
 	);
 
 	static void translate(QString& html)
@@ -53,14 +55,18 @@ public:
 		const User& user,
 		const QString& title = "Novastory",
 		const QString& article = QString(),
-		const QHash<QString, QString>& add_map = QHash<QString, QString>()
+		const QHash<QString, QString>& add_map = QHash<QString, QString>(),
+		const QString& description = QString(),
+		const QString& keywords = QString()
 	);
 
 	static QByteArray generateLogined(
 		const User& user,
 		const QString& title = "Novastory",
 		const QString& article = QString(),
-		const QHash<QString, QString>& add_map = QHash<QString, QString>()
+		const QHash<QString, QString>& add_map = QHash<QString, QString>(),
+		const QString& description = QString(),
+		const QString& keywords = QString()
 	);
 #endif
 };

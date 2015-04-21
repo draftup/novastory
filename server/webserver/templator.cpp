@@ -10,7 +10,9 @@ namespace novastory
 QByteArray Templator::generate(
 	const QString& title /*= "Novastory"*/,
 	const QString& article /*= QString()*/,
-	const QHash<QString, QString>& add_map /* = QHash<QString, QString>()*/
+	const QHash<QString, QString>& add_map /* = QHash<QString, QString>()*/,
+	const QString& description /*= QString()*/,
+	const QString& keywords /*= QString()*/
 )
 {
 	static QString templateData;
@@ -37,6 +39,8 @@ QByteArray Templator::generate(
 	//replace data
 	generatedTemplate = templateData;
 	generatedTemplate = generatedTemplate.replace("{title}", title);
+	generatedTemplate = generatedTemplate.replace("{description}", description);
+	generatedTemplate = generatedTemplate.replace("{keywords}", keywords);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
 	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright <a href=\"/about\">" PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]</a>");
 	QHashIterator<QString, QString> it(add_map);
@@ -54,19 +58,33 @@ QByteArray Templator::generate(
 }
 
 #if defined(NOVASTORY_BUILD) || defined(VSTEAMS_BUILD)
-QByteArray Templator::generate(const User& user, const QString& title /*= "Novastory"*/, const QString& article /*= QString() */, const QHash<QString, QString>& add_map /* = QHash<QString, QString>()*/)
+QByteArray Templator::generate(
+	const User& user, 
+	const QString& title /*= "Novastory"*/, 
+	const QString& article /*= QString() */, 
+	const QHash<QString, QString>& add_map /* = QHash<QString, QString>()*/,
+	const QString& description /*= QString()*/,
+	const QString& keywords /*= QString()*/
+)
 {
 	if (user.isLogined())
 	{
-		return generateLogined(user, title, article, add_map);
+		return generateLogined(user, title, article, add_map, description, keywords);
 	}
 	else
 	{
-		return generate(title, article, add_map);
+		return generate(title, article, add_map, description, keywords);
 	}
 }
 
-QByteArray Templator::generateLogined(const User& user, const QString& title /*= "Novastory"*/, const QString& article /*= QString() */, const QHash<QString, QString>& add_map /* = QHash<QString, QString>()*/)
+QByteArray Templator::generateLogined(
+	const User& user, 
+	const QString& title /*= "Novastory"*/, 
+	const QString& article /*= QString() */, 
+	const QHash<QString, QString>& add_map /* = QHash<QString, QString>()*/,
+	const QString& description /*= QString()*/,
+	const QString& keywords /*= QString()*/
+)
 {
 	static QString templateData;
 	QString generatedTemplate;
@@ -92,6 +110,8 @@ QByteArray Templator::generateLogined(const User& user, const QString& title /*=
 	//replace data
 	generatedTemplate = templateData;
 	generatedTemplate = generatedTemplate.replace("{title}", title);
+	generatedTemplate = generatedTemplate.replace("{description}", description);
+	generatedTemplate = generatedTemplate.replace("{keywords}", keywords);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
 	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright <a href=\"/about\">" PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]</a>");
 	user.substitute(generatedTemplate);
