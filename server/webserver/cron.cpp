@@ -33,17 +33,27 @@ void Cron::run()
 	exec();
 }
 
-void Cron::newTask(void(*func)(int, const QString&, bool last_call), int id, const QString& args /* = QString()*/, int interval /* = 1000 */, bool singlesht /*= false*/, qint64 until_time /* = -1 */)
+void Cron::newTask(void(*func)(int, const QString&, bool last_call), int id, const QString& args /* = QString()*/, int interval /* = 1000 */, bool singlesht /*= false*/, const QDateTime& starttime /* = QDateTime()*/, const QDateTime& endtime /* = QDateTime() */)
 {
 	QMutexLocker locker(&Instance().m_taks_mutex);
-	qDebug() << "New cron task" << id << "added to query with interaval" << interval << "started" << (singlesht ? "once" : "multiple times");
+	qDebug() << "New cron task" << id << "added to query";
 	QTimer* timer = new QTimer();
 	timer->moveToThread(&Instance());
-	timer->setInterval(interval);
-	timer->setSingleShot(singlesht);
-	VERIFY(connect(timer, &QTimer::timeout, std::bind([timer, func, until_time](int taskid, const QString & args)
+	if (!singlesht)
 	{
-		bool last_call = timer->isSingleShot() || (until_time > 0 && QDateTime::currentDateTime().toMSecsSinceEpoch() > until_time);
+		timer->setInterval(interval);
+		qDebug() << "Cron task started with interval: " << interval;
+	}
+	else
+	{
+		qint64 diff_time = starttime.toMSecsSinceEpoch() - QDateTime::currentDateTime().toMSecsSinceEpoch();
+		timer->setInterval(diff_time > 0 ? diff_time : 0);
+		qDebug() << "Cron task will started at" << starttime << "once";
+	}
+	timer->setSingleShot(singlesht);
+	VERIFY(connect(timer, &QTimer::timeout, std::bind([timer, func, endtime](int taskid, const QString & args)
+	{
+		bool last_call = timer->isSingleShot() || (!endtime.isNull() && QDateTime::currentDateTime() > endtime);
 		func(taskid, args, last_call);
 
 		if (last_call)
@@ -65,17 +75,19 @@ int Cron::startTask(const QString& name, void(*func)(int, const QString&, bool l
 {
 	QMutexLocker locker(&Instance().m_func_mutex);
 	SqlQuery saveTask;
-	saveTask.prepare("INSERT INTO cron(`task`, `args`, `starttime`, `oncetime`, `endtime`) VALUES(?, ?, ?, ?, ?)");
+	saveTask.prepare("INSERT INTO cron(`task`, `args`, `starttime`, `endtime`, `oncetime`, `interval`) VALUES(?, ?, ?, ?, ?, ?)");
 	saveTask.bindValue(0, name);
 	saveTask.bindValue(1, args);
-	saveTask.bindValue(2, interval);
-	saveTask.bindValue(3, singlesht);
-	saveTask.bindValue(4, (endtime.isNull() ? -1 : endtime.toMSecsSinceEpoch()));
+	QDateTime starttime = QDateTime::fromMSecsSinceEpoch(QDateTime::currentDateTime().toMSecsSinceEpoch() + interval);
+	saveTask.bindValue(2, starttime);
+	saveTask.bindValue(3, endtime);
+	saveTask.bindValue(4, singlesht);
+	saveTask.bindValue(5, interval);
 	VERIFY(saveTask.exec());
 	Instance().m_tasks_func.insert(name, func);
 	int id = saveTask.lastInsertId().toInt();
 	SqlDatabase::close();
-	newTask(func, id, args, interval, singlesht, (endtime.isNull() ? -1 : endtime.toMSecsSinceEpoch()));
+	newTask(func, id, args, interval, singlesht, starttime, endtime);
 	return id;
 }
 
@@ -138,13 +150,13 @@ void Cron::resumeTasks()
 		QString task = tasks.value("task").toString();
 		if (Instance().m_tasks_func.contains(task))
 		{
-			if (tasks.value("endtime").toLongLong() > 0 && QDateTime::currentDateTime().toMSecsSinceEpoch() > tasks.value("endtime").toLongLong())
+			if (!tasks.value("endtime").toDateTime().isNull() && QDateTime::currentDateTime() > tasks.value("endtime").toDateTime())
 			{
 				SqlQuery("DELETE FROM cron WHERE taskid = " + QString::number(tasks.value("taskid").toInt()));
 			}
 			else
 			{
-				newTask(Instance().m_tasks_func[task], tasks.value("taskid").toInt(), tasks.value("args").toString(), tasks.value("starttime").toInt(), tasks.value("oncetime").toBool(), tasks.value("endtime").toLongLong());
+				newTask(Instance().m_tasks_func[task], tasks.value("taskid").toInt(), tasks.value("args").toString(), tasks.value("interval").toInt(), tasks.value("oncetime").toBool(), tasks.value("starttime").toDateTime(), tasks.value("endtime").toDateTime());
 			}
 		}
 	}

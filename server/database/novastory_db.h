@@ -196,8 +196,16 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 			},
 			DBPatcher::Column{
 				"starttime",
-				"int(12) unsigned",
+				"timestamp",
 				false,
+				"",
+				"CURRENT_TIMESTAMP",
+				""
+			},
+			DBPatcher::Column{
+				"endtime",
+				"timestamp",
+				true,
 				"",
 				"",
 				""
@@ -211,9 +219,9 @@ QSet<DBPatcher::Table> DB_TABLE_STRUCT()
 				""
 			},
 			DBPatcher::Column{
-				"endtime",
-				"bigint(20)",
-				false,
+				"interval",
+				"int(11) unsigned",
+				true,
 				"",
 				"",
 				""

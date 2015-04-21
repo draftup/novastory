@@ -41,7 +41,7 @@ public:
 protected:
 	void run() override;
 private:
-	static void newTask(void(*func)(int, const QString&, bool last_call), int id, const QString& args = QString(), int interval = 1000, bool singlesht = false, qint64 until_time = -1);
+	static void newTask(void(*func)(int, const QString&, bool last_call), int id, const QString& args = QString(), int interval = 1000, bool singlesht = false, const QDateTime& starttime = QDateTime(), const QDateTime& endtime = QDateTime());
 
 	QMap<int, QSharedPointer<QTimer>> m_tasks;
 	QHash<QString, void(*)(int, const QString&, bool last_call)> m_tasks_func;
