@@ -300,6 +300,7 @@ int main(int argc, char* argv[])
 	QFile::copy(package_dir + "/bin/Qt5Core.dll", installation_dir + "/Qt5Core.dll");
 	QFile::copy(package_dir + "/bin/Qt5Network.dll", installation_dir + "/Qt5Network.dll");
 	QFile::copy(package_dir + "/bin/Qt5Sql.dll", installation_dir + "/Qt5Sql.dll");
+	QFile::copy(package_dir + "/bin/Qt5Xml.dll", installation_dir + "/Qt5Sql.dll");
 
 	QFile::copy(package_dir + "/bin/libeay32.dll", installation_dir + "/libeay32.dll");
 	QFile::copy(package_dir + "/bin/ssleay32.dll", installation_dir + "/ssleay32.dll");
