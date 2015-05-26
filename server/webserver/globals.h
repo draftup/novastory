@@ -151,31 +151,9 @@ inline QByteArray htmlHeaderGen(const WebDataContainer& data, const QString& sta
 	return htmlHeaderGen(data.mimeType(), data.size(), status, addAdditional);
 }
 
-inline QByteArray htmlData(const WebDataContainer& data, const QString& status = "200 OK", const QString& additional = QString(), const QHash<QString, QString>& header = QHash<QString, QString>())
-{
-	// Компресия deflate
-	WebDataContainer mData = data;
-	QString addAdditional = additional;
-	if (header["Accept-Encoding"].contains("deflate"))
-	{
-		mData = qCompress(mData);
-		addAdditional += "Content-Encoding: deflate\n";
-	}
-	return htmlHeaderGen(mData, status, addAdditional) + mData;
-}
+QByteArray htmlData(const WebDataContainer& data, const QString& status = "200 OK", const QString& additional = QString(), const QHash<QString, QString>& header = QHash<QString, QString>());
 
-inline QByteArray htmlData(const QByteArray& data, const QString& mimetype = QString(), const QString& status = "200 OK", const QString& additional = QString(), const QHash<QString, QString>& header = QHash<QString, QString>())
-{
-	// Компресия deflate
-	QByteArray mData = data;
-	QString addAdditional = additional;
-	if (header["Accept-Encoding"].contains("deflate"))
-	{
-		mData = qCompress(mData);
-		addAdditional += "Content-Encoding: deflate\n";
-	}
-	return htmlHeaderGen(mimetype, mData.size(), status, addAdditional) + mData;
-}
+QByteArray htmlData(const QByteArray& data, const QString& mimetype = QString(), const QString& status = "200 OK", const QString& additional = QString(), const QHash<QString, QString>& header = QHash<QString, QString>());
 
 QString selectorId(const QString& html, const QString& selector);
 

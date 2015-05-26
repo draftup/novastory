@@ -7,6 +7,7 @@
 #include <QTranslator>
 #include "translatorhelper.h"
 #include <QThread>
+#include <zlib.h>
 
 QString novastory::md5(const QString& str)
 {
@@ -105,4 +106,70 @@ QString novastory::translate(const QString& context, const QString& key, const Q
 		return key;
 
 	return ret;
+}
+
+QByteArray novastory::htmlData(const QByteArray& data, const QString& mimetype /*= QString()*/, const QString& status /*= "200 OK"*/, const QString& additional /*= QString()*/, const QHash<QString, QString>& header /*= QHash<QString, QString>()*/)
+{
+	// Компресия deflate
+	QByteArray mData = data;
+	QString addAdditional = additional;
+	if (header["Accept-Encoding"].contains("deflate"))
+	{
+		ulong len = data.size() + data.size() / 100 + 12;
+		mData.resize(0);
+		int res;
+		do {
+			mData.resize(len);
+			res = ::compress2((uchar*)mData.data(), &len, (uchar*)data.constData(), data.size(), -1);
+
+			switch (res) 
+			{
+				case Z_OK:
+					mData.resize(len);
+					break;
+				case Z_MEM_ERROR:
+					qWarning("deflate error: Z_MEM_ERROR: Not enough memory");
+					mData.resize(0);
+					break;
+				case Z_BUF_ERROR:
+					len *= 2;
+					break;
+			}
+		} while (res == Z_BUF_ERROR);
+		addAdditional += "Content-Encoding: deflate\n";
+	}
+	return htmlHeaderGen(mimetype, mData.size(), status, addAdditional) + mData;
+}
+
+QByteArray novastory::htmlData(const WebDataContainer& data, const QString& status /*= "200 OK"*/, const QString& additional /*= QString()*/, const QHash<QString, QString>& header /*= QHash<QString, QString>()*/)
+{
+	// Компресия deflate
+	WebDataContainer mData = data;
+	QString addAdditional = additional;
+	if (header["Accept-Encoding"].contains("deflate"))
+	{
+		ulong len = data.size() + data.size() / 100 + 12;
+		mData.resize(0);
+		int res;
+		do {
+			mData.resize(len);
+			res = ::compress2((uchar*)mData.data(), &len, (uchar*)data.constData(), data.size(), -1);
+
+			switch (res)
+			{
+			case Z_OK:
+				mData.resize(len);
+				break;
+			case Z_MEM_ERROR:
+				qWarning("deflate error: Z_MEM_ERROR: Not enough memory");
+				mData.resize(0);
+				break;
+			case Z_BUF_ERROR:
+				len *= 2;
+				break;
+			}
+		} while (res == Z_BUF_ERROR);
+		addAdditional += "Content-Encoding: deflate\n";
+	}
+	return htmlHeaderGen(mData, status, addAdditional) + mData;
 }

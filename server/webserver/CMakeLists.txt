@@ -86,6 +86,8 @@ source_group(".generated" FILES
 
 add_subdirectory(3dparty/smtp)
 include_directories(3dparty/smtp)
+add_subdirectory(3dparty/zlib)
+include_directories(3dparty/zlib)
 
 add_library(WebServer STATIC
 	${HEADERS_TOMOC_}
@@ -96,6 +98,7 @@ add_library(WebServer STATIC
 
 target_link_libraries(WebServer
 	smtpemail
+	zlib
 	${Qt5Core_LIBRARIES}
 	${Qt5Network_LIBRARIES}
 	${Qt5Sql_LIBRARIES}
