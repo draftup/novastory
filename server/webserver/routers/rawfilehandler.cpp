@@ -52,8 +52,7 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 			}
 			else
 			{
-				socket->write(htmlHeaderGen(inCacheData));
-				socket->write(inCacheData);
+				socket->write(htmlData(inCacheData, "200 OK", QString(), header));
 			}
 
 			return true;
@@ -106,8 +105,7 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 				}
 				else
 				{
-					socket->write(htmlHeaderGen(webData));
-					socket->write(data);
+					socket->write(htmlData(webData, "200 OK", QString(), header));
 				}
 
 				return true;

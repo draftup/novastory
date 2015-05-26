@@ -6,6 +6,7 @@
 #include <QTimeZone>
 #include "webdatacontainer.h"
 #include <QLocale>
+#include <QDebug>
 
 class QFile;
 
@@ -120,14 +121,17 @@ QString translate(const QString& context, const QString& key, const QString& dis
 
 inline QByteArray htmlHeaderGen(const QString& mimetype = QString(), int size = -1, const QString& status = "200 OK", const QString& additional = QString())
 {
-	return (
-			   "HTTP/1.1 " + status + "\n"
-			   "Server: novastory\n"
-			   "Date: " + RFC822Date(QDateTime::currentDateTime()) + "\n"
-			   + additional +
-			   ((mimetype.isNull()) ? QString() : "Content-Type: " + mimetype + "\n") +
-			   ((size >= 0) ? "Content-Length: " + QString::number(size) + "\n\r\n" : "\n\r\n")
-		   ).toLatin1();
+	QByteArray responce = (
+		"HTTP/1.1 " + status + "\n"
+		"Server: novastory\n"
+		"Date: " + RFC822Date(QDateTime::currentDateTime()) + "\n"
+		+ additional +
+		((mimetype.isNull()) ? QString() : "Content-Type: " + mimetype + "\n") +
+		((size >= 0) ? "Content-Length: " + QString::number(size) + "\n\r\n" : "\n\r\n")
+	).toLatin1();
+	qDebug() << "Responce header:";
+	qDebug() << responce;
+	return responce;
 }
 
 inline QByteArray htmlHeaderGen(const WebDataContainer& data, const QString& status = "200 OK", const QString& additional = QString())
@@ -147,6 +151,31 @@ inline QByteArray htmlHeaderGen(const WebDataContainer& data, const QString& sta
 	return htmlHeaderGen(data.mimeType(), data.size(), status, addAdditional);
 }
 
+inline QByteArray htmlData(const WebDataContainer& data, const QString& status = "200 OK", const QString& additional = QString(), const QHash<QString, QString>& header = QHash<QString, QString>())
+{
+	// Компресия deflate
+	WebDataContainer mData = data;
+	QString addAdditional = additional;
+	if (header["Accept-Encoding"].contains("deflate"))
+	{
+		mData = qCompress(mData);
+		addAdditional += "Content-Encoding: deflate\n";
+	}
+	return htmlHeaderGen(mData, status, addAdditional) + mData;
+}
+
+inline QByteArray htmlData(const QByteArray& data, const QString& mimetype = QString(), const QString& status = "200 OK", const QString& additional = QString(), const QHash<QString, QString>& header = QHash<QString, QString>())
+{
+	// Компресия deflate
+	QByteArray mData = data;
+	QString addAdditional = additional;
+	if (header["Accept-Encoding"].contains("deflate"))
+	{
+		mData = qCompress(mData);
+		addAdditional += "Content-Encoding: deflate\n";
+	}
+	return htmlHeaderGen(mimetype, mData.size(), status, addAdditional) + mData;
+}
 
 QString selectorId(const QString& html, const QString& selector);
 
