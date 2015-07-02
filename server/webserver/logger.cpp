@@ -207,7 +207,7 @@ void Logger::setWriteToLogFile(bool writToFile)
 
 void Logger::setFailReports(bool enable)
 {
-	failReports = enable;
+	//failReports = enable;
 }
 
 QByteArray Logger::html() const
