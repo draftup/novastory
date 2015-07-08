@@ -36,6 +36,7 @@ set(HEADERS_
 	translatorhelper.h
 	
 	logger.h
+	backup.h
 	
 	routers/rawfilehandler.h
 	routers/errorhandler.h
@@ -59,6 +60,7 @@ set(SOURCES_
 	
 	logger.cpp
 	cron.cpp
+	backup.cpp
 	smtpsender.cpp
 	routers/rawfilehandler.cpp
 	routers/errorhandler.cpp
