@@ -1,5 +1,6 @@
 #include <QFile>
 #include "version.h"
+#include "config.h"
 #include "templator.h"
 #include "webserver.h"
 
@@ -43,6 +44,11 @@ QByteArray Templator::generate(
 	generatedTemplate = generatedTemplate.replace("{keywords}", keywords);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
 	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright <a href=\"/about\">" PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]</a>");
+	
+	// Google Api
+	generatedTemplate = generatedTemplate.replace("{google_client_id}", GOOGLE_WEB_CLIENT_ID);
+	generatedTemplate = generatedTemplate.replace("{google_client_secret}", GOOGLE_WEB_CLIENT_SECRET);
+	
 	QHashIterator<QString, QString> it(add_map);
 	while (it.hasNext())
 	{
@@ -119,6 +125,11 @@ QByteArray Templator::generateLogined(
 #ifdef NOVASTORY_BUILD
 	generatedTemplate = generatedTemplate.replace("{users.namemail}", !user.firstName().isEmpty() ? user.firstName() : user.email());
 #endif
+
+	// Google Api
+	generatedTemplate = generatedTemplate.replace("{google_client_id}", GOOGLE_WEB_CLIENT_ID);
+	generatedTemplate = generatedTemplate.replace("{google_client_secret}", GOOGLE_WEB_CLIENT_SECRET);
+
 	QHashIterator<QString, QString> it(add_map);
 	while (it.hasNext())
 	{
