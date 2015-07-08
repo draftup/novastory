@@ -72,6 +72,8 @@ public:
 	const QList< QSharedPointer<DataHandler> >& siteHandlers() const{
 		return handlers;
 	};
+
+	void setMaintenance(bool is_maintenance);
 protected:
 	WebServer(QObject* parent = nullptr, quint16 initializationPort = 8008, const QString& pid_file = "default_app.pid", const QString& db_file = "default_db.h");
 	virtual ~WebServer();
@@ -83,8 +85,11 @@ protected:
 	void appendHandler(DataHandler* handler);
 	void removeHandler(DataHandler* handler);
 
+	virtual void maintenanceRespond(int socket_descriptor);
+
 	QHash<QString, QSharedPointer<QTranslator> > translators;
 private:
+	bool m_maintenance;
 	QString publicDirectory;
 	ByteCache webCache;
 	QList< QSharedPointer<DataHandler> > handlers;

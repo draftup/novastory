@@ -50,7 +50,7 @@ void handler_sigfault(int sig) {
 WebServer* WebServer::_self = nullptr;
 
 WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, const QString& pid_file /* = "default_app.pid" */, const QString& db_file /* = "default_db.h" */)
-	: QTcpServer(parent), webCache(CACHE_SIZE)
+	: QTcpServer(parent), webCache(CACHE_SIZE), m_maintenance(false)
 	, m_pid_name(pid_file), m_db_file(db_file),
 	  m_public_dir("public")
 {
@@ -129,7 +129,14 @@ WebServer::~WebServer()
 
 void WebServer::incomingConnection(qintptr socketDescriptor)
 {
-	QThreadPool::globalInstance()->start(new WebProcess(socketDescriptor));
+	if (!m_maintenance)
+	{
+		QThreadPool::globalInstance()->start(new WebProcess(socketDescriptor));
+	}
+	else
+	{
+		maintenanceRespond(socketDescriptor);
+	}
 }
 
 void WebServer::setDirectory(const QString& path)
@@ -237,6 +244,27 @@ QString WebServer::defaultLanguage()
 QList<QString> WebServer::languageList() const
 {
 	return translators.keys();
+}
+
+void WebServer::setMaintenance(bool is_maintenance)
+{
+	m_maintenance = is_maintenance;
+}
+
+void WebServer::maintenanceRespond(int socket_descriptor)
+{
+	qDebug() << "Server maintenance. Sending respond";
+	QTcpSocket* socket = new QTcpSocket;
+	socket->setSocketDescriptor(socket_descriptor);
+
+	VERIFY(connect(socket, &QTcpSocket::readyRead, [socket]() {
+		qDebug() << "Server maintenance. Sending ignore respond";
+		socket->write(novastory::htmlData("Server maintenance", "text/html", "503 Service Unavailable"));
+		socket->close();
+	}));
+
+	connect(socket, SIGNAL(disconnected()),
+		socket, SLOT(deleteLater()));
 }
 
 }
