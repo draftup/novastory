@@ -1,7 +1,7 @@
 #include "smtpsender.h"
 #include <QDebug>
 #include <SmtpMime>
-#include "webserver_config.h"
+#include "config.h"
 #include "globals.h"
 #include <QCoreApplication>
 
@@ -38,7 +38,7 @@ void SmtpSender::run()
 	smtp.setPassword(SMTP_PASSWORD);
 
 	MimeMessage message;
-	EmailAddress from_address("uruchie.org@gmail.com");
+	EmailAddress from_address(SMTP_USER);
 	EmailAddress to_address(to);
 	message.setSender(&from_address);
 	message.addRecipient(&to_address);

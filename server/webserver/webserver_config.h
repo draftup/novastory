@@ -3,8 +3,8 @@
 
 #define SMTP_SERVER "smtp.gmail.com"
 #define SMTP_PORT 465
-#define SMTP_USER "uruchie.org@gmail.com"
-#define SMTP_PASSWORD "uruchiesrver"
+//#define SMTP_USER "uruchie.org@gmail.com"
+//#define SMTP_PASSWORD "uruchiesrver"
 
 #define UPLOAD_LIMIT_BYTES 1 * 1024 * 1024
 #define CONTENT_LIMIT_BYTES 5 * 1024 * 1024
