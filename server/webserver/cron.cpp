@@ -169,4 +169,26 @@ void Cron::addFunc(const QString& name, void(*func)(int, const QString&, bool la
 	Instance().m_tasks_func.insert(name, func);
 }
 
+void Cron::setTaskTime(int id, const QDateTime& time /*= QDateTime()*/)
+{
+	QMutexLocker locker(&Instance().m_taks_mutex);
+	if (Instance().m_tasks.contains(id) && Instance().m_tasks[id]->isSingleShot())
+	{
+		int interval = time.toMSecsSinceEpoch() - QDateTime::currentDateTime().toMSecsSinceEpoch();
+		QMetaObject::invokeMethod(&Instance(), "changeTime", Qt::QueuedConnection, Q_ARG(void*, (void*)Instance().m_tasks[id].data()), Q_ARG(int, interval));
+		SqlQuery updateTask;
+		updateTask.prepare("UPDATE `cron` SET `interval` = :interval, `starttime` = :starttime WHERE `taskid` = :id");
+		updateTask.bindValue(":id", id);
+		updateTask.bindValue(":interval", interval);
+		updateTask.bindValue(":starttime", time);
+		VERIFY(updateTask.exec());
+	}
+}
+
+void Cron::changeTime(void* timer, int interval)
+{
+	((QTimer*)timer)->setInterval(interval);
+	qDebug() << "Task time changed";
+}
+
 }
