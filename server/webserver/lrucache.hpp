@@ -81,7 +81,7 @@ public:
 
 	std::list<key_t> keys() const {
 		std::list<key_t> key_list;
-		for (std::unordered_map<key_t, list_iterator_t>::const_iterator it = _cache_items_map.begin(); it != _cache_items_map.end(); it++)
+		for (typename std::unordered_map<key_t, list_iterator_t>::const_iterator it = _cache_items_map.begin(); it != _cache_items_map.end(); it++)
 		{
 			key_list.push_back(it->first);
 		}
