@@ -179,7 +179,7 @@ bool Sqlizable::insertSQL(bool can_dublicate /*= false*/, bool not_ignore_id /* 
 	return true;
 }
 
-bool Sqlizable::syncSQL(const QList<QString>& basis, const QString& join_query /* = QString()*/)
+bool Sqlizable::syncSQL(const QList<QString>& basis, const QString& join_query /* = QString()*/, const QString& select_query /* = QString() */)
 {
 	QString objName = objectName();
 	if (objName.isEmpty())
@@ -189,7 +189,7 @@ bool Sqlizable::syncSQL(const QList<QString>& basis, const QString& join_query /
 
 	SqlQuery query;
 
-	QString sql = QString("SELECT * FROM `") + objName + "` " + join_query + " WHERE ";
+	QString sql = QString("SELECT ") + (select_query.isNull() ? "*" : select_query) + " FROM `" + objName + "` " + join_query + " WHERE ";
 
 	// Founding keys
 	QList<QVariant> internalValues;
@@ -248,9 +248,9 @@ bool Sqlizable::syncSQL(const QList<QString>& basis, const QString& join_query /
 	return syncProcess(query);
 }
 
-bool Sqlizable::syncSQL(const QString& basis, const QString& join_query /* = QString()*/)
+bool Sqlizable::syncSQL(const QString& basis, const QString& join_query /* = QString()*/, const QString& select_query /* = QString() */)
 {
-	return syncSQL(QList<QString>() << basis, join_query);
+	return syncSQL(QList<QString>() << basis, join_query, select_query);
 }
 
 bool Sqlizable::syncProcess(SqlQuery& query)
