@@ -12,6 +12,9 @@
 #include <QCoreApplication>
 #include <QMutexLocker>
 #include "datahandler.h"
+#ifdef Q_OS_LINUX
+#include <QLoggingCategory>
+#endif
 
 #ifdef Q_OS_LINUX
 #include <unistd.h>
@@ -56,6 +59,10 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, cons
 {
 	setObjectName("WebServer");
 
+	// Fix bug with log messages
+#ifdef Q_OS_LINUX
+	QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
+#endif
 	Logger::Instance().setWriteToLogFile(true); // Log all to file output
 #ifndef QT_DEBUG
 	Logger::Instance().setFailReports(true);
