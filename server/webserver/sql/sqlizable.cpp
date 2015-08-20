@@ -287,6 +287,12 @@ int Sqlizable::syncRecord(QSqlRecord& record, bool found_mode /* = false*/, int 
 	{
 		QString propertyName = record.fieldName(i);
 		QVariant propertyValue = record.value(i);
+
+		if (propertyName == "splitter")
+		{
+			return i + 1;
+		}
+
 		int iProperty = mObject->indexOfProperty(propertyName.toLatin1());
 		if (iProperty >= 0)
 		{
