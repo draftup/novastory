@@ -9,6 +9,9 @@
 #include <QMimeType>
 #include <QFileInfo>
 #include "templator.h"
+#if defined(NOVASTORY_BUILD) || defined(VSTEAMS_BUILD)
+#include "logic/user.h"
+#endif
 
 namespace novastory
 {
@@ -25,12 +28,20 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 		// First, looking in cache
 		try
 		{
-#if defined(QT_DEBUG) || defined(REMOTE_TESTING)
 			if (filePath.endsWith(".js") || filePath.endsWith(".css") || filePath.endsWith(".html"))
 			{
-				throw std::range_error("debuging");
-			}
+#if defined(NOVASTORY_BUILD) || defined(VSTEAMS_BUILD)
+				if (cookies.contains("userid"))
+				{
+					qDebug() << "Trying to found required language in current user";
+					User::checkUserLanguage(cookies["userid"].toInt(), cookies["stoken"]);
+				}
 #endif
+#if defined(QT_DEBUG) || defined(REMOTE_TESTING)
+				throw std::range_error("debuging");
+#endif
+			}
+
 			QString postfix;
 			QString pref_lang = WebServer::Instance().defaultLanguage();
 			if (!pref_lang.isEmpty() && (filePath.endsWith(".js") || filePath.endsWith(".css") || filePath.endsWith(".html")))
