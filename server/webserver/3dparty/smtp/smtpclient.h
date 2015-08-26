@@ -121,6 +121,8 @@ public:
 
 
 	/* [3] --- */
+    class ResponseTimeoutException {};
+    class SendMessageTimeoutException {};
 
 protected:
 
@@ -145,9 +147,6 @@ protected:
 	QString responseText;
 	int responseCode;
 
-
-	class ResponseTimeoutException {};
-	class SendMessageTimeoutException {};
 
 	/* [4] --- */
 

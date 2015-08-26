@@ -57,10 +57,21 @@ void SmtpSender::run()
 	}
 
 	// Now we can send the mail
-	smtp.connectToHost();
-	smtp.login();
-	smtp.sendMail(message);
-	smtp.quit();
+    try
+    {
+        smtp.connectToHost();
+        smtp.login();
+        smtp.sendMail(message);
+        smtp.quit();
+    }
+    catch(SmtpClient::SendMessageTimeoutException)
+    {
+        qCritical() << "Send Message Timeout in mail thread";
+    }
+    catch(SmtpClient::ResponseTimeoutException)
+    {
+        qCritical() << "Resonce Timeout in mail thread";
+    }
 
 	if (!disable_log)
 	{
