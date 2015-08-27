@@ -131,6 +131,8 @@ WebServer::~WebServer()
 {
 	close();
 	qDebug() << "Closed webserver. Waiting while workers done.";
+	QThreadPool::globalInstance()->waitForDone();
+	qDebug() << "Thread pool closed all connections.";
 	// ~QThreadPool()
 }
 

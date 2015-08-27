@@ -8,6 +8,7 @@
 #include <QThread>
 #include <QMetaObject>
 #include <QSet>
+#include <QCoreApplication>
 
 namespace novastory
 {
@@ -32,6 +33,13 @@ QString WebRouter::path() const
 
 void WebRouter::sendHtml()
 {
+#ifdef QT_DEBUG
+	if (path() == "/exit")
+	{
+		QCoreApplication::instance()->quit();
+		return;
+	}
+#endif
 	bool isHandeled = false;
 	ErrorHandler* errorHandler = nullptr;
 	for (QSharedPointer<DataHandler> handler : WebServer::Instance().handlers)
