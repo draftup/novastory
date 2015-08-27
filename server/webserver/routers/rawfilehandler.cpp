@@ -9,9 +9,6 @@
 #include <QMimeType>
 #include <QFileInfo>
 #include "templator.h"
-#if defined(NOVASTORY_BUILD) || defined(VSTEAMS_BUILD)
-#include "logic/user.h"
-#endif
 
 namespace novastory
 {
@@ -34,7 +31,7 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 				if (cookies.contains("userid"))
 				{
 					qDebug() << "Trying to found required language in current user";
-					User::checkUserLanguage(cookies["userid"].toInt(), cookies["stoken"]);
+					checkUserLanguage(cookies["userid"].toInt(), cookies["stoken"]);
 				}
 #endif
 #if defined(QT_DEBUG) || defined(REMOTE_TESTING)
@@ -127,5 +124,45 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 	return false;
 }
 
+#if defined(NOVASTORY_BUILD) || defined(VSTEAMS_BUILD)
+bool RawFileHandler::checkUserLanguage(const int quserid, const QString& token)
+{
+	QStringList tokenList = token.split("-");
+	if (tokenList.size() != 2)
+	{
+		return false;
+	}
+
+	QString tokenDate = tokenList[0];
+	QString tokenKey = tokenList[1];
+
+	novastory::SqlQuery query;
+	query.prepare("SELECT password, salt, email, language FROM users WHERE userid = :userid");
+	query.bindValue(":userid", quserid);
+	VERIFY(query.exec());
+	if (query.size() != 1)
+	{
+		return false;
+	}
+	VERIFY(query.next());
+
+	QString qsalt = query.value("salt").toString();
+	QString qpassword = query.value("password").toString();
+	QString qlanguage = query.value("language").toString();
+
+	if (novastory::sha1(tokenDate + novastory::sha1(QString::number(quserid) + novastory::sha1(qsalt) + novastory::sha1("degitx-jelu-leparusvega"))) != tokenKey)
+	{
+		return false;
+	}
+
+	// Устанавливаем язык интерфейса
+	if (!qlanguage.isEmpty())
+	{
+		WebServer::Instance().addDefaultLanguage(qlanguage);
+	}
+
+	return true;
+}
+#endif
 
 }
