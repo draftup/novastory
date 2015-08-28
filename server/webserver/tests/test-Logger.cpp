@@ -19,6 +19,9 @@ private slots:
 
 void Test_Logger::initTestCase()
 {
+#ifdef Q_OS_LINUX
+	QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
+#endif
 	QFile::remove(PROJECT_NAME ".log");
 }
 
