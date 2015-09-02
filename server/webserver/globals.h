@@ -148,6 +148,32 @@ inline QByteArray htmlHeaderGen(const WebDataContainer& data, const QString& sta
 		addAdditional += QString("Last-Modified: %1\n").arg(RFC822Date(data.modificatedDate()));
 	}
 
+	QString cacheControl = QString("Cache-Control: max-age=0\n");
+	if (!data.mimeType().isNull() && !data.mimeType().isEmpty())
+	{
+		if (data.mimeType() == "text/css")
+		{
+			cacheControl = QString("Cache-Control: max-age=%1\n").arg(60);
+		}
+		if (data.mimeType() == "text/html")
+		{
+			cacheControl = QString("Cache-Control: max-age=%1\n").arg(2 * 60);
+		}
+		else if (data.mimeType().contains("image"))
+		{
+			cacheControl = QString("Cache-Control: max-age=%1\n").arg(2 * 24 * 60 * 60);
+		}
+		else if (data.mimeType().contains("audio"))
+		{
+			cacheControl = QString("Cache-Control: max-age=%1\n").arg(5 * 24 * 60 * 60);
+		}
+		else if (data.mimeType().contains("video"))
+		{
+			cacheControl = QString("Cache-Control: max-age=%1\n").arg(10 * 24 * 60 * 60);
+		}
+	}
+	addAdditional += cacheControl;
+
 	return htmlHeaderGen(data.mimeType(), data.size(), status, addAdditional);
 }
 
