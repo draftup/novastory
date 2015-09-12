@@ -36,8 +36,7 @@ public:
 		const int objectTypeIds[] =
 		{
 			qMetaTypeId<QObjectList>(),
-			qMetaTypeId<QObject*>(),
-			QVariant::ByteArray,
+			qMetaTypeId<QObject*>()
 		};
 
 		return std::find(std::begin(objectTypeIds), std::end(objectTypeIds), type) != std::end(objectTypeIds);
