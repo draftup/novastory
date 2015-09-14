@@ -112,7 +112,7 @@ public:
 	bool operator==(const QString& email) const;
 	bool operator==(const User& l) const;
 	bool operator!=(const User& l) const;
-	
+
 	static bool checkUserLanguage(const int quserid, const QString& token)
 	{
 		return true;

@@ -8,7 +8,7 @@
 namespace novastory
 {
 
-	SmtpSender::SmtpSender(const QString& tto, const QString& tsubject, const QString& tmessage, const QList<QFile*>& tattachments) : QThread()
+SmtpSender::SmtpSender(const QString& tto, const QString& tsubject, const QString& tmessage, const QList<QFile*>& tattachments) : QThread()
 {
 	setObjectName("Smtp Thread");
 
@@ -25,14 +25,18 @@ namespace novastory
 SmtpSender::~SmtpSender()
 {
 	if (!disable_log)
+	{
 		qDebug() << "Smtp thread destroyed";
+	}
 }
 
 
 void SmtpSender::run()
 {
 	if (!disable_log)
+	{
 		qDebug() << "Smtp thread started";
+	}
 	SmtpClient smtp(SMTP_SERVER, SMTP_PORT, SmtpClient::SslConnection);
 	smtp.setUser(SMTP_USER);
 	smtp.setPassword(SMTP_PASSWORD);
@@ -57,21 +61,21 @@ void SmtpSender::run()
 	}
 
 	// Now we can send the mail
-    try
-    {
-        smtp.connectToHost();
-        smtp.login();
-        smtp.sendMail(message);
-        smtp.quit();
-    }
-    catch(SmtpClient::SendMessageTimeoutException)
-    {
-        qCritical() << "Send Message Timeout in mail thread";
-    }
-    catch(SmtpClient::ResponseTimeoutException)
-    {
-        qCritical() << "Resonce Timeout in mail thread";
-    }
+	try
+	{
+		smtp.connectToHost();
+		smtp.login();
+		smtp.sendMail(message);
+		smtp.quit();
+	}
+	catch (SmtpClient::SendMessageTimeoutException)
+	{
+		qCritical() << "Send Message Timeout in mail thread";
+	}
+	catch (SmtpClient::ResponseTimeoutException)
+	{
+		qCritical() << "Resonce Timeout in mail thread";
+	}
 
 	if (!disable_log)
 	{

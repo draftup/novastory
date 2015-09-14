@@ -27,26 +27,30 @@ namespace novastory
 {
 
 #ifdef Q_OS_LINUX
-void handler_sigfault(int sig) {
-  void *buffer[15];
-  char **strings;
-  size_t size;
+void handler_sigfault(int sig)
+{
+	void* buffer[15];
+	char** strings;
+	size_t size;
 
-  // get void*'s for all entries on the stack
-  size = backtrace(buffer, 15);
+	// get void*'s for all entries on the stack
+	size = backtrace(buffer, 15);
 
-  // print out all the frames to stderr
-  qDebug() << "Sigfault with signal:" << sig;
-  strings = backtrace_symbols(buffer, size);
-  if (strings == NULL) {
-          qFatal("backtrace_symbols");
-          exit(EXIT_FAILURE);
-  }
-  for (int j = 0; j < size; j++)
-      qDebug() << strings[j];
-  free(strings);
-  qDebug() << "Application closed";
-  exit(1);
+	// print out all the frames to stderr
+	qDebug() << "Sigfault with signal:" << sig;
+	strings = backtrace_symbols(buffer, size);
+	if (strings == NULL)
+	{
+		qFatal("backtrace_symbols");
+		exit(EXIT_FAILURE);
+	}
+	for (int j = 0; j < size; j++)
+	{
+		qDebug() << strings[j];
+	}
+	free(strings);
+	qDebug() << "Application closed";
+	exit(1);
 }
 #endif
 
@@ -69,7 +73,7 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, cons
 #endif
 
 #ifdef Q_OS_LINUX
-    signal(SIGSEGV, handler_sigfault);
+	signal(SIGSEGV, handler_sigfault);
 #endif
 
 	for (QString arg : QCoreApplication::instance()->arguments())
@@ -266,14 +270,15 @@ void WebServer::maintenanceRespond(int socket_descriptor)
 	QTcpSocket* socket = new QTcpSocket;
 	socket->setSocketDescriptor(socket_descriptor);
 
-	VERIFY(connect(socket, &QTcpSocket::readyRead, [socket]() {
+	VERIFY(connect(socket, &QTcpSocket::readyRead, [socket]()
+	{
 		qDebug() << "Server maintenance. Sending ignore respond";
 		socket->write(novastory::htmlData("Server maintenance", "text/html", "503 Service Unavailable"));
 		socket->close();
 	}));
 
 	connect(socket, SIGNAL(disconnected()),
-		socket, SLOT(deleteLater()));
+			socket, SLOT(deleteLater()));
 }
 
 }

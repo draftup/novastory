@@ -93,17 +93,23 @@ QString novastory::translate(const QString& context, const QString& key, const Q
 	QString lang = WebServer::Instance().defaultLanguage();
 
 	if (lang.isEmpty())
+	{
 		return key;
+	}
 
 	if (!WebServer::Instance().webTranslators().contains(lang))
+	{
 		return key;
+	}
 
 #ifdef GENERATE_TRANSLATIONS
 	WebServer::Instance().webTranslatorsHelper().appendTranslation(key, dis, context);
 #endif
 	QString ret = WebServer::Instance().webTranslators().value(lang)->translate(context.toLatin1().constData(), key.toLatin1().constData(), dis.toLatin1().constData());
 	if (ret.isNull())
+	{
 		return key;
+	}
 
 	return ret;
 }
@@ -118,40 +124,8 @@ QByteArray novastory::htmlData(const QByteArray& data, const QString& mimetype /
 		ulong len = data.size() + data.size() / 100 + 12;
 		mData.resize(0);
 		int res;
-		do {
-			mData.resize(len);
-			res = ::compress2((uchar*)mData.data(), &len, (uchar*)data.constData(), data.size(), -1);
-
-			switch (res) 
-			{
-				case Z_OK:
-					mData.resize(len);
-					break;
-				case Z_MEM_ERROR:
-					qWarning("deflate error: Z_MEM_ERROR: Not enough memory");
-					mData.resize(0);
-					break;
-				case Z_BUF_ERROR:
-					len *= 2;
-					break;
-			}
-		} while (res == Z_BUF_ERROR);
-		addAdditional += "Content-Encoding: deflate\n";
-	}
-	return htmlHeaderGen(mimetype, mData.size(), status, addAdditional) + mData;
-}
-
-QByteArray novastory::htmlData(const WebDataContainer& data, const QString& status /*= "200 OK"*/, const QString& additional /*= QString()*/, const QHash<QString, QString>& header /*= QHash<QString, QString>()*/)
-{
-	// Компресия deflate
-	WebDataContainer mData = data;
-	QString addAdditional = additional;
-	if (header["Accept-Encoding"].contains("deflate"))
-	{
-		ulong len = data.size() + data.size() / 100 + 12;
-		mData.resize(0);
-		int res;
-		do {
+		do
+		{
 			mData.resize(len);
 			res = ::compress2((uchar*)mData.data(), &len, (uchar*)data.constData(), data.size(), -1);
 
@@ -168,7 +142,43 @@ QByteArray novastory::htmlData(const WebDataContainer& data, const QString& stat
 				len *= 2;
 				break;
 			}
-		} while (res == Z_BUF_ERROR);
+		}
+		while (res == Z_BUF_ERROR);
+		addAdditional += "Content-Encoding: deflate\n";
+	}
+	return htmlHeaderGen(mimetype, mData.size(), status, addAdditional) + mData;
+}
+
+QByteArray novastory::htmlData(const WebDataContainer& data, const QString& status /*= "200 OK"*/, const QString& additional /*= QString()*/, const QHash<QString, QString>& header /*= QHash<QString, QString>()*/)
+{
+	// Компресия deflate
+	WebDataContainer mData = data;
+	QString addAdditional = additional;
+	if (header["Accept-Encoding"].contains("deflate"))
+	{
+		ulong len = data.size() + data.size() / 100 + 12;
+		mData.resize(0);
+		int res;
+		do
+		{
+			mData.resize(len);
+			res = ::compress2((uchar*)mData.data(), &len, (uchar*)data.constData(), data.size(), -1);
+
+			switch (res)
+			{
+			case Z_OK:
+				mData.resize(len);
+				break;
+			case Z_MEM_ERROR:
+				qWarning("deflate error: Z_MEM_ERROR: Not enough memory");
+				mData.resize(0);
+				break;
+			case Z_BUF_ERROR:
+				len *= 2;
+				break;
+			}
+		}
+		while (res == Z_BUF_ERROR);
 		addAdditional += "Content-Encoding: deflate\n";
 	}
 	return htmlHeaderGen(mData, status, addAdditional) + mData;

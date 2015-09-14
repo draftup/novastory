@@ -130,7 +130,7 @@ void WebRouter::parseLanguage()
 	}
 
 	QString laguages_str = parsedValues["Accept-Language"];
-	
+
 	if (laguages_str.isEmpty())
 	{
 		qWarning() << "Very stange. Accept-Language recived bu empty";

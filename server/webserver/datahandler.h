@@ -33,9 +33,10 @@ public:
 		const QDateTime& lastmod = QDateTime(),
 		const QString& changefreq = QString(),
 		double priority = -1
-	) {
+	)
+	{
 		QDomElement url = doc.createElement("url");
-		
+
 		QDomElement loc = doc.createElement("loc");
 		loc.appendChild(doc.createTextNode(location));
 		url.appendChild(loc);
@@ -60,7 +61,7 @@ public:
 			priority_el.appendChild(doc.createTextNode(QString::number(priority)));
 			url.appendChild(priority_el);
 		}
-		
+
 		parent_element.appendChild(url);
 	};
 };

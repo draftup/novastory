@@ -9,28 +9,28 @@
 namespace novastory
 {
 
-	class TranslatorHelper
+class TranslatorHelper
+{
+public:
+	TranslatorHelper();
+	bool save(const QString& output_file);
+	void appendTranslation(const QString& key, const QString& dis = QString(), const QString& context = QString());
+	static TranslatorHelper& Instance()
 	{
-	public:
-		TranslatorHelper();
-		bool save(const QString& output_file);
-		void appendTranslation(const QString& key, const QString& dis = QString(), const QString& context = QString());
-		static TranslatorHelper& Instance()
-		{
-			static TranslatorHelper theSingleInstance;
-			return theSingleInstance;
-		}
-	private:
-		struct TUnit
-		{
-			bool existed;
-			QString context;
-			QString comment;
-		};
-		QFile m_diskfile;
-		QMap<QString, TUnit> m_translations;
-		QMutex append_mutex;
+		static TranslatorHelper theSingleInstance;
+		return theSingleInstance;
+	}
+private:
+	struct TUnit
+	{
+		bool existed;
+		QString context;
+		QString comment;
 	};
+	QFile m_diskfile;
+	QMap<QString, TUnit> m_translations;
+	QMutex append_mutex;
+};
 
 }
 

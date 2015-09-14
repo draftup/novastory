@@ -69,7 +69,8 @@ public:
 	QString defaultLanguage();
 	QList<QString> languageList() const;
 
-	const QList< QSharedPointer<DataHandler> >& siteHandlers() const{
+	const QList< QSharedPointer<DataHandler> >& siteHandlers() const
+	{
 		return handlers;
 	};
 

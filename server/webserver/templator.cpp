@@ -44,11 +44,11 @@ QByteArray Templator::generate(
 	generatedTemplate = generatedTemplate.replace("{keywords}", keywords);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
 	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright <a href=\"/about\">" PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]</a>");
-	
+
 	// Google Api
 	generatedTemplate = generatedTemplate.replace("{google_client_id}", GOOGLE_WEB_CLIENT_ID);
 	generatedTemplate = generatedTemplate.replace("{google_client_secret}", GOOGLE_WEB_CLIENT_SECRET);
-	
+
 	QHashIterator<QString, QString> it(add_map);
 	while (it.hasNext())
 	{
@@ -65,9 +65,9 @@ QByteArray Templator::generate(
 
 #if defined(NOVASTORY_BUILD) || defined(VSTEAMS_BUILD)
 QByteArray Templator::generate(
-	const User& user, 
-	const QString& title /*= "Novastory"*/, 
-	const QString& article /*= QString() */, 
+	const User& user,
+	const QString& title /*= "Novastory"*/,
+	const QString& article /*= QString() */,
 	const QHash<QString, QString>& add_map /* = QHash<QString, QString>()*/,
 	const QString& description /*= QString()*/,
 	const QString& keywords /*= QString()*/
@@ -84,9 +84,9 @@ QByteArray Templator::generate(
 }
 
 QByteArray Templator::generateLogined(
-	const User& user, 
-	const QString& title /*= "Novastory"*/, 
-	const QString& article /*= QString() */, 
+	const User& user,
+	const QString& title /*= "Novastory"*/,
+	const QString& article /*= QString() */,
 	const QHash<QString, QString>& add_map /* = QHash<QString, QString>()*/,
 	const QString& description /*= QString()*/,
 	const QString& keywords /*= QString()*/

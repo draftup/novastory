@@ -574,7 +574,9 @@ QString Sqlizable::inList(const QList<int>& list)
 	{
 		ret += QString::number(it.next());
 		if (it.hasNext())
+		{
 			ret += ", ";
+		}
 	}
 	ret += ")";
 	return ret;
@@ -592,7 +594,9 @@ QString Sqlizable::inField(const QString& name, const QList<int>& list)
 	{
 		ret += QString::number(it.next());
 		if (it.hasNext())
+		{
 			ret += ", ";
+		}
 	}
 	ret += ")";
 	return ret;

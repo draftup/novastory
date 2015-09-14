@@ -121,8 +121,8 @@ public:
 
 
 	/* [3] --- */
-    class ResponseTimeoutException {};
-    class SendMessageTimeoutException {};
+	class ResponseTimeoutException {};
+	class SendMessageTimeoutException {};
 
 protected:
 

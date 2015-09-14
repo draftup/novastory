@@ -122,13 +122,13 @@ QString translate(const QString& context, const QString& key, const QString& dis
 inline QByteArray htmlHeaderGen(const QString& mimetype = QString(), int size = -1, const QString& status = "200 OK", const QString& additional = QString())
 {
 	QByteArray responce = (
-		"HTTP/1.1 " + status + "\n"
-		"Server: novastory\n"
-		"Date: " + RFC822Date(QDateTime::currentDateTime()) + "\n"
-		+ additional +
-		((mimetype.isNull()) ? QString() : "Content-Type: " + mimetype + "\n") +
-		((size >= 0) ? "Content-Length: " + QString::number(size) + "\n\r\n" : "\n\r\n")
-	).toLatin1();
+							  "HTTP/1.1 " + status + "\n"
+							  "Server: novastory\n"
+							  "Date: " + RFC822Date(QDateTime::currentDateTime()) + "\n"
+							  + additional +
+							  ((mimetype.isNull()) ? QString() : "Content-Type: " + mimetype + "\n") +
+							  ((size >= 0) ? "Content-Length: " + QString::number(size) + "\n\r\n" : "\n\r\n")
+						  ).toLatin1();
 	qDebug() << "Responce header:";
 	qDebug() << responce;
 	return responce;
