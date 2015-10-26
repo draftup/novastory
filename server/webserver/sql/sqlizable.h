@@ -52,4 +52,10 @@ protected:
 
 }
 
+QDataStream & operator<< (QDataStream& stream, const novastory::Sqlizable& obj);
+QDataStream & operator>> (QDataStream& stream, novastory::Sqlizable& obj);
+QDataStream & operator<< (QDataStream& stream, const novastory::Sqlizable* obj);
+QDataStream & operator>> (QDataStream& stream, novastory::Sqlizable* obj);
+
+
 #endif

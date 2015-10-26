@@ -604,4 +604,40 @@ QString Sqlizable::inField(const QString& name, const QList<int>& list)
 
 }
 
+QDataStream & operator<<(QDataStream& stream, const novastory::Sqlizable& obj)
+{
+	for (int i = 0; i < obj.metaObject()->propertyCount(); ++i)
+	{
+		if (obj.metaObject()->property(i).isStored(&obj))
+		{
+			stream << obj.metaObject()->property(i).read(&obj);
+		}
+	}
+	return stream;
+}
+
+QDataStream & operator<<(QDataStream& stream, const novastory::Sqlizable* obj)
+{
+	return operator<<(stream, *obj);
+}
+
+QDataStream & operator>>(QDataStream& stream, novastory::Sqlizable& obj)
+{
+	for (int i = 0; i < obj.metaObject()->propertyCount(); ++i)
+	{
+		if (obj.metaObject()->property(i).isStored(&obj))
+		{
+			QVariant var;
+			stream >> var;
+			obj.metaObject()->property(i).write(&obj, var);
+		}
+	}
+	return stream;
+}
+
+QDataStream & operator>>(QDataStream& stream, novastory::Sqlizable* obj)
+{
+	return operator>>(stream, *obj);
+}
+
 
