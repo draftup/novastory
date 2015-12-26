@@ -259,6 +259,26 @@ QList<QString> WebServer::languageList() const
 	return translators.keys();
 }
 
+#if defined(VSTEAMS_BUILD)
+void WebServer::setPreferedGame(int gameid)
+{
+	QMutexLocker locker(&prefered_game_mutex);
+	prefered_game.insert(QThread::currentThread(), gameid);
+}
+
+void WebServer::removePreferedGame()
+{
+	QMutexLocker locker(&prefered_game_mutex);
+	prefered_game.remove(QThread::currentThread());
+}
+
+int WebServer::preferedGame()
+{
+	QMutexLocker locker(&prefered_game_mutex);
+	return prefered_game.value(QThread::currentThread());
+}
+#endif
+
 void WebServer::setMaintenance(bool is_maintenance)
 {
 	m_maintenance = is_maintenance;

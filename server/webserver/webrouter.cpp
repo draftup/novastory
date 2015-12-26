@@ -23,6 +23,9 @@ WebRouter::WebRouter(QTcpSocket* bindedSocket) : WebRequest(bindedSocket)
 WebRouter::~WebRouter()
 {
 	WebServer::Instance().removeDefaultLanguage();
+#if defined(VSTEAMS_BUILD)
+	WebServer::Instance().removePreferedGame();
+#endif
 }
 
 
@@ -38,6 +41,12 @@ void WebRouter::sendHtml()
 	{
 		QCoreApplication::instance()->quit();
 		return;
+	}
+#endif
+#if defined(VSTEAMS_BUILD)
+	if (!cookieVariables["preferedgame"].isNull())
+	{
+		WebServer::Instance().setPreferedGame(cookieVariables["preferedgame"].toInt());
 	}
 #endif
 	bool isHandeled = false;

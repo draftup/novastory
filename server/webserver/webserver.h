@@ -69,6 +69,12 @@ public:
 	QString defaultLanguage();
 	QList<QString> languageList() const;
 
+#if defined(VSTEAMS_BUILD)
+	void setPreferedGame(int gameid);
+	void removePreferedGame();
+	int preferedGame();
+#endif
+
 	const QList< QSharedPointer<DataHandler> >& siteHandlers() const
 	{
 		return handlers;
@@ -100,6 +106,10 @@ private:
 	TranslatorHelper translationHelper;
 	QHash<QThread*, QString> default_language;
 	QMutex default_language_mutex;
+#if defined(VSTEAMS_BUILD)
+	QHash<QThread*, int> prefered_game;
+	QMutex prefered_game_mutex;
+#endif
 };
 
 }
