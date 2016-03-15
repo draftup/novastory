@@ -89,7 +89,17 @@ void WebRequest::parse()
 		parsedValues["POST"] = body;
 		qDebug() << "POST data: " << ((body.size() > 1024) ? body.left(1024) : body);
 	}
-
+	else if (parsedValues["type"] == "GET")
+	{
+		int qIndex = parsedValues["path"].indexOf('?');
+		if (qIndex >= 0)
+		{
+			parsedValues["GET"] = parsedValues["path"].mid(qIndex + 1);
+			parsedValues["path"] = parsedValues["path"].left(qIndex);
+			qDebug() << "Modify GET Path:" << parsedValues["path"];
+		}
+		qDebug() << "GET data: " << ((parsedValues["GET"].size() > 1024) ? parsedValues["GET"].left(1024) : parsedValues["GET"]);
+	}
 }
 
 bool WebRequest::isParsed() const

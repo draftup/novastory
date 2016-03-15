@@ -13,7 +13,7 @@
 namespace novastory
 {
 
-bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QString& get /* = "" */,
+bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QHash<QString, QString>& get /* = "" */,
 							const QHash<QString, QString>& header /*= QHash<QString, QString>()*/, const QHash<QString, QString>& cookies /*= QHash<QString, QString>()*/)
 {
 	const QString workingDirectory = WebServer::Instance().directory();

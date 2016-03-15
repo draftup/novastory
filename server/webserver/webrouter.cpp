@@ -53,7 +53,7 @@ void WebRouter::sendHtml()
 	ErrorHandler* errorHandler = nullptr;
 	for (QSharedPointer<DataHandler> handler : WebServer::Instance().handlers)
 	{
-		isHandeled |= handler->handle(bindedSocket, parsedValues["type"], path(), postVariables, QString(), parsedValues, cookieVariables);
+		isHandeled |= handler->handle(bindedSocket, parsedValues["type"], path(), postVariables, getVariables, parsedValues, cookieVariables);
 		if (errorHandler == nullptr)
 		{
 			errorHandler = dynamic_cast<ErrorHandler*>(handler.data());
@@ -64,7 +64,7 @@ void WebRouter::sendHtml()
 		qDebug() << "404 Error, page not founded";
 		if (errorHandler)
 		{
-			VERIFY(errorHandler->handle(bindedSocket, parsedValues["type"], path(), postVariables, QString(), parsedValues, cookieVariables, 404));
+			VERIFY(errorHandler->handle(bindedSocket, parsedValues["type"], path(), postVariables, getVariables, parsedValues, cookieVariables, 404));
 		}
 	}
 }
@@ -74,9 +74,13 @@ QString WebRouter::postData() const
 	return parsedValues["POST"];
 }
 
-void WebRouter::parsePost()
+QString WebRouter::getData() const
 {
-	QString data = postData();
+	return parsedValues["GET"];
+}
+
+void WebRouter::parseParams(const QString& data, QHash<QString, QString>* var)
+{
 	if (data.isEmpty())
 	{
 		return;
@@ -91,13 +95,26 @@ void WebRouter::parsePost()
 			continue;
 		}
 
-		postVariables.insert(keyValuePair[0], QUrl::fromPercentEncoding(keyValuePair[1].replace(QChar('+'), "%20").toUtf8()));
+		var->insert(keyValuePair[0], QUrl::fromPercentEncoding(keyValuePair[1].replace(QChar('+'), "%20").toUtf8()));
 	}
+}
+
+void WebRouter::parsePost()
+{
+	QString data = postData();
+	parseParams(data, &postVariables);
+}
+
+void WebRouter::parseGet()
+{
+	QString data = getData();
+	parseParams(data, &getVariables);
 }
 
 void WebRouter::parse()
 {
 	WebRequest::parse();
+	parseGet();
 	parsePost();
 	parseCookie();
 	parseLanguage();
