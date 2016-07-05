@@ -12,6 +12,7 @@
 #include <QCoreApplication>
 #include <QMutexLocker>
 #include "datahandler.h"
+#include "websocketslistener.h"
 #ifdef Q_OS_LINUX
 #include <QLoggingCategory>
 #endif
@@ -59,7 +60,7 @@ WebServer* WebServer::_self = nullptr;
 WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, const QString& pid_file /* = "default_app.pid" */, const QString& db_file /* = "default_db.h" */)
 	: QTcpServer(parent), webCache(CACHE_SIZE), m_maintenance(false)
 	, m_pid_name(pid_file), m_db_file(db_file),
-	  m_public_dir("public")
+	  m_public_dir("public"), webSocketListener(nullptr)
 {
 	setObjectName("WebServer");
 
@@ -128,6 +129,9 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, cons
 	QThreadPool::globalInstance()->setMaxThreadCount(WORKERS_NUMBER); // Maximum of working threads
 	qDebug() << "Maximum workers number: " << WORKERS_NUMBER;
 	QThreadPool::globalInstance()->setExpiryTimeout(WORKERS_MAX_TIME * 1000);
+
+	webSocketListener = new WebSocketsListener();
+	//webSocketListener->start();
 }
 
 
@@ -137,7 +141,8 @@ WebServer::~WebServer()
 	qDebug() << "Closed webserver. Waiting while workers done.";
 	QThreadPool::globalInstance()->waitForDone();
 	qDebug() << "Thread pool closed all connections.";
-	// ~QThreadPool()
+	if(webSocketListener != nullptr)
+		webSocketListener->deleteLater();
 }
 
 void WebServer::incomingConnection(qintptr socketDescriptor)

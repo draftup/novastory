@@ -16,6 +16,7 @@ namespace novastory
 
 class DataHandler;
 class WebRouter;
+class WebSocketsListener;
 
 class WebServer : public QTcpServer
 {
@@ -110,6 +111,7 @@ private:
 	QHash<QThread*, int> prefered_game;
 	QMutex prefered_game_mutex;
 #endif
+	WebSocketsListener* webSocketListener;
 };
 
 }

@@ -18,6 +18,7 @@ set(HEADERS_TOMOC_
 	webprocess.h
 	cron.h
 	smtpsender.h
+	websocketslistener.h
 	
 	sql/sqlizable.h
 )
@@ -57,6 +58,7 @@ set(SOURCES_
 	webrequest.cpp
 	jsonthrower.cpp
 	translatorhelper.cpp
+	websocketslistener.cpp
 	
 	logger.cpp
 	cron.cpp
@@ -105,6 +107,7 @@ target_link_libraries(WebServer
 	${Qt5Network_LIBRARIES}
 	${Qt5Sql_LIBRARIES}
 	${Qt5Xml_LIBRARIES}
+	${Qt5WebSockets_LIBRARIES}
 )
 
 
