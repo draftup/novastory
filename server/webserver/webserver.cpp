@@ -77,6 +77,21 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, cons
 	signal(SIGSEGV, handler_sigfault);
 #endif
 
+	// save pid to file
+#ifdef Q_OS_LINUX
+	pid_t pid = getpid();
+
+	FILE* fp = fopen((QCoreApplication::instance()->applicationDirPath() + "/" + m_pid_name).toLatin1().data(), "w");
+	if (!fp)
+	{
+		perror("fopen");
+		exit(EXIT_FAILURE);
+	}
+
+	fprintf(fp, "%d\n", pid);
+	fclose(fp);
+#endif
+
 	for (QString arg : QCoreApplication::instance()->arguments())
 	{
 #ifdef Q_OS_LINUX
@@ -103,21 +118,6 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, cons
 			return;
 		}
 	}
-
-	// save pid to file
-#ifdef Q_OS_LINUX
-	pid_t pid = getpid();
-
-	FILE* fp = fopen((QCoreApplication::instance()->applicationDirPath() + "/" + m_pid_name).toLatin1().data(), "w");
-	if (!fp)
-	{
-		perror("fopen");
-		exit(EXIT_FAILURE);
-	}
-
-	fprintf(fp, "%d\n", pid);
-	fclose(fp);
-#endif
 
 	resetDirectory();
 
