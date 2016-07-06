@@ -1,7 +1,7 @@
 #include "websocketslistener.h"
+#include "datahandler.h"
 #include <QWebSocketServer>
 #include <QWebSocket>
-#include <windows.h>
 
 namespace novastory
 {
@@ -59,7 +59,11 @@ void WebSocketsListener::processWebSocketTextMessage(QString message)
 	QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
 	qDebug() << "Web Socket message received:" << message;
 	if (pClient) {
-		pClient->sendTextMessage(message);
+		//pClient->sendTextMessage(message);
+		for (QSharedPointer<DataHandler> handler : m_handlers)
+		{
+			handler->webHandle(pClient, &m_pWebSocketClients, message);
+		}
 	}
 }
 
@@ -68,7 +72,7 @@ void WebSocketsListener::processWebSocketBinaryMessage(QByteArray message)
 	QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
 	qDebug() << "Web Socket binary message received:" << message;
 	if (pClient) {
-		pClient->sendBinaryMessage(message);
+		//pClient->sendBinaryMessage(message);
 	}
 }
 

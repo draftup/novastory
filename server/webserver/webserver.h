@@ -96,6 +96,7 @@ protected:
 	virtual void maintenanceRespond(int socket_descriptor);
 
 	QHash<QString, QSharedPointer<QTranslator> > translators;
+	WebSocketsListener* webSocketListener;
 private:
 	bool m_maintenance;
 	QString publicDirectory;
@@ -111,7 +112,6 @@ private:
 	QHash<QThread*, int> prefered_game;
 	QMutex prefered_game_mutex;
 #endif
-	WebSocketsListener* webSocketListener;
 };
 
 }

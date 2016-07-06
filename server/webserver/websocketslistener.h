@@ -3,6 +3,8 @@
 
 #include <QThread>
 #include <QObject>
+#include <QSharedPointer>
+#include "datahandler.h"
 class QWebSocketServer;
 class QWebSocket;
 
@@ -16,6 +18,10 @@ public:
 	WebSocketsListener();
 	virtual ~WebSocketsListener();
 	void run() override;
+	void appendHandler(DataHandler* handler)
+	{
+		m_handlers.append(QSharedPointer<DataHandler>(handler));
+	}
 private slots:
 	void onNewWebSocketConnection();
 	void processWebSocketTextMessage(QString message);
@@ -25,6 +31,7 @@ private:
 	void startServer();
 	QWebSocketServer *m_pWebSocketServer;
 	QList<QWebSocket *> m_pWebSocketClients;
+	QList< QSharedPointer<DataHandler> > m_handlers;
 };
 
 }
