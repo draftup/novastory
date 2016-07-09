@@ -57,7 +57,7 @@ void WebSocketsListener::onNewWebSocketConnection()
 void WebSocketsListener::processWebSocketTextMessage(QString message)
 {
 	QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
-	qDebug() << "Web Socket message received:" << message;
+	qDebug() << "Web Socket message received:" << message.left(1024) + (message.size() > 1024 ? "..." : "") << "(size: " + QString::number(message.size()) + ")";
 	if (pClient) {
 		//pClient->sendTextMessage(message);
 		for (QSharedPointer<DataHandler> handler : m_handlers)
