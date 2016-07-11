@@ -1,7 +1,10 @@
 #include "sqlizable.h"
 #include "sqlquery.h"
+#include "sqldatabase.h"
 #include "globals.h"
 #include <QSqlRecord>
+#include <QSqlDriver>
+#include <QSqlField>
 #include <QMetaObject>
 #include <QMetaProperty>
 #include <QVariant>
@@ -575,6 +578,34 @@ QString Sqlizable::inList(const QList<int>& list)
 	while (it.hasNext())
 	{
 		ret += QString::number(it.next());
+		if (it.hasNext())
+		{
+			ret += ", ";
+		}
+	}
+	ret += ")";
+	return ret;
+}
+
+QString Sqlizable::escapeString(const QString& string)
+{
+	QSqlField f;
+	f.setType(QVariant::String);
+	f.setValue(string);
+	return SqlDatabase::open().driver()->formatValue(f);
+}
+
+QString Sqlizable::inList(const QList<QString>& list)
+{
+	QListIterator<QString> it(list);
+	QString ret = "IN(";
+	if (list.size() == 0)
+	{
+		ret += "0";
+	}
+	while (it.hasNext())
+	{
+		ret += escapeString(it.next());
 		if (it.hasNext())
 		{
 			ret += ", ";

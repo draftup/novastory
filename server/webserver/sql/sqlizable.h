@@ -42,7 +42,9 @@ public:
 		return std::find(std::begin(objectTypeIds), std::end(objectTypeIds), type) != std::end(objectTypeIds);
 	}
 
+	static QString escapeString(const QString& string);
 	static QString inList(const QList<int>& list);
+	static QString inList(const QList<QString>& list);
 	static QString inField(const QString& name, const QList<int>& list);
 protected:
 	virtual bool syncProcess(SqlQuery& query);
