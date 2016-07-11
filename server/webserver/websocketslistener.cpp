@@ -27,6 +27,15 @@ void WebSocketsListener::run()
 	exec();
 }
 
+void WebSocketsListener::broadcastTextMessage(const QString& message)
+{
+	qDebug() << "Broadcasting WebSockets message" << message.left(1024) + (message.size() > 1024 ? "..." : "") << "(size: " + QString::number(message.size()) + ")";
+	for (QWebSocket * socket : m_pWebSocketClients)
+	{
+		socket->sendTextMessage(message);
+	}
+}
+
 void WebSocketsListener::startServer()
 {
 	m_pWebSocketServer = new QWebSocketServer(QStringLiteral("Echo Server"),

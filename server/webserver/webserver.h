@@ -82,6 +82,8 @@ public:
 	};
 
 	void setMaintenance(bool is_maintenance);
+
+	void broadcastWSocketsTextMessage(const QString& message);
 protected:
 	WebServer(QObject* parent = nullptr, quint16 initializationPort = 8008, const QString& pid_file = "default_app.pid", const QString& db_file = "default_db.h");
 	virtual ~WebServer();
@@ -108,6 +110,7 @@ private:
 	TranslatorHelper translationHelper;
 	QHash<QThread*, QString> default_language;
 	QMutex default_language_mutex;
+	QMutex websokets_mutex;
 #if defined(VSTEAMS_BUILD)
 	QHash<QThread*, int> prefered_game;
 	QMutex prefered_game_mutex;

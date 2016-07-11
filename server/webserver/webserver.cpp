@@ -289,6 +289,15 @@ void WebServer::setMaintenance(bool is_maintenance)
 	m_maintenance = is_maintenance;
 }
 
+void WebServer::broadcastWSocketsTextMessage(const QString& message)
+{
+	QMutexLocker locker(&websokets_mutex);
+	if (webSocketListener != nullptr)
+	{
+		webSocketListener->broadcastTextMessage(message);
+	}
+}
+
 void WebServer::maintenanceRespond(int socket_descriptor)
 {
 	qDebug() << "Server maintenance. Sending respond";
