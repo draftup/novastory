@@ -7,6 +7,7 @@
 #include <QSqlField>
 #include <QMetaObject>
 #include <QMetaProperty>
+#include <QJsonDocument>
 #include <QVariant>
 #include <QList>
 #include <QDebug>
@@ -487,9 +488,18 @@ bool Sqlizable::updateSQL(const QString& basis, const QList<QString>& ignoreVari
 	return updateSQL(QList<QString>() << basis, ignoreVariables);
 }
 
+QByteArray Sqlizable::toJson() const
+{
+	QJsonDocument doc;
+	doc.setObject(jsonObject());
+	return doc.toJson();
+}
+
 QJsonObject Sqlizable::jsonObject() const
 {
 	QJsonObject obj;
+	obj.insert("classType", metaObject()->className());
+	obj.insert("className", objectName());
 
 	const QMetaObject* mObject = metaObject();
 	const int propCount = mObject->propertyCount();
@@ -530,6 +540,23 @@ QJsonObject Sqlizable::jsonObject() const
 	}
 
 	return obj;
+}
+
+void Sqlizable::fromJson(const QByteArray& json)
+{
+	QJsonDocument doc = QJsonDocument::fromJson(json);
+	fromJson(doc.object());
+}
+
+void Sqlizable::fromJson(const QJsonObject& json)
+{
+	for (int i = 0; i < metaObject()->propertyCount(); ++i)
+	{
+		if (metaObject()->property(i).isStored(this))
+		{
+			metaObject()->property(i).write(this, json.value(metaObject()->property(i).name()).toVariant());
+		}
+	}
 }
 
 void Sqlizable::substitute(QString& data, QString prefix /*= QString()*/) const
@@ -639,13 +666,9 @@ QString Sqlizable::inField(const QString& name, const QList<int>& list)
 
 QDataStream& operator<<(QDataStream& stream, const novastory::Sqlizable& obj)
 {
-	for (int i = 0; i < obj.metaObject()->propertyCount(); ++i)
-	{
-		if (obj.metaObject()->property(i).isStored(&obj))
-		{
-			stream << obj.metaObject()->property(i).read(&obj);
-		}
-	}
+	QJsonDocument doc;
+	doc.setObject(obj.jsonObject());
+	stream << doc.toJson();
 	return stream;
 }
 
@@ -656,15 +679,9 @@ QDataStream& operator<<(QDataStream& stream, const novastory::Sqlizable* obj)
 
 QDataStream& operator>>(QDataStream& stream, novastory::Sqlizable& obj)
 {
-	for (int i = 0; i < obj.metaObject()->propertyCount(); ++i)
-	{
-		if (obj.metaObject()->property(i).isStored(&obj))
-		{
-			QVariant var;
-			stream >> var;
-			obj.metaObject()->property(i).write(&obj, var);
-		}
-	}
+	QByteArray data;
+	stream >> data;
+	obj.fromJson(data);
 	return stream;
 }
 
