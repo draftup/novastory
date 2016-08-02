@@ -24,7 +24,11 @@ QByteArray Templator::generate(
 	{
 #endif
 		const QString workingDirectory = WebServer::Instance().directory();
+#ifndef EXPEREMENTAL_WEBCLIENT
 		QFile templateFile(workingDirectory + "/template.html");
+#else
+		QFile templateFile(workingDirectory + "/index.html");
+#endif
 		if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
 			qCritical() << "Template not founded";
@@ -44,6 +48,9 @@ QByteArray Templator::generate(
 	generatedTemplate = generatedTemplate.replace("{keywords}", keywords);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
 	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright <a href=\"/about\">" PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]</a>");
+#ifdef EXPEREMENTAL_WEBCLIENT
+	generatedTemplate = generatedTemplate.replace("{user}", "{}");
+#endif
 
 	// Google Api
 	generatedTemplate = generatedTemplate.replace("{google_client_id}", GOOGLE_WEB_CLIENT_ID);
@@ -100,7 +107,11 @@ QByteArray Templator::generateLogined(
 	{
 #endif
 		const QString workingDirectory = WebServer::Instance().directory();
+#ifndef EXPEREMENTAL_WEBCLIENT
 		QFile templateFile(workingDirectory + "/template-logined.html");
+#else
+		QFile templateFile(workingDirectory + "/index.html");
+#endif
 		if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
 			qCritical() << "Template not founded";
@@ -120,8 +131,16 @@ QByteArray Templator::generateLogined(
 	generatedTemplate = generatedTemplate.replace("{keywords}", keywords);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
 	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright <a href=\"/about\">" PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]</a>");
+#ifndef EXPEREMENTAL_WEBCLIENT
 	user.substitute(generatedTemplate);
 	generatedTemplate = generatedTemplate.replace("{users.stoken}", user.token());
+#else
+	QJsonObject userObject = user.jsonObject();
+	userObject.insert("token", user.token());
+	QJsonDocument doc;
+	doc.setObject(userObject);
+	generatedTemplate = generatedTemplate.replace("{user}", doc.toJson());
+#endif
 #ifdef NOVASTORY_BUILD
 	generatedTemplate = generatedTemplate.replace("{users.namemail}", !user.firstName().isEmpty() ? user.firstName() : user.email());
 #endif
