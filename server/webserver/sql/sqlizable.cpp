@@ -8,6 +8,8 @@
 #include <QMetaObject>
 #include <QMetaProperty>
 #include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QVariant>
 #include <QList>
 #include <QDebug>
@@ -495,6 +497,42 @@ QByteArray Sqlizable::toJson() const
 	return doc.toJson();
 }
 
+QVariant Sqlizable::CORRECT_JSON_VARIANT(const QVariant& data) const
+{
+	if (data.type() == QVariant::String)
+	{
+		QString stringVal = data.toString();
+
+		QRegExp jsonArrayRx("^\\s*\\[.*\\]\\s*$");
+		if (jsonArrayRx.exactMatch(stringVal))
+		{
+			QJsonDocument doc = QJsonDocument::fromJson(stringVal.toUtf8());
+			if (!doc.isNull() && doc.isArray())
+			{
+				qDebug() << "Modify QVariant string to QJsonArray";
+				return QVariant(doc.array());
+			}
+
+			return data;
+		}
+
+		QRegExp jsonObjectRx("^\\s*\\{.*\\}\\s*$");
+		if (jsonObjectRx.exactMatch(stringVal))
+		{
+			QJsonDocument doc = QJsonDocument::fromJson(stringVal.toUtf8());
+			if (!doc.isNull() && doc.isObject())
+			{
+				qDebug() << "Modify QVariant string to QJsonObject";
+				return QVariant(doc.object());
+			}
+
+			return data;
+		}
+	}
+
+	return data;
+}
+
 QJsonObject Sqlizable::jsonObject() const
 {
 	QJsonObject obj;
@@ -536,7 +574,7 @@ QJsonObject Sqlizable::jsonObject() const
 			continue;
 		}
 
-		obj.insert(propName, QJsonValue::fromVariant(property(propName.toUtf8())));
+		obj.insert(propName, QJsonValue::fromVariant(CORRECT_JSON_VARIANT(property(propName.toUtf8()))));
 	}
 
 	return obj;
