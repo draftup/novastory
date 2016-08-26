@@ -109,7 +109,6 @@ target_link_libraries(WebServer
 	${Qt5Xml_LIBRARIES}
 	${Qt5WebSockets_LIBRARIES}
 )
-
-
+set_property(TARGET WebServer PROPERTY CXX_STANDARD 14)
 set_property(TARGET WebServer PROPERTY FOLDER "webserver")
 
