@@ -574,7 +574,12 @@ QJsonObject Sqlizable::jsonObject() const
 			continue;
 		}
 
-		obj.insert(propName, QJsonValue::fromVariant(CORRECT_JSON_VARIANT(property(propName.toUtf8()))));
+		QVariant value = CORRECT_JSON_VARIANT(property(propName.toUtf8()));
+		if (value.type() == QVariant::DateTime)
+		{
+			value = QVariant(value.toDateTime().toMSecsSinceEpoch());
+		}
+		obj.insert(propName, QJsonValue::fromVariant(value));
 	}
 
 	return obj;
