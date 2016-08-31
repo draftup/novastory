@@ -4,9 +4,10 @@
 #include "templator.h"
 #include "webserver.h"
 
-
 namespace novastory
 {
+
+QMutex Templator::loadTemplateMutex;
 
 QByteArray Templator::generate(
 	const QString& title /*= "Novastory"*/,
@@ -19,6 +20,7 @@ QByteArray Templator::generate(
 	static QString templateData;
 	QString generatedTemplate;
 
+	loadTemplateMutex.lock();
 #ifndef QT_DEBUG
 	if (templateData.isEmpty())
 	{
@@ -39,6 +41,7 @@ QByteArray Templator::generate(
 #ifndef QT_DEBUG
 	}
 #endif
+	loadTemplateMutex.unlock();
 
 
 	//replace data
@@ -102,6 +105,7 @@ QByteArray Templator::generateLogined(
 	static QString templateData;
 	QString generatedTemplate;
 
+	loadTemplateMutex.lock();
 #ifndef QT_DEBUG
 	if (templateData.isEmpty())
 	{
@@ -122,6 +126,7 @@ QByteArray Templator::generateLogined(
 #ifndef QT_DEBUG
 	}
 #endif
+	loadTemplateMutex.unlock();
 
 
 	//replace data

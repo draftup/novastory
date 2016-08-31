@@ -6,6 +6,7 @@
 #if defined(NOVASTORY_BUILD) || defined(VSTEAMS_BUILD)
 #include "logic/user.h"
 #endif
+#include <QMutex>
 
 namespace novastory
 {
@@ -69,6 +70,8 @@ public:
 		const QString& keywords = QString()
 	);
 #endif
+private:
+	static QMutex loadTemplateMutex;
 };
 }
 
