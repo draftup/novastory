@@ -114,7 +114,7 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, cons
 			file.close();
 
 			qDebug() << "DB struct saved to file, run server without -s now";
-			QCoreApplication::instance()->quit();
+			exit(EXIT_SUCCESS);
 			return;
 		}
 	}
