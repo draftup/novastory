@@ -140,11 +140,16 @@ QByteArray Templator::generateLogined(
 	user.substitute(generatedTemplate);
 	generatedTemplate = generatedTemplate.replace("{users.stoken}", user.token());
 #else
-	QJsonObject userObject = user.jsonObject();
-	userObject.insert("token", user.token());
-	QJsonDocument doc;
-	doc.setObject(userObject);
-	generatedTemplate = generatedTemplate.replace("{user}", doc.toJson());
+	QString search = "<script id=\"server-data\">";
+	int serchIndex = generatedTemplate.indexOf(search);
+	if (serchIndex >= 0)
+	{
+		QJsonObject userObject = user.jsonObject();
+		userObject.insert("token", user.token());
+		QJsonDocument doc;
+		doc.setObject(userObject);
+		generatedTemplate = generatedTemplate.insert(serchIndex + search.length(), "USER=" + doc.toJson(QJsonDocument::Compact) + ";");
+	}
 #endif
 #ifdef NOVASTORY_BUILD
 	generatedTemplate = generatedTemplate.replace("{users.namemail}", !user.firstName().isEmpty() ? user.firstName() : user.email());
