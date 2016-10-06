@@ -27,11 +27,22 @@ void WebSocketsListener::run()
 	exec();
 }
 
-void WebSocketsListener::broadcastTextMessage(const QString& message)
+void WebSocketsListener::broadcastTextMessage(const QString& message, const QString& filter /* = QString() */, const QVariant& filterValue /* = QString() */)
 {
 	qDebug() << "Broadcasting WebSockets message" << message.left(1024) + (message.size() > 1024 ? "..." : "") << "(size: " + QString::number(message.size()) + ")";
 	for (QWebSocket * socket : m_pWebSocketClients)
 	{
+		// отправка только определенным участникам в фильтре
+		if (!filter.isNull() && !filter.isEmpty())
+		{
+			QVariant testValue = socket->property(filter.toLatin1().constData());
+			if(testValue.isNull())
+				continue;
+
+			if(!filterValue.isNull() && testValue != filterValue)
+				continue;
+		}
+
 		socket->sendTextMessage(message);
 	}
 }
@@ -88,11 +99,11 @@ void WebSocketsListener::processWebSocketBinaryMessage(QByteArray message)
 void WebSocketsListener::webSocketDisconnected()
 {
 	QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
-	qDebug() << "Web Socket disconnected:" << pClient << "(now:" << m_pWebSocketClients.size() << ")";
 	if (pClient) {
 		m_pWebSocketClients.removeAll(pClient);
 		pClient->deleteLater();
 	}
+	qDebug() << "Web Socket disconnected:" << pClient << "(now:" << m_pWebSocketClients.size() << ")";
 }
 
 }

@@ -296,12 +296,12 @@ void WebServer::setMaintenance(bool is_maintenance)
 	m_maintenance = is_maintenance;
 }
 
-void WebServer::broadcastWSocketsTextMessage(const QString& message)
+void WebServer::broadcastWSocketsTextMessage(const QString& message, const QString& filter /* = QString() */, const QVariant& filterValue /* = QVariant() */)
 {
 	QMutexLocker locker(&websokets_mutex);
 	if (webSocketListener != nullptr)
 	{
-		webSocketListener->broadcastTextMessage(message);
+		webSocketListener->broadcastTextMessage(message, filter, filterValue);
 	}
 }
 

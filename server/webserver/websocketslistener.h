@@ -4,6 +4,7 @@
 #include <QThread>
 #include <QObject>
 #include <QSharedPointer>
+#include <QVariant>
 #include "datahandler.h"
 class QWebSocketServer;
 class QWebSocket;
@@ -22,7 +23,7 @@ public:
 	{
 		m_handlers.append(QSharedPointer<DataHandler>(handler));
 	}
-	void broadcastTextMessage(const QString& message);
+	void broadcastTextMessage(const QString& message, const QString& filter = QString(), const QVariant& filterValue = QVariant());
 private slots:
 	void onNewWebSocketConnection();
 	void processWebSocketTextMessage(QString message);
