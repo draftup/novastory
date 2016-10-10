@@ -34,6 +34,7 @@ QByteArray Templator::generate(
 		if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
 			qCritical() << "Template not founded";
+			loadTemplateMutex.unlock();
 			return QByteArray();
 		}
 
@@ -119,6 +120,7 @@ QByteArray Templator::generateLogined(
 		if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
 			qCritical() << "Template not founded";
+			loadTemplateMutex.unlock();
 			return QByteArray();
 		}
 
