@@ -31,8 +31,8 @@ private slots:
 	void webSocketDisconnected();
 private:
 	void startServer();
-	QWebSocketServer *m_pWebSocketServer;
-	QList<QWebSocket *> m_pWebSocketClients;
+	QWebSocketServer* m_pWebSocketServer;
+	QList<QWebSocket*> m_pWebSocketClients;
 	QList< QSharedPointer<DataHandler> > m_handlers;
 };
 

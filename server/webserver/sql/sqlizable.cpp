@@ -161,7 +161,9 @@ bool Sqlizable::insertSQL(bool can_dublicate /*= false*/, bool not_ignore_id /* 
 				sql += (i == valuesCout - 1) ? "`" + keys[i] + "` = :" + keys[i] : "`" + keys[i] + "` = :" + keys[i] + ", ";
 			}
 			if (!not_ignore_id && valuesCout > 0 && !property("auto_increment").isNull())
+			{
 				sql += ", `" + property("auto_increment").toString() + "` = LAST_INSERT_ID(`" + property("auto_increment").toString() + "`)";
+			}
 		}
 
 		SqlQuery query;

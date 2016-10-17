@@ -26,7 +26,7 @@ public:
 		const QHash<QString, QString>& cookies = QHash<QString, QString>()
 	) = 0;
 
-	virtual void webHandle(QWebSocket* webSocket, QList<QWebSocket *>* clients, QString message) {};
+	virtual void webHandle(QWebSocket* webSocket, QList<QWebSocket*>* clients, QString message) {};
 	virtual void sitemap(QDomElement& parent_element, QDomDocument& doc) {};
 	void appendSitemapElement(
 		QDomElement& parent_element,

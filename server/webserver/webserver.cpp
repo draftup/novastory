@@ -141,8 +141,10 @@ WebServer::~WebServer()
 	qDebug() << "Closed webserver. Waiting while workers done.";
 	QThreadPool::globalInstance()->waitForDone();
 	qDebug() << "Thread pool closed all connections.";
-	if(webSocketListener != nullptr)
+	if (webSocketListener != nullptr)
+	{
 		webSocketListener->deleteLater();
+	}
 }
 
 void WebServer::incomingConnection(qintptr socketDescriptor)
@@ -187,17 +189,17 @@ void WebServer::resetDirectory()
 	{
 		publicDirectory = QDir::currentPath() + "/" + m_public_dir;
 	}
-    else if(QDir(SOURCE_DIRECTORY + QString("/" + m_public_dir)).exists())
-    {
-        publicDirectory = QDir(SOURCE_DIRECTORY + QString("/" + m_public_dir)).absolutePath();
-    }
+	else if (QDir(SOURCE_DIRECTORY + QString("/" + m_public_dir)).exists())
+	{
+		publicDirectory = QDir(SOURCE_DIRECTORY + QString("/" + m_public_dir)).absolutePath();
+	}
 	else
 	{
 		Q_ASSERT(false && "No public directory founded");
-        qCritical() << "No public directory founded";
+		qCritical() << "No public directory founded";
 	}
 
-    qDebug() << "Set public directory path:" << publicDirectory;
+	qDebug() << "Set public directory path:" << publicDirectory;
 }
 
 QString WebServer::directory() const
