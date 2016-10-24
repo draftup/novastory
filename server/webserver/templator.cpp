@@ -26,11 +26,7 @@ QByteArray Templator::generate(
 	{
 #endif
 		const QString workingDirectory = WebServer::Instance().directory();
-#ifndef EXPEREMENTAL_WEBCLIENT
-		QFile templateFile(workingDirectory + "/template.html");
-#else
 		QFile templateFile(workingDirectory + "/index.html");
-#endif
 		if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
 			qCritical() << "Template not founded";
@@ -52,9 +48,7 @@ QByteArray Templator::generate(
 	generatedTemplate = generatedTemplate.replace("{keywords}", keywords);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
 	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright <a href=\"/about\">" PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]</a>");
-#ifdef EXPEREMENTAL_WEBCLIENT
 	generatedTemplate = generatedTemplate.replace("{user}", "{}");
-#endif
 
 	// Google Api
 	generatedTemplate = generatedTemplate.replace("{google_client_id}", GOOGLE_WEB_CLIENT_ID);
@@ -112,11 +106,7 @@ QByteArray Templator::generateLogined(
 	{
 #endif
 		const QString workingDirectory = WebServer::Instance().directory();
-#ifndef EXPEREMENTAL_WEBCLIENT
-		QFile templateFile(workingDirectory + "/template-logined.html");
-#else
 		QFile templateFile(workingDirectory + "/index.html");
-#endif
 		if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
 			qCritical() << "Template not founded";
@@ -138,10 +128,6 @@ QByteArray Templator::generateLogined(
 	generatedTemplate = generatedTemplate.replace("{keywords}", keywords);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
 	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright <a href=\"/about\">" PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]</a>");
-#ifndef EXPEREMENTAL_WEBCLIENT
-	user.substitute(generatedTemplate);
-	generatedTemplate = generatedTemplate.replace("{users.stoken}", user.token());
-#else
 	QString search = "<script id=\"server-data\">";
 	int serchIndex = generatedTemplate.indexOf(search);
 	if (serchIndex >= 0)
@@ -152,7 +138,6 @@ QByteArray Templator::generateLogined(
 		doc.setObject(userObject);
 		generatedTemplate = generatedTemplate.insert(serchIndex + search.length(), "USER=" + doc.toJson(QJsonDocument::Compact) + ";");
 	}
-#endif
 #ifdef NOVASTORY_BUILD
 	generatedTemplate = generatedTemplate.replace("{users.namemail}", !user.firstName().isEmpty() ? user.firstName() : user.email());
 #endif
