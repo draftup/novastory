@@ -61,7 +61,7 @@ void Test_WebDataContainer::mainTest()
 {
 	WebDataContainer img(data);
 
-	QFile f("rating_1_on.gif");
+	QFile f(QCoreApplication::applicationDirPath() + "/rating_1_on.gif");
 	QVERIFY(f.open(QIODevice::ReadOnly));
 	qDebug() << img.size();
 	QVERIFY(img == f.readAll());
