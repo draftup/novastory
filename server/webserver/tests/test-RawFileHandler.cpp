@@ -50,7 +50,7 @@ void Test_RawFileHandler::handleTest()
 void Test_RawFileHandler::defaultHandleTest()
 {
 	WebServer::Instance().resetDirectory();
-	QVERIFY(handler->handle(&socket, "GET", "/images/warning.svg"));
+	//QVERIFY(handler->handle(&socket, "GET", "/index.html"));
 }
 
 /********************** DECLARE_TEST LIST ****************************/
