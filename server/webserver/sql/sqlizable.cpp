@@ -539,7 +539,7 @@ QJsonObject Sqlizable::jsonObject() const
 {
 	QJsonObject obj;
 	obj.insert("classType", metaObject()->className());
-	obj.insert("className", objectName());
+	obj.insert("objectName", objectName());
 
 	const QMetaObject* mObject = metaObject();
 	const int propCount = mObject->propertyCount();
