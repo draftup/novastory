@@ -199,6 +199,7 @@ void WebRouter::parseLanguage()
 	if (!prefer_lang.isNull())
 	{
 		WebServer::Instance().addDefaultLanguage(prefer_lang);
+		cookieVariables["locale"] = prefer_lang;
 		qDebug() << "Setting up current language for user: " << prefer_lang;
 	}
 }
