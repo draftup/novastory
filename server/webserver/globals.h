@@ -151,17 +151,33 @@ inline QByteArray htmlHeaderGen(const WebDataContainer& data, const QString& sta
 	QString cacheControl = QString("Cache-Control: max-age=0\n");
 	if (!data.mimeType().isNull() && !data.mimeType().isEmpty())
 	{
-		if (data.mimeType() == "text/css")
-		{
-			cacheControl = QString("Cache-Control: max-age=%1\n").arg(60);
-		}
 		if (data.mimeType() == "text/html")
 		{
-			cacheControl = QString("Cache-Control: max-age=%1\n").arg(2 * 60);
+#ifdef QT_DEBUG
+			cacheControl = QString("Cache-Control: max-age=%1\n").arg(60);
+#else
+			cacheControl = QString("Cache-Control: max-age=%1\n").arg(5 * 60);
+#endif
+		}
+		else if (data.mimeType() == "text/css")
+		{
+#ifdef QT_DEBUG
+			cacheControl = QString("Cache-Control: max-age=%1\n").arg(60);
+#else
+			cacheControl = QString("Cache-Control: max-age=%1\n").arg(2 * 24 * 60 * 60);
+#endif
+		}
+		else if (data.mimeType() == "application/javascript" || data.mimeType() == "text/javascript")
+		{
+#ifdef QT_DEBUG
+			cacheControl = QString("Cache-Control: max-age=%1\n").arg(60);
+#else
+			cacheControl = QString("Cache-Control: max-age=%1\n").arg(2 * 24 * 60 * 60);
+#endif
 		}
 		else if (data.mimeType().contains("image"))
 		{
-			cacheControl = QString("Cache-Control: max-age=%1\n").arg(2 * 24 * 60 * 60);
+			cacheControl = QString("Cache-Control: max-age=%1\n").arg(3 * 24 * 60 * 60);
 		}
 		else if (data.mimeType().contains("audio"))
 		{
