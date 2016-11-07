@@ -1,7 +1,7 @@
 #ifndef WEBSERVER_CONFIG_H
 #define WEBSERVER_CONFIG_H
 
-#define SMTP_SERVER "smtp.gmail.com"
+//#define SMTP_SERVER "smtp.gmail.com"
 #define SMTP_PORT 465
 //#define SMTP_USER "uruchie.org@gmail.com"
 //#define SMTP_PASSWORD "uruchiesrver"
