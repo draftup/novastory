@@ -48,6 +48,13 @@ QByteArray Templator::generate(
 	generatedTemplate = generatedTemplate.replace("{keywords}", keywords);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
 	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright <a href=\"/about\">" PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]</a>");
+	QString pref_lang = WebServer::Instance().defaultLanguage();
+	if (!pref_lang.isEmpty())
+	{
+		QRegExp reg = QRegExp("(\\/static\\/[^'\"]+(?:\\.js|\\.css))");
+		reg.setMinimal(true);
+		generatedTemplate = generatedTemplate.replace(reg, "\\1?lang=" + pref_lang);
+	}
 	generatedTemplate = generatedTemplate.replace("{user}", "{}");
 
 	// Google Api
@@ -128,6 +135,13 @@ QByteArray Templator::generateLogined(
 	generatedTemplate = generatedTemplate.replace("{keywords}", keywords);
 	generatedTemplate = generatedTemplate.replace("{article}", article);
 	generatedTemplate = generatedTemplate.replace("{powered}", "2015 &copy; Copyright <a href=\"/about\">" PROJECT_NAME " Engine " GIT_DESCRIBE " [r" GIT_REVISION "]</a>");
+	QString pref_lang = WebServer::Instance().defaultLanguage();
+	if (!pref_lang.isEmpty())
+	{
+		QRegExp reg = QRegExp("(\\/static\\/[^'\"]+(?:\\.js|\\.css))");
+		reg.setMinimal(true);
+		generatedTemplate = generatedTemplate.replace(reg, "\\1?lang=" + pref_lang);
+	}
 	QString search = "<script id=\"server-data\">";
 	int serchIndex = generatedTemplate.indexOf(search);
 	if (serchIndex >= 0)

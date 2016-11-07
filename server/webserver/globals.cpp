@@ -83,14 +83,14 @@ QString novastory::selectorId(const QString& html, const QString& selector)
 	return html.mid(begin, end - begin);
 }
 
-QString novastory::tr(const QString& key, const QString& dis /*= QString()*/)
+QString novastory::tr(const QString& key, const QString& dis /*= QString()*/, const QString& default_language /* = QString() */)
 {
-	return translate("novastory", key, dis);
+	return translate("novastory", key, dis, default_language);
 }
 
-QString novastory::translate(const QString& context, const QString& key, const QString& dis /*= QString()*/)
+QString novastory::translate(const QString& context, const QString& key, const QString& dis /*= QString()*/, const QString& default_language /* = QString() */)
 {
-	QString lang = WebServer::Instance().defaultLanguage();
+	QString lang = default_language.isNull() ? WebServer::Instance().defaultLanguage() : default_language;
 
 	if (lang.isEmpty())
 	{

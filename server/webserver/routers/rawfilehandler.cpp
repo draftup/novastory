@@ -22,6 +22,16 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 	QFile existFile(filePath);
 	if (existFile.exists())
 	{
+		// сервер может передать требуемый язык
+		QString needLang;
+		if (!get["lang"].isEmpty()) // могут быть языки
+		{
+			if (WebServer::Instance().languageList().contains(get["lang"]))
+			{
+				needLang = get["lang"];
+			}
+		}
+
 		// First, looking in cache
 		try
 		{
@@ -40,7 +50,7 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 			}
 
 			QString postfix;
-			QString pref_lang = WebServer::Instance().defaultLanguage();
+			QString pref_lang = needLang.isNull() ? WebServer::Instance().defaultLanguage() : needLang;
 			if (!pref_lang.isEmpty() && (filePath.endsWith(".js") || filePath.endsWith(".css") || filePath.endsWith(".html")))
 			{
 				postfix = "-" + pref_lang;
@@ -79,9 +89,9 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 				qDebug() << "Raw file type is: " << mime.name();
 
 				QString postfix;
-				QString pref_lang = WebServer::Instance().defaultLanguage();
 				if (filePath.endsWith(".js") || filePath.endsWith(".css") || filePath.endsWith(".html"))
 				{
+					QString pref_lang = needLang.isNull() ? WebServer::Instance().defaultLanguage() : needLang;
 					if (!pref_lang.isEmpty())
 					{
 						postfix = "-" + pref_lang;
@@ -92,7 +102,7 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 						qDebug() << "Clean translations in file" << filePath;
 					}
 					QString temp = data;
-					Templator::translate(temp);
+					Templator::translate(temp, pref_lang);
 					data = temp.toUtf8();
 				}
 

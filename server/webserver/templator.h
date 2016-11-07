@@ -41,13 +41,13 @@ public:
 		const QString& keywords = QString()
 	);
 
-	static void translate(QString& html)
+	static void translate(QString& html, const QString& default_language = QString())
 	{
 		QRegExp rx("\\{\\{(.+)\\}\\}");
 		rx.setMinimal(true);
 		while (rx.indexIn(html) != -1)
 		{
-			html.replace(rx.pos(), rx.matchedLength(), novastory::tr(rx.cap(1)));
+			html.replace(rx.pos(), rx.matchedLength(), novastory::tr(rx.cap(1), QString(), default_language));
 		}
 	}
 

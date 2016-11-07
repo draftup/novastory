@@ -101,8 +101,8 @@ inline QString RFC822Date(const QDateTime& time)
 	return date;
 }
 
-QString tr(const QString& key, const QString& dis = QString());
-QString translate(const QString& context, const QString& key, const QString& dis = QString());
+QString tr(const QString& key, const QString& dis = QString(), const QString& default_language = QString());
+QString translate(const QString& context, const QString& key, const QString& dis = QString(), const QString& default_language = QString());
 
 /**
  * @fn	inline QByteArray htmlHeaderGen(const QString& mimetype, int size)
