@@ -121,11 +121,18 @@ QString translate(const QString& context, const QString& key, const QString& dis
 
 inline QByteArray htmlHeaderGen(const QString& mimetype = QString(), int size = -1, const QString& status = "200 OK", const QString& additional = QString())
 {
+	// Добавляем отсуствие кэширования по умолчанию
+	QString realAdditional = additional;
+	if (!additional.contains("Cache-Control"))
+	{
+		realAdditional += "Cache-Control: no-store\n";
+	}
+
 	QByteArray responce = (
 							  "HTTP/1.1 " + status + "\n"
 							  "Server: novastory\n"
 							  "Date: " + RFC822Date(QDateTime::currentDateTime()) + "\n"
-							  + additional +
+							  + realAdditional +
 							  ((mimetype.isNull()) ? QString() : "Content-Type: " + mimetype + "\n") +
 							  ((size >= 0) ? "Content-Length: " + QString::number(size) + "\n\r\n" : "\n\r\n")
 						  ).toLatin1();
