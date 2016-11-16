@@ -165,13 +165,16 @@ void WebRouter::parseLanguage()
 
 	QMap<double, QString> laguages;
 
-	QRegExp rx("([a-z]{1,8})(?:-[a-z]{1,8})?(?:;q=([0-9.]+))?");
+	QRegExp rx("([a-z]{1,8})(?:-[a-zA-Z]{1,8})?(?:;q=([0-9.]+))?");
 	rx.setCaseSensitivity(Qt::CaseInsensitive);
 	int pos = 0;
+	double current_priority = 1.0;
 	while ((pos = rx.indexIn(laguages_str, pos)) != -1)
 	{
 		pos += rx.matchedLength();
-		laguages[(rx.cap(2).isEmpty() ? 1.0 : rx.cap(2).toDouble())] = rx.cap(1).toLower();
+		laguages[(rx.cap(2).isEmpty() ? current_priority : rx.cap(2).toDouble())] = rx.cap(1).toLower();
+		if(rx.cap(2).isEmpty())
+			current_priority -= .0001;
 	}
 	qDebug() << "User client languages are:" << laguages.size();
 	QSet<QString> available_langs = WebServer::Instance().languageList().toSet();
