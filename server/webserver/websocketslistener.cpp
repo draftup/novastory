@@ -72,7 +72,7 @@ void WebSocketsListener::startServer()
 	if (QDir(DATA_DIRECTORY + QString("/certs")).exists())
 	{
 		certPath = QDir(DATA_DIRECTORY + QString("/certs")).absolutePath() + "/draftup.org.crt";
-		keyPath = QDir(DATA_DIRECTORY + QString("/certs")).absolutePath() + "/draftup.org.ket";
+		keyPath = QDir(DATA_DIRECTORY + QString("/certs")).absolutePath() + "/draftup.org.key";
 	}
 	else if (QDir(SOURCE_DIRECTORY + QString("/certs")).exists())
 	{
