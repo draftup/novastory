@@ -14,9 +14,14 @@
 #ifdef QT_DEBUG
 #define WORKERS_NUMBER 5
 #else
-#define WORKERS_NUMBER 10
+#define WORKERS_NUMBER 50
 #endif
 #define WORKERS_MAX_TIME 180
+#ifdef QT_DEBUG
+#define WORKER_TIME_LIMIT 60
+#else
+#define WORKER_TIME_LIMIT 30
+#endif
 
 #define REPORTS_MAIL "degitx@gmail.com"
 

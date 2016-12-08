@@ -2,6 +2,7 @@
 #include "webrouter.h"
 #include <QTcpSocket>
 #include "globals.h"
+#include "webserver_config.h"
 #include <QThreadPool>
 #include <QTimer>
 #include "sql/sqldatabase.h"
@@ -41,7 +42,7 @@ void WebProcess::run()
 	VERIFY(connect(timeout.data(), SIGNAL(timeout()), this, SLOT(closedByInterval()), Qt::DirectConnection));
 
 	// Start event loop for this process worker (until disconnect of socket)
-	timeout->start(60000); // 60 second session limit
+	timeout->start(WORKER_TIME_LIMIT * 1000); // 60 second session limit
 	eventLoop->exec();
 
 	// Closing all db related to this thread
@@ -62,7 +63,10 @@ void WebProcess::showHtmlPage()
 		socket->waitForBytesWritten();
 	}
 
-	socket->close();
+	// Закрываем соединением, если запрос не поддерживает Keep-Alive
+	if (!urlRouter.header()["Connection"].toLower().contains("keep-alive")) {
+		socket->close();
+	}
 }
 
 void WebProcess::onSocketDisconnected()

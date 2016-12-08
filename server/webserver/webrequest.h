@@ -14,6 +14,9 @@ public:
 	WebRequest(QTcpSocket* bindedSocket);
 	virtual void parse();
 	virtual bool isParsed() const;
+	const QHash<QString, QString>& header() const {
+		return parsedValues;
+	};
 protected:
 	QTcpSocket* bindedSocket;
 	QHash<QString, QString> parsedValues;
