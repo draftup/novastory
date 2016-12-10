@@ -23,7 +23,7 @@ public:
 	{
 		m_handlers.append(QSharedPointer<DataHandler>(handler));
 	}
-	void broadcastTextMessage(const QString& message, const QString& filter = QString(), const QVariant& filterValue = QVariant());
+	bool broadcastTextMessage(const QString& message, const QString& filter = QString(), const QVariant& filterValue = QVariant());
 private slots:
 	void onNewWebSocketConnection();
 	void processWebSocketTextMessage(QString message);

@@ -32,9 +32,10 @@ void WebSocketsListener::run()
 	exec();
 }
 
-void WebSocketsListener::broadcastTextMessage(const QString& message, const QString& filter /* = QString() */, const QVariant& filterValue /* = QString() */)
+bool WebSocketsListener::broadcastTextMessage(const QString& message, const QString& filter /* = QString() */, const QVariant& filterValue /* = QString() */)
 {
 	qDebug() << "Broadcasting WebSockets message" << message.left(1024) + (message.size() > 1024 ? "..." : "") << "(size: " + QString::number(message.size()) + ")";
+	bool sended_once = false;
 	for (QWebSocket* socket : m_pWebSocketClients)
 	{
 		// отправка только определенным участникам в фильтре
@@ -53,7 +54,10 @@ void WebSocketsListener::broadcastTextMessage(const QString& message, const QStr
 		}
 
 		socket->sendTextMessage(message);
+		sended_once = true;
 	}
+
+	return sended_once;
 }
 
 void WebSocketsListener::startServer()

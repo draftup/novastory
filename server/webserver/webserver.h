@@ -83,7 +83,7 @@ public:
 
 	void setMaintenance(bool is_maintenance);
 
-	void broadcastWSocketsTextMessage(const QString& message, const QString& filter = QString(), const QVariant& filterValue = QVariant());
+	bool broadcastWSocketsTextMessage(const QString& message, const QString& filter = QString(), const QVariant& filterValue = QVariant());
 protected:
 	WebServer(QObject* parent = nullptr, quint16 initializationPort = 8008, const QString& pid_file = "default_app.pid", const QString& db_file = "default_db.h");
 	virtual ~WebServer();
