@@ -11,10 +11,10 @@
 namespace novastory
 {
 
-WebSocketsListener::WebSocketsListener() : m_pWebSocketServer(nullptr)
+WebSocketsListener::WebSocketsListener(quint16 port, bool secure) : m_pWebSocketServer(nullptr)
 {
 	setObjectName("Web Sockets Thread");
-	startServer();
+	startServer(port, secure);
 }
 
 WebSocketsListener::~WebSocketsListener()
@@ -60,53 +60,56 @@ bool WebSocketsListener::broadcastTextMessage(const QString& message, const QStr
 	return sended_once;
 }
 
-void WebSocketsListener::startServer()
+void WebSocketsListener::startServer(quint16 port, bool secure)
 {
 #ifdef QT_DEBUG
 	QWebSocketServer::SslMode sslMode = QWebSocketServer::NonSecureMode;
 #else
-	QWebSocketServer::SslMode sslMode = QWebSocketServer::SecureMode;
+	QWebSocketServer::SslMode sslMode = secure ? QWebSocketServer::SecureMode : QWebSocketServer::NonSecureMode;
 #endif
 	m_pWebSocketServer = new QWebSocketServer(QStringLiteral("Draftup Server"), sslMode);
 
 #ifndef QT_DEBUG
-	// Detect cert
-	QString certPath;
-	QString keyPath;
-	if (QDir(DATA_DIRECTORY + QString("/certs")).exists())
+	if (secure)
 	{
-		certPath = QDir(DATA_DIRECTORY + QString("/certs")).absolutePath() + "/draftup.org.crt";
-		keyPath = QDir(DATA_DIRECTORY + QString("/certs")).absolutePath() + "/draftup.org.key";
-	}
-	else if (QDir(SOURCE_DIRECTORY + QString("/certs")).exists())
-	{
-		certPath = QDir(SOURCE_DIRECTORY + QString("/certs")).absolutePath() + "/draftup.org.crt";
-		keyPath = QDir(SOURCE_DIRECTORY + QString("/certs")).absolutePath() + "/draftup.org.key";
-	}
+		// Detect cert
+		QString certPath;
+		QString keyPath;
+		if (QDir(DATA_DIRECTORY + QString("/certs")).exists())
+		{
+			certPath = QDir(DATA_DIRECTORY + QString("/certs")).absolutePath() + "/draftup.org.crt";
+			keyPath = QDir(DATA_DIRECTORY + QString("/certs")).absolutePath() + "/draftup.org.key";
+		}
+		else if (QDir(SOURCE_DIRECTORY + QString("/certs")).exists())
+		{
+			certPath = QDir(SOURCE_DIRECTORY + QString("/certs")).absolutePath() + "/draftup.org.crt";
+			keyPath = QDir(SOURCE_DIRECTORY + QString("/certs")).absolutePath() + "/draftup.org.key";
+		}
 
-	qDebug() << "Certificate file using:" << certPath;
-	qDebug() << "Certificate key file using:" << keyPath;
+		qDebug() << "Certificate file using:" << certPath;
+		qDebug() << "Certificate key file using:" << keyPath;
 
-	// SSL Settings
-	QSslConfiguration sslConfiguration;
-	QFile certFile(certPath);
-	QFile keyFile(keyPath);
-	VERIFY(certFile.open(QIODevice::ReadOnly));
-	VERIFY(keyFile.open(QIODevice::ReadOnly));
-	QSslCertificate certificate(&certFile, QSsl::Pem);
-	QSslKey sslKey(&keyFile, QSsl::Rsa, QSsl::Pem);
-	certFile.close();
-	keyFile.close();
-	sslConfiguration.setPeerVerifyMode(QSslSocket::VerifyNone);
-	sslConfiguration.setLocalCertificate(certificate);
-	sslConfiguration.setPrivateKey(sslKey);
-	sslConfiguration.setProtocol(QSsl::TlsV1SslV3);
-	m_pWebSocketServer->setSslConfiguration(sslConfiguration);
+		// SSL Settings
+		QSslConfiguration sslConfiguration;
+		QFile certFile(certPath);
+		QFile keyFile(keyPath);
+		VERIFY(certFile.open(QIODevice::ReadOnly));
+		VERIFY(keyFile.open(QIODevice::ReadOnly));
+		QSslCertificate certificate(&certFile, QSsl::Pem);
+		QSslKey sslKey(&keyFile, QSsl::Rsa, QSsl::Pem);
+		certFile.close();
+		keyFile.close();
+		sslConfiguration.setPeerVerifyMode(QSslSocket::VerifyNone);
+		sslConfiguration.setLocalCertificate(certificate);
+		sslConfiguration.setPrivateKey(sslKey);
+		sslConfiguration.setProtocol(QSsl::TlsV1SslV3);
+		m_pWebSocketServer->setSslConfiguration(sslConfiguration);
+	}
 #endif
 
-	if (m_pWebSocketServer->listen(QHostAddress::Any, 8081))
+	if (m_pWebSocketServer->listen(QHostAddress::Any, port))
 	{
-		qDebug() << "WebSocket server listening on port" << 8081;
+		qDebug() << "WebSocket" << (secure ? "secure" : "unsecure") << "server listening on port" << port;
 		connect(m_pWebSocketServer, &QWebSocketServer::newConnection,
 				this, &WebSocketsListener::onNewWebSocketConnection);
 	}

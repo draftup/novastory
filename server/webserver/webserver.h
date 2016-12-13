@@ -99,6 +99,9 @@ protected:
 
 	QHash<QString, QSharedPointer<QTranslator> > translators;
 	WebSocketsListener* webSocketListener;
+#ifndef QT_DEBUG
+	WebSocketsListener* webSecureSocketListener;
+#endif // !QT_DEBUG
 private:
 	bool m_maintenance;
 	QString publicDirectory;

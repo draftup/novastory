@@ -16,7 +16,7 @@ class WebSocketsListener : public QThread
 {
 	Q_OBJECT
 public:
-	WebSocketsListener();
+	WebSocketsListener(quint16 port = 8081, bool secure = false);
 	virtual ~WebSocketsListener();
 	void run() override;
 	void appendHandler(DataHandler* handler)
@@ -30,7 +30,7 @@ private slots:
 	void processWebSocketBinaryMessage(QByteArray message);
 	void webSocketDisconnected();
 private:
-	void startServer();
+	void startServer(quint16 port = 8081, bool secure = false);
 	QWebSocketServer* m_pWebSocketServer;
 	QList<QWebSocket*> m_pWebSocketClients;
 	QList< QSharedPointer<DataHandler> > m_handlers;

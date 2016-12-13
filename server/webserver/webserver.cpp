@@ -61,6 +61,9 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, cons
 	: QTcpServer(parent), webCache(CACHE_SIZE), m_maintenance(false)
 	, m_pid_name(pid_file), m_db_file(db_file),
 	  m_public_dir("public"), webSocketListener(nullptr)
+#ifndef QT_DEBUG
+	, webSecureSocketListener(nullptr)
+#endif
 {
 	setObjectName("WebServer");
 
@@ -130,8 +133,10 @@ WebServer::WebServer(QObject* parent, quint16 initializationPort /*=8008*/, cons
 	qDebug() << "Maximum workers number: " << WORKERS_NUMBER;
 	QThreadPool::globalInstance()->setExpiryTimeout(WORKERS_MAX_TIME * 1000);
 
-	webSocketListener = new WebSocketsListener();
-	//webSocketListener->start();
+#ifndef QT_DEBUG
+	webSecureSocketListener = new WebSocketsListener(8081, true);
+#endif // !QT_DEBUG
+	webSocketListener = new WebSocketsListener(8082, false);
 }
 
 
@@ -145,6 +150,12 @@ WebServer::~WebServer()
 	{
 		webSocketListener->deleteLater();
 	}
+#ifndef QT_DEBUG
+	if (webSecureSocketListener != nullptr)
+	{
+		webSecureSocketListener->deleteLater();
+	}
+#endif // !QT_DEBUG
 }
 
 void WebServer::incomingConnection(qintptr socketDescriptor)
@@ -305,6 +316,12 @@ bool WebServer::broadcastWSocketsTextMessage(const QString& message, const QStri
 	{
 		return webSocketListener->broadcastTextMessage(message, filter, filterValue);
 	}
+#ifndef QT_DEBUG
+	if (webSecureSocketListener != nullptr)
+	{
+		return webSecureSocketListener->broadcastTextMessage(message, filter, filterValue);
+	}
+#endif
 
 	return false;
 }
