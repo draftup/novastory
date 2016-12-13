@@ -312,18 +312,19 @@ void WebServer::setMaintenance(bool is_maintenance)
 bool WebServer::broadcastWSocketsTextMessage(const QString& message, const QString& filter /* = QString() */, const QVariant& filterValue /* = QVariant() */)
 {
 	QMutexLocker locker(&websokets_mutex);
+	bool message1 = false, message2 = false;
 	if (webSocketListener != nullptr)
 	{
-		return webSocketListener->broadcastTextMessage(message, filter, filterValue);
+		message1 = webSocketListener->broadcastTextMessage(message, filter, filterValue);
 	}
 #ifndef QT_DEBUG
 	if (webSecureSocketListener != nullptr)
 	{
-		return webSecureSocketListener->broadcastTextMessage(message, filter, filterValue);
+		message2 = webSecureSocketListener->broadcastTextMessage(message, filter, filterValue);
 	}
 #endif
 
-	return false;
+	return message1 || message2;
 }
 
 void WebServer::maintenanceRespond(int socket_descriptor)
