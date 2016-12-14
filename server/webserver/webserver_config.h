@@ -22,6 +22,7 @@
 #else
 #define WORKER_TIME_LIMIT 30
 #endif
+#define WORKER_DISCONNECT_TIMEOUT 5000
 
 #define REPORTS_MAIL "degitx@gmail.com"
 

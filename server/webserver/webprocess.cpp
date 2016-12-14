@@ -49,6 +49,16 @@ void WebProcess::run()
 	SqlDatabase::close(QThread::currentThreadId());
 }
 
+void WebProcess::closeSocket()
+{
+	while (socket->bytesToWrite() > 0 && socket->state() != QAbstractSocket::UnconnectedState)
+	{
+		if (!socket->waitForBytesWritten(WORKER_DISCONNECT_TIMEOUT))
+			break;
+	}
+
+	socket->close();
+}
 
 void WebProcess::showHtmlPage()
 {
@@ -58,14 +68,9 @@ void WebProcess::showHtmlPage()
 	qDebug() << "path = " << urlRouter.path();
 	urlRouter.sendHtml();
 
-	while (socket->bytesToWrite() > 0 && socket->state() != QAbstractSocket::UnconnectedState)
-	{
-		socket->waitForBytesWritten();
-	}
-
 	// Закрываем соединением, если запрос не поддерживает Keep-Alive
 	if (!urlRouter.header()["Connection"].toLower().contains("keep-alive")) {
-		socket->close();
+		closeSocket();
 	}
 }
 
@@ -87,7 +92,7 @@ void WebProcess::onBytesWriten(qint64 bytes)
 void WebProcess::closedByInterval()
 {
 	qDebug() << "Closed socket by interval";
-	socket->close();
+	closeSocket();
 }
 
 }

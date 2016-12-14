@@ -26,6 +26,7 @@ private slots:
 	void closedByInterval();
 	void onSocketDisconnected();
 private:
+	void closeSocket();
 	QScopedPointer<QTcpSocket> socket;
 	QScopedPointer<QEventLoop> eventLoop;
 	QScopedPointer<QTimer> timeout;
