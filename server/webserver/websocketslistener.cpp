@@ -128,6 +128,10 @@ void WebSocketsListener::onNewWebSocketConnection()
 	connect(pSocket, &QWebSocket::binaryMessageReceived, this, &WebSocketsListener::processWebSocketBinaryMessage);
 	connect(pSocket, &QWebSocket::disconnected, this, &WebSocketsListener::webSocketDisconnected);
 
+	// Ошибки
+	connect(pSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onError(QAbstractSocket::SocketError)));
+	connect(pSocket, &QWebSocket::sslErrors, this, &WebSocketsListener::onSslError);
+
 	m_pWebSocketClients << pSocket;
 }
 
@@ -164,6 +168,19 @@ void WebSocketsListener::webSocketDisconnected()
 		pClient->deleteLater();
 	}
 	qDebug() << "Web Socket disconnected:" << pClient << "(now:" << m_pWebSocketClients.size() << ")";
+}
+
+void WebSocketsListener::onError(QAbstractSocket::SocketError error)
+{
+	qWarning() << "WebSocket error:" << error;
+}
+
+void WebSocketsListener::onSslError(const QList<QSslError> &errors)
+{
+	for (auto error : errors)
+	{
+		qWarning() << "WebSocket SSL error:" << error.errorString();
+	}
 }
 
 }

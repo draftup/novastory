@@ -6,8 +6,10 @@
 #include <QSharedPointer>
 #include <QVariant>
 #include "datahandler.h"
-class QWebSocketServer;
+#include <QAbstractSocket>
+#include <QSslError>
 class QWebSocket;
+class QWebSocketServer;
 
 namespace novastory
 {
@@ -29,6 +31,8 @@ private slots:
 	void processWebSocketTextMessage(QString message);
 	void processWebSocketBinaryMessage(QByteArray message);
 	void webSocketDisconnected();
+	void onError(QAbstractSocket::SocketError error);
+	void onSslError(const QList<QSslError> &errors);
 private:
 	void startServer(quint16 port = 8081, bool secure = false);
 	QWebSocketServer* m_pWebSocketServer;
