@@ -149,6 +149,17 @@ QString WebRouter::coockie(const QString& name)
 
 void WebRouter::parseLanguage()
 {
+	if (
+		cookieVariables.contains("locale")
+		&& !cookieVariables["locale"].isEmpty()
+		&& WebServer::Instance().languageList().contains(cookieVariables["locale"])
+		)
+	{
+		qDebug() << "Setting up current language for user by cookie: " << cookieVariables["locale"];
+		WebServer::Instance().addDefaultLanguage(cookieVariables["locale"]);
+		return;
+	}
+
 	if (!parsedValues.contains("Accept-Language"))
 	{
 		qDebug() << "No Accept-Language in this client. Ignore language setting.";
