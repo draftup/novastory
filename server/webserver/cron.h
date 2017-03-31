@@ -36,6 +36,8 @@ public:
 	static int startTask(const QString& name, void(*func)(int, const QString&, bool last_call), const QString& args = QString(), const QDateTime& time = QDateTime());
 	static int startTask(const QString& name, void(*func)(int, const QString&, bool last_call), const QString& args = QString(), int interval = 1000, bool singlesht = false, const QDateTime& endtime = QDateTime());
 	static void stopTask(int id);
+	static void stopTask(const QString& name);
+	static void stopTask(const QString& name, const QString& args);
 	static void setTaskTime(int id, const QDateTime& time = QDateTime());
 
 	static void addFunc(const QString& name, void(*func)(int, const QString&, bool last_call));

@@ -140,6 +140,31 @@ void Cron::stopTask(int id)
 	SqlDatabase::close();
 }
 
+void Cron::stopTask(const QString& name)
+{
+	SqlQuery q;
+	q.prepare("SELECT `taskid` FROM cron WHERE task = ?");
+	q.bindValue(0, name);
+	q.exec();
+	if (q.next())
+	{
+		stopTask(q.value("taskid").toInt());
+	}
+}
+
+void Cron::stopTask(const QString& name, const QString& args)
+{
+	SqlQuery q;
+	q.prepare("SELECT `taskid` FROM cron WHERE task = ? AND args = ?");
+	q.bindValue(0, name);
+	q.bindValue(1, args);
+	q.exec();
+	if (q.next())
+	{
+		stopTask(q.value("taskid").toInt());
+	}
+}
+
 void Cron::resumeTasks()
 {
 	QMutexLocker locker(&Instance().m_func_mutex);
