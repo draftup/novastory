@@ -597,9 +597,18 @@ void Sqlizable::fromJson(const QJsonObject& json)
 {
 	for (int i = 0; i < metaObject()->propertyCount(); ++i)
 	{
-		if (metaObject()->property(i).isStored(this))
+		QMetaProperty prop = metaObject()->property(i);
+		if (prop.isStored(this))
 		{
-			metaObject()->property(i).write(this, json.value(metaObject()->property(i).name()).toVariant());
+			QJsonValue value = json.value(prop.name());
+			switch (prop.userType())
+			{
+				case QMetaType::QDateTime:
+					prop.write(this, QDateTime::fromMSecsSinceEpoch(value.toDouble()));
+					break;
+				default:
+					prop.write(this, value.toVariant());
+			}
 		}
 	}
 }
