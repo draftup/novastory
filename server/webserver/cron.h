@@ -51,8 +51,9 @@ private:
 	QMutex m_taks_mutex;
 	QMutex m_func_mutex;
 private slots:
-	void addTask(void* timer);
-	void changeTime(void* timer, int interval);
+	void startTaskTimer(void* timer);
+	void stopTaskTimer(void* timer, int id = -1);
+	void changeTaskTimer(void* timer, int interval);
 };
 
 }

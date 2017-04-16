@@ -15,6 +15,8 @@ private slots:
 	void cleanupTestCase();
 
 	void start();
+	void stop();
+	void change();
 };
 
 void Test_Cron::initTestCase()
@@ -53,6 +55,27 @@ void Test_Cron::start()
 	QCOMPARE(tsk2.size(), 0);
 }
 
+void Test_Cron::stop()
+{
+	int id = Cron::startTask("testtask", "200", 200, true);
+	Cron::stopTask(id);
+	QTest::qWait(250);
+	SqlQuery tsk2("SELECT * FROM cron WHERE taskid = " + QString::number(id));
+	QCOMPARE(tsk2.size(), 0);
+}
+
+
+void Test_Cron::change()
+{
+	int id = Cron::startTask("testtask", "200", 200, true);
+	Cron::setTaskTime(id, QDateTime::fromMSecsSinceEpoch(QDateTime::currentDateTime().toMSecsSinceEpoch() + 500));
+	QTest::qWait(250);
+	SqlQuery tsk2("SELECT * FROM cron WHERE taskid = " + QString::number(id));
+	QCOMPARE(tsk2.size(), 1);
+	QTest::qWait(300);
+	SqlQuery tsk3("SELECT * FROM cron WHERE taskid = " + QString::number(id));
+	QCOMPARE(tsk3.size(), 0);
+}
 
 /********************** DECLARE_TEST LIST ****************************/
 QTEST_MAIN(Test_Cron)

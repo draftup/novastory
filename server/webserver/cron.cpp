@@ -62,13 +62,7 @@ void Cron::newTask(void(*func)(int, const QString&, bool last_call), int id, con
 		}
 	}, id, args)));
 	Instance().m_tasks.insert(id, QSharedPointer<QTimer>(timer));
-	QMetaObject::invokeMethod(&Instance(), "addTask", Qt::QueuedConnection, Q_ARG(void*, (void*)timer));
-}
-
-void Cron::addTask(void* timer)
-{
-	((QTimer*)timer)->start();
-	qDebug() << "New cron task started";
+	QMetaObject::invokeMethod(&Instance(), "startTaskTimer", Qt::QueuedConnection, Q_ARG(void*, (void*)timer));
 }
 
 int Cron::startTask(const QString& name, void(*func)(int, const QString&, bool last_call), const QString& args /* = QString()*/, int interval /*= 1000*/, bool singlesht /*= false*/, const QDateTime& endtime /* = QDateTime()*/)
@@ -135,7 +129,7 @@ int Cron::startTask(const QString& name, const QString& args /*= QString()*/, co
 void Cron::stopTask(int id)
 {
 	QMutexLocker locker(&Instance().m_taks_mutex);
-	Instance().m_tasks.remove(id);
+	QMetaObject::invokeMethod(&Instance(), "stopTaskTimer", Qt::QueuedConnection, Q_ARG(void*, (void*)Instance().m_tasks[id].data()), Q_ARG(int, id));
 	SqlQuery("DELETE FROM cron WHERE taskid = " + QString::number(id));
 	SqlDatabase::close();
 }
@@ -200,7 +194,7 @@ void Cron::setTaskTime(int id, const QDateTime& time /*= QDateTime()*/)
 	if (Instance().m_tasks.contains(id) && Instance().m_tasks[id]->isSingleShot())
 	{
 		int interval = time.toMSecsSinceEpoch() - QDateTime::currentDateTime().toMSecsSinceEpoch();
-		QMetaObject::invokeMethod(&Instance(), "changeTime", Qt::QueuedConnection, Q_ARG(void*, (void*)Instance().m_tasks[id].data()), Q_ARG(int, interval));
+		QMetaObject::invokeMethod(&Instance(), "changeTaskTimer", Qt::QueuedConnection, Q_ARG(void*, (void*)Instance().m_tasks[id].data()), Q_ARG(int, interval));
 		SqlQuery updateTask;
 		updateTask.prepare("UPDATE `cron` SET `interval` = :interval, `starttime` = :starttime WHERE `taskid` = :id");
 		updateTask.bindValue(":id", id);
@@ -210,10 +204,27 @@ void Cron::setTaskTime(int id, const QDateTime& time /*= QDateTime()*/)
 	}
 }
 
-void Cron::changeTime(void* timer, int interval)
+void Cron::startTaskTimer(void* timer)
+{
+	((QTimer*)timer)->start();
+	qDebug() << "New cron task started";
+}
+
+void Cron::stopTaskTimer(void* timer, int id /* = -1 */)
+{
+	((QTimer*)timer)->stop();
+	if (id > 0)
+	{
+		QMutexLocker locker(&Instance().m_taks_mutex);
+		Instance().m_tasks.remove(id);
+	}
+	qDebug() << "Stop task timer";
+}
+
+void Cron::changeTaskTimer(void* timer, int interval)
 {
 	((QTimer*)timer)->setInterval(interval);
-	qDebug() << "Task time changed";
+	qDebug() << "Task timer changed";
 }
 
 }
