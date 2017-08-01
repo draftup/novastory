@@ -5,6 +5,7 @@
 #include "sqlquery.h"
 #include <QJsonObject>
 #include <QVariant>
+#include <QHash>
 
 namespace novastory
 {
@@ -24,6 +25,7 @@ public:
 	bool removeSQL(const QString& basis);
 	bool syncSQL(const QList<QString>& basis, const QString& join_query = QString(), const QString& select_query = QString());
 	bool syncSQL(const QString& basis, const QString& join_query = QString(), const QString& select_query = QString());
+	bool syncSQL(const QHash<QString, QVariant>& basis, const QString& join_query = QString(), const QString& select_query = QString());
 
 	void substitute(QString& data, QString prefix = QString()) const;
 

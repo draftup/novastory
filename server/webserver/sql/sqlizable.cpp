@@ -203,38 +203,6 @@ bool Sqlizable::syncSQL(const QList<QString>& basis, const QString& join_query /
 
 	// Founding keys
 	QList<QVariant> internalValues;
-	/*
-	if(property("primary_key").isValid() && property(property("primary_key").toString().toUtf8()).isValid())
-	{
-		sql += "`" + property("primary_key").toString() + "` = ?";
-		internalValues.append(property(property("primary_key").toString().toUtf8()).toString());
-	}
-	else
-	{
-		const QMetaObject* mObject = metaObject();
-		const int propCount = mObject->propertyCount();
-		for (int i = 0; i < propCount; ++i)
-		{
-			QMetaProperty prop = mObject->property(i);
-			const QString& propName = prop.name();
-			QVariant propValue = prop.read(this);
-
-			if(!propValue.isValid())
-			{
-				continue;
-			}
-
-			// Skip objectName
-			if (propName == "objectName")
-			{
-				continue;
-			}
-
-			sql += (internalValues.size() == 0) ? propName + " = ?" : " AND " + propName + " = ?";
-			internalValues.append(propValue);
-		}
-	}
-	*/
 	for (QString questVar : basis)
 	{
 		QVariant propValue = property(questVar.toUtf8());
@@ -257,6 +225,44 @@ bool Sqlizable::syncSQL(const QList<QString>& basis, const QString& join_query /
 
 	return syncProcess(query);
 }
+
+bool Sqlizable::syncSQL(const QHash<QString, QVariant>& basis, const QString& join_query /*= QString()*/, const QString& select_query /*= QString()*/)
+{
+	QString objName = objectName();
+	if (objName.isEmpty())
+	{
+		return false; // No object name, we doesn't know name of table
+	}
+
+	SqlQuery query;
+
+	QString sql = QString("SELECT ") + (select_query.isNull() ? "*" : select_query) + " FROM `" + objName + "` " + join_query + " WHERE ";
+
+	// Founding keys
+	bool first = true;
+	for (const QString& questVar : basis.keys())
+	{
+		QVariant propValue = property(questVar.toUtf8());
+		sql += (first) ? objName + "." + questVar + " = :" + questVar : " AND " + objName + "." + questVar + " = :" + questVar;
+		first = false;
+	}
+
+	VERIFY(query.prepare(sql));
+
+	for (auto it = basis.constBegin(); it != basis.constEnd(); it++)
+	{
+		query.bindValue(":" + it.key(), it.value());
+	}
+
+	if (!query.exec())
+	{
+		qWarning() << "No sync record from" << objName << "founded";
+		return false;
+	}
+
+	return syncProcess(query);
+}
+
 
 bool Sqlizable::syncSQL(const QString& basis, const QString& join_query /* = QString()*/, const QString& select_query /* = QString() */)
 {
