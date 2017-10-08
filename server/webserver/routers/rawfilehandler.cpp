@@ -9,15 +9,38 @@
 #include <QMimeType>
 #include <QFileInfo>
 #include "templator.h"
+#include <QDir>
 
 namespace novastory
 {
 
 bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QString& path, const QHash<QString, QString>& post /* = QHash<QString, QString>() */, const QHash<QString, QString>& get /* = "" */,
 							const QHash<QString, QString>& header /*= QHash<QString, QString>()*/, const QHash<QString, QString>& cookies /*= QHash<QString, QString>()*/)
-{
+{	
 	const QString workingDirectory = WebServer::Instance().directory();
-	QString filePath = workingDirectory + path;
+	QString pathReal = path;
+	if (path == "/vsteams.js")
+	{
+		QDir dir(workingDirectory + "/static/js");
+		auto files = dir.entryList(QStringList{"main.*.js"});
+		if (files.size() > 0)
+		{
+			QString mainJS = files.first();
+			pathReal = "/static/js/" + mainJS;
+		}
+	}
+	if (path == "/vsteams.css")
+	{
+		QDir dir(workingDirectory + "/static/css");
+		auto files = dir.entryList(QStringList{ "main.*.css" });
+		if (files.size() > 0)
+		{
+			QString mainCSS = files.first();
+			pathReal = "/static/css/" + mainCSS;
+		}
+	}
+
+	QString filePath = workingDirectory + pathReal;
 
 	QFile existFile(filePath);
 	if (existFile.exists())
@@ -89,7 +112,7 @@ bool RawFileHandler::handle(QTcpSocket* socket, const QString& type, const QStri
 				qDebug() << "Raw file type is: " << mime.name();
 
 				QString postfix;
-				if (filePath.endsWith(".js") || filePath.endsWith(".css") || filePath.endsWith(".html"))
+				if ((filePath.endsWith(".js") || filePath.endsWith(".css") || filePath.endsWith(".html")) && !filePath.contains("/doc"))
 				{
 					QString pref_lang = needLang.isNull() ? WebServer::Instance().defaultLanguage() : needLang;
 					if (!pref_lang.isEmpty())
