@@ -12,7 +12,7 @@ include(cmake/testing.cmake)
 include_directories(${CMAKE_SOURCE_DIR})
 add_definitions(-DPROJECT_NAME="${PROJECT_NAME}")
 
-set(GIT_REVISION "")
+set(GIT_REVISION 1)
 set(GIT_DESCRIBE "")
 
 #Directories
@@ -38,6 +38,9 @@ endif (WIN32)
 
 configure_file(${CMAKE_SOURCE_DIR}/version.h.in ${CMAKE_SOURCE_DIR}/version.h)
 
+set(FUNCTIONAL_MODULE
+	WebServer
+)
 
 # Options
 option (WITH_TESTS "Enable testing" OFF)

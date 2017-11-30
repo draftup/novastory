@@ -7,6 +7,7 @@
 #include "logic/user.h"
 #endif
 #include <QMutex>
+#include "globals.h"
 
 namespace novastory
 {
