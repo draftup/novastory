@@ -106,7 +106,7 @@ macro(do_test testname)
 		${FUNCTIONAL_MODULE}
 		${QTX_TEST_LIBRARY}
 	)
-
+	set_property(TARGET test_${testname} PROPERTY CXX_STANDARD 14)
 	set_property(TARGET test_${testname} PROPERTY FOLDER "Tests")
 
 	if(CMAKE_CROSSCOMPILING AND WIN32)
