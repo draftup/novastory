@@ -7,10 +7,7 @@ init:
   - set PATH=%PATH%;C:\Qt\5.9.2\msvc2017_64\bin
 
 before_build:
-  - ps: mkdir build
-  - cd build
-  - cmake -G "Visual Studio 15 2017 Win64" -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release ../
-  - dir
+  - cmake -G "Visual Studio 15 2017 Win64" -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release .
 
 build:
   project: RUN_TESTS.vcxproj
