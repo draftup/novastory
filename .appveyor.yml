@@ -4,7 +4,7 @@ platform:
   - x64
 
 init:
-  - set PATH=%PATH%;C:\Qt\5.9.2\msvc2017_64\bin
+  - set PATH="%PATH%;C:\Qt\5.9.2\msvc2017_64\bin;C:\Program Files\MySQL\MySQL Server 5.7\lib"
 
 before_build:
   - cmake -G "Visual Studio 15 2017 Win64" -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release .
