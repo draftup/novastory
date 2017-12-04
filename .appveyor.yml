@@ -12,7 +12,7 @@ before_build:
 build:
   project: ALL_BUILD.vcxproj
 
-test:
+after_build:
   - msbuild RUN_TESTS.vcxproj
 
 branches:
