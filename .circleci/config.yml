@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - checkout
-      - run: sudo apt-get install cmake qt5-default libqt5websockets5 libqt5websockets5-dev
+      - run: apt-get install cmake qt5-default libqt5websockets5 libqt5websockets5-dev
       - run: cmake -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release .
       - run: make -j4
       - run: make test
