@@ -18,4 +18,4 @@ jobs:
       - run: cmake -DWITH_TESTS=ON -DWITH_TESTS_CDASH=ON -DCMAKE_BUILD_TYPE=Release .
       #- run: make -j4
       #- run: make test
-      - run: ctest -D Continuous
+      - run: ctest -D Nightly

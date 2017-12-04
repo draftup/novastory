@@ -16,7 +16,7 @@ build:
 
 after_build:
 #  - msbuild RUN_TESTS.vcxproj
-  - msbuild Continuous.vcxproj
+  - msbuild Nightly.vcxproj
 
 branches:
   only:
