@@ -1,14 +1,18 @@
 image: Visual Studio 2017
-
+configuration: Release
 platform:
   - x64
 
-build_script:
+before_build:
   - ps: mkdir build
   - cd build
-  - cmake -G "NMake Makefiles" -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release ../
-  - nmake
-  - nmake test
+  - cmake -G "Visual Studio 15 2017 Win64" -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release ../
+
+build:
+  project: ALL_BUILD.vcxproj
+
+test:
+  project: RUN_TESTS.vcxproj
 
 branches:
   only:
