@@ -6,12 +6,13 @@ version: 2
 jobs:
   build:
     docker:
-      - image: buildpack-deps:xenial
+      - image: buildpack-deps:zesty
 
     working_directory: ~/repo
 
     steps:
       - checkout
+      - run: apt-get update -y
       - run: apt-get install cmake qt5-default libqt5websockets5 libqt5websockets5-dev
       - run: cmake -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release .
       - run: make -j4
