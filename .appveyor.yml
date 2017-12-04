@@ -9,6 +9,7 @@ init:
 before_build:
   - ps: mkdir build
   - cd build
+  - dir
   - cmake -G "Visual Studio 15 2017 Win64" -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release ../
 
 build:
