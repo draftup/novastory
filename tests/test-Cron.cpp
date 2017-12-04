@@ -1,7 +1,9 @@
 #include <QtTest>
+#include <QSqlError>
 #include "webserver/cron.h"
 #include "webserver/webserver.h"
 #include "webserver/sql/sqlquery.h"
+#include "webserver/sql/dbpatcher.h"
 
 using namespace novastory;
 
@@ -17,11 +19,83 @@ private slots:
 	void start();
 	void stop();
 	void change();
+private:
+	DBPatcher patcher;
 };
 
 void Test_Cron::initTestCase()
 {
-
+	SqlQuery checkTable("SELECT 1 FROM cron LIMIT 1");
+	if (checkTable.lastError().type() != QSqlError::NoError)
+	{
+		qDebug() << "Recreate table";
+		QSet<novastory::DBPatcher::Table> m_database;
+		m_database << DBPatcher::Table
+		{
+			"cron",
+			QList<DBPatcher::Column>({
+			DBPatcher::Column{
+			"taskid",
+			"int(10) unsigned",
+			false,
+			"PRI",
+			"",
+			"auto_increment"
+		},
+				DBPatcher::Column{
+			"task",
+			"char(128)",
+			false,
+			"",
+			"",
+			""
+		},
+				DBPatcher::Column{
+			"args",
+			"varchar(255)",
+			true,
+			"",
+			"",
+			""
+		},
+				DBPatcher::Column{
+			"starttime",
+			"timestamp",
+			false,
+			"",
+			"CURRENT_TIMESTAMP",
+			""
+		},
+				DBPatcher::Column{
+			"endtime",
+			"timestamp",
+			true,
+			"",
+			"",
+			""
+		},
+				DBPatcher::Column{
+			"oncetime",
+			"tinyint(1)",
+			false,
+			"",
+			"",
+			""
+		},
+				DBPatcher::Column{
+			"interval",
+			"int(11) unsigned",
+			true,
+			"",
+			"",
+			""
+		},
+		}),
+			QHash < QString, QList<QString> > {}
+		};
+		patcher.setDatabaseStructure(m_database);
+		QVERIFY(patcher.patch());
+	}
 }
 
 void Test_Cron::init()

@@ -32,6 +32,9 @@ private:
 void Test_DBPatcher::initTestCase()
 {
 	// clear db struct
+	SqlQuery("DROP TABLE test_table");
+	SqlQuery("DROP TABLE test_table2");
+	SqlQuery("DROP TABLE test_table3");
 	patcher.m_database.clear();
 }
 
