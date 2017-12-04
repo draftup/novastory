@@ -7,10 +7,10 @@
 #define SMTP_USER ""
 #define SMTP_PASSWORD ""
 
-#define MYSQL_HOST "db4free.net"
-#define MYSQL_DATABASE "novastory"
-#define MYSQL_USER "novastory"
-#define MYSQL_PASSWORD "testdatabase90"
+#define MYSQL_HOST "ensembldb.ensembl.org"
+#define MYSQL_DATABASE "test"
+#define MYSQL_USER "anonymous"
+#define MYSQL_PASSWORD ""
 
 #define GOOGLE_WEB_CLIENT_ID ""
 #define GOOGLE_WEB_CLIENT_SECRET ""
