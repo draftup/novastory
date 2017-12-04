@@ -8,15 +8,13 @@ init:
   - set PATH=%PATH%;C:\Program Files\MySQL\MySQL Server 5.7\bin;C:\Program Files\MySQL\MySQL Server 5.7\lib
 
 before_build:
-#  - cmake -G "Visual Studio 15 2017 Win64" -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release .
-  - cmake -G "Visual Studio 15 2017 Win64" -DWITH_TESTS=ON -DWITH_TESTS_CDASH=ON -DCMAKE_BUILD_TYPE=Release .
+  - cmake -G "Visual Studio 15 2017 Win64" -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release .
 
 build:
   project: ALL_BUILD.vcxproj
 
 after_build:
-#  - msbuild RUN_TESTS.vcxproj
-  - msbuild Nightly.vcxproj
+  - ctest --verbose
 
 branches:
   only:

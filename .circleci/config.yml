@@ -14,8 +14,8 @@ jobs:
       - checkout
       - run: apt-get update -y
       - run: apt-get install locales cmake qt5-default libqt5websockets5 libqt5websockets5-dev libqt5sql5-mysql -y
-      #- run: cmake -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release .
-      - run: cmake -DWITH_TESTS=ON -DWITH_TESTS_CDASH=ON -DCMAKE_BUILD_TYPE=Release .
-      #- run: make -j4
-      #- run: make test
-      - run: ctest -D Nightly
+      - run: locale-gen --no-purge en_US.UTF-8
+      - run: update-locale LANG=en_US.UTF-8
+      - run: cmake -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release .
+      - run: make -j4
+      - run: ctest --verbose
