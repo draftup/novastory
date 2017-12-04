@@ -3,6 +3,9 @@ configuration: Release
 platform:
   - x64
 
+init:
+  - set PATH=%PATH%;C:\Qt\5.9.2\msvc2017_64\bin
+
 before_build:
   - ps: mkdir build
   - cd build

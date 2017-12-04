@@ -3,18 +3,11 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2
-
-dependencies:
-  pre:
-    - sudo apt-get update
-    - sudo apt-get install cmake
-    - sudo apt-get install qt5-default
-
 jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:8-browsers
+      - image: circleci/node:8
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -26,6 +19,7 @@ jobs:
     steps:
       - checkout
       - run: mkdir build && cd build
+      - run: sudo apt-get install cmake qt5-default
       - run: cmake -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release ../
       - run: make -j4
       - run: make test
