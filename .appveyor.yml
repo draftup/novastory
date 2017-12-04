@@ -10,7 +10,10 @@ before_build:
   - cmake -G "Visual Studio 15 2017 Win64" -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release .
 
 build:
-  project: RUN_TESTS.vcxproj
+  project: ALL_BUILD.vcxproj
+
+test:
+  - msbuild RUN_TESTS.vcxproj
 
 branches:
   only:
