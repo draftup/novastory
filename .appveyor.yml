@@ -8,13 +8,15 @@ init:
   - set PATH=%PATH%;C:\Qt\5.9.2\msvc2017_64\bin;%MYSQL_LIB%
 
 before_build:
-  - cmake -G "Visual Studio 15 2017 Win64" -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release .
+#  - cmake -G "Visual Studio 15 2017 Win64" -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release .
+  - cmake -G "Visual Studio 15 2017 Win64" -DWITH_TESTS=ON -DWITH_TESTS_CDASH=ON -DCMAKE_BUILD_TYPE=Release .
 
 build:
   project: ALL_BUILD.vcxproj
 
 after_build:
-  - msbuild RUN_TESTS.vcxproj
+#  - msbuild RUN_TESTS.vcxproj
+  - msbuild Continuous.vcxproj
 
 branches:
   only:
