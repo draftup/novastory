@@ -17,7 +17,9 @@ private slots:
 	void sha1Test();
 	void unixtimeTest();
 	void mailSendTest();
+#ifndef DISABLE_DATETIME_CHECK
 	void RFC822DateTest();
+#endif
 	void selectorTest();
 
 	void pow2round();
@@ -66,11 +68,12 @@ void Test_Globals::mailSendTest()
 {
 	//sendMail("degitx@gmail.com", "sdsad", "dasdasd");
 }
-
+#ifndef DISABLE_DATETIME_CHECK
 void Test_Globals::RFC822DateTest()
 {
 	QCOMPARE(RFC822Date(QDateTime::fromMSecsSinceEpoch(0)), QString("Thu, 01 Jan 1970 00:00:00 GMT"));
 }
+#endif
 
 void Test_Globals::selectorTest()
 {

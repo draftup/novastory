@@ -48,6 +48,10 @@ if(WITH_TESTS)
 	option (WITH_TESTS_CDASH "Enable cdash testing" OFF)
 endif(WITH_TESTS)
 option (TOOLKIT_UTIL "Build toolkit for fast windows server compilation" OFF)
+option (DISABLE_DATETIME_CHECK "Disable rfc time check" OFF)
+if(DISABLE_DATETIME_CHECK)
+	add_definitions(-DDISABLE_DATETIME_CHECK)
+endif(DISABLE_DATETIME_CHECK)
 
 
 # Searching for packets

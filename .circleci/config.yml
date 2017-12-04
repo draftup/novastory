@@ -13,12 +13,7 @@ jobs:
     steps:
       - checkout
       - run: apt-get update -y
-      - run: apt-get install locales locales-all cmake qt5-default libqt5websockets5 libqt5websockets5-dev libqt5sql5-mysql -y
-      - run: locale-gen en_US en_US.UTF-8
-      - run: LC_ALL=en_US.UTF-8
-      - run: LANG=en_US.UTF-8
-      - run: update-locale LANG=en_US.UTF-8
-      - run: dpkg-reconfigure locales
-      - run: cmake -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release .
+      - run: apt-get install cmake qt5-default libqt5websockets5 libqt5websockets5-dev libqt5sql5-mysql -y
+      - run: cmake -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release -DDISABLE_DATETIME_CHECK=ON .
       - run: make -j4
       - run: ctest --verbose
