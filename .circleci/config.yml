@@ -6,7 +6,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: buildpack-deps:zesty
+      - image: buildpack-deps:xenial
 
     working_directory: ~/repo
 
