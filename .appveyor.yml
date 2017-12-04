@@ -1,0 +1,15 @@
+image: Visual Studio 2017
+
+platform:
+  - x64
+
+build_script:
+  - ps: mkdir build
+  - cd build
+  - cmake -G "NMake Makefiles" -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release ../
+  - nmake
+  - nmake test
+
+branches:
+  only:
+  - master
