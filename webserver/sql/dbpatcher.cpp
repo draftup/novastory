@@ -127,6 +127,12 @@ QHash<QString, DBPatcher::Table> DBPatcher::columnListDB()
 		newColumn.key = fields.value("COLUMN_KEY").toString();
 		newColumn.extra = fields.value("EXTRA").toString();
 
+		if (newColumn.default_data == "current_timestamp()")
+			newColumn.default_data = "CURRENT_TIMESTAMP";
+		newColumn.extra = newColumn.extra.replace("current_timestamp()", "CURRENT_TIMESTAMP");
+		if (newColumn.default_data == "NULL")
+			newColumn.default_data = "";
+
 		table.columns.append(newColumn);
 	}
 
@@ -280,7 +286,10 @@ bool DBPatcher::Table::modify(const Table& old)
 		if (
 			column.type != oldColumn.type ||
 			column.isnull != oldColumn.isnull ||
-			column.default_data != oldColumn.default_data ||
+			(
+				column.default_data != oldColumn.default_data 
+				&& "'" + column.default_data + "'" != oldColumn.default_data
+			) ||
 			column.extra != oldColumn.extra)
 		{
 			SqlQuery query;
