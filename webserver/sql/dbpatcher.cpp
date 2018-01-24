@@ -427,7 +427,7 @@ QString DBPatcher::Column::serialize() const
 	}
 	if (default_data != "NULL" && !default_data.isEmpty())
 	{
-		if (default_data == "CURRENT_TIMESTAMP")
+		if (default_data == "CURRENT_TIMESTAMP" || default_data == "current_timestamp()")
 		{
 			sql += " DEFAULT " + default_data;
 		}
