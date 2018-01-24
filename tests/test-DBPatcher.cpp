@@ -296,7 +296,7 @@ void Test_DBPatcher::modifyExtraColumn()
 	SqlQuery q("select COLUMN_DEFAULT, EXTRA from information_schema.columns where table_schema = '" MYSQL_DATABASE "' AND TABLE_NAME = 'test_table' AND COLUMN_NAME = 'somedate'");
 	QVERIFY(q.next());
 	QVERIFY(q.value("COLUMN_DEFAULT") == "CURRENT_TIMESTAMP" || q.value("COLUMN_DEFAULT") == "current_timestamp()");
-	QVERIFY(q.value("EXTRA") == "on update CURRENT_TIMESTAMP" || q.value("EXTRA") == "ON UPDATE current_timestamp()");
+	QVERIFY(q.value("EXTRA") == "on update CURRENT_TIMESTAMP" || q.value("EXTRA") == "on update current_timestamp()");
 }
 
 void Test_DBPatcher::modifyKeys()
